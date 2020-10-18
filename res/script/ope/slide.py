@@ -1,4 +1,4 @@
-#this is slide_simple lib for OPE. Created by Rafał Ploch
+#this is slide_simple lib for OPE. Created by rafi612
 
 projectpath = "";
 slides = 0;
