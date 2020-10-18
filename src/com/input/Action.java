@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -233,6 +234,9 @@ public class Action implements ActionListener
 				e1.printStackTrace();
 			}
 		}
+		
+		if (source == Main.about)
+			JOptionPane.showMessageDialog(Main.frame,new ImageIcon(Main.loadIcon("/icon512.png")),"About",JOptionPane.INFORMATION_MESSAGE);
 		//popup
 		//========================================================
 		if (source == Main.newfile)
