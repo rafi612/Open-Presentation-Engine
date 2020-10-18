@@ -224,7 +224,7 @@ public class Main
 		{
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
-			frame.setIconImage(loadIcon("/icon512.png"));
+			frame.setIconImage(loadIcon("/icon256.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
 			
