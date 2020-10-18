@@ -305,7 +305,7 @@ public class Project
 					JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		return jfc.getSelectedFile().toString();
-		//return null;
+		if (jfc.getSelectedFile() != null) return jfc.getSelectedFile().toString();
+		return null;
 	}
 }
