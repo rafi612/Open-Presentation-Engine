@@ -2,6 +2,7 @@ package com.main;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -222,6 +224,7 @@ public class Main
 		{
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
+			frame.setIconImage(loadIcon("/icon512.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
 			
@@ -321,7 +324,7 @@ public class Main
         
         //pomoc 
         about = new JMenuItem("About");
-        //about.addActionListener(new Action());
+        about.addActionListener(new Action());
         help.add(about);
         license = new JMenuItem("View License");
         //license.addActionListener(new Action());
@@ -362,6 +365,22 @@ public class Main
 	    }
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
+	}
+	
+	public static Image loadIcon(String path)
+	{
+		Image i = null;
+		
+		try
+		{
+			i = ImageIO.read(Main.class.getResourceAsStream(path));
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return i;
 	}
 
 }
