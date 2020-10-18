@@ -173,9 +173,6 @@ public class Main
             }
         });
         
-        String[] s = {"1","2","3","4"};
-        JComboBox c = new JComboBox(s);
-        
         JPanel autoscript = new JPanel();
         autoscript.setLayout(new BoxLayout(autoscript, 1));
         autoscript.setBorder(BorderFactory.createTitledBorder("Auto Scripting"));

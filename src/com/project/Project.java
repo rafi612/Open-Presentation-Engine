@@ -306,5 +306,6 @@ public class Project
 			}
 		}
 		return jfc.getSelectedFile().toString();
+		//return null;
 	}
 }
