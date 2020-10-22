@@ -52,7 +52,7 @@ public class Main
     public static JMenuBar menubar;
     public static JMenu file,edit,tools,run,help;
     
-    public static final String TITLE = "Open Presentation Engine v.0.3";
+    public static final String TITLE = "Open Presentation Engine";
     
     //plik
     public static JMenuItem newproject,loadproject,save,export,exitproject,exit;
@@ -149,7 +149,8 @@ public class Main
                 {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                                
-                            List<File> droppedFiles = (List<File>)
+                            @SuppressWarnings("unchecked")
+							List<File> droppedFiles = (List<File>)
                                         evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
                             for (File file : droppedFiles)
                             {
