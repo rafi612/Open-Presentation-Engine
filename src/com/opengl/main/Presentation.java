@@ -11,6 +11,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
 import com.opengl.input.Keyboard;
 import com.opengl.input.Mouse;
+import com.opengl.meneger.StateMeneger;
 import com.opengl.resource.SlideResource;
 import com.project.Project;
 
@@ -29,16 +30,18 @@ public class Presentation
 	public static FPSAnimator animator;
 	
 	//tech
-	//public static StateMeneger sm;
+	public static StateMeneger sm;
 	//public static int clock;
 	
 	//wejscie
 	//public static Keyboard keyboard = new Keyboard();
 	
+	
+	
 	public static void init()
 	{
 	    SlideResource.load();
-	    EventListener.choose = 0;
+	    sm = new StateMeneger();
 	    
 		GLProfile.initSingleton();
 	    profile = GLProfile.get(GLProfile.GL2);

@@ -13,37 +13,17 @@ public class EventListener implements GLEventListener
 {
 	public static GL2 gl = null;
 	
-	ImageResource empty = new ImageResource("/empty.png");
-	
-	public static int choose = 0;
-	
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
 		gl = drawable.getGL().getGL2();
-		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
-		
-		if (SlideResource.slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
-		else
-		{
-			
-			if (Keyboard.getKeyOnce(KeyEvent.VK_UP))
-			{
-				if (choose < Presentation.slide.size() - 1) choose++;
-				System.out.println(choose);
-			}
-			if (Keyboard.getKeyOnce(KeyEvent.VK_DOWN))
-			{
-				if (choose > 0)choose--;
-				System.out.println(choose);
-			}
-			
-			Presentation.slide.get(choose).render(gl);
-		}
-		
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);		
 		
 		if (Keyboard.getKeyOnce(KeyEvent.VK_ESCAPE))
 			Presentation.stop();
+		
+		Presentation.sm.update();
+		Presentation.sm.render(gl);
 		
 		Keyboard.update();
 	}
