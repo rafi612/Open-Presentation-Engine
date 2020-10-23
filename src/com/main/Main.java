@@ -158,7 +158,7 @@ public class Main
                                 
                                 //System.out.println(file.getName());
                             	
-                            	Stream.copyFileondrive(file.getPath(), Project.projectlocation + "\\" + file.getName());
+                            	Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
                                 
 //                                workspace.add(new DefaultMutableTreeNode(file));
 //                                DefaultTreeModel model=(DefaultTreeModel)tree.getModel();

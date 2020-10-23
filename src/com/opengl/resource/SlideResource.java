@@ -17,7 +17,7 @@ public class SlideResource
 	public SlideResource(String path) 
 	{
 		this.imagepath = path;
-		if (Main.args.length < 1) image = new ImageResource(Project.projectlocation + "\\" + path);
+		if (Main.args.length < 1) image = new ImageResource(Project.projectlocation + Stream.slash() + path);
 		else image = new ImageResource(Project.projectlocation + path);
 	}
 
@@ -26,7 +26,7 @@ public class SlideResource
 		String path = "";
 		if (Main.args.length < 1)
 		{
-			path = Project.projectlocation + "\\" + "config.xml";
+			path = Project.projectlocation + Stream.slash() + "config.xml";
 		}
 		else
 			path = Main.args[0];

@@ -55,7 +55,7 @@ public class Presentation
 	    window.addMouseListener(new Mouse());
 	    window.setDefaultCloseOperation(WindowClosingMode.DISPOSE_ON_CLOSE);
 	    if (Main.args.length < 1)
-	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml(Project.projectlocation + "\\config.xml", "summary", "fullscreen")));
+	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml(Project.projectlocation + Stream.slash() + "config.xml", "summary", "fullscreen")));
 	    else
 	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml("config.xml", "summary", "fullscreen")));
 	    window.setVisible(true);

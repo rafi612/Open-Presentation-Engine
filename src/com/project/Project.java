@@ -32,10 +32,10 @@ public class Project
 	{
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
-		projectlocation = location + "\\" + name;
+		projectlocation = location + slash() + name;
 		new File(projectlocation).mkdir();
 		Main.textarea.setEnabled(true);
-		Main.frame.setTitle(Main.TITLE + " - " + location + "\\" + name);
+		Main.frame.setTitle(Main.TITLE + " - " + location + slash() + name);
 		Main.tree.setEnabled(true);
 		Main.save.setEnabled(true);
 		Main.copy.setEnabled(true);
@@ -57,16 +57,16 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
 		
-		Stream.copyFile("/script/main.py",projectlocation + "\\main.py");
-		Stream.copyFile("/script/config.xml",projectlocation + "\\config.xml");
+		Stream.copyFile("/script/main.py",projectlocation + slash() +"main.py");
+		Stream.copyFile("/script/config.xml",projectlocation + slash() + "config.xml");
 		
-		new File(Project.projectlocation + "\\ope").mkdir();
-		Stream.copyFile("/script/ope/slide.py", Project.projectlocation + "\\ope\\slide.py");
+		new File(Project.projectlocation + slash() + "ope").mkdir();
+		Stream.copyFile("/script/ope/slide.py", Project.projectlocation + slash() + "ope" + slash() + "slide.py");
 
-		loadTextFromFileToTextArea(projectlocation + "\\main.py");
-		loadTextFromFileToTextArea(projectlocation + "\\config.xml",Main.textarea2);
+		loadTextFromFileToTextArea(projectlocation + slash() + "main.py");
+		loadTextFromFileToTextArea(projectlocation + slash() + "config.xml",Main.textarea2);
 		
-		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + "\\main.py")));
+		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + slash() + "main.py")));
     	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
     	model.reload(Main.workspace);
     	
@@ -101,10 +101,10 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
 
-		loadTextFromFileToTextArea(projectlocation + "\\main.py");
-		loadTextFromFileToTextArea(projectlocation + "\\config.xml",Main.textarea2);
+		loadTextFromFileToTextArea(projectlocation + slash() + "main.py");
+		loadTextFromFileToTextArea(projectlocation + slash() + "config.xml",Main.textarea2);
 		
-		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + "\\main.py")));
+		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + slash() + "main.py")));
     	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
     	model.reload(Main.workspace);
     	
@@ -240,8 +240,8 @@ public class Project
 				
 		if (yesno == 0)
 		{
-			SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
-			SaveTextFromTextArea(Project.projectlocation + "\\" + "config.xml",Main.textarea2);
+			SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");
+			SaveTextFromTextArea(Project.projectlocation + slash() + "config.xml",Main.textarea2);
 		}
 		
 		return yesno;
@@ -251,11 +251,19 @@ public class Project
 	{
 		try //(PythonInterpreter pyInterp = new PythonInterpreter()) 
 		{
-			if (Project.editor == 0)Project.SaveTextFromTextArea(Project.projectlocation + "\\main.py");
+			if (Project.editor == 0)Project.SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");
 			Process process;
 			//process = Runtime.getRuntime().exec("Python\\python.exe \"" + Project.projectlocation + "\\main.py\" " + "\"" + Project.projectlocation + "\"");
-			process = Runtime.getRuntime().exec("Python\\python.exe \"" + Project.projectlocation + "\\main.py\"");
-			process.waitFor();
+			if (Stream.isWindows())
+			{
+				process = Runtime.getRuntime().exec("Python\\python.exe \"" + Project.projectlocation + slash() + "main.py\"");
+				process.waitFor();
+			}
+			else
+			{
+				process = Runtime.getRuntime().exec("python \"" + Project.projectlocation + slash() + "main.py\"");
+				process.waitFor();
+			}
 			
 		    //pyInterp.execfile(projectlocation + "\\main.py");
 			//System.out.println("Python\\python.exe \"" + Project.projectlocation + "\\main.py\" " + "\"" + Project.projectlocation + "\"");
@@ -270,7 +278,7 @@ public class Project
 				
 			if (config.exists()) 
 			{
-				Stream.copyFileondrive("config.xml",Project.projectlocation + "\\" + "config.xml");
+				Stream.copyFileondrive("config.xml",Project.projectlocation + slash() + "config.xml");
 				config.delete();
 			}
 			
@@ -278,7 +286,7 @@ public class Project
 			
 			if (run) Presentation.init();
 			
-			Project.loadTextFromFileToTextArea(Project.projectlocation + "\\" + "config.xml", Main.textarea2);
+			Project.loadTextFromFileToTextArea(Project.projectlocation + slash() + "config.xml", Main.textarea2);
 		}
 		catch (Exception e)
 		{
@@ -299,7 +307,7 @@ public class Project
 			{
 				System.out.println("You selected the directory: " + jfc.getSelectedFile());
 				
-				if (new File(jfc.getSelectedFile().toString() + "\\main.py").exists())
+				if (new File(jfc.getSelectedFile().toString() + slash() + "main.py").exists())
 					LoadNewProject(jfc.getSelectedFile().toString());
 				else
 					JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
@@ -307,5 +315,10 @@ public class Project
 		}
 		if (jfc.getSelectedFile() != null) return jfc.getSelectedFile().toString();
 		return null;
+	}
+	
+	private static String slash()
+	{
+		return File.separator;
 	}
 }

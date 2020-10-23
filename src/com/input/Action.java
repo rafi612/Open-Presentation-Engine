@@ -135,7 +135,7 @@ public class Action implements ActionListener
 				
 				if (yesno == 0)
 				{
-					Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
+					Project.SaveTextFromTextArea(Project.projectlocation + Stream.slash() + "main.py");
 				}
 				
 				Project.unloadProject();
@@ -199,7 +199,7 @@ public class Action implements ActionListener
 			
 			if (yesno == 0)
 			{
-				Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
+				Project.SaveTextFromTextArea(Project.projectlocation + Stream.slash() + "main.py");
 			}
 			
 			if (yesno != 2)
@@ -217,8 +217,11 @@ public class Action implements ActionListener
 		{
 			try 
 			{
-				Process process = Runtime.getRuntime().exec("cmd /c start Python\\python.exe");
-				process.waitFor();
+				if (Stream.isWindows())
+				{
+					Process process = Runtime.getRuntime().exec("cmd /c start Python\\python.exe");
+					process.waitFor();
+				}
 			} 
 			catch (IOException e1) 
 			{
@@ -235,7 +238,7 @@ public class Action implements ActionListener
 		if (source == Main.newfile)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
-			Stream.saveFile(Project.projectlocation + "\\" + name, "");
+			Stream.saveFile(Project.projectlocation + Stream.slash() + name, "");
 			
 			Project.refreshProject();
 		}
@@ -263,7 +266,7 @@ public class Action implements ActionListener
 		if (source == Main.newfolder)
 		{
 			String folder = JOptionPane.showInputDialog(Main.frame, "Enter folder name:", "Create new folder", JOptionPane.QUESTION_MESSAGE);
-			new File(Project.projectlocation + "\\" + folder).mkdir();
+			new File(Project.projectlocation + Stream.slash() + folder).mkdir();
 			
 			Project.refreshProject();
 		}
@@ -274,7 +277,7 @@ public class Action implements ActionListener
 		if (source == Main.newxml)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter XML name:", "Create new XML", JOptionPane.QUESTION_MESSAGE);
-			Stream.copyFile("/script/config.xml", Project.projectlocation + "\\" + name + ".xml");
+			Stream.copyFile("/script/config.xml", Project.projectlocation + Stream.slash() + name + ".xml");
 			
 			Project.refreshProject();
 		}
