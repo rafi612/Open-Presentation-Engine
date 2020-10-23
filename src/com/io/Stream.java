@@ -120,4 +120,18 @@ public class Stream
 		      }
 			return return_;
 		}
+		   public static String getOsName()
+		   {
+		      return System.getProperty("os.name");
+		   }
+		
+		   public static boolean isWindows()
+		   {
+		      return getOsName().startsWith("Windows");
+		   }
+		   
+			public static String slash()
+			{
+				return File.separator;
+			}
 }
