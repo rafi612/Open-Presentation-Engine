@@ -230,8 +230,6 @@ public class Action implements ActionListener
 			}
 		}
 		
-		//if (source == Main.about)
-			//JOptionPane.showMessageDialog(Main.frame,new ImageIcon(Main.loadIcon("/icon.png")),"About",JOptionPane.INFORMATION_MESSAGE);
 		//popup
 		//========================================================
 		if (source == Main.newfile)
