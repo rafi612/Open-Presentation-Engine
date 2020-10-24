@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="libs/natives/gluegen-rt-natives-windows-i586.jar"/>
 	<classpathentry kind="lib" path="libs/natives/jogl-all-natives-windows-amd64.jar"/>
 	<classpathentry kind="lib" path="libs/natives/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="libs/jl1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
