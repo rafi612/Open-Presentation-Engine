@@ -7,10 +7,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -36,7 +32,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.input.Action;
 import com.input.TreeListener;
@@ -44,6 +39,7 @@ import com.io.Stream;
 import com.opengl.main.Presentation;
 import com.project.Project;
 import com.tree.TreeCellRenderer;
+
 
 public class Main
 {
@@ -182,8 +178,11 @@ public class Main
         
         autoscripts.add(new JButton("Import Libs"));
         autoscripts.add(new JButton("Create Slide"));
+        autoscripts.add(new JButton("Add Slide Background"));
         autoscripts.add(new JButton("Add fullscreen"));
         autoscripts.add(new JButton("Add General Music"));
+        //autoscripts.add(new JButton("Add Slide Background"));
+        autoscripts.add(new JButton("Add TTS"));
         autoscripts.add(new JButton("End Script"));
         autoscripts.add(new JButton("More Auto Scripts"));
         
@@ -218,11 +217,12 @@ public class Main
         //textarea.insert("My String Here", textarea.getCaretPosition());
     }
 
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		Main.args = args;
 		if (args.length < 1)
 		{
+			
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
 			frame.setIconImage(loadIcon("/icon.png"));
