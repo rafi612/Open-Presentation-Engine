@@ -37,12 +37,20 @@ public class Action implements ActionListener
 			Main.textarea.insert("slide.createSlide(" + slide + "," + "\"" + file + "\")\n", Main.textarea.getCaretPosition());
 		}
 		
-		//fullscreen
+		//bg
 		if (source == Main.autoscripts.get(2))
+		{
+			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "background",JOptionPane.QUESTION_MESSAGE));
+			String name = JOptionPane.showInputDialog(Main.frame, "Enter background file name:", "background", JOptionPane.QUESTION_MESSAGE);
+			Main.textarea.insert("slide.setSlideBg(" + num + ",\"" + name + "\")\n", Main.textarea.getCaretPosition());
+		}
+		
+		//fullscreen
+		if (source == Main.autoscripts.get(3))
 			Main.textarea.insert("slide.setFullscreen(True)", Main.textarea.getCaretPosition());
 		
 		//music
-		if (source == Main.autoscripts.get(3))
+		if (source == Main.autoscripts.get(4))
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter music file name:", "music", JOptionPane.QUESTION_MESSAGE);
 			Main.textarea.insert("slide.setGeneralMusic(\"" + name + "\")\n", Main.textarea.getCaretPosition());
