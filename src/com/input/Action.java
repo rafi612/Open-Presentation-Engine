@@ -216,6 +216,10 @@ public class Action implements ActionListener
 			}
 		}
 		
+		//exit 
+		if (source == Main.exit)
+			System.exit(0);
+		
 		//refresh
 		if (source == Main.refresh)
 			Project.refreshProject();
