@@ -181,7 +181,6 @@ public class Main
         autoscripts.add(new JButton("Add Slide Background"));
         autoscripts.add(new JButton("Add fullscreen"));
         autoscripts.add(new JButton("Add General Music"));
-        //autoscripts.add(new JButton("Add Slide Background"));
         autoscripts.add(new JButton("Add TTS"));
         autoscripts.add(new JButton("End Script"));
         autoscripts.add(new JButton("More Auto Scripts"));
@@ -200,6 +199,7 @@ public class Main
         actions.add(new JButton("Build & Run"));
         actions.add(new JButton("Save"));
         actions.add(new JButton("Stop"));
+        actions.add(new JButton("Open Slide Creator"));
 //        actions.add(new JButton("Open XML editor"));
 //        actions.add(new JButton("Open Python editor"));
         
@@ -287,7 +287,7 @@ public class Main
         file.add(new JSeparator());
         
         exit = new JMenuItem("Exit");
-        //exit.addActionListener(new Action());
+        exit.addActionListener(new Action());
         file.add(exit);
         
         //edytuj
