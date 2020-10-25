@@ -1,10 +1,12 @@
 package com.project;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -27,7 +29,7 @@ public class Project
 	
 	public static String projectlocation = "";
 	
-	public static int editor = 0;
+	//public static int editor = 0;
 	
 	public static void CreateNewProject(String location,String name)
 	{
@@ -250,44 +252,50 @@ public class Project
 	
 	public static void run()
 	{
+        
 		try //(PythonInterpreter pyInterp = new PythonInterpreter()) 
 		{
-			if (Project.editor == 0)Project.SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");
+			Project.SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");
 			Process process;
-			//process = Runtime.getRuntime().exec("Python\\python.exe \"" + Project.projectlocation + "\\main.py\" " + "\"" + Project.projectlocation + "\"");
+			
+			//windows 
 			if (Stream.isWindows())
-			{
-				process = Runtime.getRuntime().exec("Python\\python.exe \"" + Project.projectlocation + slash() + "main.py\"");
+			{				
+				ProcessBuilder builder = new ProcessBuilder("Python\\python.exe", Project.projectlocation + slash() + "main.py");
+				builder.directory(new File(projectlocation + slash()));
+				process = builder.start();
 				process.waitFor();
+
+				System.out.println("Python exit code: " + process.exitValue());
 			}
+			// linux,unix and other
+			// request python 3.7
 			else
 			{
-				process = Runtime.getRuntime().exec("python \"" + Project.projectlocation + slash() + "main.py\"");
+				ProcessBuilder builder = new ProcessBuilder("python3.7", Project.projectlocation + slash() + "main.py");
+				builder.directory(new File(projectlocation + slash()));
+				process = builder.start();
 				process.waitFor();
+
+				System.out.println("Python exit code" + process.exitValue());
 			}
 			
-		    //pyInterp.execfile(projectlocation + "\\main.py");
-			//System.out.println("Python\\python.exe \"" + Project.projectlocation + "\\main.py\" " + "\"" + Project.projectlocation + "\"");
 								
 			boolean run = true;
-			File config = new File("config.xml");
-			if (!config.exists())
+//			
+			if (process.exitValue() != 0)
 			{
-				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python interpreter found errors.\nNew XML not generated. Do you want to run?", "Program errors found", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python return exit code " + process.exitValue() + ". Do you want to run?", "Error", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
 				if (yesno == 1) run = false;
-			}
-				
-			if (config.exists()) 
-			{
-				Stream.copyFileondrive("config.xml",Project.projectlocation + slash() + "config.xml");
-				config.delete();
+				//System.out.println("!config.exists()");
 			}
 			
+			Project.loadTextFromFileToTextArea(Project.projectlocation + slash() + "config.xml", Main.textarea2);
 			Project.refreshProject();
 			
 			if (run) Presentation.init();
 			
-			Project.loadTextFromFileToTextArea(Project.projectlocation + slash() + "config.xml", Main.textarea2);
+			//System.out.println("boolean run = " + run);
 		}
 		catch (Exception e)
 		{
