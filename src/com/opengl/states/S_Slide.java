@@ -17,7 +17,7 @@ public class S_Slide extends State
 	public S_Slide()
 	{
 		choose = 0;
-		empty = new ImageResource(S_Slide.class.getResourceAsStream("/empty.png"));
+		empty = new ImageResource(S_Slide.class.getResourceAsStream("/images/empty.png"));
 	}
 	
 	public void update()

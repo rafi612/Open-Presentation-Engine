@@ -32,6 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.undo.UndoManager;
 
 import com.input.Action;
 import com.input.TreeListener;
@@ -46,26 +47,28 @@ public class Main
 	public static String[] args;
 	public static JFrame frame,scripteditor;
     public static JMenuBar menubar;
-    public static JMenu file,edit,tools,run,help;
+    public static JMenu file,edit,tools,run,settings,help;
+    
+   // static UndoManager manager = new UndoManager();
     
     public static final String TITLE = "Open Presentation Engine";
     
-    //plik
+    //file
     public static JMenuItem newproject,loadproject,save,export,exitproject,exit;
     
-    //edytuj
+    //edit
     public static JMenuItem cut,paste,copy,selectAll;
     
-    //narzędzia
+    //tools
     public static JMenuItem refresh,shell;
     
-    //uruchom
+    //run
     public static JMenuItem runandbuild,run_;
     
-    //pomoc
+    //help
     public static JMenuItem about,license;
     
-    //popup drzewka
+    //tree popup
     public static JMenuItem newfile,editfile, newfolder, openfile, newpython,newxml;
     
     public static JTree tree;
@@ -92,6 +95,7 @@ public class Main
     	
     	//JPanel textpanel = new JPanel();
     	//textpanel.setLayout(new BorderLayout());
+        
         textarea = new JTextArea();
         textarea.setFont(new Font(textarea.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textarea.setEnabled(false);
@@ -101,15 +105,9 @@ public class Main
         textarea2.setFont(new Font(textarea.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textarea2.setEnabled(false);
         
-        //textarea.setEnabled(false);
+        textarea.setEnabled(false);
         scrollpane = new JScrollPane(textarea);
         scrollpane2 = new JScrollPane(textarea2);
-        //scrollpane.setBorder(BorderFactory.createTitledBorder("Script - main.py"));
-        //textpanel.add(scrollpane,BorderLayout.CENTER);
-        
-//        JTextArea console = new JTextArea();
-//        scrollpane3 = new JScrollPane(console);
-//        textpanel.add(scrollpane3,BorderLayout.CENTER);
         
         tabs.add("Main.py",scrollpane);
         tabs.add("Config.xml",scrollpane2);
@@ -131,8 +129,7 @@ public class Main
         tree.setCellRenderer(new TreeCellRenderer());
         tree.addTreeSelectionListener(new TreeListener());
         tree.setEnabled(false);
-        //tree.setCellRenderer(new MyTreeCellRenderer());
-        //tree.setEnabled(false);
+        
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
         
@@ -155,11 +152,7 @@ public class Main
                                 //System.out.println(file.getName());
                             	
                             	Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
-                                
-//                                workspace.add(new DefaultMutableTreeNode(file));
-//                                DefaultTreeModel model=(DefaultTreeModel)tree.getModel();
-//                                model.reload(workspace);
-                                
+                            	
                                 Project.refreshProject();
                             }
                                
@@ -213,8 +206,6 @@ public class Main
         
         //Project.CreateNewProject("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop", JOptionPane.showInputDialog(frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE));
         Project.unloadProject();
-        
-        //textarea.insert("My String Here", textarea.getCaretPosition());
     }
 
 	public static void main(String[] args)
@@ -225,7 +216,7 @@ public class Main
 			
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
-			frame.setIconImage(loadIcon("/icon.png"));
+			frame.setIconImage(loadIcon("/images/icon.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
 			
@@ -256,6 +247,7 @@ public class Main
         file = new JMenu("File");
         edit = new JMenu("Edit");
         tools = new JMenu("Tools");
+        settings = new JMenu("Settings");
         run = new JMenu("Run");
         help = new JMenu("Help");
         
@@ -314,7 +306,6 @@ public class Main
         refresh.setEnabled(false);
         tools.add(refresh);
         
-        //narzędzia
         runandbuild = new JMenuItem("Build And Run"); 
         //shell.addActionListener(new Action());
         tools.add(shell);
@@ -322,6 +313,8 @@ public class Main
         //refresh.addActionListener(new Action());
         run.add(runandbuild);
         run.add(run_);
+        
+        //settings
         
         //pomoc 
         about = new JMenuItem("About");
@@ -347,6 +340,7 @@ public class Main
         menubar.add(edit);
         menubar.add(tools);
         menubar.add(run);
+        menubar.add(settings);
         menubar.add(help);
 	}
 	
@@ -383,5 +377,45 @@ public class Main
 		
 		return i;
 	}
+	
+//	public static void initUndoRedo()
+//	{
+//        textarea.getDocument().addUndoableEditListener(new UndoableEditListener() {
+//            @Override
+//            public void undoableEditHappened(UndoableEditEvent e) {
+//                manager.addEdit(e.getEdit());
+//            }
+//        });
+//        
+//        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(
+//                KeyEvent.VK_Z, Event.CTRL_MASK);
+//        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(
+//                KeyEvent.VK_Y, Event.CTRL_MASK);
+//        
+//        textarea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(undoKeyStroke, "undoKeyStroke");
+//        textarea.getActionMap().put("undoKeyStroke", new AbstractAction() 
+//        {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//        	public void actionPerformed(ActionEvent e) {
+//        		try {
+//        			manager.undo();
+//        		} catch (CannotUndoException cue) {}
+//        	}
+//        });
+//        
+//        // Map redo action
+//        textarea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+//                .put(redoKeyStroke, "redoKeyStroke");
+//        textarea.getActionMap().put("redoKeyStroke", new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    manager.redo();
+//                 } catch (CannotRedoException cre) {}
+//            }
+//        });
+//	}
 
 }
