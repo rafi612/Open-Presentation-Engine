@@ -277,7 +277,7 @@ public class Project
 				process = builder.start();
 				process.waitFor();
 
-				System.out.println("Python exit code" + process.exitValue());
+				System.out.println("Python exit code:" + process.exitValue());
 			}
 			
 								

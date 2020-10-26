@@ -1,18 +1,29 @@
 package com.input;
 
+import java.awt.BorderLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileSystemView;
 
 import com.io.Stream;
 import com.main.Main;
 import com.opengl.main.Presentation;
 import com.project.Project;
+import com.tts.Language;
+import com.tts.Speak;
 
 public class Action implements ActionListener 
 {
@@ -55,6 +66,12 @@ public class Action implements ActionListener
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter music file name:", "music", JOptionPane.QUESTION_MESSAGE);
 			Main.textarea.insert("slide.setGeneralMusic(\"" + name + "\")\n", Main.textarea.getCaretPosition());
 		}
+		
+		if (source == Main.autoscripts.get(5))
+		{
+			Speak.TTSFrame();
+		}
+		
 		
 		//end
 		if (source == Main.autoscripts.get(Main.autoscripts.size() - 2))
@@ -232,6 +249,11 @@ public class Action implements ActionListener
 				if (Stream.isWindows())
 				{
 					Process process = Runtime.getRuntime().exec("cmd /c start Python\\python.exe");
+					process.waitFor();
+				}
+				else if (Stream.isLinux())
+				{
+					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e python3.7");
 					process.waitFor();
 				}
 			} 

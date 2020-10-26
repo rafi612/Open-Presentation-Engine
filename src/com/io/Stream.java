@@ -17,6 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.jogamp.common.os.Platform.OSType;
+
 public class Stream 
 {
 	
@@ -122,16 +124,26 @@ public class Stream
 		}
 		   public static String getOsName()
 		   {
-		      return System.getProperty("os.name");
+			   return System.getProperty("os.name");
 		   }
 		
 		   public static boolean isWindows()
 		   {
-		      return getOsName().startsWith("Windows");
+			   return getOsName().startsWith("Windows");
 		   }
 		   
-			public static String slash()
-			{
-				return File.separator;
-			}
+		   public static boolean isLinux()
+		   {
+			   return getOsName().contains("nux");
+		   }
+		   
+		   public static boolean isMac()
+		   {
+		       return getOsName().contains("mac") || getOsName().contains("darwin");
+		   }
+		   
+		   public static String slash()
+		   {
+			   return File.separator;
+		   }
 }
