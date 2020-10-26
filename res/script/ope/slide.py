@@ -8,6 +8,7 @@ music = "null"
 
 slidespath = []
 slidesbg = []
+slidestts = []
 
 def saveFileWriteLine(name,text):
     f = open(name,"a+");
@@ -24,11 +25,17 @@ def createSlide(num,path):
     slides = slides + 1;
     slidespath.append(path)
     slidesbg.append("null")
+    slidestts.append("null")
 
 def setSlideBg(num,path):
     global slidesbg;
     del slidesbg[num - 1]
     slidesbg.insert(num - 1,path)
+    
+def setSlideTTS(num,path):
+    global slidestts;
+    del slidestts[num - 1]
+    slidestts.insert(num - 1,path)
 
 def setFullscreen(arg0):
     global fullscreen
@@ -47,6 +54,7 @@ def End():
         saveFileWriteLine("config.xml","<slide" + str(i + 1) + ">\n")
         saveFileWriteLine("config.xml","    <path>" + slidespath[i] + "</path> \n");
         saveFileWriteLine("config.xml","    <bg>" + slidesbg[i] + "</bg> \n")
+        saveFileWriteLine("config.xml","    <tts>" + slidestts[i] + "</tts> \n")
         saveFileWriteLine("config.xml","</slide" + str(i + 1) + "> \n")
     saveFileWriteLine("config.xml","<summary> \n");
     saveFileWriteLine("config.xml","    <slides>" + str(slides) + "</slides> \n")
