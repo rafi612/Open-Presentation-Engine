@@ -85,7 +85,7 @@ public class Speak
 					{
 						e.printStackTrace();
 					}
-					Main.textarea.insert("slide.setSlideTTS(" + slide + ",\"" + name + ".mp3\")\n", Main.textarea.getCaretPosition());
+					Stream.insert("slide.setSlideTTS(" + slide + ",\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 	            	Project.refreshProject();
             	}
             	else
