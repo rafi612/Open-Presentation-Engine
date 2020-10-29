@@ -5,8 +5,8 @@ slide.setFullscreen(True)
 
 # here write code
 # to create slide use slide.createSlide(<number>,"path to file") method
-# or use autoscript
+# also use autoscript
 
 
-#end
+# end
 slide.End()
