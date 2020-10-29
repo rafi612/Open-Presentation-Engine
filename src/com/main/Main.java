@@ -94,8 +94,8 @@ public class Main
     
     public static JScrollPane scrollpane;
 	public static JScrollPane scrollpane2,scrollpane3;
-    public static JTextPane textpane;
-    public static JTextPane textarea2;
+    public static JTextPane textpane,textarea2;
+    public static JTextArea areaconsole;
     
     public static ArrayList<JButton> actions = new ArrayList<JButton>();
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
@@ -116,14 +116,18 @@ public class Main
     	//JPanel textpanel = new JPanel();
     	//textpanel.setLayout(new BorderLayout());
         
-        textpane = new JTextPane(initDocument());
+        textpane = new JTextPane(/*initDocument()*/);
         textpane.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textpane.setEnabled(false);
-        textpane.setComponentPopupMenu(textareapopup);;
+        textpane.setComponentPopupMenu(textareapopup);
            
         textarea2 = new JTextPane();
-        textarea2.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
-        textarea2.setEnabled(false);
+        textarea2.setFont(new Font(textarea2.getFont().getName(), Font.TRUETYPE_FONT, 16));
+        textarea2.setEditable(false);
+        
+        areaconsole = new JTextArea("No python output");
+        areaconsole.setFont(new Font(areaconsole.getFont().getName(), Font.TRUETYPE_FONT, 16));
+        areaconsole.setEditable(false);
         
         textpane.setEnabled(false);
         scrollpane = new JScrollPane(textpane);
@@ -131,6 +135,7 @@ public class Main
         
         tabs.add("Main.py",scrollpane);
         tabs.add("Config.xml",scrollpane2);
+        tabs.add("Console",new JScrollPane(areaconsole));
         
         frame.add(tabs);
     	
@@ -449,90 +454,95 @@ public class Main
 		return i;
 	}
 	
-	private DefaultStyledDocument initDocument()
-	{
-        final StyleContext cont = StyleContext.getDefaultStyleContext();
-        final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
-        final AttributeSet attrgreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
-        final AttributeSet attrgray = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GRAY);
-        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
-        DefaultStyledDocument doc = new DefaultStyledDocument()
-        {
-			private static final long serialVersionUID = 1L;
-
-			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
-                super.insertString(offset, str, a);
-
-                String text = getText(0, getLength());
-                int before = findLastNonWordChar(text, offset);
-                if (before < 0) before = 0;
-                int after = findFirstNonWordChar(text, offset + str.length());
-                int wordL = before;
-                int wordR = before;
-
-                while (wordR <= after) {
-                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                        if (text.substring(wordL, wordR).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)"))
-                            setCharacterAttributes(wordL, wordR - wordL, attr, false);
-                        else if (text.substring(wordL, wordR).matches("(\\W)*(#)"))
-                            setCharacterAttributes(wordL, wordR - findNonWordChar("\n",text, str.length()), attrgreen, false);
-                        else if (text.substring(wordL, wordR).matches("(\\W)*(ope|slide)"))
-                            setCharacterAttributes(wordL,wordR - wordL, attrgray, false);
-                        else
-                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
-                        wordL = wordR;
-                    }
-                    wordR++;
-                }
-            }
-
-            public void remove (int offs, int len) throws BadLocationException {
-                super.remove(offs, len);
-
-                String text = getText(0, getLength());
-                int before = findLastNonWordChar(text, offs);
-                if (before < 0) before = 0;
-                int after = findFirstNonWordChar(text, offs);
-
-                if (text.substring(before, after).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)")) {
-                    setCharacterAttributes(before, after - before, attr, false);
-                } else {
-                    setCharacterAttributes(before, after - before, attrBlack, false);
-                }
-            }
-        };
-        
-        return doc;
-	}
-	
-    private int findLastNonWordChar (String text, int index) {
-        while (--index >= 0) {
-            if (String.valueOf(text.charAt(index)).matches("\\W")) {
-                break;
-            }
-        }
-        return index;
-    }
-
-    private int findFirstNonWordChar (String text, int index) {
-        while (index < text.length()) {
-            if (String.valueOf(text.charAt(index)).matches("\\W")) {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
-    
-    private int findNonWordChar (String c,String text, int index) {
-        while (index < text.length()) {
-            if (String.valueOf(text.charAt(index)).matches(c)) {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
+//	private DefaultStyledDocument initDocument()
+//	{
+//        final StyleContext cont = StyleContext.getDefaultStyleContext();
+//        final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
+//        final AttributeSet attrgreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
+//        final AttributeSet attrgray = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GRAY);
+//        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+//        DefaultStyledDocument doc = new DefaultStyledDocument()
+//        {
+//			private static final long serialVersionUID = 1L;
+//
+//			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
+//                super.insertString(offset, str, a);
+//
+//                String text = getText(0, getLength());
+//                int before = findLastNonWordChar(text, offset);
+//                if (before < 0) before = 0;
+//                int after = findFirstNonWordChar(text, offset + str.length());
+//                int wordL = before;
+//                int wordR = before;
+//
+//                while (wordR <= after) {
+//                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
+//                        if (text.substring(wordL, wordR).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)"))
+//                            setCharacterAttributes(wordL, wordR - wordL, attr, false);
+//                        else if (text.substring(wordL, wordR).matches("(\\W)*(#)"))
+//                            setCharacterAttributes(wordL, wordR - wordL, attrgreen, false);
+////                        else if (text.substring(wordL, wordR).matches("(\\W)*(ope|slide)"))
+////                            setCharacterAttributes(wordL,wordR - wordL, attrgray, false);
+//                        else
+//                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
+//                        wordL = wordR;
+//                    }
+//                    wordR++;
+//                }
+//            }
+//
+//            public void remove (int offs, int len) throws BadLocationException {
+//                super.remove(offs, len);
+//
+//                String text = getText(0, getLength());
+//                int before = findLastNonWordChar(text, offs);
+//                if (before < 0) before = 0;
+//                int after = findFirstNonWordChar(text, offs);
+//
+//                if (text.substring(before, after).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)")) 
+//                {
+//                    setCharacterAttributes(before, after - before, attr, false);
+//                }
+//                else if (text.substring(before, after).matches("(\\W)*(#)"))
+//                    setCharacterAttributes(before, after - before, attrgreen, false);
+//                else 
+//                {
+//                    setCharacterAttributes(before, after - before, attrBlack, false);
+//                }
+//            }
+//        };
+//        
+//        return doc;
+//	}
+//	
+//    private int findLastNonWordChar (String text, int index) {
+//        while (--index >= 0) {
+//            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+//                break;
+//            }
+//        }
+//        return index;
+//    }
+//    
+//    private int findNonWordChar (String text, int index) 
+//    {
+//        while (--index >= 0) {
+//            if (String.valueOf(text.charAt(index)).matches("\n")) {
+//                break;
+//            }
+//        }
+//        return index;
+//    }
+//
+//    private int findFirstNonWordChar (String text, int index) {
+//        while (index < text.length()) {
+//            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+//                break;
+//            }
+//            index++;
+//        }
+//        return index;
+//    }
 	
 //	public static void initUn
 //			private static final long serialVersionUID = 1L;
