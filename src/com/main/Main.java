@@ -1,6 +1,7 @@
 package com.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,16 +25,25 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.undo.UndoManager;
 
 import com.input.Action;
 import com.input.TreeListener;
@@ -49,6 +60,7 @@ public class Main
     public static JMenuBar menubar;
     public static JMenu file,edit,tools,run,settings,help;
     
+    public static String interpreterpath = "",interpretertype = "";
    // static UndoManager manager = new UndoManager();
     
     public static final String TITLE = "Open Presentation Engine";
@@ -65,6 +77,12 @@ public class Main
     //run
     public static JMenuItem runandbuild,run_;
     
+    //settings
+    public static JMenu python;
+    
+    public static JRadioButtonMenuItem winpy,winsystem,linux,macos;
+    public static JRadioButtonMenuItem custom;
+    
     //help
     public static JMenuItem about,license;
     
@@ -76,12 +94,14 @@ public class Main
     
     public static JScrollPane scrollpane;
 	public static JScrollPane scrollpane2,scrollpane3;
-    public static JTextArea textarea,textarea2;
+    public static JTextPane textpane;
+    public static JTextPane textarea2;
     
     public static ArrayList<JButton> actions = new ArrayList<JButton>();
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
     
     public static JTabbedPane tabs;
+	public static Object lineNumberingTextArea;
 
     public Main()
     {
@@ -96,17 +116,17 @@ public class Main
     	//JPanel textpanel = new JPanel();
     	//textpanel.setLayout(new BorderLayout());
         
-        textarea = new JTextArea();
-        textarea.setFont(new Font(textarea.getFont().getName(), Font.TRUETYPE_FONT, 16));
-        textarea.setEnabled(false);
-        textarea.setComponentPopupMenu(textareapopup);
-        
-        textarea2 = new JTextArea();
-        textarea2.setFont(new Font(textarea.getFont().getName(), Font.TRUETYPE_FONT, 16));
+        textpane = new JTextPane(initDocument());
+        textpane.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
+        textpane.setEnabled(false);
+        textpane.setComponentPopupMenu(textareapopup);;
+           
+        textarea2 = new JTextPane();
+        textarea2.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textarea2.setEnabled(false);
         
-        textarea.setEnabled(false);
-        scrollpane = new JScrollPane(textarea);
+        textpane.setEnabled(false);
+        scrollpane = new JScrollPane(textpane);
         scrollpane2 = new JScrollPane(textarea2);
         
         tabs.add("Main.py",scrollpane);
@@ -228,6 +248,8 @@ public class Main
 			
 			new Main();
 			
+			Stream.loadinterpreterpath();
+			
 		    frame.setJMenuBar(menubar);
 		      
 			frame.setVisible(true);
@@ -315,6 +337,52 @@ public class Main
         run.add(run_);
         
         //settings
+        python = new JMenu("Set Python interpreter");
+        python.addActionListener(new Action()); 
+        
+        ButtonGroup group = new ButtonGroup();
+        
+        winpy = new JRadioButtonMenuItem("Windows - OPE build in (Python\\python.exe)");
+        winpy.setEnabled(false);
+        winpy.addActionListener(new Action());
+        group.add(winpy);
+        // Python/ folder exist
+        if (new File("Python").exists() && Stream.isWindows())
+        	winpy.setEnabled(true);
+        python.add(winpy);
+        
+        winsystem = new JRadioButtonMenuItem("Windows - System (python.exe)");
+        winsystem.setEnabled(false);
+        winsystem.addActionListener(new Action());
+        group.add(winsystem);
+        if (Stream.isWindows())
+        	winsystem.setEnabled(true);
+        python.add(winsystem);
+        
+        linux = new JRadioButtonMenuItem("Linux (python3.7)");
+        linux.setEnabled(false);
+        linux.addActionListener(new Action());
+        group.add(linux);
+        if (Stream.isLinux())
+        	linux.setEnabled(true);
+        python.add(linux);
+        
+        macos = new JRadioButtonMenuItem("MacOS (python)");
+        macos.setEnabled(false);
+        macos.addActionListener(new Action());
+        group.add(macos);
+        if (Stream.isMac())
+        	macos.setEnabled(true);
+        python.add(macos);
+        
+        python.add(new JSeparator());
+        
+        custom = new JRadioButtonMenuItem("Custom");
+        custom.addActionListener(new Action());
+        group.add(custom);
+        python.add(custom);
+        
+        settings.add(python);
         
         //pomoc 
         about = new JMenuItem("About");
@@ -344,11 +412,14 @@ public class Main
         menubar.add(help);
 	}
 	
+
+	
 	public static void UI()
 	{
 	    try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	        //UIManager.getDefaults().put("TextArea.font", UIManager.getFont("TextField.font"));
+	        
 	    } catch (ClassNotFoundException e) {
 	            e.printStackTrace();
 	    } catch (InstantiationException e) {
@@ -378,23 +449,92 @@ public class Main
 		return i;
 	}
 	
-//	public static void initUndoRedo()
-//	{
-//        textarea.getDocument().addUndoableEditListener(new UndoableEditListener() {
-//            @Override
-//            public void undoableEditHappened(UndoableEditEvent e) {
-//                manager.addEdit(e.getEdit());
-//            }
-//        });
-//        
-//        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(
-//                KeyEvent.VK_Z, Event.CTRL_MASK);
-//        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(
-//                KeyEvent.VK_Y, Event.CTRL_MASK);
-//        
-//        textarea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(undoKeyStroke, "undoKeyStroke");
-//        textarea.getActionMap().put("undoKeyStroke", new AbstractAction() 
-//        {
+	private DefaultStyledDocument initDocument()
+	{
+        final StyleContext cont = StyleContext.getDefaultStyleContext();
+        final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
+        final AttributeSet attrgreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
+        final AttributeSet attrgray = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GRAY);
+        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+        DefaultStyledDocument doc = new DefaultStyledDocument()
+        {
+			private static final long serialVersionUID = 1L;
+
+			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+
+                String text = getText(0, getLength());
+                int before = findLastNonWordChar(text, offset);
+                if (before < 0) before = 0;
+                int after = findFirstNonWordChar(text, offset + str.length());
+                int wordL = before;
+                int wordR = before;
+
+                while (wordR <= after) {
+                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
+                        if (text.substring(wordL, wordR).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)"))
+                            setCharacterAttributes(wordL, wordR - wordL, attr, false);
+                        else if (text.substring(wordL, wordR).matches("(\\W)*(#)"))
+                            setCharacterAttributes(wordL, wordR - findNonWordChar("\n",text, str.length()), attrgreen, false);
+                        else if (text.substring(wordL, wordR).matches("(\\W)*(ope|slide)"))
+                            setCharacterAttributes(wordL,wordR - wordL, attrgray, false);
+                        else
+                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
+                        wordL = wordR;
+                    }
+                    wordR++;
+                }
+            }
+
+            public void remove (int offs, int len) throws BadLocationException {
+                super.remove(offs, len);
+
+                String text = getText(0, getLength());
+                int before = findLastNonWordChar(text, offs);
+                if (before < 0) before = 0;
+                int after = findFirstNonWordChar(text, offs);
+
+                if (text.substring(before, after).matches("(\\W)*(and|as|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)")) {
+                    setCharacterAttributes(before, after - before, attr, false);
+                } else {
+                    setCharacterAttributes(before, after - before, attrBlack, false);
+                }
+            }
+        };
+        
+        return doc;
+	}
+	
+    private int findLastNonWordChar (String text, int index) {
+        while (--index >= 0) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+        }
+        return index;
+    }
+
+    private int findFirstNonWordChar (String text, int index) {
+        while (index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+    
+    private int findNonWordChar (String c,String text, int index) {
+        while (index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches(c)) {
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+	
+//	public static void initUn
 //			private static final long serialVersionUID = 1L;
 //
 //			@Override

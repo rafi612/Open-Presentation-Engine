@@ -31,7 +31,6 @@ public class SlideResource
 		else
 			path = Main.args[0];
 		
-		slides = Integer.parseInt(Stream.readXml(path, "summary", "slides"));
 		for (int i = 0;i < slides;i++)
 			Presentation.slide.add(new SlideResource(Stream.readXml(path, "slide" + (i + 1), "path")));
 		for (int i = 0;i < slides;i++)

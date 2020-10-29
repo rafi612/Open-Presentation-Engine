@@ -19,6 +19,9 @@ public class Presentation
 {
 	public static ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
 	
+	public static String generalMusic = "null";
+	public static boolean fullscreen = false;
+	
 	//info
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
@@ -40,7 +43,10 @@ public class Presentation
 	
 	public static void init()
 	{
-	    SlideResource.load();
+		if (window != null)
+			if (window.isVisible())
+				stop();
+		load();
 	    sm = new StateMeneger();
 	    
 		GLProfile.initSingleton();
@@ -54,10 +60,11 @@ public class Presentation
 	    window.addKeyListener(new Keyboard());
 	    window.addMouseListener(new Mouse());
 	    window.setDefaultCloseOperation(WindowClosingMode.DISPOSE_ON_CLOSE);
-	    if (Main.args.length < 1)
-	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml(Project.projectlocation + Stream.slash() + "config.xml", "summary", "fullscreen")));
-	    else
-	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml("config.xml", "summary", "fullscreen")));
+//	    if (Main.args.length < 1)
+//	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml(Project.projectlocation + Stream.slash() + "config.xml", "summary", "fullscreen")));
+//	    else
+//	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml("config.xml", "summary", "fullscreen")));
+	    window.setFullscreen(fullscreen);
 	    window.setVisible(true);
 		
 	    animator = new FPSAnimator(window,60);
@@ -65,6 +72,20 @@ public class Presentation
 	    
 	    //System.out.println(window.getWidth() + ","+ window.getHeight());
 		
+	}
+	
+	private static void load()
+	{
+		String path;
+		if (Main.args.length < 1)
+			path = Project.projectlocation + Stream.slash();
+		else path = "";
+		
+		SlideResource.slides = Integer.parseInt(Stream.readXml(path + "config.xml", "summary", "slides"));
+		generalMusic = Stream.readXml(path + "config.xml", "summary", "general_music");
+		fullscreen = Boolean.parseBoolean(Stream.readXml(path + "config.xml", "summary", "fullscreen"));
+		
+	    SlideResource.load();
 	}
 	
 	public static GLProfile getProfile()

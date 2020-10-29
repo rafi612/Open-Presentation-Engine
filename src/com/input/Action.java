@@ -16,7 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import com.io.Stream;
 import com.main.Main;
@@ -37,7 +40,7 @@ public class Action implements ActionListener
 		//import
 		if (source == Main.autoscripts.get(0))
 		{
-			Main.textarea.insert("import ope.slide as slide\n", Main.textarea.getCaretPosition());
+			insert("import ope.slide as slide\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//create slide
@@ -45,7 +48,7 @@ public class Action implements ActionListener
 		{
 			int slide = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "slide", JOptionPane.QUESTION_MESSAGE));
 			String file = JOptionPane.showInputDialog(Main.frame, "Enter file name", "slide", JOptionPane.QUESTION_MESSAGE);
-			Main.textarea.insert("slide.createSlide(" + slide + "," + "\"" + file + "\")\n", Main.textarea.getCaretPosition());
+			insert("slide.createSlide(" + slide + "," + "\"" + file + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//bg
@@ -53,18 +56,18 @@ public class Action implements ActionListener
 		{
 			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "background",JOptionPane.QUESTION_MESSAGE));
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter background file name:", "background", JOptionPane.QUESTION_MESSAGE);
-			Main.textarea.insert("slide.setSlideBg(" + num + ",\"" + name + "\")\n", Main.textarea.getCaretPosition());
+			insert("slide.setSlideBg(" + num + ",\"" + name + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//fullscreen
 		if (source == Main.autoscripts.get(3))
-			Main.textarea.insert("slide.setFullscreen(True)", Main.textarea.getCaretPosition());
+			insert("slide.setFullscreen(True)", Main.textpane.getCaretPosition(),Main.textpane);
 		
 		//music
 		if (source == Main.autoscripts.get(4))
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter music file name:", "music", JOptionPane.QUESTION_MESSAGE);
-			Main.textarea.insert("slide.setGeneralMusic(\"" + name + "\")\n", Main.textarea.getCaretPosition());
+			insert("slide.setGeneralMusic(\"" + name + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		if (source == Main.autoscripts.get(5))
@@ -76,7 +79,7 @@ public class Action implements ActionListener
 		//end
 		if (source == Main.autoscripts.get(Main.autoscripts.size() - 2))
 		{
-			Main.textarea.insert("\nslide.End()", Main.textarea.getCaretPosition());
+			insert("\nslide.End()", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//run
@@ -248,12 +251,12 @@ public class Action implements ActionListener
 			{
 				if (Stream.isWindows())
 				{
-					Process process = Runtime.getRuntime().exec("cmd /c start Python\\python.exe");
+					Process process = Runtime.getRuntime().exec("cmd /c start " + Main.interpreterpath);
 					process.waitFor();
 				}
 				else if (Stream.isLinux())
 				{
-					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e python3.7");
+					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e " + Main.interpreterpath);
 					process.waitFor();
 				}
 			} 
@@ -267,6 +270,52 @@ public class Action implements ActionListener
 			}
 		}
 		
+		//python 
+		if (source == Main.winpy)
+		{
+			Main.interpreterpath = "Python\\python.exe";
+			Main.interpretertype = "winpy";
+			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Main.custom.setText("Custom");
+		}
+		if (source == Main.winsystem)
+		{
+			Main.interpreterpath = "python.exe";
+			Main.interpretertype = "winsystem";
+			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Main.custom.setText("Custom");
+		}
+		if (source == Main.linux)
+		{
+			Main.interpreterpath = "python3.7";
+			Main.interpretertype = "linux";
+			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Main.custom.setText("Custom");
+		}
+		if (source == Main.macos)
+		{
+			Main.interpreterpath = "python";
+			Main.interpretertype = "macos";
+			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Main.custom.setText("Custom");
+		}
+		if (source == Main.custom)
+		{
+			String path = JOptionPane.showInputDialog(Main.frame, "Enter Python path:", "Python",JOptionPane.QUESTION_MESSAGE);
+			if (!(path == null))
+			{
+				Main.interpreterpath = path;
+				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
+				Main.interpretertype = "custom";
+				Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			}
+			else
+			{
+				Stream.selectPy();
+			}
+			
+		}
+		
 		//popup
 		//========================================================
 		if (source == Main.newfile)
@@ -278,15 +327,22 @@ public class Action implements ActionListener
 		}
 		if (source == Main.editfile)
 		{
-			try {
+			try 
+			{
 				if (Main.tree.getLastSelectedPathComponent() != null 
 						&& !new File(Main.tree.getLastSelectedPathComponent().toString()).isDirectory() 
 						&& !Main.tree.getLastSelectedPathComponent().toString().equals("Workspace                                  "))
-					Runtime.getRuntime().exec("notepad " + "\"" + Main.tree.getLastSelectedPathComponent() + "\"");
+				{
+					if (Stream.isWindows())
+						Runtime.getRuntime().exec("notepad " + "\"" + Main.tree.getLastSelectedPathComponent() + "\"");
+					else if (Stream.isLinux());
+						Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e nano" /* + "\"" */+ Main.tree.getLastSelectedPathComponent() /*+ "\""*/);
+				}
 				else
 					JOptionPane.showMessageDialog(Main.frame, "No selected file", "File", JOptionPane.ERROR_MESSAGE);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+			} 
+			catch (IOException e1) 
+			{
 				e1.printStackTrace();
 			}
 			
@@ -315,6 +371,19 @@ public class Action implements ActionListener
 			
 			Project.refreshProject();
 		}
+	}
+	
+	public void insert(String s,int p,JTextPane t) 
+	{
+		   try 
+		   {
+		      Document doc = t.getDocument();
+		      doc.insertString(p, s, null);
+		   } 
+		   catch(BadLocationException exc) 
+		   {
+		      exc.printStackTrace();
+		   }
 	}
 
 }

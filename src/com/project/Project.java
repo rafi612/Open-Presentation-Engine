@@ -9,12 +9,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -37,7 +42,7 @@ public class Project
 		projectIsLoaded = true;
 		projectlocation = location + slash() + name;
 		new File(projectlocation).mkdir();
-		Main.textarea.setEnabled(true);
+		Main.textpane.setEnabled(true);
 		Main.frame.setTitle(Main.TITLE + " - " + location + slash() + name);
 		Main.tree.setEnabled(true);
 		Main.save.setEnabled(true);
@@ -81,7 +86,7 @@ public class Project
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
 		projectlocation = name;
-		Main.textarea.setEnabled(true);
+		Main.textpane.setEnabled(true);
 		Main.frame.setTitle(Main.TITLE + " - " + name);
 		Main.tree.setEnabled(true);
 		Main.save.setEnabled(true);
@@ -118,8 +123,8 @@ public class Project
 		projectIsLoaded = false;
 		projectlocation = "";
 		Main.workspace.removeAllChildren();
-		Main.textarea.setText("");
-		Main.textarea.setEnabled(false);
+		Main.textpane.setText("");
+		Main.textpane.setEnabled(false);
 		Main.frame.setTitle(Main.TITLE);
 		Main.tree.setEnabled(false);
 		Main.save.setEnabled(false);
@@ -136,7 +141,7 @@ public class Project
 		Main.export.setEnabled(false);
 		Main.exitproject.setEnabled(false);
 		
-		Main.textarea.setText("Project is not loaded. Load project or create a new one.");
+		Main.textpane.setText("Project is not loaded. Load project or create a new one.");
 		Main.textarea2.setText("Project is not loaded. Load project or create a new one.");
 		
         for (int i = 0;i < Main.actions.size(); i++)
@@ -151,7 +156,7 @@ public class Project
 	
 	public static void loadTextFromFileToTextArea(String path)
 	{
-		loadTextFromFileToTextArea(path,Main.textarea);
+		loadTextFromFileToTextArea(path,Main.textpane);
 	}
 	
 	public static void loadTextFromFileToTextArea(String path,JTextArea t)
@@ -165,6 +170,25 @@ public class Project
 			while ((str = in.readLine()) != null) 
 			{
 				t.append(str + "\n");
+			}
+		} 
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	public static void loadTextFromFileToTextArea(String path,JTextPane t)
+	{
+		t.setText("");
+		BufferedReader in = null;
+		try 
+		{
+			in = new BufferedReader(new FileReader(path));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				append(str + "\n",t);
 			}
 		} 
 		catch (IOException e)
@@ -218,10 +242,10 @@ public class Project
 	
 	public static void SaveTextFromTextArea(String path) 
 	{
-		SaveTextFromTextArea(path,Main.textarea);
+		SaveTextFromTextArea(path,Main.textpane);
     }
 
-	public static void SaveTextFromTextArea(String path,JTextArea t) 
+	public static void SaveTextFromTextArea(String path,JTextComponent t) 
 	{
 		try 
 		{
@@ -258,34 +282,30 @@ public class Project
 			Project.SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");
 			Process process;
 			
-			//windows 
-			if (Stream.isWindows())
-			{				
-				ProcessBuilder builder = new ProcessBuilder("Python\\python.exe", Project.projectlocation + slash() + "main.py");
-				builder.directory(new File(projectlocation + slash()));
-				process = builder.start();
-				process.waitFor();
-
-				System.out.println("Python exit code: " + process.exitValue());
-			}
-			// linux,unix and other
-			// request python 3.7
-			else
-			{
-				ProcessBuilder builder = new ProcessBuilder("python3.7", Project.projectlocation + slash() + "main.py");
-				builder.directory(new File(projectlocation + slash()));
-				process = builder.start();
-				process.waitFor();
-
-				System.out.println("Python exit code:" + process.exitValue());
-			}
+			ArrayList<String> pyout = new ArrayList<String>();
+			//String pyout = "Python output:";
 			
+			ProcessBuilder builder = new ProcessBuilder(Main.interpreterpath, Project.projectlocation + slash() + "main.py");
+			builder.directory(new File(projectlocation + slash()));
+			process = builder.start();
+				
+	        BufferedReader subProcessInputReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+	        String line = null;
+	        while ((line = subProcessInputReader.readLine()) != null)
+	        	pyout.add(line);
+				
+			process.waitFor();
+
+			//System.out.println("Python exit code: " + process.exitValue());
 								
 			boolean run = true;
 //			
 			if (process.exitValue() != 0)
 			{
-				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python return exit code " + process.exitValue() + ". Do you want to run?", "Error", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+				String lines = "Python Output:\n";
+				for (int i = 0;i < pyout.size();i++)
+					lines = lines + "<html><font color=#FF0000>"+ pyout.get(i) + "</font></html>" + "\n";
+				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python return exit code " + process.exitValue() + ". Do you want to run?\n" + lines, "Error", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
 				if (yesno == 1) run = false;
 				//System.out.println("!config.exists()");
 			}
@@ -330,4 +350,14 @@ public class Project
 	{
 		return File.separator;
 	}
+	
+	public static void append(String s,JTextPane t) 
+	{
+		   try {
+		      Document doc = t.getDocument();
+		      doc.insertString(doc.getLength(), s, null);
+		   } catch(BadLocationException exc) {
+		      exc.printStackTrace();
+		   }
+		}
 }

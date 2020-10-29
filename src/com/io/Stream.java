@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -18,9 +20,22 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.jogamp.common.os.Platform.OSType;
+import com.main.Main;
 
 public class Stream 
 {
+	public static void insert(String s,int p,JTextPane t) 
+	{
+		   try 
+		   {
+			  javax.swing.text.Document doc = t.getDocument();
+		      doc.insertString(p, s, null);
+		   } 
+		   catch(BadLocationException exc) 
+		   {
+		      exc.printStackTrace();
+		   }
+	}
 	
 	public static void copyFileondrive(String input,String output)
 	{
@@ -47,6 +62,154 @@ public class Stream
         {
 			e.printStackTrace();
 		}
+	}
+
+	public static void loadinterpreterpath() 
+	{
+		if (!new File(System.getenv("APPDATA") + Stream.slash() + "ope.xml").exists())
+		{
+			createOPExml();
+		}
+		
+		if (isWindows())
+		{
+			
+			Main.interpreterpath = readXml(System.getenv("APPDATA") + Stream.slash() + "ope.xml", "settings", "pypath");
+			Main.interpretertype = readXml(System.getenv("APPDATA") + Stream.slash() + "ope.xml", "settings", "pytype");
+		}
+		else if (isLinux())
+		{
+			Main.interpreterpath = readXml(System.getProperty("user.home") + Stream.slash() + ".ope.xml", "settings", "pypath");
+			Main.interpretertype = readXml(System.getProperty("user.home") + Stream.slash() + ".ope.xml", "settings", "pytype");
+		}
+		
+		switch (Main.interpretertype)
+		{
+			case "winpy":
+				Main.winpy.setSelected(true);
+			break;
+			
+			case "winsystem":
+				Main.winsystem.setSelected(true);
+			break;
+			
+			case "linux":
+				Main.linux.setSelected(true);
+			break;
+				
+			case "macos":
+				Main.macos.setSelected(true);
+			break;
+			case "custom":
+				Main.custom.setSelected(true);
+				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
+			break;
+		}
+	}
+	
+	public static void selectPy()
+	{
+		switch (Main.interpretertype)
+		{
+			case "winpy":
+				Main.winpy.setSelected(true);
+			break;
+			
+			case "winsystem":
+				Main.winsystem.setSelected(true);
+			break;
+			
+			case "linux":
+				Main.linux.setSelected(true);
+			break;
+				
+			case "macos":
+				Main.macos.setSelected(true);
+			break;
+			case "custom":
+				Main.custom.setSelected(true);
+				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
+			break;
+		}
+	}
+	
+	public static void createOPExml()
+	{
+		String path = "",type = "";
+		
+		//windows 
+		if (isWindows())
+		{
+			//buildin
+			if (new File("Python\\python.exe").exists())
+			{
+				path = "Python\\python.exe";
+				type = "winpy";
+			}
+			//system
+			else
+			{
+				path = "python.exe";
+				type = "winsystem";
+			}
+		}
+		else if (isLinux())
+		{
+			path = "python3.7";
+			type = "linux";
+		}
+		else if (isMac())
+		{
+			path = "python";
+			type = "macos";
+		}
+		else 
+		{
+			path = "";
+			type = "custom";
+		}
+		
+		
+		if (isWindows())
+			Stream.saveFile(System.getenv("APPDATA") + Stream.slash() + "ope.xml",
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
+				"<class>\n" +
+				"<settings>\n" +
+				"<pytype>" + type + "</pytype>\n" + 
+				"<pypath>" + path + "</pypath>\n" + 
+				"</settings>\n" +
+				"</class>");
+		else if (isLinux())
+			Stream.saveFile(System.getProperty("user.home") + Stream.slash() + ".ope.xml",
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
+				"<class>\n" +
+				"<settings>\n" +
+				"<pytype>" + type + "</pytype>\n" + 
+				"<pypath>" + path + "</pypath>\n" + 
+				"</settings>\n" +
+				"</class>");
+	}
+	
+	public static void saveOPExml(String type,String path)
+	{
+		if (isWindows())
+			Stream.saveFile(System.getenv("APPDATA") + Stream.slash() + "ope.xml",
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
+				"<class>\n" +
+				"<settings>\n" +
+				"<pytype>" + type + "</pytype>\n" + 
+				"<pypath>" + path + "</pypath>\n" + 
+				"</settings>\n" +
+				"</class>");
+		else if (isLinux())
+			Stream.saveFile(System.getProperty("user.home") + Stream.slash() + ".ope.xml",
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
+				"<class>\n" +
+				"<settings>\n" +
+				"<pytype>" + type + "</pytype>\n" + 
+				"<pypath>" + path + "</pypath>\n" + 
+				"</settings>\n" +
+				"</class>");
 	}
 //	
 	public static void copyFile(String input,String output)
