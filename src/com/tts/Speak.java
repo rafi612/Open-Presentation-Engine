@@ -1,3 +1,4 @@
+/* Copyright 2019-2020 by rafi612 */
 package com.tts;
 
 import java.awt.BorderLayout;
@@ -12,8 +13,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,13 +35,12 @@ public class Speak
 	
 	public static void TTSFrame()
 	{
-		JFrame f = new JFrame("Text-to-Speech Creator");
+		JDialog f = new JDialog(Main.frame,"Text-to-Speech Creator");
 		f.setSize(640, 480);
 		f.setVisible(true);
 		f.setLocationRelativeTo(Main.frame);
 		f.setIconImage(Main.loadIcon("/images/icon.png"));
 		f.setLayout(new BorderLayout());
-    	f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
 		
 		JTextArea area = new JTextArea();

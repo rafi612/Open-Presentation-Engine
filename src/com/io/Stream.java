@@ -1,3 +1,4 @@
+/* Copyright 2019-2020 by rafi612 */
 package com.io;
 
 import java.io.BufferedWriter;

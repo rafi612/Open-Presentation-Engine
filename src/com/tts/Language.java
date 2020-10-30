@@ -1,3 +1,4 @@
+/* Copyright 2019-2020 by rafi612 */
 package com.tts;
 
 public enum Language 
@@ -6,6 +7,7 @@ public enum Language
 	POLISH("pl-PL"),
 	GERMAN("de-DE"),
 	FRENCH("fr-FR"),
+	SPANISH("es-ES"),
 	RUSSIAN("ru-RU"),
 	CHINESE("zh-CN");
 	
