@@ -1,14 +1,20 @@
+/* Copyright 2019-2020 by rafi612 */
 package com.input;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -314,6 +320,35 @@ public class Action implements ActionListener
 				Stream.selectPy();
 			}
 			
+		}
+		
+		if (source == Main.license)
+		{
+			JDialog dialog = new JDialog(Main.frame,"OPE License");
+			dialog.setSize(600,600);
+			dialog.setLayout(new BorderLayout());
+			dialog.setLocationRelativeTo(Main.frame);
+			JTextArea text = new JTextArea();
+			text.setEditable(false);
+			text.setFont(new Font(text.getFont().getName(), Font.TRUETYPE_FONT, 12));
+			try 
+			{
+				BufferedReader in = new BufferedReader(new InputStreamReader(Action.class.getResourceAsStream("/LICENSE.txt")));
+				String str;
+				while ((str = in.readLine()) != null) 
+				{
+					text.append(str + "\n");
+				}
+			} 
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
+			text.setSelectionStart(0);
+			text.setSelectionEnd(0);
+			JScrollPane s = new JScrollPane(text);
+			dialog.add(s,BorderLayout.CENTER);
+			dialog.setVisible(true);
 		}
 		
 		//popup
