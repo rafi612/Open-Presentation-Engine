@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.resource;
+package com.presentation.resource;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,7 +15,7 @@ import com.io.Stream;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import com.main.Main;
-import com.opengl.main.Presentation;
+import com.presentation.main.Presentation;
 
 public class ImageResource {
 	
