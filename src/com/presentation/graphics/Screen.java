@@ -1,12 +1,12 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.graphics;
+package com.presentation.graphics;
 
 import java.awt.Color;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.texture.Texture;
-import com.opengl.main.EventListener;
-import com.opengl.resource.ImageResource;
+import com.presentation.main.EventListener;
+import com.presentation.resource.ImageResource;
 
 public class Screen
 {
@@ -61,7 +61,7 @@ public class Screen
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, 0);
 		
 		gl.glEnd();
-		gl.glFlush();
+//		gl.glFlush();
 	}
 	
 	public static void drawColoredImage(ImageResource image,float x,float y,float width,float height,Color color)

@@ -13,11 +13,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,7 +35,6 @@ public class Speak
 	{
 		JDialog f = new JDialog(Main.frame,"Text-to-Speech Creator");
 		f.setSize(640, 480);
-		f.setVisible(true);
 		f.setLocationRelativeTo(Main.frame);
 		f.setIconImage(Main.loadIcon("/images/icon.png"));
 		f.setLayout(new BorderLayout());
@@ -61,6 +58,8 @@ public class Speak
 		f.add(plang,BorderLayout.NORTH);
 		f.add(pok,BorderLayout.SOUTH);
 		
+		f.setVisible(true);
+		
 		ok.addActionListener(new ActionListener() 
 		{
             public void actionPerformed(ActionEvent evt)
@@ -71,7 +70,6 @@ public class Speak
             	int slide = Integer.parseInt(JOptionPane.showInputDialog(Main.frame,"Enter slide number:","TTS Creator",JOptionPane.QUESTION_MESSAGE));
             	if (text.length() <= 200)
             	{
-
 					try 
 					{
 						download((Language) lang.getSelectedItem(),text,Project.projectlocation + Stream.slash() + name + ".mp3");
@@ -104,8 +102,7 @@ public class Speak
 		openConnection = new URL(createURL(lang, text)).openConnection();
 		openConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
 		InputStream in = openConnection.getInputStream();
-			
-			
+
 		try
 		{
 			FileOutputStream fileOutputStream = new FileOutputStream(savepath);

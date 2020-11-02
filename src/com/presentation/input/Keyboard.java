@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.input;
+package com.presentation.input;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;

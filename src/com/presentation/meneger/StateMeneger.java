@@ -1,9 +1,9 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.meneger;
+package com.presentation.meneger;
 
 import com.jogamp.opengl.GL2;
-import com.opengl.states.S_Slide;
-import com.opengl.states.State;
+import com.presentation.states.S_Slide;
+import com.presentation.states.State;
 
 public class StateMeneger
 {

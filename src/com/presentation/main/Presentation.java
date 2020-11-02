@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.main;
+package com.presentation.main;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,10 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
-import com.opengl.input.Keyboard;
-import com.opengl.input.Mouse;
-import com.opengl.meneger.StateMeneger;
-import com.opengl.resource.SlideResource;
+import com.presentation.input.Keyboard;
+import com.presentation.input.Mouse;
+import com.presentation.meneger.StateMeneger;
+import com.presentation.resource.SlideResource;
 import com.project.Project;
 
 public class Presentation 
@@ -39,8 +39,6 @@ public class Presentation
 	
 	//wejscie
 	//public static Keyboard keyboard = new Keyboard();
-	
-	
 	
 	public static void init()
 	{

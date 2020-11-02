@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -29,7 +30,7 @@ import javax.swing.text.Document;
 
 import com.io.Stream;
 import com.main.Main;
-import com.opengl.main.Presentation;
+import com.presentation.main.Presentation;
 import com.project.Project;
 import com.tts.Language;
 import com.tts.Speak;
@@ -76,9 +77,48 @@ public class Action implements ActionListener
 			insert("slide.setGeneralMusic(\"" + name + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
+		//tts
 		if (source == Main.autoscripts.get(5))
 		{
 			Speak.TTSFrame();
+		}
+		
+		//tts key
+		if (source == Main.autoscripts.get(6))
+		{
+			String key;
+			do
+			{
+				key = JOptionPane.showInputDialog(Main.frame, "Enter TTS key char:", "tts key", JOptionPane.QUESTION_MESSAGE);
+			} while (key.length() != 1);
+			
+			insert("slide.setTTSKey(\"" + key + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+		}
+		
+		//entrace animation
+		if (source == Main.autoscripts.get(7))
+		{
+			String[] s = {"Appearing"};
+			JComboBox<String> combo = new JComboBox<String>(s);
+			JComponent[] c = {new JLabel("Choose Animation:"),combo};
+			
+			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
+			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+			
+			insert("slide.setEntranceAnimation(" + num + ",\"" + combo.getSelectedItem().toString().toLowerCase() + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+		}
+		
+		//exit animation
+		if (source == Main.autoscripts.get(8))
+		{
+			String[] s = {"Disappearance"};
+			JComboBox<String> combo = new JComboBox<String>(s);
+			JComponent[] c = {new JLabel("Choose Animation:"),combo};
+			
+			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
+			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+			
+			insert("slide.setExitAnimation(" + num + ",\"" + combo.getSelectedItem().toString().toLowerCase() + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		

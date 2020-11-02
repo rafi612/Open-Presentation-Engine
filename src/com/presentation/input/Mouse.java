@@ -1,10 +1,10 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.input;
+package com.presentation.input;
 
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 import com.main.Main;
-import com.opengl.main.Presentation;
+import com.presentation.main.Presentation;
 
 public class Mouse implements MouseListener
 {

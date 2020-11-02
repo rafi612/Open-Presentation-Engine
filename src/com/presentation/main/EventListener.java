@@ -1,14 +1,16 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.main;
+package com.presentation.main;
 
-import com.opengl.graphics.Screen;
-import com.opengl.input.Keyboard;
+import com.io.Stream;
 import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
-import com.opengl.resource.ImageResource;
-import com.opengl.resource.SlideResource;
+import com.presentation.graphics.Screen;
+import com.presentation.input.Keyboard;
+import com.presentation.resource.ImageResource;
+import com.presentation.resource.SlideResource;
 
 public class EventListener implements GLEventListener
 {
@@ -54,6 +56,24 @@ public class EventListener implements GLEventListener
 		
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		
+		System.out.println("========================================");
+		System.out.println("Open Presentation Engine by rafi612");
+		System.out.println("========================================");
+		System.out.println("System: " + Stream.getOsName());
+		System.out.println("GL_VENDOR: " + gl.glGetString(GL.GL_VENDOR));
+		System.out.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
+		System.out.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));
+		System.out.println("========================================");
+		for (int i = 0;i < SlideResource.slides;i++)
+		{
+			System.out.println("Slide " + (i + 1) + " Image: " + Presentation.slide.get(i).imagepath);
+			System.out.println("Slide " + (i + 1) + " Bg: " + Presentation.slide.get(i).bgpath);
+			System.out.println("Slide " + (i + 1) + " TTS: " + Presentation.slide.get(i).ttspath);
+			System.out.println("Slide " + (i + 1) + " Ent_ani: " + Presentation.slide.get(i).ent_animation);
+			System.out.println("Slide " + (i + 1) + " Exit_ani: " + Presentation.slide.get(i).exit_animation);
+			System.out.println("=============================");
+		}
 		
 		//System.out.println(gl.glGetString(GL.GL_VENDOR) + "," + gl.glGetString(GL.GL_RENDERER) + "," + gl.glGetString(GL.GL_VERSION));
 		

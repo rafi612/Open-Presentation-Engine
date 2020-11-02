@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.opengl.states;
+package com.presentation.states;
 
 import com.jogamp.opengl.GL2;
 

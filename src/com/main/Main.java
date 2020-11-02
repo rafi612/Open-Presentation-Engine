@@ -18,6 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -41,7 +43,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.input.Action;
 import com.input.TreeListener;
 import com.io.Stream;
-import com.opengl.main.Presentation;
+import com.presentation.main.Presentation;
 import com.project.Project;
 import com.tree.TreeCellRenderer;
 
@@ -105,9 +107,10 @@ public class Main
 //        textareapopup.add(paste);
 //        textareapopup.add(cut);
 //        textareapopup.add(selectAll);
-    	
-    	//JPanel textpanel = new JPanel();
-    	//textpanel.setLayout(new BorderLayout());
+        
+    	//text=============================
+    	JPanel textpanel = new JPanel();
+    	textpanel.setLayout(new BorderLayout());
         
         textpane = new JTextPane();
         textpane.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
@@ -126,8 +129,47 @@ public class Main
         scrollpane = new JScrollPane(textpane);
         scrollpane2 = new JScrollPane(textarea2);
         
-        tabs.add("Main.py",scrollpane);
+        textpanel.add(scrollpane);
+        
+        //autoscripts==================================
+        JPanel autoscript = new JPanel();
+        autoscript.setLayout(new BoxLayout(autoscript, 1));
+        autoscript.setBorder(BorderFactory.createTitledBorder("Auto Scripting"));
+        autoscript.setToolTipText("Auto-Complete Python methods by clicking button");
+        
+        autoscripts.add(new JButton("Import Libs"));
+        autoscripts.add(new JButton("Create Slide"));
+        autoscripts.add(new JButton("Add Slide Background"));
+        autoscripts.add(new JButton("Add Fullscreen"));
+        autoscripts.add(new JButton("Add General Music"));
+        autoscripts.add(new JButton("Add TTS"));
+        autoscripts.add(new JButton("Set TTS Start Key"));
+        autoscripts.add(new JButton("Add Slide Entrace Animation"));
+        autoscripts.add(new JButton("Add Slide Exit Animation"));
+        autoscripts.add(new JButton("End Script"));
+        autoscripts.add(new JButton("More Auto Scripts"));
+        
+        for (int i = 0;i < autoscripts.size(); i++)
+        	autoscript.add(autoscripts.get(i));
+        
+        for (int i = 0;i < autoscripts.size(); i++)
+        	autoscripts.get(i).addActionListener(new Action());
+        
+        textpanel.add(autoscript,BorderLayout.EAST);
+        
+//        //template chooser=======================
+//        JPanel tchooser = new JPanel();
+//        JPanel importpanel = new JPanel();
+//        tchooser.setLayout(new BorderLayout());
+//        
+//        importpanel.add(new JButton("Import"));
+//        tchooser.add(importpanel,BorderLayout.SOUTH);
+//        
+//        
+//        //tabs====================================
+        tabs.add("Main.py",textpanel);
         tabs.add("Config.xml",scrollpane2);
+        //tabs.add("Template Chooser",tchooser);
         tabs.add("Console",new JScrollPane(areaconsole));
         
         frame.add(tabs);
@@ -139,11 +181,13 @@ public class Main
         treepopup.add(openfile);
         treepopup.add(newxml);
         
+        //tree=======================================
         workspace = new DefaultMutableTreeNode("Workspace                                  "); 
         tree = new JTree(workspace);
         tree.setBorder(BorderFactory.createTitledBorder("Project Explorer"));
         tree.setShowsRootHandles(true);
         tree.setComponentPopupMenu(treepopup);
+        tree.setToolTipText("Drag and Drop file to copy into project.");
         tree.setCellRenderer(new TreeCellRenderer());
         tree.addTreeSelectionListener(new TreeListener());
         tree.setEnabled(false);
@@ -183,30 +227,11 @@ public class Main
             }
         });
         
-        JPanel autoscript = new JPanel();
-        autoscript.setLayout(new BoxLayout(autoscript, 1));
-        autoscript.setBorder(BorderFactory.createTitledBorder("Auto Scripting"));
-        
-        autoscripts.add(new JButton("Import Libs"));
-        autoscripts.add(new JButton("Create Slide"));
-        autoscripts.add(new JButton("Add Slide Background"));
-        autoscripts.add(new JButton("Add fullscreen"));
-        autoscripts.add(new JButton("Add General Music"));
-        autoscripts.add(new JButton("Add TTS"));
-        autoscripts.add(new JButton("End Script"));
-        autoscripts.add(new JButton("More Auto Scripts"));
-        
-        for (int i = 0;i < autoscripts.size(); i++)
-        	autoscript.add(autoscripts.get(i));
-        
-        for (int i = 0;i < autoscripts.size(); i++)
-        	autoscripts.get(i).addActionListener(new Action());
-        
-        frame.add(autoscript,BorderLayout.EAST);
-        
         JPanel buttons = new JPanel();
         
         buttons.setBorder(BorderFactory.createTitledBorder("Actions"));
+        buttons.setToolTipText("Necessary actions");
+        
         actions.add(new JButton("Build & Run"));
         actions.add(new JButton("Save"));
         actions.add(new JButton("Stop"));
@@ -274,10 +299,12 @@ public class Main
         //plik
         newproject = new JMenuItem("New Project");
         newproject.addActionListener(new Action());
+        newproject.setIcon(new ImageIcon(loadIcon("/icons/new.png")));
         file.add(newproject);
         
         loadproject = new JMenuItem("Load Project");
         loadproject.addActionListener(new Action());
+        loadproject.setIcon(new ImageIcon(loadIcon("/icons/open.png")));
         file.add(loadproject);
         
         file.add(new JSeparator());
@@ -294,6 +321,7 @@ public class Main
         exitproject = new JMenuItem("Exit Project");
         exitproject.addActionListener(new Action());
         exitproject.setEnabled(false);
+        exitproject.setIcon(new ImageIcon(loadIcon("/icons/exit.png")));
         file.add(exitproject);
         
         file.add(new JSeparator());
