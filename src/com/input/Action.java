@@ -300,7 +300,7 @@ public class Action implements ActionListener
 					Process process = Runtime.getRuntime().exec("cmd /c start " + Main.interpreterpath);
 					process.waitFor();
 				}
-				else if (Stream.isLinux())
+				if (Stream.isLinux())
 				{
 					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e " + Main.interpreterpath);
 					process.waitFor();
@@ -410,7 +410,7 @@ public class Action implements ActionListener
 				{
 					if (Stream.isWindows())
 						Runtime.getRuntime().exec("notepad " + "\"" + Main.tree.getLastSelectedPathComponent() + "\"");
-					else if (Stream.isLinux());
+					else if (Stream.isLinux())
 						Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e nano" /* + "\"" */+ Main.tree.getLastSelectedPathComponent() /*+ "\""*/);
 				}
 				else

@@ -4,6 +4,7 @@ package com.presentation.resource;
 import com.io.Stream;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
+import com.presentation.animation.Animation;
 import com.presentation.graphics.Screen;
 import com.presentation.main.Presentation;
 import com.project.Project;
@@ -14,6 +15,7 @@ public class SlideResource
 	public String imagepath,bgpath;
 	public String ent_animation,exit_animation;
 	public ImageResource image,bgimage;
+	public Animation startanimation,exitanimation;
 	
 	public String ttspath;
 	
@@ -53,14 +55,14 @@ public class SlideResource
 		ttspath = path;
 	}
 	
-	public void setEntAnimation(String path)
+	public void setStartAnimation(String path)
 	{
-		ent_animation = path;
+		startanimation = Animation.getAnimation(path);
 	}
 	
 	public void setExitAnimation(String path)
 	{
-		exit_animation = path;
+		exitanimation = Animation.getAnimation(path);
 	}
 
 
@@ -80,7 +82,7 @@ public class SlideResource
 			Presentation.slide.get(i).setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
 			Presentation.slide.get(i).setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
 			Presentation.slide.get(i).setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
-			Presentation.slide.get(i).setEntAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
+			Presentation.slide.get(i).setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
 			Presentation.slide.get(i).setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
 		}
 	}
