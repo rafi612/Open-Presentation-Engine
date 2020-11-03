@@ -144,7 +144,7 @@ public class Main
         autoscripts.add(new JButton("Add General Music"));
         autoscripts.add(new JButton("Add TTS"));
         autoscripts.add(new JButton("Set TTS Start Key"));
-        autoscripts.add(new JButton("Add Slide Entrace Animation"));
+        autoscripts.add(new JButton("Add Slide Start Animation"));
         autoscripts.add(new JButton("Add Slide Exit Animation"));
         autoscripts.add(new JButton("End Script"));
         autoscripts.add(new JButton("More Auto Scripts"));
