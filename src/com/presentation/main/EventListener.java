@@ -25,6 +25,12 @@ public class EventListener implements GLEventListener
 		if (Keyboard.getKeyOnce(KeyEvent.VK_ESCAPE))
 			Presentation.stop();
 		
+		if (Keyboard.getKeyOnce(KeyEvent.VK_F11))
+		{
+			Presentation.fullscreen = !Presentation.fullscreen;
+			Presentation.window.setFullscreen(Presentation.fullscreen);
+		}
+		
 		Presentation.sm.update();
 		Presentation.sm.render(gl);
 		
@@ -70,8 +76,8 @@ public class EventListener implements GLEventListener
 			System.out.println("Slide " + (i + 1) + " Image: " + Presentation.slide.get(i).imagepath);
 			System.out.println("Slide " + (i + 1) + " Bg: " + Presentation.slide.get(i).bgpath);
 			System.out.println("Slide " + (i + 1) + " TTS: " + Presentation.slide.get(i).ttspath);
-			System.out.println("Slide " + (i + 1) + " Ent_ani: " + Presentation.slide.get(i).ent_animation);
-			System.out.println("Slide " + (i + 1) + " Exit_ani: " + Presentation.slide.get(i).exit_animation);
+			System.out.println("Slide " + (i + 1) + " Start animation: " + Presentation.slide.get(i).startanimation);
+			System.out.println("Slide " + (i + 1) + " Exit animation: " + Presentation.slide.get(i).exitanimation);
 			System.out.println("=============================");
 		}
 		
