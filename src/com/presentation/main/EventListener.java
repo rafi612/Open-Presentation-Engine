@@ -42,14 +42,12 @@ public class EventListener implements GLEventListener
 	{
 		for (int i = 0;i < Presentation.slide.size();i++)
 		{
-			Presentation.slide.get(0).image.getTexture().destroy(gl);
-			Presentation.slide.get(0).image.image.flush();
+			Presentation.slide.get(i).image.getTexture().destroy(gl);
+			Presentation.slide.get(i).image.image.flush();
 		}
 		
 		Presentation.slide.clear();
-		
 		Presentation.animator.stop();
-		//Presentation.window.destroy();
 	}
 
 	@Override

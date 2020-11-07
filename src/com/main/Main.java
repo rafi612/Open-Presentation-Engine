@@ -10,6 +10,8 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,16 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.audio.Sound;
 import com.input.Action;
 import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
 import com.tree.TreeCellRenderer;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 
 public class Main
@@ -284,6 +290,8 @@ public class Main
 		
 		for (int i = 0;i < args.length;i++)
 			System.out.println(args[i]);
+
+
 	}
 	
 	public static void menu()
