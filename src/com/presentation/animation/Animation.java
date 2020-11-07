@@ -1,5 +1,7 @@
 package com.presentation.animation;
 
+import com.jogamp.opengl.GL2;
+
 public class Animation 
 {
 	
@@ -8,11 +10,11 @@ public class Animation
 	public static final int APPEARING = 0;
 	//zanikanie
 	public static final int DISAPPEARANCE = 1;
+	//glitch
+	public static final int GLITCH = 2;
 	
 	protected boolean isRunning = false;
 	public int x,y;
-	int inputalpha = 255;
-	public int outputalpha = 0;
 	
 	public Animation() 
 	{
@@ -27,6 +29,11 @@ public class Animation
 	public boolean isRunning()
 	{
 		return isRunning;
+	}
+	
+	public boolean isEnding()
+	{
+		return true;
 	}
 	
 	public void start()
@@ -47,7 +54,7 @@ public class Animation
 		
 	}
 
-	public void render()
+	public void render(GL2 gl)
 	{
 		
 	}

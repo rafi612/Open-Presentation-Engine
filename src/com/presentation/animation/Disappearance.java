@@ -2,10 +2,12 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Screen;
 
 public class Disappearance extends Animation 
 {
+	public int outputalpha = 0;
 	
 	public Disappearance() {}
 	
@@ -23,8 +25,13 @@ public class Disappearance extends Animation
 		isRunning = false;
 		outputalpha = 0;
 	}
+	
+	public boolean isEnding()
+	{
+		return outputalpha >= 250;
+	}
 
-	public void render()
+	public void render(GL2 gl)
 	{
 		if (isRunning)
 		{

@@ -2,10 +2,12 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Screen;
 
 public class Appearing extends Animation 
 {
+	int inputalpha = 255;
 
 	public Appearing() {}
 	
@@ -18,13 +20,18 @@ public class Appearing extends Animation
 		else isRunning = false;
 	}
 	
+	public boolean isEnding()
+	{
+		return inputalpha <= 2;
+	}
+	
 	public void reset()
 	{
 		isRunning = false;
 		inputalpha = 255;
 	}
 
-	public void render()
+	public void render(GL2 gl)
 	{
 		if (isRunning)
 		{
