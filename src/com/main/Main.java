@@ -1,5 +1,4 @@
 /* Copyright 2019-2020 by rafi612 */
-//test
 package com.main;
 
 import java.awt.BorderLayout;
