@@ -8,9 +8,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,22 +34,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.audio.Sound;
 import com.input.Action;
+import com.input.ColoredKeywords;
 import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
 import com.tree.TreeCellRenderer;
-
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
-
 
 public class Main
 {
@@ -101,7 +96,6 @@ public class Main
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
     
     public static JTabbedPane tabs;
-	public static Object lineNumberingTextArea;
 
     public Main()
     {
@@ -117,7 +111,8 @@ public class Main
     	JPanel textpanel = new JPanel();
     	textpanel.setLayout(new BorderLayout());
         
-        textpane = new JTextPane();
+    	ColoredKeywords keywords = new ColoredKeywords();
+        textpane = new JTextPane(keywords);
         textpane.setFont(new Font(textpane.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textpane.setEnabled(false);
         textpane.setComponentPopupMenu(textareapopup);
@@ -135,7 +130,7 @@ public class Main
         scrollpane2 = new JScrollPane(textarea2);
         
         textpanel.add(scrollpane);
-        
+
         //autoscripts==================================
         JPanel autoscript = new JPanel();
         autoscript.setLayout(new BoxLayout(autoscript, 1));
@@ -279,10 +274,10 @@ public class Main
 			Stream.loadinterpreterpath();
 			
 		    frame.setJMenuBar(menubar);
-		      
-			frame.setVisible(true);
 			
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			frame.setVisible(true);
 		}
 		else 
 			Presentation.init();
@@ -307,11 +302,13 @@ public class Main
         newproject = new JMenuItem("New Project");
         newproject.addActionListener(new Action());
         newproject.setIcon(new ImageIcon(loadIcon("/icons/new.png")));
+        newproject.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
         file.add(newproject);
         
         loadproject = new JMenuItem("Load Project");
         loadproject.addActionListener(new Action());
         loadproject.setIcon(new ImageIcon(loadIcon("/icons/open.png")));
+        loadproject.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
         file.add(loadproject);
         
         file.add(new JSeparator());
@@ -319,10 +316,13 @@ public class Main
         save = new JMenuItem("Save");
         save.addActionListener(new Action());
         save.setEnabled(false);
+        save.setIcon(new ImageIcon(loadIcon("/icons/save.png")));
+        save.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
         file.add(save);
         
         export = new JMenuItem("Export");
         export.setEnabled(false);
+        export.setAccelerator(KeyStroke.getKeyStroke("ctrl E"));
         file.add(export);
         
         exitproject = new JMenuItem("Exit Project");
@@ -335,6 +335,7 @@ public class Main
         
         exit = new JMenuItem("Exit");
         exit.addActionListener(new Action());
+        exit.setAccelerator(KeyStroke.getKeyStroke("alt F4"));
         file.add(exit);
         
         //edytuj
@@ -359,12 +360,15 @@ public class Main
         refresh = new JMenuItem("Refresh Project"); 
         refresh.addActionListener(new Action());
         refresh.setEnabled(false);
+        refresh.setAccelerator(KeyStroke.getKeyStroke("F5"));
         tools.add(refresh);
         
         runandbuild = new JMenuItem("Build And Run"); 
+        runandbuild.setIcon(new ImageIcon(loadIcon("/icons/runandbuild.png")));
         //shell.addActionListener(new Action());
         tools.add(shell);
         run_ = new JMenuItem("Run"); 
+        run_.setIcon(new ImageIcon(loadIcon("/icons/run.png")));
         //refresh.addActionListener(new Action());
         run.add(runandbuild);
         run.add(run_);
@@ -420,9 +424,11 @@ public class Main
         //pomoc 
         about = new JMenuItem("About");
         about.addActionListener(new Action());
+        about.setIcon(new ImageIcon(loadIcon("/icons/about.png")));
         help.add(about);
         license = new JMenuItem("View License");
         license.addActionListener(new Action());
+        license.setIcon(new ImageIcon(loadIcon("/icons/license.png")));
         help.add(license);
         
         //popup drzewka
