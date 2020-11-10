@@ -126,7 +126,7 @@ public class Project
 		Main.workspace.removeAllChildren();
 		Main.textpane.setText("");
 		Main.textpane.setEnabled(false);
-		Main.frame.setTitle(Main.TITLE);
+		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
 		Main.tree.setEnabled(false);
 		Main.save.setEnabled(false);
 		Main.copy.setEnabled(false);
