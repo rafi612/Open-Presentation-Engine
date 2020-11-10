@@ -2,6 +2,8 @@
 package com.input;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -24,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -167,21 +173,7 @@ public class Action implements ActionListener
 		
 		//action save
 		if (source == Main.actions.get(1))
-		{
-//			int yesno = 1;
-//			if (Project.editor == 0)
-//				yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save main.py?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-//			else
-//				yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save config.xml?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-//			
-//			if (yesno == 0)
-//			{
-//				if (Project.editor == 0)
-//					Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
-//				else
-//					Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "config.xml");
-//			}
-			
+		{			
 			Project.save();
 			
 		}
@@ -250,19 +242,6 @@ public class Action implements ActionListener
 		//save
 		if (source == Main.save)
 		{
-//			int yesno = 1;
-//			if (Project.editor == 0)
-//				yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save main.py?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-//			else
-//				yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save config.xml?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-//			
-//			if (yesno == 0)
-//			{
-//				if (Project.editor == 0)
-//					Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
-//				else
-//					Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "config.xml");
-//			}
 			Project.save();
 		}
 		
@@ -361,33 +340,78 @@ public class Action implements ActionListener
 			}
 			
 		}
-		
+		//license
 		if (source == Main.license)
 		{
 			JDialog dialog = new JDialog(Main.frame,"OPE License");
 			dialog.setSize(600,600);
 			dialog.setLayout(new BorderLayout());
 			dialog.setLocationRelativeTo(Main.frame);
-			JTextArea text = new JTextArea();
-			text.setEditable(false);
+			JTextArea text = getLicense();
 			text.setFont(new Font(text.getFont().getName(), Font.TRUETYPE_FONT, 12));
-			try 
-			{
-				BufferedReader in = new BufferedReader(new InputStreamReader(Action.class.getResourceAsStream("/LICENSE.txt")));
-				String str;
-				while ((str = in.readLine()) != null) 
-				{
-					text.append(str + "\n");
-				}
-			} 
-			catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
-			text.setSelectionStart(0);
-			text.setSelectionEnd(0);
+			
 			JScrollPane s = new JScrollPane(text);
 			dialog.add(s,BorderLayout.CENTER);
+			dialog.setVisible(true);
+		}
+		
+		if (source == Main.about)
+		{
+			JDialog dialog = new JDialog(Main.frame,"About");	
+			dialog.setSize(720,520);
+			dialog.setLayout(new BorderLayout());
+			dialog.setLocationRelativeTo(Main.frame);
+			dialog.setLayout(new BorderLayout());
+			
+			//logo
+			JPanel logo = new JPanel();
+			logo.setLayout(new BorderLayout());
+			
+			JLabel l = new JLabel(new ImageIcon(Main.loadIcon("/images/iconsmall.png")));
+			
+			logo.add(new JLabel("        "),BorderLayout.WEST);
+			logo.add(l,BorderLayout.CENTER);
+			logo.add(new JLabel("        "),BorderLayout.EAST);
+			//logo.setBorder(BorderFactory.createTitledBorder(""));
+			dialog.add(logo,BorderLayout.WEST);
+			
+			//botton panel
+			JPanel bottom = new JPanel();
+			bottom.add(new JButton("Autor Github Profile"));
+			bottom.add(new JButton("Project Web Site"));
+			bottom.setBackground(Color.LIGHT_GRAY);
+			dialog.add(bottom,BorderLayout.SOUTH);
+			
+			//Main
+			JLabel title = new JLabel("Open Presentation Engine");
+			title.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 30));
+			JLabel v = new JLabel("   v.1.0");
+			v.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 20));
+			
+			JLabel author = new JLabel("     Copyright (C) 2019-2020 by rafi612");
+			author.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 16));
+			
+			JLabel text1 = new JLabel("Open Presentation Engine is free and open source software");
+			JLabel text2 = new JLabel("to making presentations and slide shows using Python. OPE can be");
+			JLabel text3 = new JLabel("distributed with Python. OPE is distributed under LGPL license.");
+			text1.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 13));
+			text2.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 13));
+			text3.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 13));
+			
+			JPanel main = new JPanel();
+			main.setLayout(new BoxLayout(main,1));
+			main.add(title);
+			main.add(v);
+			main.add(author);
+			main.add(new JLabel("            "));
+			main.add(text1);
+			main.add(text2);
+			main.add(text3);
+			main.add(new JLabel("            "));
+			//main.add(new JScrollPane(getLicense()));
+			main.add(new JLabel("            "));
+			
+			dialog.add(main);
 			dialog.setVisible(true);
 		}
 		
@@ -459,6 +483,28 @@ public class Action implements ActionListener
 		   {
 		      exc.printStackTrace();
 		   }
+	}
+	
+	private JTextArea getLicense()
+	{
+		JTextArea text = new JTextArea();
+		try 
+		{
+			BufferedReader in = new BufferedReader(new InputStreamReader(Action.class.getResourceAsStream("/LICENSE.txt")));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				text.append(str + "\n");
+			}
+		} 
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		text.setEditable(false);
+		text.setSelectionStart(0);
+		text.setSelectionEnd(0);
+		return text;
 	}
 
 }
