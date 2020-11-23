@@ -24,5 +24,7 @@
 	<classpathentry kind="lib" path="libs/natives/jogl-all-natives-linux-i586.jar"/>
 	<classpathentry kind="lib" path="libs/natives/gluegen-rt-natives-macosx-universal.jar"/>
 	<classpathentry kind="lib" path="libs/natives/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="libs/natives/gluegen-rt-natives-linux-aarch64.jar"/>
+	<classpathentry kind="lib" path="libs/natives/jogl-all-natives-linux-aarch64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
