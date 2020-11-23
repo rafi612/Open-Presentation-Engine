@@ -7,9 +7,7 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
-import com.presentation.graphics.Screen;
 import com.presentation.input.Keyboard;
-import com.presentation.resource.ImageResource;
 import com.presentation.resource.SlideResource;
 
 public class EventListener implements GLEventListener

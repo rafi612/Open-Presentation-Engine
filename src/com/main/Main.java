@@ -2,8 +2,10 @@
 package com.main;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -11,6 +13,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +41,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.input.Action;
@@ -150,10 +154,16 @@ public class Main
         autoscripts.add(new JButton("More Auto Scripts"));
         
         for (int i = 0;i < autoscripts.size(); i++)
-        	autoscript.add(autoscripts.get(i));
+        	autoscripts.get(i).addActionListener(new Action());
         
         for (int i = 0;i < autoscripts.size(); i++)
-        	autoscripts.get(i).addActionListener(new Action());
+        {
+        	autoscripts.get(i).setContentAreaFilled(false);
+        	autoscripts.get(i).setFocusPainted(true);
+        }
+        
+        for (int i = 0;i < autoscripts.size(); i++)
+        	autoscript.add(autoscripts.get(i));
         
         textpanel.add(autoscript,BorderLayout.EAST);
         
@@ -240,10 +250,10 @@ public class Main
 //        actions.add(new JButton("Open Python editor"));
         
         for (int i = 0;i < actions.size(); i++)
-        	buttons.add(actions.get(i));
+        	actions.get(i).addActionListener(new Action());
         
         for (int i = 0;i < actions.size(); i++)
-        	actions.get(i).addActionListener(new Action());
+        	buttons.add(actions.get(i));
         
         frame.add(buttons,BorderLayout.SOUTH);
         
@@ -256,26 +266,24 @@ public class Main
 		Main.args = args;
 		if (args.length < 1)
 		{
-			
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
 			frame.setIconImage(loadIcon("/images/icon.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
-			
-			UI();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			menubar = new JMenuBar();
 		       
 			menu();
 			
+		    frame.setJMenuBar(menubar);
+			
 			new Main();
 			
 			Stream.loadinterpreterpath();
 			
-		    frame.setJMenuBar(menubar);
-			
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			UI();
 			
 			frame.setVisible(true);
 		}
@@ -396,7 +404,7 @@ public class Main
         	winsystem.setEnabled(true);
         python.add(winsystem);
         
-        linux = new JRadioButtonMenuItem("Linux (python3.7)");
+        linux = new JRadioButtonMenuItem("Linux (python3)");
         linux.setEnabled(false);
         linux.addActionListener(new Action());
         group.add(linux);
@@ -471,6 +479,7 @@ public class Main
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
 	}
+	
 	
 	public static Image loadIcon(String path)
 	{

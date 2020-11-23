@@ -72,6 +72,7 @@ public class S_Slide extends State
 					Presentation.window.setTitle(Presentation.TITLE + " - Slide: " + (choose + 1));
 					switchside = -1;
 					switchslide = false;
+					ttsswitch = true;
 				}
 				if (switchside == 1)
 				{
@@ -83,6 +84,14 @@ public class S_Slide extends State
 					ttsswitch = true;
 				}
 			}
+			
+			if (Presentation.slide.get(choose).tts != null)
+				if (startanimation.isEnding() && ttsswitch)
+			{
+				Presentation.slide.get(choose).tts.playInBg();
+				ttsswitch = false;
+			}
+				
 
 			if (!startanimation.isRunning())
 			{

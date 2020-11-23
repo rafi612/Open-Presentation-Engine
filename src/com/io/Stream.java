@@ -67,7 +67,13 @@ public class Stream
 
 	public static void loadinterpreterpath() 
 	{
-		if (!new File(System.getenv("APPDATA") + Stream.slash() + "ope.xml").exists())
+		if (isWindows())
+			if (!new File(System.getenv("APPDATA") + Stream.slash() + "ope.xml").exists())
+		{
+			createOPExml();
+		}
+		if (isLinux())
+			if (!new File(System.getProperty("user.home") + Stream.slash() + ".ope.xml").exists())
 		{
 			createOPExml();
 		}
@@ -156,7 +162,7 @@ public class Stream
 		}
 		else if (isLinux())
 		{
-			path = "python3.7";
+			path = "python3";
 			type = "linux";
 		}
 		else if (isMac())
@@ -169,26 +175,7 @@ public class Stream
 			path = "";
 			type = "custom";
 		}
-		
-		
-		if (isWindows())
-			Stream.saveFile(System.getenv("APPDATA") + Stream.slash() + "ope.xml",
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
-				"<class>\n" +
-				"<settings>\n" +
-				"<pytype>" + type + "</pytype>\n" + 
-				"<pypath>" + path + "</pypath>\n" + 
-				"</settings>\n" +
-				"</class>");
-		else if (isLinux())
-			Stream.saveFile(System.getProperty("user.home") + Stream.slash() + ".ope.xml",
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
-				"<class>\n" +
-				"<settings>\n" +
-				"<pytype>" + type + "</pytype>\n" + 
-				"<pypath>" + path + "</pypath>\n" + 
-				"</settings>\n" +
-				"</class>");
+		saveOPExml(type, path);
 	}
 	
 	public static void saveOPExml(String type,String path)
