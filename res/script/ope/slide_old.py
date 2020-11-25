@@ -1,10 +1,4 @@
 #this is slide_simple lib for OPE. Created by rafi612
-from enum import Enum
-
-class Animation(Enum):
-    APPEARING = "appearing"
-    DISAPPEARANCE = "disappearance"
-    NONE = "none"
 
 projectpath = "";
 slides = 0;
@@ -51,12 +45,12 @@ def setSlideTTS(num,path):
 def setEntranceAnimation(num,path):
     global slidesentani;
     del slidesentani[num - 1]
-    slidesentani.insert(num - 1,path.value)
+    slidesentani.insert(num - 1,path)
 
 def setExitAnimation(num,path):
     global slidesexiani;
     del slidesexiani[num - 1]
-    slidesexiani.insert(num - 1,path.value)
+    slidesexiani.insert(num - 1,path)
 
 def setFullscreen(arg0):
     global fullscreen
