@@ -37,11 +37,13 @@ public class S_Slide extends State
 	
 	public void update()
 	{
-		
+		// if not 0
 		if (!(SlideResource.slides == 0))
 		{
+			//if slide not switching
 			if (!switchslide)
 			{
+				//key switching
 				if (Keyboard.getKeyOnce(KeyEvent.VK_UP))
 				{
 					exitanimation = Presentation.slide.get(choose).exitanimation;
@@ -61,6 +63,7 @@ public class S_Slide extends State
 				}
 			}
 			
+			//new slide opened
 			if (switchslide && (exitanimation.isEnding() || !exitanimation.isRunning()))
 			{
 				startanimation = Presentation.slide.get(choose).startanimation;
@@ -85,14 +88,23 @@ public class S_Slide extends State
 				}
 			}
 			
-			if (Presentation.slide.get(choose).tts != null)
-				if (startanimation.isEnding() && ttsswitch)
+			//tts auto
+			if (Presentation.TTSKeyCode == -1)
+			{
+				if (Presentation.slide.get(choose).tts != null)
+					if (startanimation.isEnding() && ttsswitch)
+				{
+					Presentation.slide.get(choose).tts.playInBg();
+					ttsswitch = false;
+				}
+			}
+			//tts key
+			else if (Keyboard.getKeyOnce(Presentation.TTSKeyCode))
 			{
 				Presentation.slide.get(choose).tts.playInBg();
-				ttsswitch = false;
 			}
-				
 
+			//animation update
 			if (!startanimation.isRunning())
 			{
 				startanimation.start();

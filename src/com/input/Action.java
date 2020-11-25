@@ -111,7 +111,7 @@ public class Action implements ActionListener
 			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
-			insert("slide.setEntranceAnimation(" + num + ",\"" + combo.getSelectedItem().toString().toLowerCase() + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+			insert("slide.setEntranceAnimation(" + num + ",slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//exit animation
@@ -124,7 +124,7 @@ public class Action implements ActionListener
 			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
-			insert("slide.setExitAnimation(" + num + ",\"" + combo.getSelectedItem().toString().toLowerCase() + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+			insert("slide.setExitAnimation(" + num + ",slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		
