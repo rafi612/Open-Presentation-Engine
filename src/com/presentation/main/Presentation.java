@@ -1,6 +1,7 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.main;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import com.io.Stream;
@@ -22,6 +23,7 @@ public class Presentation
 	
 	public static String generalMusic = "null";
 	public static boolean fullscreen = false;
+	public static int TTSKeyCode = -1;
 	
 	//info
 	public static final int WIDTH = 1280;
@@ -83,6 +85,14 @@ public class Presentation
 		SlideResource.slides = Integer.parseInt(Stream.readXml(path + "config.xml", "summary", "slides"));
 		generalMusic = Stream.readXml(path + "config.xml", "summary", "general_music");
 		fullscreen = Boolean.parseBoolean(Stream.readXml(path + "config.xml", "summary", "fullscreen"));
+		
+		String key = Stream.readXml(path + "config.xml", "summary", "ttskey");
+		if (!key.equals("auto"))
+			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
+		else TTSKeyCode = -1;
+		
+		System.out.println(TTSKeyCode);
+		
 		
 	    SlideResource.load();
 	}
