@@ -50,6 +50,7 @@ import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
+import com.slidecreator.SlideCreator;
 import com.tree.TreeCellRenderer;
 
 public class Main
@@ -182,6 +183,7 @@ public class Main
         tabs.add("Config.xml",scrollpane2);
         //tabs.add("Template Chooser",tchooser);
         tabs.add("Console",new JScrollPane(areaconsole));
+        tabs.add("Slide Creator",new SlideCreator());
         
         frame.add(tabs);
     	
