@@ -12,8 +12,10 @@ public class Screen
 {
 	public static void frect(float x,float y,float width,float height,Color color)
 	{	
-		GL2 gl = EventListener.gl;
-		
+		frect(x,y,width,height,color,EventListener.gl);
+	}
+	public static void frect(float x,float y,float width,float height,Color color,GL2 gl)
+	{		
 		gl.glDisable(GL2.GL_TEXTURE_2D);
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
@@ -32,8 +34,11 @@ public class Screen
 	
 	public static void drawImage(ImageResource image,float x,float y,float width,float height)
 	{
-		GL2 gl = EventListener.gl;
-		
+		drawImage(image,x,y,width,height,EventListener.gl);
+	}
+	
+	public static void drawImage(ImageResource image,float x,float y,float width,float height,GL2 gl)
+	{		
 		Texture tex = image.getTexture();
 		
 		if (tex != null) 
