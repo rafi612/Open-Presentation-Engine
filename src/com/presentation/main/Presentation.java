@@ -91,8 +91,6 @@ public class Presentation
 			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
 		else TTSKeyCode = -1;
 		
-		System.out.println(TTSKeyCode);
-		
 		
 	    SlideResource.load();
 	}

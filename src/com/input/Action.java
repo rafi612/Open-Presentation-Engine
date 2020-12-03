@@ -146,31 +146,6 @@ public class Action implements ActionListener
 			Presentation.stop();
 		}
 		
-//		//xml
-//		if (source == Main.actions.get(3))
-//		{
-//			if (Project.editor == 0)
-//			{
-//				Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "main.py");
-//				Main.scrollpane.setBorder(BorderFactory.createTitledBorder("XML - config.xml"));
-//				Project.editor = 1;
-//				Main.textarea.setText("");
-//				Project.loadTextFromFileToTextArea(Project.projectlocation + "\\" + "config.xml");
-//			}
-//		}
-//		//python
-//		if (source == Main.actions.get(4))
-//		{
-//			if (Project.editor == 1)
-//			{
-//				Project.SaveTextFromTextArea(Project.projectlocation + "\\" + "config.xml");
-//				Main.scrollpane.setBorder(BorderFactory.createTitledBorder("Script - main.py"));
-//				Project.editor = 0;
-//				Main.textarea.setText("");
-//				Project.loadTextFromFileToTextArea(Project.projectlocation + "\\" + "main.py");
-//			}
-//		}
-		
 		//action save
 		if (source == Main.actions.get(1))
 		{			
