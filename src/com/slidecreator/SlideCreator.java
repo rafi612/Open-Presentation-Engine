@@ -2,6 +2,8 @@ package com.slidecreator;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +12,11 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -22,6 +28,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
+import com.main.Main;
 import com.presentation.graphics.Screen;
 import com.presentation.main.EventListener;
 import com.presentation.main.Presentation;
@@ -42,12 +49,13 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     
     DefaultListModel<String> listModel;
     public JList<String> list;
+    public JPanel listpanel;
     
     JButton newelement,edit;
     
     int elements = 0;
     
-    ImageResource i;
+    ImageResource canvasimage;
 	
 	public SlideCreator() 
 	{
@@ -72,7 +80,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         add(buttons,BorderLayout.SOUTH);
         
         //list
-        JPanel listpanel = new JPanel();
+        listpanel = new JPanel();
         listpanel.setLayout(new BorderLayout());
 
         listModel = new DefaultListModel<String>();
@@ -90,6 +98,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         listpanel.add(new JScrollPane(list));
         listpanel.add(bpanel,BorderLayout.SOUTH);
         listpanel.setPreferredSize(new Dimension(200,0));
+		enableComponents(listpanel, false);
         
         add(listpanel,BorderLayout.WEST);
 	}
@@ -111,18 +120,21 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    animator.start();
 	    cpanel.add(canvas);
 	    
-	    add(cpanel,BorderLayout.CENTER);
+	    add(cpanel);
 	}
 
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
+		Presentation.profile = profile;
+		EventListener.gl = gl;
+		
 		gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 		
 		gl.glClearColor(1, 1, 1, 1);
 		
-		Screen.drawImage(i,0, 0, 1280, 720,gl);
+		Screen.drawImage(canvasimage,0, 0, 1280, 720);
 	}
 
 	@Override
@@ -137,7 +149,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		System.out.println("init");
 		gl = drawable.getGL().getGL2();
 		
-		gl.glClearColor(0, 0, 0, 1);
+		gl.glClearColor(1,1,1, 1);
 		
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
@@ -155,9 +167,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		gl.glLoadIdentity();
 		
 		gl.glOrtho(0,1280,720,0, -1, 1);
+		
 		gl.glViewport(0,0,width + 200,height + 140);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();		
+		gl.glLoadIdentity();
 	}
 	
 	Object source;
@@ -169,33 +182,53 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		if (source == newelement)
 		{
-//			System.out.println("destroy");
-//			animator.stop();
-//			canvas.repaint();
+			String[] s = {"Image","Text","Shape","Graph"};
+			JComboBox<String> combo = new JComboBox<String>(s);
+			JComponent[] c = {new JLabel("Choose Element:"),combo};
+			
+			JOptionPane.showConfirmDialog(Main.frame,c, "New Element", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+			
 			elements++;
-			listModel.addElement("Item " + elements);
+			listModel.addElement(combo.getSelectedItem().toString() + " " + elements);
 		}
+		//new slide
 		if (source == actions.get(0))
 		{
-//			System.out.println("start");
-//		    animator.start();
-//		    canvas.repaint();
 			if (canvas == null)
 				initCanvas();
-			else animator.start();
 			
-			i = new ImageResource(Project.projectlocation + Stream.slash() + "1.png",ImageResource.CREATOR);
+			canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
+			
+			enableComponents(listpanel, true);
 		}
-		if (source == actions.get(2))
-		{
-			animator.stop();
-		}
-		
 	}
-	
+    
+    public void initenable()
+    {
+		enableComponents(this, true);
+		enableComponents(listpanel, false);
+    }
+    
+    public void disable()
+    {
+		enableComponents(this, false);
+		enableComponents(listpanel, false);
+    }
+    
 	public static GLProfile getProfile()
 	{
 		return profile;
 	}
+	
+    public void enableComponents(Container container, boolean enable)
+    {
+        Component[] components = container.getComponents();
+        for (Component component : components) {
+            component.setEnabled(enable);
+            if (component instanceof Container) {
+                enableComponents((Container)component, enable);
+            }
+        }
+    }
 
 }

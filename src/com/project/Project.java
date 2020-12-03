@@ -59,6 +59,7 @@ public class Project
 		Main.refresh.setEnabled(true);
 		Main.export.setEnabled(true);
 		Main.exitproject.setEnabled(true);
+		Main.slidecreator.initenable();
 		
         for (int i = 0;i < Main.actions.size(); i++)
         	Main.actions.get(i).setEnabled(true);
@@ -103,6 +104,7 @@ public class Project
 		Main.refresh.setEnabled(true);
 		Main.export.setEnabled(true);
 		Main.exitproject.setEnabled(true);
+		Main.slidecreator.initenable();
 		
         for (int i = 0;i < Main.actions.size(); i++)
         	Main.actions.get(i).setEnabled(true);
@@ -141,6 +143,7 @@ public class Project
 		Main.refresh.setEnabled(false);
 		Main.export.setEnabled(false);
 		Main.exitproject.setEnabled(false);
+		Main.slidecreator.disable();
 		
 		Main.textpane.setText("Project is not loaded. Load project or create a new one.");
 		Main.textarea2.setText("Project is not loaded. Load project or create a new one.");

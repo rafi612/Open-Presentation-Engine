@@ -101,6 +101,8 @@ public class Main
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
     
     public static JTabbedPane tabs;
+    
+    public static SlideCreator slidecreator;
 
     public Main()
     {
@@ -169,21 +171,15 @@ public class Main
         
         textpanel.add(autoscript,BorderLayout.EAST);
         
-//        //template chooser=======================
-//        JPanel tchooser = new JPanel();
-//        JPanel importpanel = new JPanel();
-//        tchooser.setLayout(new BorderLayout());
-//        
-//        importpanel.add(new JButton("Import"));
-//        tchooser.add(importpanel,BorderLayout.SOUTH);
-//        
-//        
-//        //tabs====================================
+        //slide creator
+        slidecreator = new SlideCreator();
+
+        //tabs====================================
         tabs.add("Main.py",textpanel);
         tabs.add("Config.xml",scrollpane2);
         //tabs.add("Template Chooser",tchooser);
         tabs.add("Console",new JScrollPane(areaconsole));
-        tabs.add("Slide Creator",new SlideCreator());
+        tabs.add("Slide Creator",slidecreator);
         
         frame.add(tabs);
     	
@@ -248,7 +244,6 @@ public class Main
         actions.add(new JButton("Build & Run"));
         actions.add(new JButton("Save"));
         actions.add(new JButton("Stop"));
-        actions.add(new JButton("Open Slide Creator"));
 //        actions.add(new JButton("Open XML editor"));
 //        actions.add(new JButton("Open Python editor"));
         
