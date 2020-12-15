@@ -4,7 +4,10 @@ package com.main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Taskbar;
+import java.awt.Taskbar.State;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
@@ -49,6 +52,7 @@ import com.input.ColoredKeywords;
 import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
+import com.presentation.resource.elements.E_Image;
 import com.project.Project;
 import com.slidecreator.SlideCreator;
 import com.tree.TreeCellRenderer;
@@ -163,7 +167,7 @@ public class Main
         {
         	//autoscripts.get(i).setContentAreaFilled(true);
         	autoscripts.get(i).setBorderPainted(false);
-        	autoscripts.get(i).setFocusPainted(true);
+        	autoscripts.get(i).setFocusPainted(false);
         }
         
         for (int i = 0;i < autoscripts.size(); i++)
@@ -228,7 +232,7 @@ public class Main
                             }
                                
                 } 
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
@@ -262,6 +266,8 @@ public class Main
 	public static void main(String[] args)
 	{
 		Main.args = args;
+        //Taskbar taskbar = Taskbar.getTaskbar();
+		wm_class();
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);
@@ -290,6 +296,11 @@ public class Main
 		
 		for (int i = 0;i < args.length;i++)
 			System.out.println(args[i]);
+		
+//		
+//        taskbar.setWindowProgressState(frame, State.PAUSED);
+//        taskbar.setWindowProgressValue(frame, 50);    
+		
 
 
 	}
@@ -476,6 +487,32 @@ public class Main
 	    }
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
+	}
+	
+	public static void wm_class()
+	{
+		if (Stream.isLinux())
+		{
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			java.lang.reflect.Field awtAppClassNameField;
+			try {
+				awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Open-Presentation-Engine");
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
