@@ -11,11 +11,8 @@ import com.presentation.resource.ImageResource;
 public class Screen
 {
 	public static void frect(float x,float y,float width,float height,Color color)
-	{	
-		frect(x,y,width,height,color,EventListener.gl);
-	}
-	public static void frect(float x,float y,float width,float height,Color color,GL2 gl)
-	{		
+	{
+		GL2 gl = EventListener.gl;
 		gl.glDisable(GL2.GL_TEXTURE_2D);
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
@@ -32,13 +29,29 @@ public class Screen
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 	
-	public static void drawImage(ImageResource image,float x,float y,float width,float height)
+	public static void frectnofill(float x,float y,float width,float height,Color color)
 	{
-		drawImage(image,x,y,width,height,EventListener.gl);
+		GL2 gl = EventListener.gl;
+		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
+		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
+		
+		gl.glBegin(GL2.GL_LINE_LOOP);
+		
+		gl.glVertex2f(x, y);
+		gl.glVertex2f(x + width,y);
+		gl.glVertex2f(x + width, y + height);
+		gl.glVertex2f(x, y + height);
+			
+		gl.glEnd();
+		gl.glFlush();
+		
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 	
-	public static void drawImage(ImageResource image,float x,float y,float width,float height,GL2 gl)
-	{		
+	public static void drawImage(ImageResource image,float x,float y,float width,float height)
+	{
+		GL2 gl = EventListener.gl;
 		Texture tex = image.getTexture();
 		
 		if (tex != null) 

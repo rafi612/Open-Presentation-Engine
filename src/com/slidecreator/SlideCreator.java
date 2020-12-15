@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -19,8 +21,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import com.io.Stream;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -28,12 +30,14 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.main.Main;
 import com.presentation.graphics.Screen;
 import com.presentation.main.EventListener;
 import com.presentation.main.Presentation;
+import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
-import com.project.Project;
+import com.presentation.resource.elements.E_Image;
 
 public class SlideCreator extends JPanel implements ActionListener, GLEventListener
 {
@@ -51,15 +55,19 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JList<String> list;
     public JPanel listpanel;
     
-    JButton newelement,edit;
+    JButton newelement,edit,delete;
     
-    int elements = 0;
+    int elementsint = 0;
     
     ImageResource canvasimage;
+    
+    public ArrayList<Element> elements;
 	
 	public SlideCreator() 
 	{
 		setLayout(new BorderLayout());
+		
+		elements = new ArrayList<Element>();
 		
 		//actions
         JPanel buttons = new JPanel();
@@ -87,9 +95,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         list = new JList<String>(listModel);
         //list.setPreferredSize(new Dimension(250,0));
         
-        newelement = new JButton("New Element");
+        newelement = new JButton("New");
         newelement.addActionListener(this);
+        
         edit = new JButton("Edit");
+        edit.addActionListener(this);
         
         JPanel bpanel = new JPanel();
         bpanel.add(newelement);
@@ -101,6 +111,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		enableComponents(listpanel, false);
         
         add(listpanel,BorderLayout.WEST);
+        
+        //initCanvas();
 	}
 	
 	public void initCanvas()
@@ -120,6 +132,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    animator.start();
 	    cpanel.add(canvas);
 	    
+		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
+	    
 	    add(cpanel);
 	}
 
@@ -134,7 +148,19 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		gl.glClearColor(1, 1, 1, 1);
 		
-		Screen.drawImage(canvasimage,0, 0, 1280, 720);
+		if (elements.size() == 0)
+			Screen.drawImage(canvasimage,0, 0, 1280, 720);
+		
+//		TextRenderer textRenderer = new TextRenderer(new Font("Sans", Font.BOLD, 40));
+//		textRenderer.beginRendering(1280,720);
+//		textRenderer.setColor(Color.BLACK);
+//		textRenderer.setSmoothing(true);
+//
+//		textRenderer.draw("Hello world!!\nlololo",0,600);
+//		textRenderer.endRendering();
+		
+		for (int i = 0;i < elements.size();i++)
+			elements.get(i).render(gl);
 	}
 
 	@Override
@@ -149,7 +175,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		System.out.println("init");
 		gl = drawable.getGL().getGL2();
 		
-		gl.glClearColor(1,1,1, 1);
+		gl.glClearColor(1,1,1,1);
 		
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
@@ -168,7 +194,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		gl.glOrtho(0,1280,720,0, -1, 1);
 		
-		gl.glViewport(0,0,width + 200,height + 140);
+		//NOTE: im not understand why this displayed in left-down edge but this fixing it
+		gl.glViewport(0,0,(int)(width * 1.25),(int)(height * 1.25));
+		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
@@ -176,30 +204,45 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	Object source;
 	
 	@Override
-	public void actionPerformed(ActionEvent e) 
+	public void actionPerformed(ActionEvent e)
 	{
 		source = e.getSource();
-		
+		//new element
 		if (source == newelement)
 		{
 			String[] s = {"Image","Text","Shape","Graph"};
 			JComboBox<String> combo = new JComboBox<String>(s);
-			JComponent[] c = {new JLabel("Choose Element:"),combo};
+			JTextField textfield = new JTextField();
+			JComponent[] c = {new JLabel("Choose Element:"),combo,new JLabel("Name:"),textfield};
 			
 			JOptionPane.showConfirmDialog(Main.frame,c, "New Element", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
-			elements++;
-			listModel.addElement(combo.getSelectedItem().toString() + " " + elements);
+			elementsint++;
+			if (textfield.getText().equals(""))
+				listModel.addElement(combo.getSelectedItem().toString());
+			else
+				listModel.addElement(textfield.getText());
+			
+		    elements.add(new E_Image("",1,1,200,200));
+		    elements.get(elements.size() - 1).frame();
 		}
 		//new slide
 		if (source == actions.get(0))
 		{
+			listModel.clear();
+			elements.clear();
 			if (canvas == null)
 				initCanvas();
 			
-			canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
-			
 			enableComponents(listpanel, true);
+		}
+		//edit
+		if (source == edit)
+		{
+			if (list.getSelectedIndex() == -1)
+				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
+			else
+				elements.get(list.getSelectedIndex()).frame();
 		}
 	}
     

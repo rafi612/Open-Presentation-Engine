@@ -90,6 +90,7 @@ public class EventListener implements GLEventListener
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		
+		//gl.glOrtho(0,1280,0,720,-1, 1);
 		gl.glOrtho(0,1280,720,0,-1, 1);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
