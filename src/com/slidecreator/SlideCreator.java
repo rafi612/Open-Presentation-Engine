@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.jogamp.newt.Display;
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -55,7 +59,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JList<String> list;
     public JPanel listpanel;
     
-    JButton newelement,edit,delete;
+    JButton newelement,edit;
     
     int elementsint = 0;
     
@@ -78,6 +82,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         actions.add(new JButton("Create new slide"));
         actions.add(new JButton("Open slide"));
         actions.add(new JButton("Save slide"));
+        actions.add(new JButton("Discard slide"));
         
         for (int i = 0;i < actions.size(); i++)
         	actions.get(i).addActionListener(this);
@@ -136,6 +141,14 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    
 	    add(cpanel);
 	}
+	
+	private double getScaleFactor() 
+	{
+        double trueHorizontalLines = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+        double scaledHorizontalLines = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        double dpiScaleFactor = trueHorizontalLines / scaledHorizontalLines;
+        return dpiScaleFactor;
+    }
 
 	@Override
 	public void display(GLAutoDrawable drawable)
@@ -193,9 +206,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		gl.glLoadIdentity();
 		
 		gl.glOrtho(0,1280,720,0, -1, 1);
-		
+//		
 		//NOTE: im not understand why this displayed in left-down edge but this fixing it
-		gl.glViewport(0,0,(int)(width * 1.25),(int)(height * 1.25));
+		gl.glViewport(0,0,(int)(width * getScaleFactor()),(int)(height * getScaleFactor()));
 		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
