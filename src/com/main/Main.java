@@ -50,6 +50,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.input.Action;
 import com.input.ColoredKeywords;
+import com.input.DragAndDrop;
 import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
@@ -209,37 +210,7 @@ public class Main
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
         
-        frame.setDropTarget(new DropTarget()
-        {
-                private static final long serialVersionUID = 1L;
-                public synchronized void drop(DropTargetDropEvent evt) 
-                {
-                try 
-                {
-                    evt.acceptDrop(DnDConstants.ACTION_COPY);
-                               
-                            @SuppressWarnings("unchecked")
-							List<File> droppedFiles = (List<File>)
-                                        evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                            for (File file : droppedFiles)
-                            {
-                                // process files
-                                
-                                //System.out.println(file.getName());
-                            	
-                            	Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
-                            	
-                                Project.refreshProject();
-                            }
-                               
-                } 
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        frame.setDropTarget(new DragAndDrop());
         
         JPanel buttons = new JPanel();
         
@@ -271,6 +242,7 @@ public class Main
 		wm_class();
 		if (args.length < 1)
 		{
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
 			frame.setIconImage(loadIcon("/images/icon.png"));
