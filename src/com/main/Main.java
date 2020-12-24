@@ -209,7 +209,7 @@ public class Main
         
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
-        
+        //add drop target to frame
         frame.setDropTarget(new DragAndDrop());
         
         JPanel buttons = new JPanel();
