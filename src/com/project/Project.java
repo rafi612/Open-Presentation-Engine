@@ -280,7 +280,6 @@ public class Project
 	
 	public static void run()
 	{
-        
 		try //(PythonInterpreter pyInterp = new PythonInterpreter()) 
 		{
 			Project.SaveTextFromTextArea(Project.projectlocation + slash() + "main.py");

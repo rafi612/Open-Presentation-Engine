@@ -236,7 +236,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			else
 				listModel.addElement(textfield.getText());
 			
-		    elements.add(new E_Image("",1,1,200,200));
+		    elements.add(Element.getElementsByName(combo.getSelectedItem().toString()));
 		    elements.get(elements.size() - 1).frame();
 		}
 		//new slide
