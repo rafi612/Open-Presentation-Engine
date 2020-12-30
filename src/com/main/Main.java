@@ -2,24 +2,12 @@
 package com.main;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Taskbar;
-import java.awt.Taskbar.State;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -31,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -45,7 +32,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.input.Action;
@@ -54,7 +40,6 @@ import com.input.DragAndDrop;
 import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
-import com.presentation.resource.elements.E_Image;
 import com.project.Project;
 import com.slidecreator.SlideCreator;
 import com.tree.TreeCellRenderer;
@@ -242,7 +227,6 @@ public class Main
 		wm_class();
 		if (args.length < 1)
 		{
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
 			frame.setIconImage(loadIcon("/images/icon.png"));
