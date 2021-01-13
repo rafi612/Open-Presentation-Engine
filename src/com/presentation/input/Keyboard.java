@@ -20,13 +20,14 @@ public class Keyboard implements KeyListener
 	}
 	
 	public void keyPressed(KeyEvent arg0) 
-	{
+	{		
 		keys[arg0.getKeyCode()] = true;
 	}
 
 	
 	public void keyReleased(KeyEvent arg0) 
 	{
+		if(arg0.isAutoRepeat()) return;
 		keys[arg0.getKeyCode()] = false;
 	}
 
