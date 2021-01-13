@@ -19,44 +19,17 @@ slidestts = []
 slidesentani  = []
 slidesexiani  = []
 
+num = 0;
+
 def saveFileWriteLine(name,text):
-    f = open(name,"a+");
+    f = open(name,"a+")
     f.write(text);
     f.close()
 
 def saveFile(name,text):
-    f = open(name,"w+");
+    f = open(name,"w+")
     f.write(text);
     f.close();
-    
-def createSlide(num,path):
-    global slides;
-    slides = slides + 1;
-    slidespath.append(path)
-    slidesbg.append("null")
-    slidestts.append("null")
-    slidesentani.append("null")
-    slidesexiani.append("null")
-
-def setSlideBg(num,path):
-    global slidesbg;
-    del slidesbg[num - 1]
-    slidesbg.insert(num - 1,path)
-    
-def setSlideTTS(num,path):
-    global slidestts;
-    del slidestts[num - 1]
-    slidestts.insert(num - 1,path)
-    
-def setEntranceAnimation(num,path):
-    global slidesentani;
-    del slidesentani[num - 1]
-    slidesentani.insert(num - 1,path.value)
-
-def setExitAnimation(num,path):
-    global slidesexiani;
-    del slidesexiani[num - 1]
-    slidesexiani.insert(num - 1,path.value)
 
 def setFullscreen(arg0):
     global fullscreen
@@ -69,6 +42,45 @@ def setGeneralMusic(m):
 def setTTSKey(k):
     global ttskey
     ttskey = k
+
+def setCurrentSlide(s):
+    global num
+    num = s
+    
+def createSlide(number,path):
+    global slides
+    global num
+    num = number
+    slides = slides + 1
+    slidespath.append(path)
+    slidesbg.append("null")
+    slidestts.append("null")
+    slidesentani.append("null")
+    slidesexiani.append("null")
+
+def setSlideBg(path):
+    global slidesbg
+    global num
+    del slidesbg[num - 1]
+    slidesbg.insert(num - 1,path)
+    
+def setSlideTTS(path):
+    global slidestts
+    global num
+    del slidestts[num - 1]
+    slidestts.insert(num - 1,path)
+    
+def setEntranceAnimation(path):
+    global slidesentani
+    global num
+    del slidesentani[num - 1]
+    slidesentani.insert(num - 1,path.value)
+
+def setExitAnimation(path):
+    global slidesexiani
+    global num
+    del slidesexiani[num - 1]
+    slidesexiani.insert(num - 1,path.value)
   
 def End():
     f = open("config.xml","w+")
