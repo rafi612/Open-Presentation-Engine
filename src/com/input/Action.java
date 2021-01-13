@@ -67,9 +67,8 @@ public class Action implements ActionListener
 		//bg
 		if (source == Main.autoscripts.get(2))
 		{
-			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "background",JOptionPane.QUESTION_MESSAGE));
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter background file name:", "background", JOptionPane.QUESTION_MESSAGE);
-			insert("slide.setSlideBg(" + num + ",\"" + name + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+			insert("slide.setSlideBg(\"" + name + "\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//fullscreen
@@ -111,7 +110,7 @@ public class Action implements ActionListener
 			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
-			insert("slide.setEntranceAnimation(" + num + ",slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
+			insert("slide.setEntranceAnimation(slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		//exit animation
@@ -124,7 +123,7 @@ public class Action implements ActionListener
 			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
-			insert("slide.setExitAnimation(" + num + ",slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
+			insert("slide.setExitAnimation(slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
 		}
 		
 		

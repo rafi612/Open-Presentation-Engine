@@ -67,7 +67,7 @@ public class Speak
             	f.dispose();
             	String name = JOptionPane.showInputDialog(Main.frame,"Enter file name: .mp3","TTS Creator",JOptionPane.QUESTION_MESSAGE);
             	String text = area.getText().replace("\n", " ");
-            	int slide = Integer.parseInt(JOptionPane.showInputDialog(Main.frame,"Enter slide number:","TTS Creator",JOptionPane.QUESTION_MESSAGE));
+   
             	if (text.length() <= 200)
             	{
 					try 
@@ -85,7 +85,7 @@ public class Speak
 					{
 						e.printStackTrace();
 					}
-					Stream.insert("slide.setSlideTTS(" + slide + ",\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+					Stream.insert("slide.setSlideTTS(\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 	            	Project.refreshProject();
             	}
             	else

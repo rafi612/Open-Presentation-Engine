@@ -31,6 +31,10 @@ public class EventListener implements GLEventListener
 		
 		Presentation.sm.update();
 		Presentation.sm.render(gl);
+		if (Keyboard.getKey(KeyEvent.VK_D))
+		{
+			System.out.println("lol");
+		}
 		
 		Keyboard.update();
 	}
@@ -77,9 +81,7 @@ public class EventListener implements GLEventListener
 			System.out.println("=============================");
 		}
 		
-		//System.out.println(gl.glGetString(GL.GL_VENDOR) + "," + gl.glGetString(GL.GL_RENDERER) + "," + gl.glGetString(GL.GL_VERSION));
-		
-		
+		//System.out.println(gl.glGetString(GL.GL_VENDOR) + "," + gl.glGetString(GL.GL_RENDERER) + "," + gl.glGetString(GL.GL_VERSION));c
 	}
 
 	@Override
