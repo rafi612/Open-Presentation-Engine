@@ -31,10 +31,6 @@ public class EventListener implements GLEventListener
 		
 		Presentation.sm.update();
 		Presentation.sm.render(gl);
-		if (Keyboard.getKey(KeyEvent.VK_D))
-		{
-			System.out.println("lol");
-		}
 		
 		Keyboard.update();
 	}
