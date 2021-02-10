@@ -4,7 +4,6 @@ package com.presentation.states;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 import com.presentation.animation.Animation;
-import com.presentation.animation.None;
 import com.presentation.graphics.Screen;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;

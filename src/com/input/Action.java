@@ -3,18 +3,14 @@ package com.input;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,14 +18,12 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -38,7 +32,6 @@ import com.io.Stream;
 import com.main.Main;
 import com.presentation.main.Presentation;
 import com.project.Project;
-import com.tts.Language;
 import com.tts.Speak;
 
 public class Action implements ActionListener 
@@ -107,7 +100,6 @@ public class Action implements ActionListener
 			JComboBox<String> combo = new JComboBox<String>(s);
 			JComponent[] c = {new JLabel("Choose Animation:"),combo};
 			
-			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
 			insert("slide.setEntranceAnimation(slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);
@@ -120,7 +112,6 @@ public class Action implements ActionListener
 			JComboBox<String> combo = new JComboBox<String>(s);
 			JComponent[] c = {new JLabel("Choose Animation:"),combo};
 			
-			int num = Integer.parseInt(JOptionPane.showInputDialog(Main.frame, "Enter slide number:", "Animation",JOptionPane.QUESTION_MESSAGE));
 			JOptionPane.showConfirmDialog(Main.frame,c , "Animation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
 			insert("slide.setExitAnimation(slide.Animation." + combo.getSelectedItem().toString().toUpperCase() + ")\n", Main.textpane.getCaretPosition(),Main.textpane);

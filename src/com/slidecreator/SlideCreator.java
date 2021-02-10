@@ -1,17 +1,14 @@
 package com.slidecreator;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -25,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.jogamp.newt.Display;
-import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -34,14 +29,12 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.main.Main;
 import com.presentation.graphics.Screen;
 import com.presentation.main.EventListener;
 import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
-import com.presentation.resource.elements.E_Image;
 
 public class SlideCreator extends JPanel implements ActionListener, GLEventListener
 {
