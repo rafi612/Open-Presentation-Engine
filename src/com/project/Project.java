@@ -1,13 +1,11 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.project;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import javax.swing.tree.DefaultTreeModel;
 import com.io.Stream;
 import com.main.Main;
 import com.presentation.main.Presentation;
-import com.tts.Speak;
 
 public class Project 
 {

@@ -4,7 +4,6 @@ package com.tree;
 import java.awt.Component;
 import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;

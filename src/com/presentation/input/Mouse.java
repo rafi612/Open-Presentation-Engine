@@ -3,7 +3,6 @@ package com.presentation.input;
 
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
-import com.main.Main;
 import com.presentation.main.Presentation;
 
 public class Mouse implements MouseListener

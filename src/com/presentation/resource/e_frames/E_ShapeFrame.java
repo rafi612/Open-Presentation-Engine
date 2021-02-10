@@ -13,6 +13,8 @@ import com.presentation.resource.elements.E_Shape;
 
 public class E_ShapeFrame extends JDialog implements ChangeListener
 {
+	private static final long serialVersionUID = 1L;
+	
 	JSpinner sx;
 	JSpinner sy;
 	JSpinner sw;

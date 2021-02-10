@@ -15,7 +15,6 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import com.presentation.main.Presentation;
-import com.slidecreator.SlideCreator;
 
 public class ImageResource {
 	
