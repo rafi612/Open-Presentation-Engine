@@ -69,7 +69,7 @@ public class Main
     public static JMenuItem runandbuild,run_;
     
     //settings
-    public static JMenu python,recent;
+    public static JMenu python;
     
     public static JRadioButtonMenuItem winpy,winsystem,linux,macos;
     public static JRadioButtonMenuItem custom;
@@ -284,12 +284,6 @@ public class Main
         loadproject.setIcon(new ImageIcon(loadIcon("/icons/open.png")));
         loadproject.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
         file.add(loadproject);
-        
-        file.add(new JSeparator());
-        
-        recent = new JMenu("Recent Projects");
-        loadproject.addActionListener(new Action());
-        file.add(recent);
         
         file.add(new JSeparator());
         
