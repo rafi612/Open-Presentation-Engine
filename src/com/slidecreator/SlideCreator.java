@@ -178,7 +178,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void init(GLAutoDrawable drawable) 
 	{
-		System.out.println("init");
+		System.out.println("Canvas init");
 		gl = drawable.getGL().getGL2();
 		
 		gl.glClearColor(1,1,1,1);
@@ -192,7 +192,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
 	{
-		System.out.println("reshape");
+		System.out.println("Canvas reshape");
 		gl = drawable.getGL().getGL2();
 		
 		gl.glMatrixMode(GL2.GL_PROJECTION);
