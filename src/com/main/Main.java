@@ -253,13 +253,6 @@ public class Main
 		
 		for (int i = 0;i < args.length;i++)
 			System.out.println(args[i]);
-		
-//		
-//        taskbar.setWindowProgressState(frame, State.PAUSED);
-//        taskbar.setWindowProgressValue(frame, 50);    
-		
-
-
 	}
 	
 	public static void menu()

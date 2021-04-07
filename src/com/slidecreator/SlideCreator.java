@@ -91,7 +91,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 
         listModel = new DefaultListModel<String>();
         list = new JList<String>(listModel);
-        //list.setPreferredSize(new Dimension(250,0));
         
         newelement = new JButton("New");
         newelement.addActionListener(this);
@@ -200,7 +199,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		gl.glOrtho(0,1280,720,0, -1, 1);
 //		
-		//NOTE: im not understand why this displayed in left-down edge but this fixing it
+		//NOTE: this set viewport to canvas resolution multiply by system scale factor 
+		//not working on linux yet
 		gl.glViewport(0,0,(int)(width * getScaleFactor()),(int)(height * getScaleFactor()));
 		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
