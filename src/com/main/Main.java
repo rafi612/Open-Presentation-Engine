@@ -34,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.gui.SlideCreator;
 import com.input.Action;
 import com.input.ColoredKeywords;
 import com.input.DragAndDrop;
@@ -41,7 +42,6 @@ import com.input.TreeListener;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
-import com.slidecreator.SlideCreator;
 import com.tree.TreeCellRenderer;
 
 public class Main
