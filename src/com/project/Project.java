@@ -211,9 +211,7 @@ public class Project
         	//System.out.println(file.getName());
         	
         	if (file.isDirectory() && file.getName().equals("ope"))
-        	{
-        		//nic nie rob
-        	}
+        	{}
         	else
         	{
         		childNode = new DefaultMutableTreeNode(file);
@@ -298,8 +296,6 @@ public class Project
 	        }
 				
 			process.waitFor();
-				
-
 			//System.out.println("Python exit code: " + process.exitValue());
 								
 			boolean run = true;
@@ -355,11 +351,6 @@ public class Project
 		return null;
 	}
 	
-	//private static String slash()
-	//{
-	//	return File.separator;
-	//}
-	
 	public static void append(String s,JTextPane t) 
 	{
 		   try {
@@ -368,5 +359,5 @@ public class Project
 		   } catch(BadLocationException exc) {
 		      exc.printStackTrace();
 		   }
-		}
+	}
 }

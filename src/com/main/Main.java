@@ -223,7 +223,6 @@ public class Main
 	public static void main(String[] args)
 	{
 		Main.args = args;
-        //Taskbar taskbar = Taskbar.getTaskbar();
 		wm_class();
 		if (args.length < 1)
 		{
