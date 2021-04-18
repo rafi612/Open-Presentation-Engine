@@ -331,10 +331,13 @@ public class Main
         
         runandbuild = new JMenuItem("Build And Run"); 
         runandbuild.setIcon(new ImageIcon(loadIcon("/icons/runandbuild.png")));
+        runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
+        runandbuild.addActionListener(new Action());
         //shell.addActionListener(new Action());
         tools.add(shell);
         run_ = new JMenuItem("Run"); 
         run_.setIcon(new ImageIcon(loadIcon("/icons/run.png")));
+        run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));
         //refresh.addActionListener(new Action());
         run.add(runandbuild);
         run.add(run_);
