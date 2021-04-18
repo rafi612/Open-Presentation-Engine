@@ -125,7 +125,7 @@ public class Action implements ActionListener
 		}
 		
 		//run
-		if (source == Main.actions.get(0))
+		if (source == Main.actions.get(0) || source == Main.runandbuild)
 		{
 			Project.run();
 		}
