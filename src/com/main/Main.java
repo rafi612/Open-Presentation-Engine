@@ -39,6 +39,7 @@ import com.input.Action;
 import com.input.ColoredKeywords;
 import com.input.DragAndDrop;
 import com.input.TreeListener;
+import com.input.Window;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
@@ -231,6 +232,7 @@ public class Main
 			frame.setIconImage(loadIcon("/images/icon.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
+			frame.addWindowListener(new Window());
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			menubar = new JMenuBar();
