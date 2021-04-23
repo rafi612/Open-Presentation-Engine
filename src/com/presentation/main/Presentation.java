@@ -82,11 +82,13 @@ public class Presentation
 			path = Project.projectlocation + Stream.slash();
 		else path = "";
 		
-		SlideResource.slides = Integer.parseInt(Stream.readXml(path + "config.xml", "summary", "slides"));
-		generalMusic = Stream.readXml(path + "config.xml", "summary", "general_music");
-		fullscreen = Boolean.parseBoolean(Stream.readXml(path + "config.xml", "summary", "fullscreen"));
+		String config = path + "config.xml";
 		
-		String key = Stream.readXml(path + "config.xml", "summary", "ttskey");
+		SlideResource.slides = Integer.parseInt(Stream.readXml(config, "summary", "slides"));
+		generalMusic = Stream.readXml(config, "summary", "general_music");
+		fullscreen = Boolean.parseBoolean(Stream.readXml(config, "summary", "fullscreen"));
+		
+		String key = Stream.readXml(config, "summary", "ttskey");
 		if (!key.equals("auto"))
 			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
 		else TTSKeyCode = -1;
