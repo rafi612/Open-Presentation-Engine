@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import com.io.Config;
 import com.io.Stream;
 import com.main.Main;
 import com.presentation.main.Presentation;
@@ -265,28 +266,28 @@ public class Action implements ActionListener
 		{
 			Main.interpreterpath = "Python\\python.exe";
 			Main.interpretertype = "winpy";
-			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
 			Main.custom.setText("Custom");
 		}
 		if (source == Main.winsystem)
 		{
 			Main.interpreterpath = "python.exe";
 			Main.interpretertype = "winsystem";
-			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
 			Main.custom.setText("Custom");
 		}
 		if (source == Main.linux)
 		{
 			Main.interpreterpath = "python3.7";
 			Main.interpretertype = "linux";
-			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
 			Main.custom.setText("Custom");
 		}
 		if (source == Main.macos)
 		{
 			Main.interpreterpath = "python";
 			Main.interpretertype = "macos";
-			Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
 			Main.custom.setText("Custom");
 		}
 		if (source == Main.custom)
@@ -297,11 +298,11 @@ public class Action implements ActionListener
 				Main.interpreterpath = path;
 				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
 				Main.interpretertype = "custom";
-				Stream.saveOPExml(Main.interpretertype, Main.interpreterpath);
+				Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
 			}
 			else
 			{
-				Stream.selectPy();
+				Config.selectPy();
 			}
 			
 		}
