@@ -40,6 +40,7 @@ import com.input.ColoredKeywords;
 import com.input.DragAndDrop;
 import com.input.TreeListener;
 import com.input.Window;
+import com.io.Config;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
@@ -243,7 +244,7 @@ public class Main
 			
 			new Main();
 			
-			Stream.loadinterpreterpath();
+			Config.loadinterpreterpath();
 			
 			UI();
 			
