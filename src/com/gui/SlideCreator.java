@@ -5,9 +5,15 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -36,7 +42,7 @@ import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 
-public class SlideCreator extends JPanel implements ActionListener, GLEventListener
+public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -55,6 +61,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     JButton newelement,edit;
     
     int elementsint = 0;
+    int cwidth,cheight,x,y;
+    double zoom = 1;
     
     ImageResource canvasimage;
     
@@ -125,6 +133,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    cpanel.setLayout(new BorderLayout());
 	    canvas = new GLCanvas(cabs);
 	    canvas.addGLEventListener(this);
+	    canvas.addMouseWheelListener(this);
+	    canvas.addMouseMotionListener(this);
+	    canvas.addMouseListener(this);
 	    animator = new FPSAnimator(canvas,60);
 	    animator.start();
 	    cpanel.add(canvas);
@@ -148,10 +159,12 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		Presentation.profile = profile;
 		EventListener.gl = gl;
 		
+		gl.glViewport(x,y,(int)(cwidth * zoom),(int)(cheight * zoom));
+		
 		gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 		
-		gl.glClearColor(1, 1, 1, 1);
+		gl.glClearColor(0,0,0, 1);
 		
 		if (elements.size() == 0)
 			Screen.drawImage(canvasimage,0, 0, 1280, 720);
@@ -197,11 +210,14 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		
-		gl.glOrtho(0,1280,720,0, -1, 1);
+		cwidth = width;
+		cheight = height;
 //		
 		//NOTE: this set viewport to canvas resolution multiply by system scale factor 
 		//not working on linux yet
-		gl.glViewport(0,0,(int)(width * getScaleFactor()),(int)(height * getScaleFactor()));
+		gl.glViewport(this.x,this.y,(int)(width * zoom),(int)(height * zoom));
+		
+		gl.glOrtho(0,1280,720,0,1,-1);
 		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -279,5 +295,69 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
             }
         }
     }
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) 
+	{
+		if (e.getWheelRotation() == 1) zoom += 0.05;
+		else zoom -= 0.05;
+	}
+	
+	Point initialClick;
+
+	@Override
+	public void mouseDragged(MouseEvent e) 
+	{
+        int thisX = x;
+        int thisY = y;
+
+        // Determine how much the mouse moved since the initial click
+        int xMoved = (thisX + e.getX()) - (thisX + initialClick.x);
+        int yMoved = (thisY + -e.getY()) - (thisY + -initialClick.y);
+
+        // Move picture to this position
+        x = thisX + xMoved;
+        y = thisY + yMoved;
+        
+		initialClick = e.getPoint();
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		initialClick = e.getPoint();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
