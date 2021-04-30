@@ -5,9 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -246,8 +244,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//new element
 		if (source == newelement)
 		{
-			String[] s = {"Image","Text","Shape","Graph"};
-			JComboBox<String> combo = new JComboBox<String>(s);
+			JComboBox<String> combo = new JComboBox<String>(Element.types);
 			JTextField textfield = new JTextField();
 			JComponent[] c = {new JLabel("Choose Element:"),combo,new JLabel("Name:"),textfield};
 			
