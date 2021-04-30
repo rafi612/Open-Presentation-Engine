@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -61,13 +62,15 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     JButton newelement,edit;
     
     int elementsint = 0;
-    int xPixel,yPixel;
+    public int xPixel,yPixel;
     
     JLabel position;
     
     ImageResource canvasimage;
     
-    boolean slideloaded = false;
+    public boolean slideloaded = false;
+    public boolean elementopen = false;
+    public boolean dragged = false;
     
     public ArrayList<Element> elements;
 	
@@ -183,6 +186,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		for (int i = 0;i < elements.size();i++)
 			elements.get(i).render(gl);
+		
+		for (int i = 0;i < elements.size();i++)
+			elements.get(i).update(this);
 	}
 
 	@Override
@@ -311,6 +317,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mouseDragged(MouseEvent e) 
 	{
+		dragged = true;
 		int X = e.getX();
 		int Y = e.getY();
 		xPixel = (int)((float)X*((1280) / ((float)canvas.getWidth())));
@@ -339,13 +346,13 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-
+		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent e) 
+	{
+		dragged = false;
 	}
 
 	@Override

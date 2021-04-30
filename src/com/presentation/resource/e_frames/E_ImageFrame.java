@@ -2,6 +2,8 @@ package com.presentation.resource.e_frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -24,11 +26,11 @@ import com.presentation.resource.ImageResource;
 import com.presentation.resource.elements.E_Image;
 import com.project.Project;
 
-public class E_ImageFrame extends JDialog implements ChangeListener,ActionListener
+public class E_ImageFrame extends JDialog implements ChangeListener,ActionListener,WindowListener
 {
 	private static final long serialVersionUID = 1L;
-	JSpinner sx;
-	JSpinner sy;
+	public JSpinner sx;
+	public JSpinner sy;
 	JSpinner sw;
 	JSpinner sh;
 	JButton select;
@@ -43,16 +45,16 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		setSize(300,200);
 		setLocationRelativeTo(Main.frame);
 		setIconImage(Main.loadIcon("/images/icon.png"));
-		setVisible(true);
 		setResizable(false);
 		setAlwaysOnTop(true);
+		addWindowListener(this);
 		setLayout(null);
 		
-		SpinnerModel modelx = new SpinnerNumberModel(element.x,0,1280,1);       
+		SpinnerModel modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sx = new JSpinner(modelx);
 		sx.addChangeListener(this);
 		
-		SpinnerModel modely = new SpinnerNumberModel(element.y,0,720,1);       
+		SpinnerModel modely = new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sy = new JSpinner(modely);
 		sy.addChangeListener(this);
 		
@@ -138,6 +140,48 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 				textfieldpath.setText(element.path);
 			}
 		}
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e)
+	{
+		element.editing = false;
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
