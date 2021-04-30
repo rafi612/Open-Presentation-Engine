@@ -1,5 +1,6 @@
 package com.presentation.resource;
 
+import com.gui.SlideCreator;
 import com.jogamp.opengl.GL2;
 import com.presentation.resource.elements.E_Image;
 import com.presentation.resource.elements.E_Shape;
@@ -7,13 +8,19 @@ import com.presentation.resource.elements.E_Shape;
 public class Element 
 {
 	public static final String[] types = {"Image","Text","Shape","Graph"};
+	boolean editing;
+	
+	public int x;
+	public int y;
+	public int w;
+	public int h;
 
 	public Element() 
 	{
 		
 	}
 	
-	public void update()
+	public void update(SlideCreator sc)
 	{
 		
 	}

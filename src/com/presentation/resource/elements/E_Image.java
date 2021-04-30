@@ -1,7 +1,9 @@
 package com.presentation.resource.elements;
 
 import java.awt.Color;
+import java.awt.Point;
 
+import com.gui.SlideCreator;
 import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Screen;
 import com.presentation.resource.Element;
@@ -19,6 +21,11 @@ public class E_Image extends Element
 	
 	public ImageResource image;
 	
+	public boolean editing,moving,colided,dragged;
+	E_ImageFrame frame;
+	
+    public Point clickpoint = new Point(0,0);
+	
 	public E_Image()
 	{
 		frame();
@@ -35,19 +42,64 @@ public class E_Image extends Element
 		
 		if (!path.equals(""))
 			this.image = new ImageResource(path);
+		
+		frame = new E_ImageFrame(this);
+	}
+	
+	public void update(SlideCreator sc)
+	{
+		dragged = sc.dragged;
+		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel)
+			colided = true;
+		else
+			colided = false;
+		if (sc.dragged)
+		{
+			//checking AABB colision on click
+			if (colided)
+			{
+				colided = true;
+				if (!moving)
+				{
+					moving = true;
+					clickpoint.setLocation(sc.xPixel, sc.yPixel);
+				}
+			}
+			//executing on moving
+			if (moving)
+			{
+		        int xMoved = (x + sc.xPixel) - (x + clickpoint.x);
+		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
+		        x += xMoved;
+		        y += yMoved;
+			}
+	        
+	        clickpoint = new Point(sc.xPixel,sc.yPixel);
+		}
+		
+		// reseting "moving" after release mouse
+		if (!sc.dragged) moving = false;
+
 	}
 	
 	public void render(GL2 gl)
 	{
 		if (path.equals(""))
-			Screen.frectnofill(x,y,w,h,Color.RED);
+			Screen.frectnofill(x,y,w,h,Color.BLACK);
 		else
 			Screen.drawImage(image,x,y,w,h);
+		
+		if (colided)
+			Screen.frectnofill(x,y,w,h,Color.BLUE);
+		
+		if (dragged && colided)
+			Screen.frectnofill(x,y,w,h,Color.RED);
 	}
 	
 	
 	public void frame()
 	{
-		new E_ImageFrame(this);
+		editing = true;
+		frame.setVisible(true);
 	}
 }
