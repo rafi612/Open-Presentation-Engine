@@ -193,11 +193,12 @@ public class Main
         tree.setCellRenderer(new TreeCellRenderer());
         tree.addTreeSelectionListener(new TreeListener());
         tree.setEnabled(false);
+        tree.setDragEnabled(true);
+        //add drop target to tree
+        tree.setDropTarget(new DragAndDrop());
         
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
-        //add drop target to frame
-        frame.setDropTarget(new DragAndDrop());
         
         JPanel buttons = new JPanel();
         
