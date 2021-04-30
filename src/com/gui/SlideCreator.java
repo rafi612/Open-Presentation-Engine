@@ -261,14 +261,33 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//new slide
 		if (source == actions.get(0))
 		{
-			listModel.clear();
-			elements.clear();
-			if (canvas == null)
-				initCanvas();
+			int choose = 0;
+			if (slideloaded)
+				 choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			if (choose == 0)
+			{
+				listModel.clear();
+				elements.clear();
+				if (canvas == null)
+					initCanvas();
 			
-			enableComponents(listpanel, true);
-			
-			slideloaded = true;
+				enableComponents(listpanel, true);
+				
+				slideloaded = true;
+			}
+		}
+		//discard slide
+		if (source == actions.get(3))
+		{
+			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			// "yes" option
+			if (choose == 0)
+			{
+				listModel.clear();
+				elements.clear();
+				initenable();
+				slideloaded = false;
+			}
 		}
 		//edit
 		if (source == edit)

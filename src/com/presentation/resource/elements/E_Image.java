@@ -48,14 +48,17 @@ public class E_Image extends Element
 	
 	public void update(SlideCreator sc)
 	{
+		//grobal dragged value
 		dragged = sc.dragged;
+		//checking AABB colision on click
 		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel)
 			colided = true;
 		else
 			colided = false;
+		//executing on dragging
 		if (sc.dragged)
 		{
-			//checking AABB colision on click
+			//if colided
 			if (colided)
 			{
 				colided = true;
