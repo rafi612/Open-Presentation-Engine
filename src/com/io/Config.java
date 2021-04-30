@@ -119,7 +119,7 @@ public class Config
 	{
 		String configpath = "";
 		if (Stream.isWindows()) configpath = configwindows;
-		else if (Stream.isLinux()) configpath = configwindows;
+		else if (Stream.isLinux()) configpath = configlinux;
 		
 		Stream.saveFile(configpath,
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
