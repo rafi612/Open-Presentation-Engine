@@ -6,6 +6,7 @@ import com.presentation.resource.elements.E_Shape;
 
 public class Element 
 {
+	public static final String[] types = {"Image","Text","Shape","Graph"};
 
 	public Element() 
 	{
