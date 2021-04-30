@@ -7,7 +7,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,12 +26,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -67,6 +61,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     JButton newelement,edit;
     
     int elementsint = 0;
+    int xPixel,yPixel;
+    
+    JLabel position;
     
     ImageResource canvasimage;
     
@@ -123,6 +120,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         
         add(listpanel,BorderLayout.WEST);
         
+        position = new JLabel("X: " + xPixel + " Y:" + yPixel);
+        
         initCanvas();
 	}
 	
@@ -144,6 +143,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    canvas.addMouseListener(this);
 	    animator = new FPSAnimator(canvas,60);
 	    animator.start();
+	    
+	    JPanel ppanel = new JPanel();
+	    ppanel.add(position);
+	    cpanel.add(ppanel,BorderLayout.SOUTH);
+	    
 	    cpanel.add(canvas);
 	    
 		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
@@ -307,14 +311,23 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mouseDragged(MouseEvent e) 
 	{
-
-
+		int X = e.getX();
+		int Y = e.getY();
+		xPixel = (int)((float)X*((1280) / ((float)canvas.getWidth())));
+		yPixel = (int)((float)Y*((720) / ((float)canvas.getHeight())));
+		
+		position.setText("X: " + xPixel + " Y:" + yPixel);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-
+		int X = e.getX();
+		int Y = e.getY();
+		xPixel = (int)((float)X*((1280) / ((float)canvas.getWidth())));
+		yPixel = (int)((float)Y*((720) / ((float)canvas.getHeight())));
+		
+		position.setText("X: " + xPixel + " Y:" + yPixel);
 	}
 
 	@Override
