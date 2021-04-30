@@ -45,6 +45,7 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		setIconImage(Main.loadIcon("/images/icon.png"));
 		setVisible(true);
 		setResizable(false);
+		setAlwaysOnTop(true);
 		setLayout(null);
 		
 		SpinnerModel modelx = new SpinnerNumberModel(element.x,0,1280,1);       

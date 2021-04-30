@@ -1,6 +1,7 @@
 package com.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -26,7 +27,12 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -42,7 +48,7 @@ import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 
-public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener
+public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener,ChangeListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -59,12 +65,16 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JPanel listpanel;
     
     JButton newelement,edit;
+    JLabel zoomlabel;
+    JSpinner zoomspinner;
     
     int elementsint = 0;
     int cwidth,cheight,x,y;
     double zoom = 1;
     
     ImageResource canvasimage;
+    
+    boolean slideloaded = false;
     
     public ArrayList<Element> elements;
 	
@@ -117,7 +127,12 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         
         add(listpanel,BorderLayout.WEST);
         
-        //initCanvas();
+        zoomlabel = new JLabel("X: " + x + " Y:" + y + " Zoom:");
+		SpinnerModel modelx = new SpinnerNumberModel(zoom,-Integer.MAX_VALUE,Integer.MAX_VALUE,0.05);       
+		zoomspinner = new JSpinner(modelx);
+		zoomspinner.addChangeListener(this);
+        
+        initCanvas();
 	}
 	
 	public void initCanvas()
@@ -140,18 +155,15 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    animator.start();
 	    cpanel.add(canvas);
 	    
+	    JPanel zoompanel = new JPanel();
+	    zoompanel.add(zoomlabel);
+	    zoompanel.add(zoomspinner);
+	    cpanel.add(zoompanel,BorderLayout.SOUTH);
+	    
 		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 	    
 	    add(cpanel);
 	}
-	
-	private double getScaleFactor() 
-	{
-        double trueHorizontalLines = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
-        double scaledHorizontalLines = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        double dpiScaleFactor = trueHorizontalLines / scaledHorizontalLines;
-        return dpiScaleFactor;
-    }
 
 	@Override
 	public void display(GLAutoDrawable drawable)
@@ -165,9 +177,13 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 		
 		gl.glClearColor(0,0,0, 1);
+		if (slideloaded)
+		{
+			Screen.frect(0, 0, 1280, 720, new Color(0xFFFFFF));
 		
-		if (elements.size() == 0)
-			Screen.drawImage(canvasimage,0, 0, 1280, 720);
+			if (elements.size() == 0)
+				Screen.drawImage(canvasimage,0, 0, 1280, 720);
+		}
 		
 //		TextRenderer textRenderer = new TextRenderer(new Font("Sans", Font.BOLD, 40));
 //		textRenderer.beginRendering(1280,720);
@@ -193,7 +209,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		System.out.println("Canvas init");
 		gl = drawable.getGL().getGL2();
 		
-		gl.glClearColor(1,1,1,1);
+		gl.glClearColor(0,0,0,1);
 		
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
@@ -212,9 +228,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		cwidth = width;
 		cheight = height;
-//		
-		//NOTE: this set viewport to canvas resolution multiply by system scale factor 
-		//not working on linux yet
+
 		gl.glViewport(this.x,this.y,(int)(width * zoom),(int)(height * zoom));
 		
 		gl.glOrtho(0,1280,720,0,1,-1);
@@ -257,6 +271,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 				initCanvas();
 			
 			enableComponents(listpanel, true);
+			
+			slideloaded = true;
 		}
 		//edit
 		if (source == edit)
@@ -299,8 +315,12 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) 
 	{
-		if (e.getWheelRotation() == 1) zoom += 0.05;
-		else zoom -= 0.05;
+		if (!slideloaded) return;
+		
+		if (e.getWheelRotation() == 1) zoom -= 0.05;
+		else zoom += 0.05;
+		
+		zoomspinner.setValue(zoom);
 	}
 	
 	Point initialClick;
@@ -308,6 +328,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mouseDragged(MouseEvent e) 
 	{
+		if (!slideloaded) return;
+		
         int thisX = x;
         int thisY = y;
 
@@ -320,6 +342,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         y = thisY + yMoved;
         
 		initialClick = e.getPoint();
+		
+		zoomlabel.setText("X: " + x + " Y:" + y + " Zoom:");
 
 	}
 
@@ -357,6 +381,12 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e)
+	{
+		zoom = (double)zoomspinner.getValue();
 	}
 
 
