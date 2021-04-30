@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +48,7 @@ import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 
-public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener,ChangeListener
+public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -63,12 +65,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JPanel listpanel;
     
     JButton newelement,edit;
-    JLabel zoomlabel;
-    JSpinner zoomspinner;
     
     int elementsint = 0;
-    int cwidth,cheight,x,y;
-    double zoom = 1;
     
     ImageResource canvasimage;
     
@@ -125,11 +123,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         
         add(listpanel,BorderLayout.WEST);
         
-        zoomlabel = new JLabel("X: " + x + " Y:" + y + " Zoom:");
-		SpinnerModel modelx = new SpinnerNumberModel(zoom,-Integer.MAX_VALUE,Integer.MAX_VALUE,0.05);       
-		zoomspinner = new JSpinner(modelx);
-		zoomspinner.addChangeListener(this);
-        
         initCanvas();
 	}
 	
@@ -153,11 +146,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    animator.start();
 	    cpanel.add(canvas);
 	    
-	    JPanel zoompanel = new JPanel();
-	    zoompanel.add(zoomlabel);
-	    zoompanel.add(zoomspinner);
-	    cpanel.add(zoompanel,BorderLayout.SOUTH);
-	    
 		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 	    
 	    add(cpanel);
@@ -168,13 +156,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	{
 		Presentation.profile = profile;
 		EventListener.gl = gl;
-		
-		gl.glViewport(x,y,(int)(cwidth * zoom),(int)(cheight * zoom));
-		
+
 		gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 		
-		gl.glClearColor(0,0,0, 1);
+		gl.glClearColor(1,1,1,1);
 		if (slideloaded)
 		{
 			Screen.frect(0, 0, 1280, 720, new Color(0xFFFFFF));
@@ -207,7 +193,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		System.out.println("Canvas init");
 		gl = drawable.getGL().getGL2();
 		
-		gl.glClearColor(0,0,0,1);
+		gl.glClearColor(1,1,1,1);
 		
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
@@ -223,11 +209,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-		
-		cwidth = width;
-		cheight = height;
 
-		gl.glViewport(this.x,this.y,(int)(width * zoom),(int)(height * zoom));
+		gl.glViewport(0,0,(int)(width * getScale()),(int)(height * getScale()));
 		
 		gl.glOrtho(0,1280,720,0,1,-1);
 		
@@ -236,6 +219,12 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	}
 	
 	Object source;
+	
+	public static double getScale()
+	{
+		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	    return device.getDisplayMode().getWidth() / (double) device.getDefaultConfiguration().getBounds().width;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -312,43 +301,20 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) 
 	{
-		if (!slideloaded) return;
-		
-		if (e.getWheelRotation() == 1) zoom -= 0.05;
-		else zoom += 0.05;
-		
-		zoomspinner.setValue(zoom);
+
 	}
-	
-	Point initialClick;
 
 	@Override
 	public void mouseDragged(MouseEvent e) 
 	{
-		if (!slideloaded) return;
-		
-        int thisX = x;
-        int thisY = y;
 
-        // Determine how much the mouse moved since the initial click
-        int xMoved = (thisX + e.getX()) - (thisX + initialClick.x);
-        int yMoved = (thisY + -e.getY()) - (thisY + -initialClick.y);
-
-        // Move picture to this position
-        x = thisX + xMoved;
-        y = thisY + yMoved;
-        
-		initialClick = e.getPoint();
-		
-		zoomlabel.setText("X: " + x + " Y:" + y + " Zoom:");
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-		
-		
+
 	}
 
 	@Override
@@ -358,8 +324,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		initialClick = e.getPoint();
+	public void mousePressed(MouseEvent e)
+	{
+
 	}
 
 	@Override
@@ -379,12 +346,5 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void stateChanged(ChangeEvent e)
-	{
-		zoom = (double)zoomspinner.getValue();
-	}
-
 
 }
