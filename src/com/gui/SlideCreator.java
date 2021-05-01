@@ -16,6 +16,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -28,6 +30,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -47,10 +51,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 {
 	private static final long serialVersionUID = 1L;
 	
-	public static GL2 gl = null;
-	public static GLCanvas canvas;
-	public static GLProfile profile;
-	public static FPSAnimator animator;
+	public GL2 gl = null;
+	public GLCanvas canvas;
+	public GLProfile profile;
+	public FPSAnimator animator;
 	GLCapabilities cabs;
 	
     public ArrayList<JButton> actions = new ArrayList<JButton>();
@@ -59,12 +63,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JList<String> list;
     public JPanel listpanel;
     
-    JButton newelement,edit;
-    
-    int elementsint = 0;
-    public int xPixel,yPixel;
-    
+    JButton newelement,edit,up,down;
     JLabel position;
+    
+    public int elementsint = 0;
+    public int xPixel,yPixel;
     
     ImageResource canvasimage;
     
@@ -106,15 +109,23 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         listModel = new DefaultListModel<String>();
         list = new JList<String>(listModel);
         
-        newelement = new JButton("New");
+        newelement = new JButton("+");
         newelement.addActionListener(this);
         
         edit = new JButton("Edit");
         edit.addActionListener(this);
         
+        up = new JButton("▲");
+        up.addActionListener(this);
+        
+        down = new JButton("▼");
+        down.addActionListener(this);
+        
         JPanel bpanel = new JPanel();
         bpanel.add(newelement);
         bpanel.add(edit);
+        bpanel.add(up);
+        bpanel.add(down);
         
         listpanel.add(new JScrollPane(list));
         listpanel.add(bpanel,BorderLayout.SOUTH);
@@ -185,10 +196,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 //		textRenderer.endRendering();
 		
 		for (int i = 0;i < elements.size();i++)
-			elements.get(i).render(gl);
-		
-		for (int i = 0;i < elements.size();i++)
+		{
 			elements.get(i).update(this);
+			elements.get(i).render(gl);
+		}
 	}
 
 	@Override
@@ -214,7 +225,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
 	{
-		System.out.println("Canvas reshape");
+		//System.out.println("Canvas reshape");
 		gl = drawable.getGL().getGL2();
 		
 		gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -255,7 +266,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			else
 				listModel.addElement(textfield.getText());
 			
+			//get and add element
 		    elements.add(Element.getElementsByName(combo.getSelectedItem().toString()));
+		    //set id
+		    //elements.get(elements.size() - 1).id = elements.size() - 1;
+		    //frame
 		    elements.get(elements.size() - 1).frame();
 		}
 		//new slide
@@ -297,6 +312,49 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			else
 				elements.get(list.getSelectedIndex()).frame();
 		}
+		//up
+		if (source == up)
+		{
+			if (list.getSelectedIndex() == -1)
+				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
+			else
+			{
+				int new_ = list.getSelectedIndex() - 1;
+				int old = list.getSelectedIndex();
+				//swap func
+				swaplist(old,new_);
+				//set selection
+				list.setSelectedIndex(new_);
+			}
+		}
+		//down
+		if (source == down)
+		{
+			if (list.getSelectedIndex() == -1)
+				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
+			else
+			{
+				int new_ = list.getSelectedIndex() + 1;
+				int old = list.getSelectedIndex();
+				//swapfunc
+				swaplist(old,new_);
+				//set selection
+				list.setSelectedIndex(new_);
+			}
+		}
+	}
+	
+	private void swaplist(int old,int new_)
+	{
+		//check out of bounds
+		if (new_ < 0 || new_ > elements.size()-1) return;
+		//swap in elements arraylist
+		Collections.swap(elements, old, new_);
+		//swap
+        String aObject = listModel.getElementAt(old);
+        String bObject = listModel.getElementAt(new_);
+        listModel.set(old, bObject);
+        listModel.set(new_, aObject);
 	}
     
     public void initenable()
@@ -311,7 +369,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		enableComponents(listpanel, false);
     }
     
-	public static GLProfile getProfile()
+	public GLProfile getProfile()
 	{
 		return profile;
 	}

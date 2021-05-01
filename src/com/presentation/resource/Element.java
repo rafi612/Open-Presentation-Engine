@@ -8,12 +8,14 @@ import com.presentation.resource.elements.E_Shape;
 public class Element 
 {
 	public static final String[] types = {"Image","Text","Shape","Graph"};
-	boolean editing;
+	public boolean editing,moving,colided;
 	
 	public int x;
 	public int y;
 	public int w;
 	public int h;
+	
+	public int id;
 
 	public Element() 
 	{
