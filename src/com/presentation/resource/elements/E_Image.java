@@ -1,6 +1,7 @@
 package com.presentation.resource.elements;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Point;
 
 import com.gui.SlideCreator;
@@ -14,6 +15,8 @@ public class E_Image extends Element
 {
 	public String path;
 	
+	public int id;
+	
 	public int x;
 	public int y;
 	public int w;
@@ -21,7 +24,8 @@ public class E_Image extends Element
 	
 	public ImageResource image;
 	
-	public boolean editing,moving,colided,dragged;
+	public boolean editing,moving,colided;
+	boolean dragged;
 	E_ImageFrame frame;
 	
     public Point clickpoint = new Point(0,0);
@@ -64,7 +68,9 @@ public class E_Image extends Element
 				colided = true;
 				if (!moving)
 				{
+					
 					moving = true;
+					sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					clickpoint.setLocation(sc.xPixel, sc.yPixel);
 				}
 			}
@@ -81,8 +87,11 @@ public class E_Image extends Element
 		}
 		
 		// reseting "moving" after release mouse
-		if (!sc.dragged) moving = false;
-
+		if (!sc.dragged)
+		{
+			moving = false;
+			sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}
 	}
 	
 	public void render(GL2 gl)
