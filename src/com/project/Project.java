@@ -203,7 +203,6 @@ public class Project
     {
         File[] files = fileRoot.listFiles();
         if (files == null) return;
-
         for (File file : files) 
         {
         	DefaultMutableTreeNode childNode = null;

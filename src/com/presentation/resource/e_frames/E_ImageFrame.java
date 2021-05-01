@@ -1,24 +1,22 @@
 package com.presentation.resource.e_frames;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.io.Stream;
 import com.main.Main;
@@ -26,14 +24,13 @@ import com.presentation.resource.ImageResource;
 import com.presentation.resource.elements.E_Image;
 import com.project.Project;
 
-public class E_ImageFrame extends JDialog implements ChangeListener,ActionListener,WindowListener
+public class E_ImageFrame extends JDialog implements ChangeListener,WindowListener
 {
 	private static final long serialVersionUID = 1L;
 	public JSpinner sx;
 	public JSpinner sy;
 	JSpinner sw;
 	JSpinner sh;
-	JButton select;
 	JTextField textfieldpath;
 	
 	E_Image element;
@@ -49,7 +46,41 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		setAlwaysOnTop(true);
 		addWindowListener(this);
 		setLayout(null);
-		
+		setDropTarget(new DropTarget()
+		{
+			private static final long serialVersionUID = 1L;
+			public synchronized void drop (DropTargetDropEvent evt)
+        	{
+				try 
+				{
+					evt.acceptDrop(DnDConstants.ACTION_COPY);
+					File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
+					if (!file.getPath().startsWith(Project.projectlocation))
+					{
+						System.out.println("Error");
+						return;
+					}
+					else
+					{
+						element.path = new File(Project.projectlocation).toURI().relativize(file.toURI()).getPath();
+						
+						element.image = new ImageResource(Project.projectlocation + Stream.slash() + element.path);
+						element.w = element.image.image.getWidth();
+						element.h = element.image.image.getHeight();
+						sw.setValue(element.image.image.getWidth());
+						sh.setValue(element.image.image.getHeight());
+						textfieldpath.setText(element.path);
+					}
+					     
+				} 
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
+				}
+        	}
+	
+		});
 		SpinnerModel modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sx = new JSpinner(modelx);
 		sx.addChangeListener(this);
@@ -67,9 +98,6 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		sh.addChangeListener(this);
 		
 		textfieldpath = new JTextField(element.path);
-		select = new JButton(new ImageIcon(Main.loadIcon("/icons/open.png")));
-		select.setVisible(true);
-		select.addActionListener(this);
 		
 		JLabel lp = new JLabel("Path:");
 		lp.setBounds(10, 10, 30,10);
@@ -77,8 +105,6 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		textfieldpath.setBounds(40, 5, 200,20);
 		textfieldpath.setEditable(false);
 		add(textfieldpath);
-		select.setBounds(250,5, 20,20);
-		add(select);
 		
 		JLabel lx = new JLabel("X:");
 		lx.setBounds(10, 35, 10,10);
@@ -112,34 +138,6 @@ public class E_ImageFrame extends JDialog implements ChangeListener,ActionListen
 		element.y = (int) sy.getValue();
 		element.w = (int) sw.getValue();
 		element.h = (int) sh.getValue();
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		Object source = e.getSource();
-		
-		if (source == select)
-		{
-			JFileChooser jfc = new JFileChooser(Project.projectlocation);
-			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			jfc.setDialogTitle("Choose a image to load:");
-			jfc.setFileFilter(new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
-			
-			int returnValue = jfc.showOpenDialog(Main.frame);
-			if (returnValue == JFileChooser.APPROVE_OPTION)
-			{
-				element.path = new File(Project.projectlocation).toURI().relativize(new File(jfc.getSelectedFile().getPath()).toURI()).getPath();
-				
-				element.image = new ImageResource(Project.projectlocation + Stream.slash() + element.path);
-				element.w = element.image.image.getWidth();
-				element.h = element.image.image.getHeight();
-				sw.setValue(element.image.image.getWidth());
-				sh.setValue(element.image.image.getHeight());
-				textfieldpath.setText(element.path);
-			}
-		}
 		
 	}
 

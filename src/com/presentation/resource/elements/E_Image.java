@@ -70,7 +70,7 @@ public class E_Image extends Element
 				{
 					
 					moving = true;
-					sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+					//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					clickpoint.setLocation(sc.xPixel, sc.yPixel);
 				}
 			}
@@ -90,7 +90,7 @@ public class E_Image extends Element
 		if (!sc.dragged)
 		{
 			moving = false;
-			sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 	
