@@ -5,9 +5,14 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -19,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -37,7 +43,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.gui.SlideCreator;
 import com.input.Action;
 import com.input.ColoredKeywords;
-import com.input.DragAndDrop;
 import com.input.TreeListener;
 import com.input.Window;
 import com.io.Config;
@@ -195,7 +200,28 @@ public class Main
         tree.setEnabled(false);
         tree.setDragEnabled(true);
         //add drop target to tree
-        tree.setDropTarget(new DragAndDrop());
+        tree.setDropTarget(new DropTarget() {
+			private static final long serialVersionUID = 1L;
+			public synchronized void drop (DropTargetDropEvent evt)
+        	{
+				try 
+				{
+					evt.acceptDrop(DnDConstants.ACTION_COPY);
+					@SuppressWarnings("unchecked")
+					List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+					for (File file : droppedFiles)
+					{
+						Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
+						Project.refreshProject();
+					}        
+				} 
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
+				}
+        	}
+        });
         
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
