@@ -358,7 +358,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		if (new_ < 0 || new_ > elements.size()-1) return;
 		//swap in elements arraylist
 		Collections.swap(elements, old, new_);
-		//swap
+		//swap in JList
         String aObject = listModel.getElementAt(old);
         String bObject = listModel.getElementAt(new_);
         listModel.set(old, bObject);
