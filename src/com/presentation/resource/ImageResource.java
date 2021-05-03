@@ -24,10 +24,6 @@ public class ImageResource {
 	// The bufferedimage of this image
 	public BufferedImage image = null;
 	
-	int getfrom = 0;
-	public static final int PRESENTATION = 0;
-	public static final int CREATOR = 1;
-	
 	GLProfile profile;
 	
 	@SuppressWarnings("deprecation")
@@ -35,9 +31,6 @@ public class ImageResource {
 	{
 		URL url = null;
 		profile = Presentation.getProfile();
-//		if (path.charAt(0) == '/') 
-//			url = ImageResource.class.getResource(path);
-//		else
 		try 
 		{
 			url = new File(path).toURL();
