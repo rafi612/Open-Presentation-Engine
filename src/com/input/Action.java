@@ -381,61 +381,7 @@ public class Action implements ActionListener
 			dialog.setVisible(true);
 		}
 		
-		//popup
-		//========================================================
-		if (source == Main.newfile)
-		{
-			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
-			Stream.saveFile(Project.projectlocation + Stream.slash() + name, "");
-			
-			Project.refreshProject();
-		}
-		if (source == Main.editfile)
-		{
-			try 
-			{
-				if (Main.tree.getLastSelectedPathComponent() != null 
-						&& !new File(Main.tree.getLastSelectedPathComponent().toString()).isDirectory() 
-						&& !Main.tree.getLastSelectedPathComponent().toString().equals("Workspace                                  "))
-				{
-					if (Stream.isWindows())
-						Runtime.getRuntime().exec("notepad " + "\"" + Main.tree.getLastSelectedPathComponent() + "\"");
-					else if (Stream.isLinux())
-						Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e nano" /* + "\"" */+ Main.tree.getLastSelectedPathComponent() /*+ "\""*/);
-				}
-				else
-					JOptionPane.showMessageDialog(Main.frame, "No selected file", "File", JOptionPane.ERROR_MESSAGE);
-			} 
-			catch (IOException e1) 
-			{
-				e1.printStackTrace();
-			}
-			
-//			JTextArea t = new JTextArea();
-//			t.setFont(new Font(t.getFont().getName(), Font.TRUETYPE_FONT, 16));
-//			
-//			Main.tabs.add(Main.tree.getLastSelectedPathComponent().toString(),new JScrollPane(t));
-//			
-//			Project.loadTextFromFileToTextArea(Main.tree.getLastSelectedPathComponent().toString(), t);
-		}
-		if (source == Main.newfolder)
-		{
-			String folder = JOptionPane.showInputDialog(Main.frame, "Enter folder name:", "Create new folder", JOptionPane.QUESTION_MESSAGE);
-			new File(Project.projectlocation + Stream.slash() + folder).mkdir();
-			
-			Project.refreshProject();
-		}
-		if (source == Main.openfile)
-		{
-			
-		}
-		if (source == Main.newxml)
-		{
-			String name = JOptionPane.showInputDialog(Main.frame, "Enter XML name:", "Create new XML", JOptionPane.QUESTION_MESSAGE);
-			Stream.copyFile("/script/config.xml", Project.projectlocation + Stream.slash() + name + ".xml");
-			
-			Project.refreshProject();
-		}
+		
 	}
 	
 	public void insert(String s,int p,JTextPane t) 
