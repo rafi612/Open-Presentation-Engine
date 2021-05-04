@@ -41,6 +41,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.gui.SlideCreator;
+import com.gui.Tree;
 import com.input.Action;
 import com.input.ColoredKeywords;
 import com.input.TreeListener;
@@ -85,9 +86,8 @@ public class Main
     public static JMenuItem about,license;
     
     //tree popup
-    public static JMenuItem newfile,editfile, newfolder, openfile, newpython,newxml;
     
-    public static JTree tree;
+    public static Tree tree;
     public static DefaultMutableTreeNode workspace;
     
     public static JScrollPane scrollpane;
@@ -180,48 +180,10 @@ public class Main
         tabs.add("Slide Creator",slidecreator);
         
         frame.add(tabs);
-    	
-        JPopupMenu treepopup = new JPopupMenu();
-        treepopup.add(newfile);
-        treepopup.add(editfile);
-        treepopup.add(newfolder);
-        treepopup.add(openfile);
-        treepopup.add(newxml);
-        
+    	 
         //tree=======================================
         workspace = new DefaultMutableTreeNode("Workspace                                  "); 
-        tree = new JTree(workspace);
-        tree.setBorder(BorderFactory.createTitledBorder("Project Explorer"));
-        tree.setShowsRootHandles(true);
-        tree.setComponentPopupMenu(treepopup);
-        tree.setToolTipText("Drag and Drop file to copy into project.");
-        tree.setCellRenderer(new TreeCellRenderer());
-        tree.addTreeSelectionListener(new TreeListener());
-        tree.setEnabled(false);
-        tree.setDragEnabled(true);
-        //add drop target to tree
-        tree.setDropTarget(new DropTarget() {
-			private static final long serialVersionUID = 1L;
-			public synchronized void drop (DropTargetDropEvent evt)
-        	{
-				try 
-				{
-					evt.acceptDrop(DnDConstants.ACTION_COPY);
-					@SuppressWarnings("unchecked")
-					List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-					for (File file : droppedFiles)
-					{
-						Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
-						Project.refreshProject();
-					}        
-				} 
-				catch (Exception ex)
-				{
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
-				}
-        	}
-        });
+        tree = new Tree(workspace);
         
         scrollpane2 = new JScrollPane(tree);
         frame.add(scrollpane2,BorderLayout.WEST);
@@ -429,17 +391,6 @@ public class Main
         license.addActionListener(new Action());
         license.setIcon(new ImageIcon(loadIcon("/icons/license.png")));
         help.add(license);
-        
-        //popup drzewka
-        newfile = new JMenuItem("New file");
-        newfile.addActionListener(new Action());
-        editfile = new JMenuItem("Edit File");
-        editfile.addActionListener(new Action());
-        newfolder = new JMenuItem("New Folder");
-        newfolder.addActionListener(new Action());
-        openfile = new JMenuItem("Open File/Folder");
-        newxml = new JMenuItem("New XML File");
-        newxml.addActionListener(new Action());
         
         //dodawanie
         menubar.add(file);
