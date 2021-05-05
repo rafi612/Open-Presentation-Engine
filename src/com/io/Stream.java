@@ -106,60 +106,58 @@ public class Stream
         }
 	}
 	  //public  String readXml(String Scieszka,String ElementsByTagName,String tag)
-		public static String readXml(String path,String ElementsByTagName,String tag)
+	public static String readXml(String path,String ElementsByTagName,String tag)
+	{
+		String return_ = null;
+		try 
 		{
-			String return_ = null;
-		      try 
-		      {
-		         File inputFile = new File(path);
-		         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		         Document doc = dBuilder.parse(inputFile);
-		         doc.getDocumentElement().normalize();
-		         NodeList nList = doc.getElementsByTagName(ElementsByTagName);
-		         
-		         for (int temp = 0; temp < nList.getLength(); temp++)
-		         {
-		            Node nNode = nList.item(temp);
-		            
-		            if (nNode.getNodeType() == Node.ELEMENT_NODE)
-		            {
-		               Element eElement = (Element) nNode;
-//		               System.out.println(eElement.getAttribute("rollno"));
-//		               System.out.println(eElement.getElementsByTagName("firstname").item(0).getTextContent());
-//		               System.out.println(eElement .getElementsByTagName("lastname").item(0).getTextContent());
-//		               System.out.println(eElement.getElementsByTagName("nickname").item(0).getTextContent());
-		               return_ = eElement.getElementsByTagName(tag).item(0).getTextContent();
-		            }
-		         }
-		      }
-		      catch (Exception e)
-		      {
-		      }
-			return return_;
+			File inputFile = new File(path);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName(ElementsByTagName);
+			
+			for (int temp = 0; temp < nList.getLength(); temp++)
+			{
+				Node nNode = nList.item(temp);
+				
+				if (nNode.getNodeType() == Node.ELEMENT_NODE)
+				{
+					Element eElement = (Element) nNode;
+//					System.out.println(eElement.getAttribute("rollno"));
+//					System.out.println(eElement.getElementsByTagName("firstname").item(0).getTextContent());
+//					System.out.println(eElement .getElementsByTagName("lastname").item(0).getTextContent());
+//					System.out.println(eElement.getElementsByTagName("nickname").item(0).getTextContent());
+					return_ = eElement.getElementsByTagName(tag).item(0).getTextContent();
+				}
+			}
 		}
-		   public static String getOsName()
-		   {
-			   return System.getProperty("os.name");
-		   }
+		catch (Exception e){}
+		return return_;
+	}
+	public static String getOsName()
+	{
+		return System.getProperty("os.name");
+	}
 		
-		   public static boolean isWindows()
-		   {
-			   return getOsName().startsWith("Windows");
-		   }
+	public static boolean isWindows()
+	{
+		return getOsName().startsWith("Windows");
+	}
 		   
-		   public static boolean isLinux()
-		   {
-			   return getOsName().contains("nux");
-		   }
+	public static boolean isLinux()
+	{
+		return getOsName().contains("nux");
+	}
 		   
-		   public static boolean isMac()
-		   {
-		       return getOsName().contains("mac") || getOsName().contains("darwin");
-		   }
+	public static boolean isMac()
+	{
+		return getOsName().contains("mac") || getOsName().contains("darwin");
+	}
 		   
-		   public static String slash()
-		   {
+	public static String slash()
+	{
 			   return File.separator;
-		   }
+	}
 }
