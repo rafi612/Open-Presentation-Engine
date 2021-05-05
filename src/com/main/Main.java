@@ -33,7 +33,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -44,13 +43,11 @@ import com.gui.SlideCreator;
 import com.gui.Tree;
 import com.input.Action;
 import com.input.ColoredKeywords;
-import com.input.TreeListener;
 import com.input.Window;
 import com.io.Config;
 import com.io.Stream;
 import com.presentation.main.Presentation;
 import com.project.Project;
-import com.tree.TreeCellRenderer;
 
 public class Main
 {
