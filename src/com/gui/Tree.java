@@ -7,7 +7,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,19 +14,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.input.Action;
-import com.input.TreeListener;
 import com.io.Stream;
 import com.main.Main;
 import com.project.Project;
 import com.tree.TreeCellRenderer;
 
-public class Tree extends JTree implements ActionListener
+public class Tree extends JTree implements ActionListener,TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
-    public JMenuItem newfile,editfile, newfolder, openfile, newpython,newxml;
+    public JMenuItem newfile, newfolder, deletefile,renamefile;
+	DefaultMutableTreeNode selected = null;
 
 	public Tree(DefaultMutableTreeNode workspace) 
 	{       
@@ -36,28 +36,25 @@ public class Tree extends JTree implements ActionListener
         //popup drzewka
         newfile = new JMenuItem("New file");
         newfile.addActionListener(this);
-        editfile = new JMenuItem("Edit File");
-        editfile.addActionListener(this);
         newfolder = new JMenuItem("New Folder");
         newfolder.addActionListener(this);
-        openfile = new JMenuItem("Open File/Folder");
-        newxml = new JMenuItem("New XML File");
-        newxml.addActionListener(this);
+        deletefile = new JMenuItem("Delete");
+        deletefile.addActionListener(this);
+        renamefile = new JMenuItem("Rename");
+        renamefile.addActionListener(this);
 		
         JPopupMenu treepopup = new JPopupMenu();
         treepopup.add(newfile);
-        treepopup.add(editfile);
         treepopup.add(newfolder);
-        treepopup.add(openfile);
-        treepopup.add(newxml);
+        treepopup.add(renamefile);
+        treepopup.add(deletefile);
         
         setBorder(BorderFactory.createTitledBorder("Project Explorer"));
         setShowsRootHandles(true);
         setToolTipText("Drag and Drop file to copy into project.");
         setCellRenderer(new TreeCellRenderer());
-        addTreeSelectionListener(new TreeListener());
         setComponentPopupMenu(treepopup);
-        setEnabled(false);
+        super.setEnabled(false);
         setDragEnabled(true);
         //add drop target to tree
         setDropTarget(new DropTarget() {
@@ -82,6 +79,7 @@ public class Tree extends JTree implements ActionListener
 				}
         	}
         });
+        addTreeSelectionListener(this);
 	}
 
 	@Override
@@ -95,34 +93,6 @@ public class Tree extends JTree implements ActionListener
 				
 			Project.refreshProject();
 		}
-		if (source == editfile)
-		{
-			try 
-			{
-				if (Main.tree.getLastSelectedPathComponent() != null 
-						&& !new File(Main.tree.getLastSelectedPathComponent().toString()).isDirectory() 
-						&& !Main.tree.getLastSelectedPathComponent().toString().equals("Workspace                                  "))
-				{
-					if (Stream.isWindows())
-						Runtime.getRuntime().exec("notepad " + "\"" + Main.tree.getLastSelectedPathComponent() + "\"");
-				else if (Stream.isLinux())
-						Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e nano" /* + "\"" */+ Main.tree.getLastSelectedPathComponent() /*+ "\""*/);
-				}
-				else
-					JOptionPane.showMessageDialog(Main.frame, "No selected file", "File", JOptionPane.ERROR_MESSAGE);
-			} 
-			catch (IOException e1) 
-			{
-				e1.printStackTrace();
-			}
-					
-//			JTextArea t = new JTextArea();
-//			t.setFont(new Font(t.getFont().getName(), Font.TRUETYPE_FONT, 16));
-//				
-//			Main.tabs.add(Main.tree.getLastSelectedPathComponent().toString(),new JScrollPane(t));
-//					
-//			Project.loadTextFromFileToTextArea(Main.tree.getLastSelectedPathComponent().toString(), t);
-		}
 		if (source == newfolder)
 		{
 			String folder = JOptionPane.showInputDialog(Main.frame, "Enter folder name:", "Create new folder", JOptionPane.QUESTION_MESSAGE);
@@ -130,18 +100,56 @@ public class Tree extends JTree implements ActionListener
 				
 			Project.refreshProject();
 		}
-		if (source == openfile)
+		if (source == deletefile)
 		{
+			File select = new File(selected.toString());
+			if (check(select)) return;
 			
+			int choose = JOptionPane.showConfirmDialog(Main.frame,"Do you want to delete " + select.getName() + "?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			if (choose == 0) select.delete();
+			
+			Project.refreshProject();
 		}
-		if (source == newxml)
+		if (source == renamefile)
 		{
-			String name = JOptionPane.showInputDialog(Main.frame, "Enter XML name:", "Create new XML", JOptionPane.QUESTION_MESSAGE);
-			Stream.copyFile("/script/config.xml", Project.projectlocation + Stream.slash() + name + ".xml");
-				
+			File select = new File(selected.toString());
+			if (check(select)) return;
+			
+			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
+			//rename file
+			select.renameTo(new File(select.getParent() + Stream.slash() + name));
 			Project.refreshProject();
 		}
 		
+	}
+	
+	private boolean check(File select)
+	{
+		if (selected == null)
+		{
+			JOptionPane.showMessageDialog(Main.frame, "Element not selected", "Error", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		if (!(select.isFile() || select.isDirectory()))
+		{
+			JOptionPane.showMessageDialog(Main.frame, "This element is not a file or directory", "Error", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void valueChanged(TreeSelectionEvent e) 
+	{
+		selected = (DefaultMutableTreeNode)getLastSelectedPathComponent();
+	}
+	
+	public void setEnabled(boolean b)
+	{
+		super.setEnabled(b);
+		Main.tree.newfile.setEnabled(b);
+		Main.tree.newfolder.setEnabled(b);
+		Main.tree.deletefile.setEnabled(b);
 	}
 
 }

@@ -32,8 +32,6 @@ public class Project
 	
 	public static String projectlocation = "";
 	
-	//public static int editor = 0;
-	
 	public static void CreateNewProject(String location,String name)
 	{
 		if (projectIsLoaded) unloadProject();
@@ -48,10 +46,6 @@ public class Project
 		Main.paste.setEnabled(true);
 		Main.cut.setEnabled(true);
 		Main.selectAll.setEnabled(true);
-		Main.tree.newfile.setEnabled(true);
-		Main.tree.newfolder.setEnabled(true);
-		Main.tree.openfile.setEnabled(true);
-		Main.tree.newxml.setEnabled(true);
 		Main.run.setEnabled(true);
 		Main.refresh.setEnabled(true);
 		Main.export.setEnabled(true);
@@ -93,10 +87,6 @@ public class Project
 		Main.paste.setEnabled(true);
 		Main.cut.setEnabled(true);
 		Main.selectAll.setEnabled(true);
-		Main.tree.newfile.setEnabled(true);
-		Main.tree.newfolder.setEnabled(true);
-		Main.tree.openfile.setEnabled(true);
-		Main.tree.newxml.setEnabled(true);
 		Main.run.setEnabled(true);
 		Main.refresh.setEnabled(true);
 		Main.export.setEnabled(true);
@@ -131,10 +121,6 @@ public class Project
 		Main.copy.setEnabled(false);
 		Main.paste.setEnabled(false);
 		Main.cut.setEnabled(false);
-		Main.tree.newfile.setEnabled(false);
-		Main.tree.newfolder.setEnabled(false);
-		Main.tree.openfile.setEnabled(false);
-		Main.tree.newxml.setEnabled(false);
 		Main.selectAll.setEnabled(false);
 		Main.run.setEnabled(false);
 		Main.refresh.setEnabled(false);
