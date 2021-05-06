@@ -71,7 +71,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public JList<String> list;
     public JPanel listpanel;
     
-    JButton newelement,edit,up,down;
+    JButton newelement,edit,up,down,rename,delete;
     JLabel position;
     
     public int elementsint = 0;
@@ -129,11 +129,26 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         down = new JButton("▼");
         down.addActionListener(this);
         
+        rename = new JButton("Rename");
+        rename.addActionListener(this);
+        
+        delete = new JButton("Delete");
+        delete.addActionListener(this);
+        
+        JPanel panel1 = new JPanel();
+        panel1.add(newelement);
+        panel1.add(edit);
+        panel1.add(up);
+        panel1.add(down);
+        
+        JPanel panel2 = new JPanel();
+        panel2.add(rename);
+        panel2.add(delete);
+        
         JPanel bpanel = new JPanel();
-        bpanel.add(newelement);
-        bpanel.add(edit);
-        bpanel.add(up);
-        bpanel.add(down);
+        bpanel.setLayout(new BorderLayout());
+        bpanel.add(panel1,BorderLayout.NORTH);
+        bpanel.add(panel2,BorderLayout.SOUTH);
         
         listpanel.add(new JScrollPane(list));
         listpanel.add(bpanel,BorderLayout.SOUTH);
