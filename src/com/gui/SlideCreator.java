@@ -379,6 +379,17 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 				}
 			}
 		}
+		if (source == rename)
+		{
+			if (list.getSelectedIndex() == -1)
+				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
+			else
+			{
+				String choose = JOptionPane.showInputDialog(Main.frame,"Enter new element name:","Rename",JOptionPane.QUESTION_MESSAGE);
+				if (choose != null)
+					listModel.set(list.getSelectedIndex(), choose);
+			}
+		}
 	}
 	
 	private void swaplist(int old,int new_)
