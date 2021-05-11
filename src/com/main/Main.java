@@ -171,6 +171,7 @@ public class Main
 
         //tabs====================================
         tabs.add("Main.py",textpanel);
+        tabs.add("Slides",new JPanel());
         tabs.add("Config.xml",scrollpane2);
         //tabs.add("Template Chooser",tchooser);
         tabs.add("Console",new JScrollPane(areaconsole));
