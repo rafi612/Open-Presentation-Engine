@@ -7,7 +7,7 @@ import com.main.Main;
 public class Config 
 {
 	public static String configwindows = System.getenv("APPDATA") + Stream.slash() + "ope.xml";
-	public static String configlinux = System.getProperty("user.home") + Stream.slash() + ".ope.xml";
+	public static String configlinux = System.getProperty("user.home") + Stream.slash() + ".config" + Stream.slash() + ".ope.xml";
 	
 	public static void loadinterpreterpath() 
 	{
