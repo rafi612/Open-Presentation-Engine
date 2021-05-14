@@ -1,6 +1,7 @@
 package com.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -34,6 +35,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	public Tree(DefaultMutableTreeNode workspace) 
 	{       
 		super(workspace);
+		setPreferredSize(new Dimension(215,0));
 		
         //popup drzewka
         newfile = new JMenuItem("New file");
