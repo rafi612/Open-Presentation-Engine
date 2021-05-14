@@ -180,7 +180,7 @@ public class Main
         frame.add(tabs);
     	 
         //tree=======================================
-        workspace = new DefaultMutableTreeNode("Workspace                                  "); 
+        workspace = new DefaultMutableTreeNode("Workspace"); 
         tree = new Tree(workspace);
         
         scrollpane2 = new JScrollPane(tree);
