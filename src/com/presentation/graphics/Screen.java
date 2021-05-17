@@ -3,6 +3,7 @@ package com.presentation.graphics;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.texture.Texture;
 import com.presentation.main.EventListener;
@@ -81,6 +82,27 @@ public class Screen
 		
 		gl.glEnd();
 //		gl.glFlush();
+	}
+	
+	public static void drawVerticalGradient(float x,float y,float width,float height,Color color,Color color2)
+	{
+		GL2 gl = EventListener.gl;
+		
+		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
+		gl.glBegin(GL2.GL_QUADS);
+		
+		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
+		gl.glVertex2f(x, y);
+		gl.glVertex2f(x + width,y);
+		gl.glColor4f((float) color2.getRed() / 255,(float) color2.getGreen() / 255,(float) color2.getBlue() / 255,(float) color2.getAlpha() / 255);
+		gl.glVertex2f(x + width, y + height);
+		gl.glVertex2f(x, y + height);
+			
+		gl.glEnd();
+		gl.glFlush();
+		
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 
 }
