@@ -223,8 +223,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			elements.get(i).update(this);
 			elements.get(i).render(gl);
 		}
-		
-		Screen.drawVerticalGradient(0, 0, 1280, 720, new Color(0x000000), new Color(0,0,0,50));
 	}
 
 	@Override
