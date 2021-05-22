@@ -40,6 +40,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.gui.SlideCreator;
+import com.gui.SlideRack;
 import com.gui.Tree;
 import com.input.Action;
 import com.input.ColoredKeywords;
@@ -98,6 +99,7 @@ public class Main
     public static JTabbedPane tabs;
     
     public static SlideCreator slidecreator;
+    public static SlideRack sliderack;
 
     public Main()
     {
@@ -168,10 +170,13 @@ public class Main
         
         //slide creator
         slidecreator = new SlideCreator();
+        
+        //slide rack
+        sliderack = new SlideRack();
 
         //tabs====================================
         tabs.add("Main.py",textpanel);
-        tabs.add("Slides",new JPanel());
+        tabs.add("Slides",sliderack);
         tabs.add("Config.xml",scrollpane2);
         //tabs.add("Template Chooser",tchooser);
         tabs.add("Console",new JScrollPane(areaconsole));
