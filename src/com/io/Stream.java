@@ -20,8 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.main.Main;
-
 public class Stream 
 {
 	public static void insert(String s,int p,JTextPane t) 
