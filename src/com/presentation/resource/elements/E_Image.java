@@ -1,7 +1,6 @@
 package com.presentation.resource.elements;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Point;
 
 import com.gui.SlideCreator;
