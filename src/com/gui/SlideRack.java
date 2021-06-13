@@ -18,6 +18,8 @@ public class SlideRack extends JPanel
 	public ArrayList<JButton> actionbuttons;
 	
 	public JCheckBox selected;
+	
+	public ArrayList<?> elements;
 
 	public SlideRack() 
 	{
@@ -34,7 +36,7 @@ public class SlideRack extends JPanel
 		actionbuttons.add(new JButton("Delete Slide"));
 		actionbuttons.add(new JButton("Move Up"));
 		actionbuttons.add(new JButton("Move Down"));
-		actionbuttons.add(new JButton("Select All Slides"));
+		//actionbuttons.add(new JButton("Select All Slides"));
 		
 		JPanel toppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		toppanel.setBorder(BorderFactory.createTitledBorder(""));
