@@ -423,21 +423,21 @@ public class Main
 	{
 		if (Stream.isLinux())
 		{
-			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-			java.lang.reflect.Field awtAppClassNameField;
-			try {
-				awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-				awtAppClassNameField.setAccessible(true);
-				awtAppClassNameField.set(xToolkit, "Open-Presentation-Engine");
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+//			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+//			java.lang.reflect.Field awtAppClassNameField;
+//			try {
+//				awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+//				awtAppClassNameField.set(xToolkit, "Open-Presentation-Engine");
+//				awtAppClassNameField.setAccessible(true);
+//			} catch (NoSuchFieldException e) {
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				e.printStackTrace();
+//			} catch (IllegalArgumentException e) {
+//				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 	
