@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -211,7 +212,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		Main.args = args;
-		wm_class();
+		//wm_class();
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);
@@ -235,6 +236,7 @@ public class Main
 			UI();
 			
 			frame.setVisible(true);
+
 		}
 		else 
 			Presentation.init();
@@ -424,7 +426,7 @@ public class Main
 		if (Stream.isLinux())
 		{
 //			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-//			java.lang.reflect.Field awtAppClassNameField;
+//			Field awtAppClassNameField;
 //			try {
 //				awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
 //				awtAppClassNameField.set(xToolkit, "Open-Presentation-Engine");
