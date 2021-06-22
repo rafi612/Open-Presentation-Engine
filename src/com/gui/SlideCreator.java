@@ -398,7 +398,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
     }
-    
+   
     public void disable()
     {
 		enableComponents(this, false);
