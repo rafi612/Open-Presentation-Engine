@@ -16,11 +16,6 @@ public class E_Image extends Element
 	
 	public int id;
 	
-	public int x;
-	public int y;
-	public int w;
-	public int h;
-	
 	public ImageResource image;
 	
 	public boolean editing,moving,colided;

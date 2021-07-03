@@ -12,11 +12,6 @@ public class E_Shape extends Element
 {
 	String path;
 	
-	public int x;
-	public int y;
-	public int w;
-	public int h;
-	
 	ImageResource image;
 	
 	public E_Shape()
