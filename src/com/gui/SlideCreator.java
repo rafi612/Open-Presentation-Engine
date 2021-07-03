@@ -210,7 +210,15 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		{
 			elements.get(i).update(this);
 			elements.get(i).render(gl);
+			
 		}
+		
+		if (list.getSelectedIndex() > -1)
+		{
+			Element e = elements.get(list.getSelectedIndex());
+			Screen.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
+		}
+				
 	}
 
 	@Override
