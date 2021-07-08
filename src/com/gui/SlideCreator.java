@@ -212,7 +212,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			elements.get(i).render(gl);
 			
 		}
-		
+
+		//selected border
 		if (list.getSelectedIndex() > -1)
 		{
 			Element e = elements.get(list.getSelectedIndex());

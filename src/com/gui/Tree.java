@@ -29,7 +29,7 @@ import com.project.Project;
 public class Tree extends JTree implements ActionListener,TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
-    public JMenuItem newfile, newfolder, deletefile,renamefile;
+    public JMenuItem newfile, newfolder, deletefile,renamefile,movefile;
 	DefaultMutableTreeNode selected = null;
 
 	public Tree(DefaultMutableTreeNode workspace) 
@@ -46,12 +46,15 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
         deletefile.addActionListener(this);
         renamefile = new JMenuItem("Rename");
         renamefile.addActionListener(this);
+        movefile = new JMenuItem("Move");
+        movefile.addActionListener(this);
 		
         JPopupMenu treepopup = new JPopupMenu();
         treepopup.add(newfile);
         treepopup.add(newfolder);
         treepopup.add(renamefile);
         treepopup.add(deletefile);
+        treepopup.add(movefile);
         
         setBorder(BorderFactory.createTitledBorder("Project Explorer"));
         setShowsRootHandles(true);
