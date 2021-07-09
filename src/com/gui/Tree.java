@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -29,8 +30,14 @@ import com.project.Project;
 public class Tree extends JTree implements ActionListener,TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
-    public JMenuItem newfile, newfolder, deletefile,renamefile,movefile;
+    public JMenuItem newfile, newfolder, deletefile,renamefile,cutfile,copyfile,pastefile;
 	DefaultMutableTreeNode selected = null;
+	JTextField selected_textfield = new JTextField("");
+	
+	File copy = null;
+	
+	// 1 = copy 0 = cut
+	int operation = -1;
 
 	public Tree(DefaultMutableTreeNode workspace) 
 	{       
@@ -46,15 +53,21 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
         deletefile.addActionListener(this);
         renamefile = new JMenuItem("Rename");
         renamefile.addActionListener(this);
-        movefile = new JMenuItem("Move");
-        movefile.addActionListener(this);
+        cutfile = new JMenuItem("Cut");
+        cutfile.addActionListener(this);
+        copyfile = new JMenuItem("Copy");
+        copyfile.addActionListener(this);
+        pastefile = new JMenuItem("Paste");
+        pastefile.addActionListener(this);
 		
         JPopupMenu treepopup = new JPopupMenu();
         treepopup.add(newfile);
         treepopup.add(newfolder);
+        treepopup.add(cutfile);
+        treepopup.add(copyfile);
+        treepopup.add(pastefile);
         treepopup.add(renamefile);
         treepopup.add(deletefile);
-        treepopup.add(movefile);
         
         setBorder(BorderFactory.createTitledBorder("Project Explorer"));
         setShowsRootHandles(true);
@@ -93,6 +106,10 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		Object source = e.getSource();
+		
+		File select = null;
+		if (selected != null) select = new File(selected.toString());
+		
 		if (source == newfile)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
@@ -109,7 +126,6 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		}
 		if (source == deletefile)
 		{
-			File select = new File(selected.toString());
 			if (check(select)) return;
 			
 			int choose = JOptionPane.showConfirmDialog(Main.frame,"Do you want to delete " + select.getName() + "?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
@@ -119,7 +135,6 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		}
 		if (source == renamefile)
 		{
-			File select = new File(selected.toString());
 			if (check(select)) return;
 			
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
@@ -127,7 +142,58 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			select.renameTo(new File(select.getParent() + Stream.slash() + name));
 			Project.refreshProject();
 		}
+		if (source == cutfile)
+		{
+			if (check(select)) return;
+			
+			copy = select;
+			//cut
+			operation = 0;
+		}
 		
+		if (source == copyfile)
+		{
+			if (check(select)) return;
+			
+			copy = select;
+			//cut
+			operation = 1;
+		}
+		
+		if (source == pastefile)
+		{
+			if (operation == -1) 
+			{
+				JOptionPane.showMessageDialog(Main.frame, "No file to paste", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			//destination
+			File destdir = select;
+			
+			//check if select is workspace
+			if (select.getPath().equals("Workspace")) destdir = new File(Project.projectlocation);
+			
+			//check
+			if (!destdir.isDirectory())
+			{
+				JOptionPane.showMessageDialog(Main.frame, "This is not a directory", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			if (operation == 0)
+			{
+				//cut
+				copy.renameTo(new File(destdir + Stream.slash() + copy.getName()));
+			}
+			else if (operation == 1)
+			{
+				//copy
+				Stream.copyFileondrive(copy.getPath(),destdir.getPath() + Stream.slash() + copy.getName());
+			}
+			
+			Project.refreshProject();
+		}
 	}
 	
 	private boolean check(File select)
@@ -154,9 +220,13 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	public void setEnabled(boolean b)
 	{
 		super.setEnabled(b);
-		Main.tree.newfile.setEnabled(b);
-		Main.tree.newfolder.setEnabled(b);
-		Main.tree.deletefile.setEnabled(b);
+		newfile.setEnabled(b);
+		newfolder.setEnabled(b);
+		cutfile.setEnabled(b);
+		copyfile.setEnabled(b);
+		pastefile.setEnabled(b);
+		renamefile.setEnabled(b);
+		deletefile.setEnabled(b);
 	}
 
 }
