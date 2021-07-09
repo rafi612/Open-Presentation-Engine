@@ -66,12 +66,8 @@ public class Project
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
-		
-		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + File.separator + "main.py")));
-    	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
-    	model.reload(Main.workspace);
     	    	
-    	Project.refreshProject();
+    	refreshProject();
 	}
 	
 	public static void LoadNewProject(String name)
@@ -101,12 +97,8 @@ public class Project
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
-		
-		Main.workspace.add(new DefaultMutableTreeNode(new File(projectlocation + File.separator + "main.py")));
-    	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
-    	model.reload(Main.workspace);
     	
-    	Project.refreshProject();
+    	refreshProject();
 	}
 	public static void unloadProject()
 	{
@@ -139,6 +131,8 @@ public class Project
 		
     	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
     	model.reload(Main.workspace);
+    	
+    	refreshProject();
 	}
 	
 	public static void loadTextFromFileToTextArea(String path)
@@ -296,7 +290,6 @@ public class Project
 				}
 				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python return exit code " + process.exitValue() + ". Do you want to run?\n" + lines, "Error", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
 				if (yesno == 1) run = false;
-				//System.out.println("!config.exists()");
 			}
 			else Main.areaconsole.setText("No python output");
 			
@@ -304,8 +297,6 @@ public class Project
 			Project.refreshProject();
 			
 			if (run) Presentation.init();
-			
-			//System.out.println("boolean run = " + run);
 		}
 		catch (Exception e)
 		{

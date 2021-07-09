@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -32,11 +31,10 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	private static final long serialVersionUID = 1L;
     public JMenuItem newfile, newfolder, deletefile,renamefile,cutfile,copyfile,pastefile;
 	DefaultMutableTreeNode selected = null;
-	JTextField selected_textfield = new JTextField("");
 	
 	File copy = null;
 	
-	// 1 = copy 0 = cut
+	// 1 = copy 0 = cut -1 = none operation
 	int operation = -1;
 
 	public Tree(DefaultMutableTreeNode workspace) 
