@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -74,6 +75,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
         setComponentPopupMenu(treepopup);
         super.setEnabled(false);
         setDragEnabled(true);
+        
         //add drop target to tree
         setDropTarget(new DropTarget() {
 			private static final long serialVersionUID = 1L;
@@ -84,9 +86,19 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					evt.acceptDrop(DnDConstants.ACTION_COPY);
 					@SuppressWarnings("unchecked")
 					List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+					
+					String copypath = "";
+					if (selected != null)
+					{
+						if (selected.toString().equals("Workspace"))
+							copypath = Project.projectlocation;
+						else copypath = selected.toString();
+					}
+					else copypath = Project.projectlocation;
+					
 					for (File file : droppedFiles)
 					{
-						Stream.copyFileondrive(file.getPath(), Project.projectlocation + Stream.slash() + file.getName());
+						Stream.copyFileondrive(file.getPath(), copypath + Stream.slash() + file.getName());
 						Project.refreshProject();
 					}        
 				} 
