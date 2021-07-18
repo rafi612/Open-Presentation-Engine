@@ -87,6 +87,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					@SuppressWarnings("unchecked")
 					List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
 					
+					//procesing file copy path in project
 					String copypath = "";
 					if (selected != null)
 					{
@@ -96,6 +97,8 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					}
 					else copypath = Project.projectlocation;
 					
+					
+					//copying files
 					for (File file : droppedFiles)
 					{
 						Stream.copyFileondrive(file.getPath(), copypath + Stream.slash() + file.getName());
