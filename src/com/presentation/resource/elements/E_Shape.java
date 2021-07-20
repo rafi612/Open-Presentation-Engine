@@ -2,6 +2,7 @@ package com.presentation.resource.elements;
 
 import java.awt.Color;
 
+import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Screen;
 import com.presentation.resource.Element;
@@ -16,6 +17,7 @@ public class E_Shape extends Element
 	
 	public E_Shape()
 	{
+		type = "Shape";
 		frame();
 	}
 
@@ -26,6 +28,18 @@ public class E_Shape extends Element
 		this.y = y;
 		this.w = w;
 		this.h = h;
+		
+		type = "Shape";
+	}
+	
+	public void load(XmlParser xml,int id)
+	{
+		
+	}
+	
+	public String save()
+	{
+		return "	<element name=" +  name + " type=" + type + "></element>";
 	}
 	
 	public void render(GL2 gl)

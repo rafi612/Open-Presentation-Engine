@@ -281,15 +281,24 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			JOptionPane.showConfirmDialog(Main.frame,c, "New Element", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 			
 			elementsint++;
+			
+			String elementname;
+			
+			//getting name
 			if (textfield.getText().equals(""))
-				listModel.addElement(combo.getSelectedItem().toString());
+				elementname = combo.getSelectedItem().toString();
 			else
-				listModel.addElement(textfield.getText());
+				elementname = textfield.getText();
 			
 			//get and add element
 		    elements.add(Element.getElementsByName(combo.getSelectedItem().toString()));
+		    
+		    //setting name
+		    elements.get(elements.size() - 1).name = elementname;
+		    
 		    //set id
 		    //elements.get(elements.size() - 1).id = elements.size() - 1;
+		    
 		    //frame
 		    elements.get(elements.size() - 1).frame();
 		}
@@ -384,7 +393,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			{
 				String choose = JOptionPane.showInputDialog(Main.frame,"Enter new element name:","Rename",JOptionPane.QUESTION_MESSAGE);
 				if (choose != null)
+				{
 					listModel.set(list.getSelectedIndex(), choose);
+					elements.get(list.getSelectedIndex()).name = choose;
+				}
 			}
 		}
 	}

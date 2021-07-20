@@ -1,6 +1,7 @@
 package com.presentation.resource;
 
 import com.gui.SlideCreator;
+import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.presentation.resource.elements.E_Image;
 import com.presentation.resource.elements.E_Shape;
@@ -16,6 +17,8 @@ public class Element
 	public int h;
 	
 	public int id;
+	
+	public String name,type;
 
 	public Element() 
 	{
@@ -32,6 +35,16 @@ public class Element
 		if (s.equals("Image")) return new E_Image("",1,1,200,200);
 		if (s.equals("Shape")) return new E_Shape(1,1,200,200);
 		return null;
+	}
+	
+	public void load(XmlParser xml,int id)
+	{
+		
+	}
+	
+	public String save()
+	{
+		return "	<element name=" +  name + " type=" + type + "></element>";
 	}
 	
 	public void frame()
