@@ -2,6 +2,7 @@ package com.presentation.resource.elements;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.File;
 
 import com.gui.SlideCreator;
 import com.io.XmlParser;
@@ -99,7 +100,10 @@ public class E_Image extends Element
 	
 	public String save()
 	{
-		return "	<element name=" +  name + " type=" + type + "></element>";
+		//creating xml tag with element data
+		return "	<element name=\"" +  name + "\" type=\"" + type + "\">\n"
+				+ "		<data src=\"" + path.replaceAll(File.separator, "/") +"\" x=\"" + x + "\" y=\"" + y + "\" width=\"" + w + "\" height=\"" + h + "\"></data>\n"
+				+ "	</element>\n";
 	}
 	
 	public void render(GL2 gl)
