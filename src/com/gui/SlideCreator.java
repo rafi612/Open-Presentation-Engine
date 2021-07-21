@@ -292,6 +292,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			
 			//get and add element
 		    elements.add(Element.getElementsByName(combo.getSelectedItem().toString()));
+		    listModel.addElement(elementname);
 		    
 		    //setting name
 		    elements.get(elements.size() - 1).name = elementname;
@@ -314,8 +315,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 				elements.clear();
 				if (canvas == null)
 					initCanvas();
-			
+				
 				enableComponents(listpanel, true);
+				
+				savediscardenable(true);
 				
 				slideloaded = true;
 			}
@@ -399,6 +402,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 				}
 			}
 		}
+		//save slide
+		if (source == actions.get(2))
+		{
+			String path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE);
+		}
 	}
 	
 	private void swaplist(int old,int new_)
@@ -413,11 +421,21 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
         listModel.set(old, bObject);
         listModel.set(new_, aObject);
 	}
+	
+	//setting save & discard action button enable
+	private void savediscardenable(boolean b)
+	{
+		//save
+		actions.get(2).setEnabled(b);
+		//discard
+		actions.get(3).setEnabled(b);
+	}
     
     public void initenable()
     {
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
+		savediscardenable(false);
     }
    
     public void disable()
