@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.io.Stream;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -42,6 +43,7 @@ import com.presentation.main.EventListener;
 import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
+import com.project.Project;
 
 public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener
 {
@@ -406,6 +408,21 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		if (source == actions.get(2))
 		{
 			String path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE);
+			
+			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+					+ "<slide>\n";
+			
+			//saving elements to xml string
+			for (int i = 0;i < elements.size();i++)
+			{
+				xml = xml + elements.get(i).save();
+			}
+			xml = xml + "</slide>";
+			
+			//save file
+			Stream.saveFile(Project.projectlocation + Stream.slash() + path, xml);
+			
+			Project.refreshProject();
 		}
 	}
 	
