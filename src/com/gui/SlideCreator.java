@@ -417,6 +417,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			{
 				xml = xml + elements.get(i).save();
 			}
+			xml = xml + "<all>" + elements.size() + "</all>\n";
 			xml = xml + "</slide>";
 			
 			//save file
