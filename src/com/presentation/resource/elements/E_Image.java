@@ -96,7 +96,26 @@ public class E_Image extends Element
 	
 	public void load(XmlParser xml,int id)
 	{
+		//getting tag element from id
+		org.w3c.dom.Element element = xml.getElements(xml.getElementsByTagName("element"))[id];
 		
+		if (element.getAttribute("type").equals("Image"))
+		{
+			type = element.getAttribute("type");
+			name = element.getAttribute("name");
+			
+			//[0] getting first element from array
+			org.w3c.dom.Element data = xml.getElementsFromElementByName(element,"data")[0];
+			
+			//loading image
+			path = data.getAttribute("src");
+			image = new ImageResource(path);
+			
+			x = Integer.parseInt(data.getAttribute("x"));
+			y = Integer.parseInt(data.getAttribute("y"));
+			w = Integer.parseInt(data.getAttribute("width"));
+			h = Integer.parseInt(data.getAttribute("height"));
+		}
 	}
 	
 	public String save()
