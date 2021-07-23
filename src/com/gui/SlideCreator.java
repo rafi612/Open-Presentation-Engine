@@ -425,6 +425,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			
 			Project.refreshProject();
 		}
+		//open slide
+		if (source == actions.get(1))
+		{
+
+		}
 	}
 	
 	private void swaplist(int old,int new_)
