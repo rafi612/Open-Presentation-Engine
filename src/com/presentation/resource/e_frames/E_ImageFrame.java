@@ -131,14 +131,26 @@ public class E_ImageFrame extends JDialog implements ChangeListener,WindowListen
 		add(sh);
 	}
 	
+	// setting JSpinner value form elements
+	public void update()
+	{
+		sx.setValue(element.x);
+		sy.setValue(element.y);
+		sw.setValue(element.w);
+		sh.setValue(element.h);
+	}
+	
+	// setting elements value form JSpinner if it's dragged
 	@Override
 	public void stateChanged(ChangeEvent e) 
 	{
-		element.x = (int) sx.getValue();
-		element.y = (int) sy.getValue();
-		element.w = (int) sw.getValue();
-		element.h = (int) sh.getValue();
-		
+		if (!element.dragged)
+		{
+			element.x = (int) sx.getValue();
+			element.y = (int) sy.getValue();
+			element.w = (int) sw.getValue();
+			element.h = (int) sh.getValue();
+		}
 	}
 
 	@Override

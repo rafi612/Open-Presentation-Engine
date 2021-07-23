@@ -21,7 +21,7 @@ public class E_Image extends Element
 	public ImageResource image;
 	
 	public boolean editing,moving,colided;
-	boolean dragged;
+	public boolean dragged;
 	E_ImageFrame frame;
 	
     public Point clickpoint = new Point(0,0);
@@ -51,6 +51,7 @@ public class E_Image extends Element
 	
 	public void update(SlideCreator sc)
 	{
+		
 		//grobal dragged value
 		dragged = sc.dragged;
 		//checking AABB colision on click
@@ -67,7 +68,6 @@ public class E_Image extends Element
 				colided = true;
 				if (!moving)
 				{
-					
 					moving = true;
 					//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					clickpoint.setLocation(sc.xPixel, sc.yPixel);
@@ -80,6 +80,7 @@ public class E_Image extends Element
 		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
 		        x += xMoved;
 		        y += yMoved;
+				frame.update();
 			}
 	        
 	        clickpoint = new Point(sc.xPixel,sc.yPixel);
