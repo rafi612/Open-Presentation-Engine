@@ -3,6 +3,7 @@ package com.presentation.resource.elements;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 
 import com.gui.SlideCreator;
 import com.io.XmlParser;
@@ -26,7 +27,7 @@ public class E_Image extends Element
 	
     public Point clickpoint = new Point(0,0);
     
-    Resizer resizer;
+    ArrayList<Resizer> resizers;
 	
 	public E_Image()
 	{
@@ -43,7 +44,11 @@ public class E_Image extends Element
 		this.w = w;
 		this.h = h;
 		
-		resizer = new Resizer(Resizer.Type.DOWN_RIGHT);
+		resizers = new ArrayList<Resizer>();
+		resizers.add(new Resizer(Resizer.Type.DOWN_RIGHT));
+		resizers.add(new Resizer(Resizer.Type.DOWN_LEFT));
+		resizers.add(new Resizer(Resizer.Type.UP_LEFT));
+		resizers.add(new Resizer(Resizer.Type.UP_RIGHT));
 		
 		type = "Image";
 		
@@ -54,16 +59,30 @@ public class E_Image extends Element
 	}
 	
 	public void update(SlideCreator sc)
-	{		
+	{
 		//grobal dragged value
 		dragged = sc.dragged;
+		
+		//check tracking on all elements
+		boolean canTracked = true;
+		//resizer update and track
+		for (int i = 0; i < resizers.size(); i++)
+		{
+			resizers.get(i).track(this);
+			resizers.get(i).update(sc);
+			
+			//if one is false, then all is false
+			canTracked = canTracked && resizers.get(i).canTrakedElementMove;
+		}
+		
 		//checking AABB colision on click
 		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel)
 			colided = true;
 		else
 			colided = false;
+		
 		//executing on dragging
-		if (sc.dragged && resizer.canTrakedElementMove)
+		if (sc.dragged && canTracked)
 		{
 			//if colided
 			if (colided)
@@ -96,9 +115,6 @@ public class E_Image extends Element
 		}
 		
 		if (editing) frame.update();
-		
-		resizer.track(this);
-		resizer.update(sc);
 	}
 	
 	public void load(XmlParser xml,int id)
@@ -146,7 +162,8 @@ public class E_Image extends Element
 		if (dragged && colided)
 			Screen.frectnofill(x,y,w,h,Color.RED);
 		
-		resizer.render(gl);
+		for (int i = 0; i < resizers.size(); i++)
+			resizers.get(i).render(gl,colided);
 	}
 	
 	
