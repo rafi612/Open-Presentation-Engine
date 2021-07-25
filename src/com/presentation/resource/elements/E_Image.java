@@ -25,6 +25,8 @@ public class E_Image extends Element
 	E_ImageFrame frame;
 	
     public Point clickpoint = new Point(0,0);
+    
+    Resizer resizer;
 	
 	public E_Image()
 	{
@@ -41,6 +43,8 @@ public class E_Image extends Element
 		this.w = w;
 		this.h = h;
 		
+		resizer = new Resizer(Resizer.Type.DOWN_RIGHT);
+		
 		type = "Image";
 		
 		if (!path.equals(""))
@@ -50,8 +54,7 @@ public class E_Image extends Element
 	}
 	
 	public void update(SlideCreator sc)
-	{
-		
+	{		
 		//grobal dragged value
 		dragged = sc.dragged;
 		//checking AABB colision on click
@@ -60,7 +63,7 @@ public class E_Image extends Element
 		else
 			colided = false;
 		//executing on dragging
-		if (sc.dragged)
+		if (sc.dragged && resizer.canTrakedElementMove)
 		{
 			//if colided
 			if (colided)
@@ -80,7 +83,6 @@ public class E_Image extends Element
 		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
 		        x += xMoved;
 		        y += yMoved;
-				frame.update();
 			}
 	        
 	        clickpoint = new Point(sc.xPixel,sc.yPixel);
@@ -92,6 +94,11 @@ public class E_Image extends Element
 			moving = false;
 			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
+		
+		if (editing) frame.update();
+		
+		resizer.track(this);
+		resizer.update(sc);
 	}
 	
 	public void load(XmlParser xml,int id)
@@ -138,6 +145,8 @@ public class E_Image extends Element
 		
 		if (dragged && colided)
 			Screen.frectnofill(x,y,w,h,Color.RED);
+		
+		resizer.render(gl);
 	}
 	
 	
