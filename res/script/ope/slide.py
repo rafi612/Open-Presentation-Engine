@@ -14,6 +14,7 @@ music = "null"
 ttskey = "auto"
 
 slidespath = []
+slideslayout = []
 slidesbg = []
 slidestts = []
 slidesentani  = []
@@ -58,6 +59,12 @@ def createSlide(number,path):
     slidesentani.append("null")
     slidesexiani.append("null")
 
+def setLayout(path):
+    global slideslayout
+    global num
+    #del slideslayout[num - 1]
+    slideslayout.insert(num - 1,path)
+
 def setSlideBg(path):
     global slidesbg
     global num
@@ -89,6 +96,7 @@ def End():
     saveFileWriteLine("config.xml","<class> \n")
     for i in range(slides):
         saveFileWriteLine("config.xml","<slide" + str(i + 1) + ">\n")
+        saveFileWriteLine("config.xml","    <layout>" + slideslayout[i] + "</layout> \n");
         saveFileWriteLine("config.xml","    <path>" + slidespath[i] + "</path> \n");
         saveFileWriteLine("config.xml","    <bg>" + slidesbg[i] + "</bg> \n")
         saveFileWriteLine("config.xml","    <tts>" + slidestts[i] + "</tts> \n")
