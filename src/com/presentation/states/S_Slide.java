@@ -1,6 +1,8 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.states;
 
+import java.util.ArrayList;
+
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 import com.presentation.animation.Animation;
@@ -13,6 +15,8 @@ import com.presentation.states.State;
 
 public class S_Slide extends State 
 {
+	public static ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
+	
 	public int choose;
 	ImageResource empty;
 	
@@ -26,10 +30,10 @@ public class S_Slide extends State
 	{
 		choose = 0;
 		empty = new ImageResource(S_Slide.class.getResourceAsStream("/images/empty.png"));
-		if (Presentation.slide.size() > 0)
+		if (slide.size() > 0)
 		{
-			startanimation = Presentation.slide.get(0).startanimation;
-			exitanimation = Presentation.slide.get(0).exitanimation;
+			startanimation = slide.get(0).startanimation;
+			exitanimation = slide.get(0).exitanimation;
 		}
 	}
 	boolean ttsswitch = true;
@@ -45,7 +49,7 @@ public class S_Slide extends State
 				//key switching
 				if (Keyboard.getKeyOnce(KeyEvent.VK_UP))
 				{
-					exitanimation = Presentation.slide.get(choose).exitanimation;
+					exitanimation = slide.get(choose).exitanimation;
 					exitanimation.reset();
 					exitanimation.start();
 					switchslide = true;
@@ -54,7 +58,7 @@ public class S_Slide extends State
 				}
 				if (Keyboard.getKeyOnce(KeyEvent.VK_DOWN))
 				{
-					exitanimation = Presentation.slide.get(choose).exitanimation;
+					exitanimation = slide.get(choose).exitanimation;
 					exitanimation.reset();
 					exitanimation.start();
 					switchslide = true;
@@ -65,10 +69,10 @@ public class S_Slide extends State
 			//new slide opened
 			if (switchslide && (exitanimation.isEnding() || !exitanimation.isRunning()))
 			{
-				startanimation = Presentation.slide.get(choose).startanimation;
+				startanimation = slide.get(choose).startanimation;
 				if (switchside == 0)
 				{	
-					if (choose < Presentation.slide.size() - 1) choose++;
+					if (choose < slide.size() - 1) choose++;
 					startanimation.reset();
 					//System.out.println(choose);
 					Presentation.window.setTitle(Presentation.TITLE + " - Slide: " + (choose + 1));
@@ -90,17 +94,17 @@ public class S_Slide extends State
 			//tts auto
 			if (Presentation.TTSKeyCode == -1)
 			{
-				if (Presentation.slide.get(choose).tts != null)
+				if (slide.get(choose).tts != null)
 					if (startanimation.isEnding() && ttsswitch)
 				{
-					Presentation.slide.get(choose).tts.playInBg();
+					slide.get(choose).tts.playInBg();
 					ttsswitch = false;
 				}
 			}
 			//tts key
 			else if (Keyboard.getKeyOnce(Presentation.TTSKeyCode))
 			{
-				Presentation.slide.get(choose).tts.playInBg();
+				slide.get(choose).tts.playInBg();
 			}
 
 			//animation update
@@ -123,7 +127,7 @@ public class S_Slide extends State
 		if (SlideResource.slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
-			Presentation.slide.get(choose).render(gl,0,0);
+			slide.get(choose).render(gl,0,0);
 			startanimation.render(gl);
 			exitanimation.render(gl);
 		}

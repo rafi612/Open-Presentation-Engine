@@ -10,6 +10,7 @@ import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.graphics.Screen;
 import com.presentation.main.Presentation;
+import com.presentation.states.S_Slide;
 import com.project.Project;
 
 public class SlideResource
@@ -94,12 +95,12 @@ public class SlideResource
 		
 		for (int i = 0;i < slides;i++)
 		{
-			Presentation.slide.add(new SlideResource());
-			Presentation.slide.get(i).setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
-			Presentation.slide.get(i).setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
-			Presentation.slide.get(i).setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
-			Presentation.slide.get(i).setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
-			Presentation.slide.get(i).setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
+			S_Slide.slide.add(new SlideResource());
+			S_Slide.slide.get(i).setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
+			S_Slide.slide.get(i).setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
+			S_Slide.slide.get(i).setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
+			S_Slide.slide.get(i).setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
+			S_Slide.slide.get(i).setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
 		}
 	}
 	

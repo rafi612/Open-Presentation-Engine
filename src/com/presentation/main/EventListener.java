@@ -9,6 +9,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.presentation.input.Keyboard;
 import com.presentation.resource.SlideResource;
+import com.presentation.states.S_Slide;
 
 public class EventListener implements GLEventListener
 {
@@ -38,13 +39,13 @@ public class EventListener implements GLEventListener
 	@Override
 	public void dispose(GLAutoDrawable drawable) 
 	{
-		for (int i = 0;i < Presentation.slide.size();i++)
+		for (int i = 0;i < S_Slide.slide.size();i++)
 		{
-			Presentation.slide.get(i).image.getTexture().destroy(gl);
-			Presentation.slide.get(i).image.image.flush();
+			S_Slide.slide.get(i).image.getTexture().destroy(gl);
+			S_Slide.slide.get(i).image.image.flush();
 		}
 		
-		Presentation.slide.clear();
+		S_Slide.slide.clear();
 		Presentation.animator.stop();
 	}
 
@@ -69,11 +70,11 @@ public class EventListener implements GLEventListener
 		System.out.println("========================================");
 		for (int i = 0;i < SlideResource.slides;i++)
 		{
-			System.out.println("Slide " + (i + 1) + " Image: " + Presentation.slide.get(i).imagepath);
-			System.out.println("Slide " + (i + 1) + " Bg: " + Presentation.slide.get(i).bgpath);
-			System.out.println("Slide " + (i + 1) + " TTS: " + Presentation.slide.get(i).ttspath);
-			System.out.println("Slide " + (i + 1) + " Start animation: " + Presentation.slide.get(i).startanimation);
-			System.out.println("Slide " + (i + 1) + " Exit animation: " + Presentation.slide.get(i).exitanimation);
+			System.out.println("Slide " + (i + 1) + " Image: " + S_Slide.slide.get(i).imagepath);
+			System.out.println("Slide " + (i + 1) + " Bg: " + S_Slide.slide.get(i).bgpath);
+			System.out.println("Slide " + (i + 1) + " TTS: " + S_Slide.slide.get(i).ttspath);
+			System.out.println("Slide " + (i + 1) + " Start animation: " + S_Slide.slide.get(i).startanimation);
+			System.out.println("Slide " + (i + 1) + " Exit animation: " + S_Slide.slide.get(i).exitanimation);
 			System.out.println("=============================");
 		}
 		

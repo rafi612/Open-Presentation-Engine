@@ -19,7 +19,6 @@ import com.project.Project;
 
 public class Presentation 
 {
-	public static ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
 	
 	public static String generalMusic = "null";
 	public static boolean fullscreen = false;
