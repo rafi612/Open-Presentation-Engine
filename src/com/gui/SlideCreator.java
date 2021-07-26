@@ -20,6 +20,7 @@ import java.util.Collections;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,6 +29,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.io.Stream;
 import com.jogamp.opengl.GL2;
@@ -63,6 +66,9 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     
     JButton newelement,edit,up,down,rename,delete;
     JLabel position;
+    JCheckBox movecheck;
+    
+    boolean canOnlyMoveCheck;
     
     public int elementsint = 0;
     public int xPixel,yPixel;
@@ -171,8 +177,11 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    animator = new FPSAnimator(canvas,60);
 	    animator.start();
 	    
+	    movecheck = new JCheckBox("Move only checked");
+	    
 	    JPanel ppanel = new JPanel();
 	    ppanel.add(position);
+	    ppanel.add(movecheck);
 	    cpanel.add(ppanel,BorderLayout.SOUTH);
 	    
 	    cpanel.add(canvas);
@@ -208,12 +217,18 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 //		textRenderer.draw("Hello world!!\nlololo",0,600);
 //		textRenderer.endRendering();
 		
-		for (int i = 0;i < elements.size();i++)
+		//update
+		if (movecheck.isSelected())
 		{
-			elements.get(i).update(this);
-			elements.get(i).render(gl);
-			
+			elements.get(list.getSelectedIndex()).update(this);
 		}
+		else
+			for (int i = 0;i < elements.size();i++)
+				elements.get(i).update(this);
+		
+		//render
+		for (int i = 0;i < elements.size();i++)
+			elements.get(i).render(gl);
 
 		//selected border
 		if (list.getSelectedIndex() > -1)
