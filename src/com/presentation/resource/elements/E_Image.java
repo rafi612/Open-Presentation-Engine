@@ -6,12 +6,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.gui.SlideCreator;
+import com.io.Stream;
 import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Screen;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.presentation.resource.e_frames.E_ImageFrame;
+import com.project.Project;
 
 public class E_Image extends Element
 {
@@ -132,7 +134,7 @@ public class E_Image extends Element
 			
 			//loading image
 			path = data.getAttribute("src");
-			image = new ImageResource(path);
+			image = new ImageResource(Project.projectlocation + Stream.slash() + path);
 			
 			x = Integer.parseInt(data.getAttribute("x"));
 			y = Integer.parseInt(data.getAttribute("y"));

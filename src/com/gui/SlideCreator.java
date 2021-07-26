@@ -7,6 +7,10 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +18,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,16 +28,16 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.io.Stream;
+import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -218,7 +223,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 //		textRenderer.endRendering();
 		
 		//update
-		if (movecheck.isSelected())
+		if (movecheck.isSelected() && list.getSelectedIndex() != -1)
 		{
 			elements.get(list.getSelectedIndex()).update(this);
 		}
@@ -236,6 +241,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			Element e = elements.get(list.getSelectedIndex());
 			Screen.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
 		}
+		
+		System.out.println(slideloaded);
 				
 	}
 
@@ -343,15 +350,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//discard slide
 		if (source == actions.get(3))
 		{
-			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-			// "yes" option
-			if (choose == 0)
-			{
-				listModel.clear();
-				elements.clear();
-				initenable();
-				slideloaded = false;
-			}
+			discarddialog();
 		}
 		//edit
 		if (source == edit)
@@ -443,7 +442,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//open slide
 		if (source == actions.get(1))
 		{
-
+			opendialog();
 		}
 	}
 	
@@ -467,6 +466,97 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		actions.get(2).setEnabled(b);
 		//discard
 		actions.get(3).setEnabled(b);
+	}
+	
+	private void opendialog()
+	{
+		//check discard
+		if (discarddialog() != 0) return;
+		
+		JDialog dialog = new JDialog(Main.frame,"Open");
+		dialog.setSize(300, 120);
+		dialog.setLayout(new BorderLayout());
+		dialog.setLocationRelativeTo(null);
+		dialog.setResizable(false);
+		
+		JTextField text = new JTextField();
+		text.setDropTarget(null);
+		JButton ok = new JButton("Ok");
+		ok.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				dialog.dispose();
+				
+				XmlParser xml = new XmlParser(Project.projectlocation + Stream.slash() + text.getText());
+				
+				org.w3c.dom.Element[] elements_ = xml.getElements(xml.getElementsByTagName("element"));
+				
+				for (int i = 0;i < elements_.length;i++)
+				{
+					Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
+					elem.load(xml, i);
+					
+					elements.add(elem);
+					listModel.addElement(elements_[i].getAttribute("name"));
+					slideloaded = true;
+				}
+				
+				//enable
+				enableComponents(listpanel, true);
+				savediscardenable(true);
+			}
+		});
+		
+		JPanel okpanel = new JPanel();
+		
+		dialog.add(new JLabel("  Enter path or drop file here:"),BorderLayout.NORTH);
+		dialog.add(text,BorderLayout.CENTER);
+		
+		okpanel.add(ok);
+		dialog.add(okpanel,BorderLayout.SOUTH);
+		
+		//drag and drop
+		dialog.setDropTarget(new DropTarget()
+		{
+			private static final long serialVersionUID = 1L;
+			public synchronized void drop (DropTargetDropEvent evt)
+        	{
+				try 
+				{
+					evt.acceptDrop(DnDConstants.ACTION_COPY);
+					File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
+					
+					String path = new File(Project.projectlocation).toURI().relativize(file.toURI()).getPath();
+					
+					text.setText(path);
+				} 
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
+				}
+        	}
+	
+		});
+		dialog.setVisible(true);
+	}
+	
+	private int discarddialog()
+	{
+		if (!slideloaded) return 0;
+		int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+		// "yes" option
+		if (choose == 0)
+		{
+			listModel.clear();
+			elements.clear();
+			initenable();
+			slideloaded = false;
+		}
+		
+		return choose;
 	}
     
     public void initenable()
