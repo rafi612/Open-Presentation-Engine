@@ -65,6 +65,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	
     public ArrayList<JButton> actions = new ArrayList<JButton>();
     
+    public static final int WIDTH = 1280,HEIGHT = 720;
+    
     DefaultListModel<String> listModel;
     public JList<String> list;
     public JPanel listpanel;
@@ -241,9 +243,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			Element e = elements.get(list.getSelectedIndex());
 			Screen.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
 		}
-		
-		System.out.println(slideloaded);
-				
 	}
 
 	@Override
@@ -277,7 +276,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 
 		gl.glViewport(0,0,(int)(width * getScale()),(int)(height * getScale()));
 		
-		gl.glOrtho(0,1280,720,0,1,-1);
+		gl.glOrtho(0,WIDTH,HEIGHT,0,1,-1);
 		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -474,7 +473,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		if (discarddialog() != 0) return;
 		
 		JDialog dialog = new JDialog(Main.frame,"Open");
-		dialog.setSize(300, 120);
+		dialog.setSize(300, 110);
 		dialog.setLayout(new BorderLayout());
 		dialog.setLocationRelativeTo(null);
 		dialog.setResizable(false);
