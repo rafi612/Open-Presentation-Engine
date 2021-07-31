@@ -9,7 +9,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.presentation.input.Keyboard;
 import com.presentation.resource.SlideResource;
-import com.presentation.states.S_Slide;
+import com.presentation.slide.SlideManager;
 
 public class EventListener implements GLEventListener
 {
@@ -39,19 +39,20 @@ public class EventListener implements GLEventListener
 	@Override
 	public void dispose(GLAutoDrawable drawable) 
 	{
-		for (int i = 0;i < S_Slide.slide.size();i++)
+		for (int i = 0;i < Presentation.sm.slide.size();i++)
 		{
-			S_Slide.slide.get(i).image.getTexture().destroy(gl);
-			S_Slide.slide.get(i).image.image.flush();
+			Presentation.sm.slide.get(i).image.getTexture().destroy(gl);
+			Presentation.sm.slide.get(i).image.image.flush();
 		}
 		
-		S_Slide.slide.clear();
+		Presentation.sm.slide.clear();
 		Presentation.animator.stop();
 	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) 
 	{
+		
 		gl = drawable.getGL().getGL2();
 		gl.glClearColor(0, 0, 0, 1);
 		
@@ -68,13 +69,13 @@ public class EventListener implements GLEventListener
 		System.out.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
 		System.out.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));
 		System.out.println("========================================");
-		for (int i = 0;i < SlideResource.slides;i++)
+		for (int i = 0;i < Presentation.sm.slides;i++)
 		{
-			System.out.println("Slide " + (i + 1) + " Image: " + S_Slide.slide.get(i).imagepath);
-			System.out.println("Slide " + (i + 1) + " Bg: " + S_Slide.slide.get(i).bgpath);
-			System.out.println("Slide " + (i + 1) + " TTS: " + S_Slide.slide.get(i).ttspath);
-			System.out.println("Slide " + (i + 1) + " Start animation: " + S_Slide.slide.get(i).startanimation);
-			System.out.println("Slide " + (i + 1) + " Exit animation: " + S_Slide.slide.get(i).exitanimation);
+			System.out.println("Slide " + (i + 1) + " Image: " + Presentation.sm.slide.get(i).imagepath);
+			System.out.println("Slide " + (i + 1) + " Bg: " + Presentation.sm.slide.get(i).bgpath);
+			System.out.println("Slide " + (i + 1) + " TTS: " + Presentation.sm.slide.get(i).ttspath);
+			System.out.println("Slide " + (i + 1) + " Start animation: " + Presentation.sm.slide.get(i).startanimation);
+			System.out.println("Slide " + (i + 1) + " Exit animation: " + Presentation.sm.slide.get(i).exitanimation);
 			System.out.println("=============================");
 		}
 		

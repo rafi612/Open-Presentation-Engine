@@ -9,13 +9,10 @@ import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.graphics.Screen;
-import com.presentation.main.Presentation;
-import com.presentation.states.S_Slide;
 import com.project.Project;
 
 public class SlideResource
 {
-	public static int slides;
 	public String imagepath,bgpath;
 	public String ent_animation,exit_animation;
 	
@@ -25,6 +22,8 @@ public class SlideResource
 	
 	public String ttspath;
 	public Sound tts;
+	
+	Element[] elements;
 	
 	public SlideResource() {} 
 
@@ -80,28 +79,6 @@ public class SlideResource
 	public void setExitAnimation(String path)
 	{
 		exitanimation = Animation.getAnimation(path);
-	}
-
-
-	public static void load()
-	{
-		String path = "";
-		if (Main.args.length < 1)
-		{
-			path = Project.projectlocation + Stream.slash() + "config.xml";
-		}
-		else
-			path = Main.args[0];
-		
-		for (int i = 0;i < slides;i++)
-		{
-			S_Slide.slide.add(new SlideResource());
-			S_Slide.slide.get(i).setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
-			S_Slide.slide.get(i).setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
-			S_Slide.slide.get(i).setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
-			S_Slide.slide.get(i).setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
-			S_Slide.slide.get(i).setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
-		}
 	}
 	
 	public void render(GL2 gl,int camerax,int cameray)

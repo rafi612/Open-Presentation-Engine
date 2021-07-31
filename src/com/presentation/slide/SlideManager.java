@@ -1,21 +1,25 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.presentation.states;
+package com.presentation.slide;
 
 import java.util.ArrayList;
 
+import com.io.Stream;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
+import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.graphics.Screen;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;
 import com.presentation.resource.ImageResource;
 import com.presentation.resource.SlideResource;
-import com.presentation.states.State;
+import com.project.Project;
 
-public class S_Slide extends State 
+public class SlideManager
 {
-	public static ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
+	public ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
+	
+	public int slides;
 	
 	public int choose;
 	ImageResource empty;
@@ -26,22 +30,17 @@ public class S_Slide extends State
 	Animation startanimation;
 	Animation exitanimation;
 	
-	public S_Slide()
+	public SlideManager()
 	{
 		choose = 0;
-		empty = new ImageResource(S_Slide.class.getResourceAsStream("/images/empty.png"));
-		if (slide.size() > 0)
-		{
-			startanimation = slide.get(0).startanimation;
-			exitanimation = slide.get(0).exitanimation;
-		}
+		empty = new ImageResource(SlideManager.class.getResourceAsStream("/images/empty.png"));
 	}
 	boolean ttsswitch = true;
 	
 	public void update()
 	{
 		// if not 0
-		if (!(SlideResource.slides == 0))
+		if (!(slides == 0))
 		{
 			//if slide not switching
 			if (!switchslide)
@@ -121,10 +120,36 @@ public class S_Slide extends State
 		
 	}
 	
+	public void load()
+	{
+		String path = "";
+		if (Main.args.length < 1)
+		{
+			path = Project.projectlocation + Stream.slash() + "config.xml";
+		}
+		else
+			path = Main.args[0];
+		
+		for (int i = 0;i < slides;i++)
+		{
+			SlideResource slideres = new SlideResource();
+			slideres.setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
+			slideres.setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
+			slideres.setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
+			slideres.setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
+			slideres.setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
+			
+			slide.add(slideres);
+		}
+		
+		startanimation = slide.get(0).startanimation;
+		exitanimation = slide.get(0).exitanimation;
+	}
+	
 	public void render(GL2 gl)
 	{
 		
-		if (SlideResource.slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
+		if (slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
 			slide.get(choose).render(gl,0,0);

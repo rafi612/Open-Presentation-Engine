@@ -13,8 +13,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
-import com.presentation.meneger.StateMeneger;
 import com.presentation.resource.SlideResource;
+import com.presentation.slide.SlideManager;
 import com.project.Project;
 
 public class Presentation 
@@ -34,8 +34,8 @@ public class Presentation
 	public static GLProfile profile;
 	public static FPSAnimator animator;
 	
-	//tech
-	public static StateMeneger sm;
+	public static SlideManager sm;
+	
 	//public static int clock;
 	
 	//wejscie
@@ -46,8 +46,9 @@ public class Presentation
 		if (window != null)
 			if (window.isVisible())
 				stop();
+		
+		sm = new SlideManager();
 		load();
-	    sm = new StateMeneger();
 	    
 		GLProfile.initSingleton();
 	    profile = GLProfile.get(GLProfile.GL2);
@@ -83,7 +84,7 @@ public class Presentation
 		
 		String config = path + "config.xml";
 		
-		SlideResource.slides = Integer.parseInt(Stream.readXml(config, "summary", "slides"));
+		sm.slides = Integer.parseInt(Stream.readXml(config, "summary", "slides"));
 		generalMusic = Stream.readXml(config, "summary", "general_music");
 		fullscreen = Boolean.parseBoolean(Stream.readXml(config, "summary", "fullscreen"));
 		
@@ -93,7 +94,7 @@ public class Presentation
 		else TTSKeyCode = -1;
 		
 		
-	    SlideResource.load();
+	    sm.load();
 	}
 	
 	public static GLProfile getProfile()
