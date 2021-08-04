@@ -142,8 +142,11 @@ public class SlideManager
 			slide.add(slideres);
 		}
 		
-		startanimation = slide.get(0).startanimation;
-		exitanimation = slide.get(0).exitanimation;
+		if (slides > 0)
+		{
+			startanimation = slide.get(0).startanimation;
+			exitanimation = slide.get(0).exitanimation;
+		}
 	}
 	
 	public void render(GL2 gl)
