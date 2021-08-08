@@ -4,10 +4,8 @@ package com.main;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
