@@ -94,7 +94,7 @@ public class Main
     public static SlideCreator slidecreator;
     public static SlideRack sliderack;
 
-    public Main()
+    public static void initUI()
     {
     	tabs = new JTabbedPane();
     	
@@ -221,17 +221,15 @@ public class Main
 			frame.addWindowListener(new Window());
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
-			menubar = new JMenuBar();
-		       
+			menubar = new JMenuBar(); 
 			menu();
-			
 		    frame.setJMenuBar(menubar);
 			
-			new Main();
+			initUI();
 			
 			Config.loadinterpreterpath();
 			
-			UI();
+			theme();
 			
 			frame.setVisible(true);
 
@@ -400,7 +398,7 @@ public class Main
 	
 
 	
-	public static void UI()
+	public static void theme()
 	{
 	    try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
