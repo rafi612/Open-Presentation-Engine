@@ -155,7 +155,7 @@ public class SlideManager
 		if (slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
-			slide.get(choose).render(gl,0,0);
+			slide.get(choose).render(gl);
 			startanimation.render(gl);
 			exitanimation.render(gl);
 		}

@@ -25,6 +25,8 @@ public class SlideResource
 	
 	Element[] elements;
 	
+	int camerax,cameray,cameraw,camerah;
+	
 	public SlideResource() {} 
 
 	public SlideResource(String path) 
@@ -81,9 +83,9 @@ public class SlideResource
 		exitanimation = Animation.getAnimation(path);
 	}
 	
-	public void render(GL2 gl,int camerax,int cameray)
+	public void render(GL2 gl)
 	{
-		if (bgimage != null) Screen.drawImage(bgimage, 0 - camerax, 0 - cameray, 1280,720);
-		if (image != null) Screen.drawImage(image, 0 - camerax, 0 - cameray, 1280,720);
+		if (bgimage != null) Screen.drawImage(bgimage, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
+		if (image != null) Screen.drawImage(image, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
 	}
 }
