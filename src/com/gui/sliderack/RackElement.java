@@ -4,11 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.gui.SlideRack;
 
 public class RackElement extends JPanel
 {
@@ -16,11 +26,11 @@ public class RackElement extends JPanel
 	
 	public static final int HEIGHT = 150;
 	
-	public JCheckBox selected;
-	public JLabel name;
-	public JPanel toppanel;
+	JCheckBox selected;
+	JLabel name;
+	JPanel toppanel;
 
-	public RackElement(String name_) 
+	public RackElement(String name_,SlideRack sliderack) 
 	{
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setLayout(new BorderLayout());
@@ -36,7 +46,18 @@ public class RackElement extends JPanel
 		toppanel.add(selected);
 		toppanel.add(name);
 		
+		selected.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				sliderack.selectAllEvent();
+			}
+		});
+		
 		add(toppanel,BorderLayout.NORTH);
+		
+		sliderack.selectAllEvent();
 	}
 	
 	public void setColor(Color color)
@@ -45,11 +66,37 @@ public class RackElement extends JPanel
 		setBackground(color);
 	}
 	
+	public Color getColor()
+	{
+		return getForeground();
+	}
+	
 	public void setEnabled(boolean b)
 	{
 		name.setEnabled(b);
 		selected.setEnabled(b);
 		super.setEnabled(b);
+	}
+	
+	public void setSelected(boolean b)
+	{
+		selected.setSelected(b);
+	}
+	
+	public boolean getSelected()
+	{
+		return selected.isSelected();
+	}
+	
+	
+	public void setRackName(String name)
+	{
+		this.name.setText(name);
+	}
+	
+	public String getRackName()
+	{
+		return name.getText();
 	}
 
 }
