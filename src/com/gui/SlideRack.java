@@ -54,7 +54,6 @@ public class SlideRack extends JPanel implements ActionListener
 		actionbuttons.add(new JButton("Delete Slide"));
 		actionbuttons.add(new JButton("Move Up"));
 		actionbuttons.add(new JButton("Move Down"));
-		actionbuttons.add(new JButton("Change Color"));
 		//actionbuttons.add(new JButton("Select All Slides"));
 		
 	    for (int i = 0;i < actionbuttons.size(); i++)
@@ -117,29 +116,16 @@ public class SlideRack extends JPanel implements ActionListener
 		if (source == actionbuttons.get(2))
 		{
 			if (!check()) return;
-			for (int i : getSelectedIndexes())
-			{
-				rackpanel.remove(elements.get(i));
-				elements.remove(i);
-			}
 			
-		}
-		
-		//delete slide
-		if (source == actionbuttons.get(5))
-		{
-			if (!check()) return;
-			for (int i : getSelectedIndexes())
+			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete this slides?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			
+			if (choose == 0) 
 			{
-				RackElement element = elements.get(i);
-				
-				JColorChooser colorchooser = new JColorChooser();
-				colorchooser.setBorder(BorderFactory.createTitledBorder("Set color for: " + element.getRackName()));
-				
-				int choose = JOptionPane.showConfirmDialog(this, colorchooser, "Select " + element.getRackName() + " color",JOptionPane.OK_CANCEL_OPTION);
-				
-				if (choose == 0)
-					element.setColor(colorchooser.getColor());
+				for (int i : getSelectedIndexes())
+				{
+					rackpanel.remove(elements.get(i));
+					elements.remove(i);
+				} 
 			}
 			
 		}

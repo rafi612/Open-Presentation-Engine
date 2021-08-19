@@ -11,16 +11,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.gui.SlideRack;
+import com.main.Main;
 
-public class RackElement extends JPanel
+public class RackElement extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -29,9 +35,17 @@ public class RackElement extends JPanel
 	JCheckBox selected;
 	JLabel name;
 	JPanel toppanel;
+	JButton add;
+	
+	JPopupMenu menu;
+	JMenuItem rename,color;
+	
+	SlideRack sliderack;
 
 	public RackElement(String name_,SlideRack sliderack) 
 	{
+		this.sliderack = sliderack;
+		
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setLayout(new BorderLayout());
 		
@@ -41,29 +55,64 @@ public class RackElement extends JPanel
 		
 		toppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		selected = new JCheckBox();
+		selected.addActionListener(this);
 		name = new JLabel(name_);
 		
 		toppanel.add(selected);
 		toppanel.add(name);
 		
-		selected.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				sliderack.selectAllEvent();
-			}
-		});
-		
 		add(toppanel,BorderLayout.NORTH);
 		
+		add = new JButton();
+		add.setIcon(new ImageIcon(Main.loadIcon("/icons/rack_add.png")));
+		add.addActionListener(this);
+		add(add,BorderLayout.EAST);
+		
+		//menu
+		menu = new JPopupMenu();
+		
+		rename = new JMenuItem("Rename");
+		rename.addActionListener(this);
+		color = new JMenuItem("Change color");
+		color.addActionListener(this);
+		
+		menu.add(rename);
+		menu.add(color);
+		setComponentPopupMenu(menu);
+		
 		sliderack.selectAllEvent();
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Object source = e.getSource();
+		
+		if(source == selected)
+			sliderack.selectAllEvent();
+		
+		if(source == color)
+		{
+			JColorChooser colorchooser = new JColorChooser();
+			
+			int choose = JOptionPane.showConfirmDialog(Main.frame, colorchooser, "Select " + getRackName() + " color",JOptionPane.OK_CANCEL_OPTION);
+			
+			if (choose == 0)
+				setColor(colorchooser.getColor());
+		}
+		
+		if (source == rename)
+		{
+			String name = JOptionPane.showInputDialog(Main.frame, "Enter new name", "Rename",JOptionPane.QUESTION_MESSAGE);
+			setRackName(name);
+		}
 	}
 	
 	public void setColor(Color color)
 	{
 		toppanel.setBackground(color);
-		setBackground(color);
+		//setBackground(color);
 	}
 	
 	public Color getColor()
