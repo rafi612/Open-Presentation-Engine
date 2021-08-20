@@ -97,7 +97,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//actions
         JPanel buttons = new JPanel();
         
-        buttons.setBorder(BorderFactory.createTitledBorder("Slide Creator Actions"));
+        buttons.setBorder(BorderFactory.createTitledBorder(""));
         buttons.setToolTipText("Necessary actions");
         
         actions.add(new JButton("Create new slide"));

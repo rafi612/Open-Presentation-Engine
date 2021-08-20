@@ -307,7 +307,53 @@ public class Project
 		}
 	}
 	
-	public static String load()
+	public static String newproject_dialog()
+	{
+		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		jfc.setDialogTitle("Choose project directory:");
+		
+		int returnValue = jfc.showDialog(Main.frame,"Select this location");
+		if (returnValue == JFileChooser.APPROVE_OPTION)
+		{
+			if (jfc.getSelectedFile().isDirectory())
+			{
+				System.out.println("You selected the directory: " + jfc.getSelectedFile());
+			}
+			if (Project.projectIsLoaded)
+			{
+				int yesno = 1;
+				yesno = JOptionPane.showConfirmDialog(Main.frame, "All changes are lost. Do you want to save?", "Save",JOptionPane.YES_NO_CANCEL_OPTION ,JOptionPane.QUESTION_MESSAGE);
+			
+				
+				if (yesno == 0)
+				{
+					Project.SaveTextFromTextArea(Project.projectlocation + Stream.slash() + "main.py");
+				}
+				
+				Project.unloadProject();
+				
+				if (yesno != 2)
+				{
+					String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
+					if (!path.equals(null)) 
+						Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
+				}
+			}
+			else 
+			{
+				if (jfc.getSelectedFile().isDirectory()) 
+				{
+					String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
+					if (!(path == null)) 
+						Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
+				}	
+			}
+		}
+		return jfc.getSelectedFile().toString();
+	}
+	
+	public static String load_dialog()
 	{
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
