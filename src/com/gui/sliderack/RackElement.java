@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -30,11 +32,11 @@ public class RackElement extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
-	public static final int HEIGHT = 150;
+	private static final int HEIGHT = 150;
 	
 	JCheckBox selected;
 	JLabel name;
-	JPanel toppanel;
+	JPanel toppanel,centerpanel;
 	JButton add;
 	
 	JPopupMenu menu;
@@ -79,6 +81,17 @@ public class RackElement extends JPanel implements ActionListener
 		menu.add(rename);
 		menu.add(color);
 		setComponentPopupMenu(menu);
+		
+		//center
+		centerpanel = new JPanel();
+		centerpanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		//for (int i =0; i < 20;i++)
+//		centerpanel.add(new JButton("Slide Layout: none"));
+//		centerpanel.add(new JButton("Start Animation: none"));
+//		centerpanel.add(new JButton("Exit Animation: none"));
+		
+		add(centerpanel,BorderLayout.CENTER);
 		
 		sliderack.selectAllEvent();
 	}
