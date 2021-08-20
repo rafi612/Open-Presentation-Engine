@@ -141,7 +141,7 @@ public class Action implements ActionListener
 		//action save
 		if (source == Main.actions.get(1))
 		{			
-			Project.save();
+			Project.save_dialog();
 			
 		}
 		
@@ -150,34 +150,35 @@ public class Action implements ActionListener
 		//new project
 		if (source == Main.newproject)
 		{
-			Project.newproject_dialog();
+			int yesno = 0;
+			if (Project.projectIsLoaded) 
+				yesno = Project.lost_save_dialog();
+			
+			if (yesno != 2) Project.newproject_dialog();
 		}
 		if (source == Main.loadproject)
 		{
-			if (Project.projectIsLoaded) Project.save();
-			Project.load_dialog();
+			int yesno = 0;
+			if (Project.projectIsLoaded) 
+				yesno = Project.lost_save_dialog();
+			
+			if (yesno != 2) Project.load_dialog();
 		}
 		
 		//save
 		if (source == Main.save)
 		{
-			Project.save();
+			Project.save_dialog();
 		}
 		
 		//exit project
 		if (source == Main.exitproject)
 		{
-			int yesno = JOptionPane.showConfirmDialog(Main.frame, "All changes are lost. Do you want to save?", "Save",JOptionPane.YES_NO_CANCEL_OPTION ,JOptionPane.QUESTION_MESSAGE);
+			int yesno = 0;
+			if (Project.projectIsLoaded) 
+				yesno = Project.lost_save_dialog();
 			
-			if (yesno == 0)
-			{
-				Project.SaveTextFromTextArea(Project.projectlocation + Stream.slash() + "main.py");
-			}
-			
-			if (yesno != 2)
-			{
-				Project.unloadProject();
-			}
+			if (yesno != 2) Project.unloadProject();
 		}
 		
 		//exit 

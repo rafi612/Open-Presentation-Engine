@@ -138,74 +138,6 @@ public class Project
     	refreshProject();
 	}
 	
-	public static void loadTextFromFileToTextArea(String path)
-	{
-		loadTextFromFileToTextArea(path,Main.textpane);
-	}
-	
-	public static void loadTextFromFileToTextArea(String path,JTextArea t)
-	{
-		t.setText("");
-		BufferedReader in = null;
-		try 
-		{
-			in = new BufferedReader(new FileReader(path));
-			String str;
-			while ((str = in.readLine()) != null) 
-			{
-				t.append(str + "\n");
-			}
-		} 
-		catch (IOException e)
-		{
-			
-		}
-	}
-	
-	public static void loadTextFromFileToTextArea(String path,JTextPane t)
-	{
-		t.setText("");
-		BufferedReader in = null;
-		try 
-		{
-			in = new BufferedReader(new FileReader(path));
-			String str;
-			while ((str = in.readLine()) != null) 
-			{
-				append(str + "\n",t);
-			}
-		} 
-		catch (IOException e)
-		{
-			
-		}
-	}
-	
-
-    private static void createChildren(File fileRoot, DefaultMutableTreeNode node) 
-    {
-        File[] files = fileRoot.listFiles();
-        if (files == null) return;
-        for (File file : files) 
-        {
-        	DefaultMutableTreeNode childNode = null;
-        	
-        	//System.out.println(file.getName());
-        	
-        	if (file.isDirectory() && file.getName().equals("ope"))
-        	{}
-        	else
-        	{
-        		childNode = new DefaultMutableTreeNode(file);
-                node.add(childNode);
-                if (file.isDirectory()) 
-                {
-                    createChildren(file, childNode);
-                }
-        	}
-        
-        }
-    }
 
 	public static void refreshProject()
 	{
@@ -221,38 +153,11 @@ public class Project
     	model.reload(Main.workspace);
 	}
 	
-	public static void SaveTextFromTextArea(String path) 
-	{
-		SaveTextFromTextArea(path,Main.textpane);
-    }
-
-	public static void SaveTextFromTextArea(String path,JTextComponent t) 
-	{
-		try 
-		{
-			PrintWriter pw = new PrintWriter(new File(path));
-			Scanner s = new Scanner(t.getText());
-			while (s.hasNext())
-				pw.println(s.nextLine());
-			pw.close();
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-    }
 	
-	public static int save()
+	public static void save()
 	{
-		int yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-				
-		if (yesno == 0)
-		{
-			SaveTextFromTextArea(Project.projectlocation + File.separator + "main.py");
-			SaveTextFromTextArea(Project.projectlocation + File.separator + "config.xml",Main.textarea2);
-		}
-		
-		return yesno;
+		SaveTextFromTextArea(Project.projectlocation + File.separator + "main.py");
+		SaveTextFromTextArea(Project.projectlocation + File.separator + "config.xml",Main.textarea2);
 	}
 	
 	public static void run()
@@ -320,37 +225,15 @@ public class Project
 			{
 				System.out.println("You selected the directory: " + jfc.getSelectedFile());
 			}
-			if (Project.projectIsLoaded)
+			if (jfc.getSelectedFile().isDirectory()) 
 			{
-				int yesno = 1;
-				yesno = JOptionPane.showConfirmDialog(Main.frame, "All changes are lost. Do you want to save?", "Save",JOptionPane.YES_NO_CANCEL_OPTION ,JOptionPane.QUESTION_MESSAGE);
-			
-				
-				if (yesno == 0)
-				{
-					Project.SaveTextFromTextArea(Project.projectlocation + Stream.slash() + "main.py");
-				}
-				
-				Project.unloadProject();
-				
-				if (yesno != 2)
-				{
-					String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
-					if (!path.equals(null)) 
-						Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
-				}
-			}
-			else 
-			{
-				if (jfc.getSelectedFile().isDirectory()) 
-				{
-					String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
-					if (!(path == null)) 
-						Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
-				}	
+				String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
+				if (!(path == null)) 
+					Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
 			}
 		}
-		return jfc.getSelectedFile().toString();
+		if (jfc.getSelectedFile() !=  null) return jfc.getSelectedFile().toString();
+		return "";
 	}
 	
 	public static String load_dialog()
@@ -376,6 +259,51 @@ public class Project
 		return null;
 	}
 	
+	public static int lost_save_dialog()
+	{
+		int yesno = JOptionPane.showConfirmDialog(Main.frame, "All changes are lost. Do you want to save?", "Save",JOptionPane.YES_NO_CANCEL_OPTION ,JOptionPane.QUESTION_MESSAGE);
+				
+		if (yesno == 0)
+			save();
+		
+		return yesno;
+	}
+	
+	public static int save_dialog()
+	{
+		int yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+				
+		if (yesno == 0)
+			save();
+		
+		return yesno;
+	}
+	
+    private static void createChildren(File fileRoot, DefaultMutableTreeNode node) 
+    {
+        File[] files = fileRoot.listFiles();
+        if (files == null) return;
+        for (File file : files) 
+        {
+        	DefaultMutableTreeNode childNode = null;
+        	
+        	//System.out.println(file.getName());
+        	
+        	if (file.isDirectory() && file.getName().equals("ope"))
+        	{}
+        	else
+        	{
+        		childNode = new DefaultMutableTreeNode(file);
+                node.add(childNode);
+                if (file.isDirectory()) 
+                {
+                    createChildren(file, childNode);
+                }
+        	}
+        
+        }
+    }
+	
 	public static void append(String s,JTextPane t) 
 	{
 		   try {
@@ -385,4 +313,68 @@ public class Project
 		      exc.printStackTrace();
 		   }
 	}
+	
+	public static void loadTextFromFileToTextArea(String path)
+	{
+		loadTextFromFileToTextArea(path,Main.textpane);
+	}
+	
+	public static void loadTextFromFileToTextArea(String path,JTextArea t)
+	{
+		t.setText("");
+		BufferedReader in = null;
+		try 
+		{
+			in = new BufferedReader(new FileReader(path));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				t.append(str + "\n");
+			}
+		} 
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	public static void loadTextFromFileToTextArea(String path,JTextPane t)
+	{
+		t.setText("");
+		BufferedReader in = null;
+		try 
+		{
+			in = new BufferedReader(new FileReader(path));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				append(str + "\n",t);
+			}
+		} 
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	public static void SaveTextFromTextArea(String path) 
+	{
+		SaveTextFromTextArea(path,Main.textpane);
+    }
+
+	public static void SaveTextFromTextArea(String path,JTextComponent t) 
+	{
+		try 
+		{
+			PrintWriter pw = new PrintWriter(new File(path));
+			Scanner s = new Scanner(t.getText());
+			while (s.hasNext())
+				pw.println(s.nextLine());
+			pw.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+    }
 }
