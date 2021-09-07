@@ -1,4 +1,4 @@
-package com.i18n;
+package com.translate;
 
 import java.net.URL;
 import java.net.URLClassLoader;
