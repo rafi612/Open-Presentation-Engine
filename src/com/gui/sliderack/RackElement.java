@@ -26,6 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.gui.SlideRack;
+import com.gui.sliderack.atributes.A_Slide;
+import com.gui.sliderack.atributes.Atribute;
 import com.main.Main;
 
 public class RackElement extends JPanel implements ActionListener
@@ -43,6 +45,8 @@ public class RackElement extends JPanel implements ActionListener
 	JMenuItem rename,color;
 	
 	SlideRack sliderack;
+	
+	AtributesChooser chooser;
 
 	public RackElement(String name_,SlideRack sliderack) 
 	{
@@ -94,6 +98,8 @@ public class RackElement extends JPanel implements ActionListener
 		add(centerpanel,BorderLayout.CENTER);
 		
 		sliderack.selectAllEvent();
+		chooser = new AtributesChooser(this);
+		chooser.sync();
 	}
 	
 
@@ -119,6 +125,11 @@ public class RackElement extends JPanel implements ActionListener
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new name", "Rename",JOptionPane.QUESTION_MESSAGE);
 			setRackName(name);
+		}
+		
+		if (source == add)
+		{
+			chooser.setVisible(true);
 		}
 	}
 	
@@ -159,6 +170,11 @@ public class RackElement extends JPanel implements ActionListener
 	public String getRackName()
 	{
 		return name.getText();
+	}
+	
+	public void addAtribute(Atribute a)
+	{
+		centerpanel.add(a);
 	}
 
 }
