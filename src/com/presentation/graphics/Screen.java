@@ -14,8 +14,6 @@ public class Screen
 	{
 		GL2 gl = EventListener.gl;
 		
-		gl.glDisable(GL2.GL_TEXTURE_2D);
-		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
 		gl.glBegin(GL2.GL_QUADS);
 		
@@ -26,14 +24,11 @@ public class Screen
 			
 		gl.glEnd();
 		gl.glFlush();
-		
-		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 	
 	public static void frectnofill(float x,float y,float width,float height,Color color)
 	{
 		GL2 gl = EventListener.gl;
-		gl.glDisable(GL2.GL_TEXTURE_2D);
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
 		
@@ -46,8 +41,6 @@ public class Screen
 			
 		gl.glEnd();
 		gl.glFlush();
-		
-		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 	
 	public static void drawImage(ImageResource image,float x,float y,float width,float height)
@@ -59,6 +52,8 @@ public class Screen
 		{
 			gl.glBindTexture(GL2.GL_TEXTURE_2D, tex.getTextureObject());
 		}
+		
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
 		gl.glColor4f(1,1,1,1);
 		gl.glBegin(GL2.GL_QUADS);
@@ -80,14 +75,14 @@ public class Screen
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, 0);
 		
 		gl.glEnd();
+		
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 //		gl.glFlush();
 	}
 	
 	public static void drawVerticalGradient(float x,float y,float width,float height,Color color,Color color2)
 	{
 		GL2 gl = EventListener.gl;
-		
-		gl.glDisable(GL2.GL_TEXTURE_2D);
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
@@ -100,8 +95,6 @@ public class Screen
 			
 		gl.glEnd();
 		gl.glFlush();
-		
-		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
 
 }
