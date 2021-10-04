@@ -8,7 +8,7 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;
 import com.presentation.resource.ImageResource;
@@ -152,7 +152,7 @@ public class SlideManager
 	public void render(GL2 gl)
 	{
 		
-		if (slides == 0) Screen.drawImage(empty, 0, 0, 1280,720);
+		if (slides == 0) Renderer.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
 			slide.get(choose).render(gl);

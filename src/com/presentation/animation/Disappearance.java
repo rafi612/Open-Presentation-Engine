@@ -3,7 +3,7 @@ package com.presentation.animation;
 import java.awt.Color;
 
 import com.jogamp.opengl.GL2;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 
 public class Disappearance extends Animation 
 {
@@ -35,7 +35,7 @@ public class Disappearance extends Animation
 	{
 		if (isRunning)
 		{
-			if (outputalpha <= 255) Screen.frect(0, 0, 1280, 720, new Color(0,0,0,outputalpha));
+			if (outputalpha <= 255) Renderer.frect(0, 0, 1280, 720, new Color(0,0,0,outputalpha));
 		}
 	}
 

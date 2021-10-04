@@ -5,7 +5,7 @@ import java.awt.Point;
 
 import com.gui.SlideCreator;
 import com.jogamp.opengl.GL2;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 
 public class Resizer 
@@ -146,7 +146,7 @@ public class Resizer
 	public void render(GL2 gl,boolean render)
 	{
 		if (render || colided)
-			Screen.frect(x, y, w, h, Color.BLUE);
+			Renderer.frect(x, y, w, h, Color.BLUE);
 	}
 
 }

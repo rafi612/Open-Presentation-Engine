@@ -46,7 +46,7 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.presentation.main.EventListener;
 import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
@@ -210,10 +210,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		gl.glClearColor(1,1,1,1);
 		if (slideloaded)
 		{
-			Screen.frect(0, 0, 1280, 720, new Color(0xFFFFFF));
+			Renderer.frect(0, 0, 1280, 720, new Color(0xFFFFFF));
 		
 			if (elements.size() == 0)
-				Screen.drawImage(canvasimage,0, 0, 1280, 720);
+				Renderer.drawImage(canvasimage,0, 0, 1280, 720);
 		}
 		
 //		TextRenderer textRenderer = new TextRenderer(new Font("Sans", Font.BOLD, 40));
@@ -241,7 +241,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		if (list.getSelectedIndex() > -1)
 		{
 			Element e = elements.get(list.getSelectedIndex());
-			Screen.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
+			Renderer.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
 		}
 	}
 

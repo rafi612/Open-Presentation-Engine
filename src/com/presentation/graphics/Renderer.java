@@ -8,7 +8,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.presentation.main.EventListener;
 import com.presentation.resource.ImageResource;
 
-public class Screen
+public class Renderer
 {
 	public static void frect(float x,float y,float width,float height,Color color)
 	{

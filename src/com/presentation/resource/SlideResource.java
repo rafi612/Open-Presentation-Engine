@@ -8,7 +8,7 @@ import com.io.Stream;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.project.Project;
 
 public class SlideResource
@@ -85,7 +85,7 @@ public class SlideResource
 	
 	public void render(GL2 gl)
 	{
-		if (bgimage != null) Screen.drawImage(bgimage, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
-		if (image != null) Screen.drawImage(image, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
+		if (bgimage != null) Renderer.drawImage(bgimage, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
+		if (image != null) Renderer.drawImage(image, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
 	}
 }

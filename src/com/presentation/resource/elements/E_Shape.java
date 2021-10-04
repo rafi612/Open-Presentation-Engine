@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.presentation.resource.e_frames.E_ShapeFrame;
@@ -44,7 +44,7 @@ public class E_Shape extends Element
 	
 	public void render(GL2 gl)
 	{
-		Screen.frectnofill(x,y,w,h,Color.RED);
+		Renderer.frectnofill(x,y,w,h,Color.RED);
 	}
 	
 	public void frame()

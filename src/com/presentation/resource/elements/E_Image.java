@@ -33,7 +33,7 @@ import com.io.Stream;
 import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
-import com.presentation.graphics.Screen;
+import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.project.Project;
@@ -177,15 +177,15 @@ public class E_Image extends Element
 	public void render(GL2 gl)
 	{
 		if (path.equals(""))
-			Screen.frectnofill(x,y,w,h,Color.BLACK);
+			Renderer.frectnofill(x,y,w,h,Color.BLACK);
 		else
-			Screen.drawImage(image,x,y,w,h);
+			Renderer.drawImage(image,x,y,w,h);
 		
 		if (colided)
-			Screen.frectnofill(x,y,w,h,Color.BLUE);
+			Renderer.frectnofill(x,y,w,h,Color.BLUE);
 		
 		if (dragged && colided)
-			Screen.frectnofill(x,y,w,h,Color.RED);
+			Renderer.frectnofill(x,y,w,h,Color.RED);
 		
 		for (int i = 0; i < resizers.size(); i++)
 			resizers.get(i).render(gl,colided);
