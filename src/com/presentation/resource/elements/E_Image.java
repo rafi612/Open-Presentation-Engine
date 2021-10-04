@@ -1,18 +1,41 @@
 package com.presentation.resource.elements;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.gui.SlideCreator;
 import com.io.Stream;
 import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
+import com.main.Main;
 import com.presentation.graphics.Screen;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
-import com.presentation.resource.e_frames.E_ImageFrame;
 import com.project.Project;
 
 public class E_Image extends Element
@@ -25,7 +48,7 @@ public class E_Image extends Element
 	
 	public boolean editing,moving,colided;
 	public boolean dragged;
-	E_ImageFrame frame;
+	ImageFrame frame;
 	
     public Point clickpoint = new Point(0,0);
     
@@ -57,7 +80,7 @@ public class E_Image extends Element
 		if (!path.equals(""))
 			this.image = new ImageResource(path);
 		
-		frame = new E_ImageFrame(this);
+		frame = new ImageFrame(this);
 	}
 	
 	public void update(SlideCreator sc)
@@ -174,4 +197,132 @@ public class E_Image extends Element
 		editing = true;
 		frame.setVisible(true);
 	}
+}
+
+class ImageFrame extends JDialog implements ChangeListener
+{
+	private static final long serialVersionUID = 1L;
+	public JSpinner sx;
+	public JSpinner sy;
+	JSpinner sw;
+	JSpinner sh;
+	JTextField textfieldpath;
+	
+	E_Image element;
+	public ImageFrame(E_Image element)
+	{
+		super();
+		this.element = element;
+		setSize(360,250);
+		setLocationRelativeTo(Main.frame);
+		setIconImage(Main.loadIcon("/images/icon.png"));
+		setAlwaysOnTop(true);
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				element.editing = false;
+			}
+		});
+		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+		setDropTarget(new DragAndDrop());
+		
+		textfieldpath = new JTextField(element.path);
+		
+		SpinnerModel modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
+		sx = new JSpinner(modelx);
+		
+		SpinnerModel modely = new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
+		sy = new JSpinner(modely);
+		
+		SpinnerModel modelw = new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1);       
+		sw = new JSpinner(modelw);
+		
+		SpinnerModel modelh = new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1);       
+		sh = new JSpinner(modelh);
+		
+		String[] labels = {"Path:","X:","Y:","Width:","Height"};
+		JComponent[] components = {textfieldpath,sx,sy,sw,sh};
+		
+		for (JComponent comp : components)
+		{
+			comp.setMinimumSize(new Dimension(0, 25));
+			comp.setPreferredSize(new Dimension(300,25));
+			comp.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
+			if (comp instanceof JSpinner)
+			{
+				((JSpinner) comp).addChangeListener(this);
+			}
+		}
+		
+		for (int i = 0; i < labels.length;i++)
+		{
+			JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			
+			panel.add(new JLabel(labels[i]));
+			panel.add(components[i]);
+			
+			this.add(panel);
+		}
+	}
+	
+	// setting JSpinner value form elements
+	public void update()
+	{
+		sx.setValue(element.x);
+		sy.setValue(element.y);
+		sw.setValue(element.w);
+		sh.setValue(element.h);
+	}
+	
+	// setting elements value form JSpinner if it's dragged
+	@Override
+	public void stateChanged(ChangeEvent e) 
+	{
+		if (!element.dragged)
+		{
+			element.x = (int) sx.getValue();
+			element.y = (int) sy.getValue();
+			element.w = (int) sw.getValue();
+			element.h = (int) sh.getValue();
+		}
+	}
+	
+	class DragAndDrop extends DropTarget
+	{
+		private static final long serialVersionUID = 1L;
+		public synchronized void drop (DropTargetDropEvent evt)
+    	{
+			try 
+			{
+				evt.acceptDrop(DnDConstants.ACTION_COPY);
+				File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
+				if (!file.getPath().startsWith(Project.projectlocation))
+				{
+					System.out.println("Error");
+					return;
+				}
+				else
+				{
+					element.path = new File(Project.projectlocation).toURI().relativize(file.toURI()).getPath();
+					
+					element.image = new ImageResource(Project.projectlocation + Stream.slash() + element.path);
+					element.w = element.image.image.getWidth();
+					element.h = element.image.image.getHeight();
+					sw.setValue(element.image.image.getWidth());
+					sh.setValue(element.image.image.getHeight());
+					textfieldpath.setText(element.path);
+				}
+				     
+			} 
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
+			}
+    	}
+
+	}
+	
 }
