@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+import com.presentation.graphics.Renderer;
 import com.presentation.main.Presentation;
 
 public class ImageResource {
@@ -30,7 +31,7 @@ public class ImageResource {
 	public ImageResource(String path) 
 	{
 		URL url = null;
-		profile = Presentation.getProfile();
+		profile = Renderer.getProfile();
 		try 
 		{
 			url = new File(path).toURL();
@@ -64,7 +65,7 @@ public class ImageResource {
 		{
 			//System.out.println(url);
 			image = ImageIO.read(i);
-			profile = Presentation.getProfile();
+			profile = Renderer.getProfile();
 		} 
 		catch (IOException e) 
 		{
@@ -88,7 +89,7 @@ public class ImageResource {
 		
 		if (texture == null) 
 		{
-			texture = AWTTextureIO.newTexture(Presentation.getProfile(), image, true);
+			texture = AWTTextureIO.newTexture(profile, image, true);
 		}
 		
 		return texture;

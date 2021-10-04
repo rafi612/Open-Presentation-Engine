@@ -7,6 +7,7 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.resource.SlideResource;
 import com.presentation.slide.SlideManager;
@@ -19,6 +20,8 @@ public class EventListener implements GLEventListener
 	public void display(GLAutoDrawable drawable)
 	{
 		gl = drawable.getGL().getGL2();
+		Renderer.gl = gl;
+		
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);		
 		
 		if (Keyboard.getKeyOnce(KeyEvent.VK_ESCAPE))
@@ -30,15 +33,18 @@ public class EventListener implements GLEventListener
 			Presentation.window.setFullscreen(Presentation.fullscreen);
 		}
 		
-		Presentation.sm.update();
-		Presentation.sm.render(gl);
-		
-		Keyboard.update();
+		if (Presentation.running)
+		{
+			Presentation.sm.update();
+			Presentation.sm.render(gl);
+			Keyboard.update();
+		}
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) 
 	{
+		Presentation.running = false;
 		for (int i = 0;i < Presentation.sm.slide.size();i++)
 		{
 			Presentation.sm.slide.get(i).image.getTexture().destroy(gl);

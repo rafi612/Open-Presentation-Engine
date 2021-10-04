@@ -4,15 +4,18 @@ package com.presentation.graphics;
 import java.awt.Color;
 
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.Texture;
 import com.presentation.main.EventListener;
 import com.presentation.resource.ImageResource;
 
 public class Renderer
 {
+	public static GL2 gl;
+	public static GLProfile profile;
+	
 	public static void frect(float x,float y,float width,float height,Color color)
 	{
-		GL2 gl = EventListener.gl;
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
 		gl.glBegin(GL2.GL_QUADS);
@@ -28,7 +31,6 @@ public class Renderer
 	
 	public static void frectnofill(float x,float y,float width,float height,Color color)
 	{
-		GL2 gl = EventListener.gl;
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
 		
@@ -45,7 +47,6 @@ public class Renderer
 	
 	public static void drawImage(ImageResource image,float x,float y,float width,float height)
 	{
-		GL2 gl = EventListener.gl;
 		Texture tex = image.getTexture();
 		
 		if (tex != null) 
@@ -82,8 +83,6 @@ public class Renderer
 	
 	public static void drawVerticalGradient(float x,float y,float width,float height,Color color,Color color2)
 	{
-		GL2 gl = EventListener.gl;
-		
 		gl.glBegin(GL2.GL_QUADS);
 		
 		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
@@ -95,6 +94,11 @@ public class Renderer
 			
 		gl.glEnd();
 		gl.glFlush();
+	}
+	
+	public static GLProfile getProfile()
+	{
+		return profile;
 	}
 
 }

@@ -11,6 +11,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
+import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
 import com.presentation.resource.SlideResource;
@@ -36,6 +37,8 @@ public class Presentation
 	
 	public static SlideManager sm;
 	
+	public static boolean running = false;
+	
 	//public static int clock;
 	
 	//wejscie
@@ -53,6 +56,8 @@ public class Presentation
 		GLProfile.initSingleton();
 	    profile = GLProfile.get(GLProfile.GL2);
 	    GLCapabilities cabs = new GLCapabilities(profile);
+	    
+	    Renderer.profile = profile;
 	       
 	    window = GLWindow.create(cabs);
 	    window.setSize(WIDTH,HEIGHT);
@@ -70,6 +75,8 @@ public class Presentation
 		
 	    animator = new FPSAnimator(window,60);
 	    animator.start();
+	    
+	    running = true;
 	    
 	    //System.out.println(window.getWidth() + ","+ window.getHeight());
 		
@@ -97,13 +104,9 @@ public class Presentation
 	    sm.load();
 	}
 	
-	public static GLProfile getProfile()
-	{
-		return profile;
-	}
-	
 	public static void stop()
 	{
+		running = false;
 		Presentation.animator.stop();
 		Presentation.window.destroy();
 	}

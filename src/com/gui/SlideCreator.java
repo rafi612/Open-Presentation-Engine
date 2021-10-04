@@ -171,8 +171,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    profile = GLProfile.get(GLProfile.GL2);
 	    cabs = new GLCapabilities(profile);
 	    
-	    Presentation.profile = profile;
-	    EventListener.gl = gl;
+	    Renderer.profile = profile;
+	    Renderer.gl = gl;
 	    
 	    JPanel cpanel = new JPanel();
 	    cpanel.setLayout(new BorderLayout());
@@ -201,11 +201,10 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-		Presentation.profile = profile;
-		EventListener.gl = gl;
-
 		gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+		
+		Renderer.gl = gl;
 		
 		gl.glClearColor(1,1,1,1);
 		if (slideloaded)
