@@ -214,6 +214,7 @@ class ImageFrame extends JDialog implements ChangeListener
 		super();
 		this.element = element;
 		setSize(360,250);
+		setTitle("Image");
 		setLocationRelativeTo(Main.frame);
 		setIconImage(Main.loadIcon("/images/icon.png"));
 		setAlwaysOnTop(true);
