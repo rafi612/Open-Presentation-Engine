@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Stream 
+public class IoUtil 
 {
 	public static void insert(String s,int p,JTextPane t) 
 	{
@@ -66,7 +66,7 @@ public class Stream
 	public static void copyFile(String input,String output)
 	{
         //File source = new File(input);
-        InputStream is = Stream.class.getResourceAsStream(input);
+        InputStream is = IoUtil.class.getResourceAsStream(input);
         File dest = new File(output);
 
         try (//FileInputStream fis = new FileInputStream(source);

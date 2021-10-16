@@ -4,7 +4,7 @@ package com.presentation.main;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.jogamp.nativewindow.WindowClosingProtocol.WindowClosingMode;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
@@ -86,16 +86,16 @@ public class Presentation
 	{
 		String path;
 		if (Main.args.length < 1)
-			path = Project.projectlocation + Stream.slash();
+			path = Project.projectlocation + IoUtil.slash();
 		else path = "";
 		
 		String config = path + "config.xml";
 		
-		sm.slides = Integer.parseInt(Stream.readXml(config, "summary", "slides"));
-		generalMusic = Stream.readXml(config, "summary", "general_music");
-		fullscreen = Boolean.parseBoolean(Stream.readXml(config, "summary", "fullscreen"));
+		sm.slides = Integer.parseInt(IoUtil.readXml(config, "summary", "slides"));
+		generalMusic = IoUtil.readXml(config, "summary", "general_music");
+		fullscreen = Boolean.parseBoolean(IoUtil.readXml(config, "summary", "fullscreen"));
 		
-		String key = Stream.readXml(config, "summary", "ttskey");
+		String key = IoUtil.readXml(config, "summary", "ttskey");
 		if (!key.equals("auto"))
 			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
 		else TTSKeyCode = -1;

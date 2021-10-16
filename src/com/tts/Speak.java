@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.main.Main;
 import com.project.Project;
 
@@ -72,7 +72,7 @@ public class Speak
             	{
 					try 
 					{
-						download((Language) lang.getSelectedItem(),text,Project.projectlocation + Stream.slash() + name + ".mp3");
+						download((Language) lang.getSelectedItem(),text,Project.projectlocation + IoUtil.slash() + name + ".mp3");
 						
 					} catch (UnknownHostException e) 
 					{
@@ -85,7 +85,7 @@ public class Speak
 					{
 						e.printStackTrace();
 					}
-					Stream.insert("slide.setSlideTTS(\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+					IoUtil.insert("slide.setSlideTTS(\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 	            	Project.refreshProject();
             	}
             	else

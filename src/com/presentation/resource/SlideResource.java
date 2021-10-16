@@ -4,7 +4,7 @@ package com.presentation.resource;
 import java.io.File;
 
 import com.audio.Sound;
-import com.io.Stream;
+import com.io.IoUtil;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
@@ -33,7 +33,7 @@ public class SlideResource
 	{
 		this.imagepath = path;
 		if (Main.args.length < 1) 
-			image = new ImageResource(Project.projectlocation + Stream.slash() + path);
+			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
 		else 
 			image = new ImageResource(Project.projectlocation + path);
 	}
@@ -43,7 +43,7 @@ public class SlideResource
 		this.imagepath = path;
 		if (path.equals("null")) return;
 		if (Main.args.length < 1) 
-			image = new ImageResource(Project.projectlocation + Stream.slash() + path);
+			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
 		else 
 			image = new ImageResource(Project.projectlocation + path);
 	}
@@ -53,7 +53,7 @@ public class SlideResource
 		bgpath = path;
 		if (path.equals("null")) return;
 		if (Main.args.length < 1)
-			bgimage = new ImageResource(Project.projectlocation + Stream.slash() + path);
+			bgimage = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
 		else 
 			bgimage = new ImageResource(path);
 	}
@@ -62,12 +62,12 @@ public class SlideResource
 	{
 		ttspath = path;
 		if (path.equals("null")) return;
-		File f = new File(Project.projectlocation + Stream.slash() + path);
+		File f = new File(Project.projectlocation + IoUtil.slash() + path);
 		File f1 = new File(path);
 		if (f.exists() || f1.exists())
 		{
 			if (Main.args.length < 1)
-				tts = new Sound(Project.projectlocation + Stream.slash() + path);
+				tts = new Sound(Project.projectlocation + IoUtil.slash() + path);
 			else 
 				tts = new Sound(path);
 		}

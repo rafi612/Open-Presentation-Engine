@@ -30,7 +30,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import com.io.Config;
-import com.io.Stream;
+import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.main.Presentation;
 import com.project.Project;
@@ -194,12 +194,12 @@ public class Action implements ActionListener
 		{
 			try 
 			{
-				if (Stream.isWindows())
+				if (IoUtil.isWindows())
 				{
 					Process process = Runtime.getRuntime().exec("cmd /c start " + Main.interpreterpath);
 					process.waitFor();
 				}
-				if (Stream.isLinux())
+				if (IoUtil.isLinux())
 				{
 					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e " + Main.interpreterpath);
 					process.waitFor();

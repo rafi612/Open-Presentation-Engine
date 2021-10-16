@@ -6,26 +6,26 @@ import com.main.Main;
 
 public class Config 
 {
-	public static String configwindows = System.getenv("APPDATA") + Stream.slash() + "ope.xml";
-	public static String configlinux = System.getProperty("user.home") + Stream.slash() + ".config" + Stream.slash() + ".ope.xml";
+	public static String configwindows = System.getenv("APPDATA") + IoUtil.slash() + "ope.xml";
+	public static String configlinux = System.getProperty("user.home") + IoUtil.slash() + ".config" + IoUtil.slash() + ".ope.xml";
 	
 	public static void loadinterpreterpath() 
 	{
 		//windows
-		if (Stream.isWindows())
+		if (IoUtil.isWindows())
 			if (!new File(configwindows).exists())
 				createOPExml();
 		//linux
-		if (Stream.isLinux())
+		if (IoUtil.isLinux())
 			if (!new File(configlinux).exists())
 				createOPExml();
 		
 		String conf = "";
-		if (Stream.isWindows()) conf = configwindows;
-		else if (Stream.isLinux()) conf = configlinux;
+		if (IoUtil.isWindows()) conf = configwindows;
+		else if (IoUtil.isLinux()) conf = configlinux;
 		
-		Main.interpreterpath = Stream.readXml(conf, "settings", "pypath");
-		Main.interpretertype = Stream.readXml(conf, "settings", "pytype");
+		Main.interpreterpath = IoUtil.readXml(conf, "settings", "pypath");
+		Main.interpretertype = IoUtil.readXml(conf, "settings", "pytype");
 		
 		switch (Main.interpretertype)
 		{
@@ -82,7 +82,7 @@ public class Config
 		String path = "",type = "";
 		
 		//windows 
-		if (Stream.isWindows())
+		if (IoUtil.isWindows())
 		{
 			//buildin
 			if (new File("Python\\python.exe").exists())
@@ -97,12 +97,12 @@ public class Config
 				type = "winsystem";
 			}
 		}
-		else if (Stream.isLinux())
+		else if (IoUtil.isLinux())
 		{
 			path = "python3";
 			type = "linux";
 		}
-		else if (Stream.isMac())
+		else if (IoUtil.isMac())
 		{
 			path = "python";
 			type = "macos";
@@ -118,10 +118,10 @@ public class Config
 	public static void saveOPExml(String type,String path)
 	{
 		String configpath = "";
-		if (Stream.isWindows()) configpath = configwindows;
-		else if (Stream.isLinux()) configpath = configlinux;
+		if (IoUtil.isWindows()) configpath = configwindows;
+		else if (IoUtil.isLinux()) configpath = configlinux;
 		
-		Stream.saveFile(configpath,
+		IoUtil.saveFile(configpath,
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
 			"<class>\n" +
 			"<settings>\n" +

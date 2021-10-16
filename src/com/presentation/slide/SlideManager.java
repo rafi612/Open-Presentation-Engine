@@ -3,7 +3,7 @@ package com.presentation.slide;
 
 import java.util.ArrayList;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 import com.main.Main;
@@ -125,7 +125,7 @@ public class SlideManager
 		String path = "";
 		if (Main.args.length < 1)
 		{
-			path = Project.projectlocation + Stream.slash() + "config.xml";
+			path = Project.projectlocation + IoUtil.slash() + "config.xml";
 		}
 		else
 			path = Main.args[0];
@@ -133,11 +133,11 @@ public class SlideManager
 		for (int i = 0;i < slides;i++)
 		{
 			SlideResource slideres = new SlideResource();
-			slideres.setSlideImage(Stream.readXml(path, "slide" + (i + 1), "path"));
-			slideres.setBg(Stream.readXml(path, "slide" + (i + 1), "bg"));
-			slideres.setTTS(Stream.readXml(path, "slide" + (i + 1), "tts"));
-			slideres.setStartAnimation(Stream.readXml(path, "slide" + (i + 1), "ent_ani"));
-			slideres.setExitAnimation(Stream.readXml(path, "slide" + (i + 1), "exi_ani"));
+			slideres.setSlideImage(IoUtil.readXml(path, "slide" + (i + 1), "path"));
+			slideres.setBg(IoUtil.readXml(path, "slide" + (i + 1), "bg"));
+			slideres.setTTS(IoUtil.readXml(path, "slide" + (i + 1), "tts"));
+			slideres.setStartAnimation(IoUtil.readXml(path, "slide" + (i + 1), "ent_ani"));
+			slideres.setExitAnimation(IoUtil.readXml(path, "slide" + (i + 1), "exi_ani"));
 			
 			slide.add(slideres);
 		}

@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.main;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -70,7 +70,7 @@ public class EventListener implements GLEventListener
 		System.out.println("========================================");
 		System.out.println("Open Presentation Engine by rafi612");
 		System.out.println("========================================");
-		System.out.println("System: " + Stream.getOsName());
+		System.out.println("System: " + IoUtil.getOsName());
 		System.out.println("GL_VENDOR: " + gl.glGetString(GL.GL_VENDOR));
 		System.out.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
 		System.out.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));

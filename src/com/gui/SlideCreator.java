@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.io.XmlParser;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -433,7 +433,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			xml = xml + "</slide>";
 			
 			//save file
-			Stream.saveFile(Project.projectlocation + Stream.slash() + path, xml);
+			IoUtil.saveFile(Project.projectlocation + IoUtil.slash() + path, xml);
 			
 			Project.refreshProject();
 		}
@@ -487,7 +487,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 			{
 				dialog.dispose();
 				
-				XmlParser xml = new XmlParser(Project.projectlocation + Stream.slash() + text.getText());
+				XmlParser xml = new XmlParser(Project.projectlocation + IoUtil.slash() + text.getText());
 				
 				org.w3c.dom.Element[] elements_ = xml.getElements(xml.getElementsByTagName("element"));
 				

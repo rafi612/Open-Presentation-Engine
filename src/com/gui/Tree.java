@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.main.Main;
 import com.project.Project;
 
@@ -100,7 +100,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					//copying files
 					for (File file : droppedFiles)
 					{
-						Stream.copyFileondrive(file.getPath(), copypath + Stream.slash() + file.getName());
+						IoUtil.copyFileondrive(file.getPath(), copypath + IoUtil.slash() + file.getName());
 						Project.refreshProject();
 					}        
 				} 
@@ -125,14 +125,14 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		if (source == newfile)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
-			Stream.saveFile(Project.projectlocation + Stream.slash() + name, "");
+			IoUtil.saveFile(Project.projectlocation + IoUtil.slash() + name, "");
 				
 			Project.refreshProject();
 		}
 		if (source == newfolder)
 		{
 			String folder = JOptionPane.showInputDialog(Main.frame, "Enter folder name:", "Create new folder", JOptionPane.QUESTION_MESSAGE);
-			new File(Project.projectlocation + Stream.slash() + folder).mkdir();
+			new File(Project.projectlocation + IoUtil.slash() + folder).mkdir();
 				
 			Project.refreshProject();
 		}
@@ -151,7 +151,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
 			//rename file
-			select.renameTo(new File(select.getParent() + Stream.slash() + name));
+			select.renameTo(new File(select.getParent() + IoUtil.slash() + name));
 			Project.refreshProject();
 		}
 		if (source == cutfile)
@@ -196,12 +196,12 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			if (operation == 0)
 			{
 				//cut
-				copy.renameTo(new File(destdir + Stream.slash() + copy.getName()));
+				copy.renameTo(new File(destdir + IoUtil.slash() + copy.getName()));
 			}
 			else if (operation == 1)
 			{
 				//copy
-				Stream.copyFileondrive(copy.getPath(),destdir.getPath() + Stream.slash() + copy.getName());
+				IoUtil.copyFileondrive(copy.getPath(),destdir.getPath() + IoUtil.slash() + copy.getName());
 			}
 			
 			Project.refreshProject();

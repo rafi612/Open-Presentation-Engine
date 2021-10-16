@@ -39,7 +39,7 @@ import com.input.Action;
 import com.input.ColoredKeywords;
 import com.input.Window;
 import com.io.Config;
-import com.io.Stream;
+import com.io.IoUtil;
 import com.presentation.main.Presentation;
 import com.project.Project;
 
@@ -340,7 +340,7 @@ public class Main
         winpy.addActionListener(new Action());
         group.add(winpy);
         // Python/ folder exist
-        if (new File("Python").exists() && Stream.isWindows())
+        if (new File("Python").exists() && IoUtil.isWindows())
         	winpy.setEnabled(true);
         python.add(winpy);
         
@@ -348,7 +348,7 @@ public class Main
         winsystem.setEnabled(false);
         winsystem.addActionListener(new Action());
         group.add(winsystem);
-        if (Stream.isWindows())
+        if (IoUtil.isWindows())
         	winsystem.setEnabled(true);
         python.add(winsystem);
         
@@ -356,7 +356,7 @@ public class Main
         linux.setEnabled(false);
         linux.addActionListener(new Action());
         group.add(linux);
-        if (Stream.isLinux())
+        if (IoUtil.isLinux())
         	linux.setEnabled(true);
         python.add(linux);
         
@@ -364,7 +364,7 @@ public class Main
         macos.setEnabled(false);
         macos.addActionListener(new Action());
         group.add(macos);
-        if (Stream.isMac())
+        if (IoUtil.isMac())
         	macos.setEnabled(true);
         python.add(macos);
         
@@ -419,7 +419,7 @@ public class Main
 	
 	public static void wm_class()
 	{
-		if (Stream.isLinux())
+		if (IoUtil.isLinux())
 		{
 //			Toolkit xToolkit = Toolkit.getDefaultToolkit();
 //			Field awtAppClassNameField;

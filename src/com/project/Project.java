@@ -22,7 +22,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.io.Stream;
+import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.main.Presentation;
 
@@ -59,11 +59,11 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
 		
-		Stream.copyFile("/script/main.py",projectlocation + File.separator +"main.py");
-		Stream.copyFile("/script/config.xml",projectlocation + File.separator + "config.xml");
+		IoUtil.copyFile("/script/main.py",projectlocation + File.separator +"main.py");
+		IoUtil.copyFile("/script/config.xml",projectlocation + File.separator + "config.xml");
 		
 		new File(Project.projectlocation + File.separator + "ope").mkdir();
-		Stream.copyFile("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
+		IoUtil.copyFile("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
