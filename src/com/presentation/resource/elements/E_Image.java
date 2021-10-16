@@ -306,7 +306,7 @@ class ImageFrame extends JDialog implements ChangeListener
 				}
 				else
 				{
-					element.path = new File(Project.projectlocation).toURI().relativize(file.toURI()).getPath();
+					element.path = IoUtil.getPathFromProject(file);
 					
 					element.image = new ImageResource(Project.projectlocation + IoUtil.slash() + element.path);
 					element.w = element.image.image.getWidth();

@@ -20,6 +20,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.project.Project;
+
 public class IoUtil 
 {
 	public static void insert(String s,int p,JTextPane t) 
@@ -89,6 +91,11 @@ public class IoUtil
         {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getPathFromProject(File s)
+	{
+		return new File(Project.projectlocation).toURI().relativize(s.toURI()).getPath();
 	}
 	
 	public static void saveFile(String path,String text)

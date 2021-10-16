@@ -419,23 +419,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		//save slide
 		if (source == actions.get(2))
 		{
-			String path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE);
-			
-			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-					+ "<slide>\n";
-			
-			//saving elements to xml string
-			for (int i = 0;i < elements.size();i++)
-			{
-				xml = xml + elements.get(i).save();
-			}
-			xml = xml + "<all>" + elements.size() + "</all>\n";
-			xml = xml + "</slide>";
-			
-			//save file
-			IoUtil.saveFile(Project.projectlocation + IoUtil.slash() + path, xml);
-			
-			Project.refreshProject();
+			savedialog();
 		}
 		//open slide
 		if (source == actions.get(1))
@@ -526,7 +510,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 					evt.acceptDrop(DnDConstants.ACTION_COPY);
 					File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
 					
-					String path = new File(Project.projectlocation).toURI().relativize(file.toURI()).getPath();
+					String path = IoUtil.getPathFromProject(file);
 					
 					text.setText(path);
 				} 
@@ -539,6 +523,27 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	
 		});
 		dialog.setVisible(true);
+	}
+	
+	private void savedialog()
+	{
+		String path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE);
+		
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<slide>\n";
+		
+		//saving elements to xml string
+		for (int i = 0;i < elements.size();i++)
+		{
+			xml = xml + elements.get(i).save();
+		}
+		xml = xml + "<all>" + elements.size() + "</all>\n";
+		xml = xml + "</slide>";
+		
+		//save file
+		IoUtil.saveFile(Project.projectlocation + IoUtil.slash() + path + ".layout", xml);
+		
+		Project.refreshProject();
 	}
 	
 	private int discarddialog()
