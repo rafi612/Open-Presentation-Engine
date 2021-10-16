@@ -284,7 +284,12 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 				else if (extension(file).equals("xml"))
 					setIcon(new ImageIcon(Main.loadIcon("/icons/files/xml.png")));
 				else
-					setIcon(new ImageIcon(Main.loadIcon("/icons/files/file.png")));
+				{
+					if (file.isFile())
+						setIcon(new ImageIcon(Main.loadIcon("/icons/files/file.png")));
+					else 
+						setIcon(new ImageIcon(Main.loadIcon("/icons/files/directory.png")));
+				}
 			}
 		}
 		return this;
