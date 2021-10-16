@@ -11,7 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -271,17 +274,17 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 			if (value instanceof File) 
 			{
 				File file = (File) value;
-				if (file.isFile()) 
-				{
-//					if (extension(file).equals("xml"))
-//						setIcon(new ImageIcon("res\\icons\\xml.png"));
-//					else 
-					setIcon(fsv.getSystemIcon(file));
-					setText(file.getName());
-				} else {
-					setIcon(fsv.getSystemIcon(file));
-					setText(file.getName());
-				}
+				//setIcon(fsv.getSystemIcon(file));
+				setText(file.getName());
+				
+				if (extension(file).equals("png"))
+					setIcon(new ImageIcon(Main.loadIcon("/icons/files/image.png")));
+				else if (extension(file).equals("layout"))
+					setIcon(new ImageIcon(Main.loadIcon("/icons/files/layout.png")));
+				else if (extension(file).equals("xml"))
+					setIcon(new ImageIcon(Main.loadIcon("/icons/files/xml.png")));
+				else
+					setIcon(new ImageIcon(Main.loadIcon("/icons/files/file.png")));
 			}
 		}
 		return this;
