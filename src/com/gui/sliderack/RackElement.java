@@ -90,11 +90,6 @@ public class RackElement extends JPanel implements ActionListener
 		centerpanel = new JPanel();
 		centerpanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		//for (int i =0; i < 20;i++)
-//		centerpanel.add(new JButton("Slide Layout: none"));
-//		centerpanel.add(new JButton("Start Animation: none"));
-//		centerpanel.add(new JButton("Exit Animation: none"));
-		
 		add(centerpanel,BorderLayout.CENTER);
 		
 		sliderack.selectAllEvent();
