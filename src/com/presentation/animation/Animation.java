@@ -5,12 +5,8 @@ import com.jogamp.opengl.GL2;
 public class Animation 
 {
 	
-	// polish comments: im from poland :)
-	//pojawianie
 	public static final int APPEARING = 0;
-	//zanikanie
 	public static final int DISAPPEARANCE = 1;
-	//glitch
 	public static final int GLITCH = 2;
 	
 	protected boolean isRunning = false;
