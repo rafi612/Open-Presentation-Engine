@@ -51,7 +51,6 @@ public class Main
     public static JMenu file,edit,tools,run,settings,help;
     
     public static String interpreterpath = "",interpretertype = "";
-   // static UndoManager manager = new UndoManager();
     
     public static final String TITLE = "Open Presentation Engine";
     
@@ -455,29 +454,5 @@ public class Main
 		
 		return i;
 	}
-	
-//	public static void initUn
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//        	public void actionPerformed(ActionEvent e) {
-//        		try {
-//        			manager.undo();
-//        		} catch (CannotUndoException cue) {}
-//        	}
-//        });
-//        
-//        // Map redo action
-//        textarea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-//                .put(redoKeyStroke, "redoKeyStroke");
-//        textarea.getActionMap().put("redoKeyStroke", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                try {
-//                    manager.redo();
-//                 } catch (CannotRedoException cre) {}
-//            }
-//        });
-//	}
 
 }
