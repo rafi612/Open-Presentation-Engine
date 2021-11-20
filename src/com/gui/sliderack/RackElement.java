@@ -131,7 +131,6 @@ public class RackElement extends JPanel implements ActionListener
 	public void setColor(Color color)
 	{
 		toppanel.setBackground(color);
-		//setBackground(color);
 	}
 	
 	public Color getColor()
