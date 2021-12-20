@@ -150,7 +150,6 @@ public class Main
         
         for (int i = 0;i < autoscripts.size(); i++)
         {
-        	//autoscripts.get(i).setContentAreaFilled(true);
         	autoscripts.get(i).setBorderPainted(false);
         	autoscripts.get(i).setFocusPainted(false);
         }
