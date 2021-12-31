@@ -249,7 +249,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 class TreeCellRenderer extends DefaultTreeCellRenderer 
 {
 	private static final long serialVersionUID = 1L;
-	private FileSystemView fsv = FileSystemView.getFileSystemView();
+//	private FileSystemView fsv = FileSystemView.getFileSystemView();
         
 	public String extension(File file)
 	{
