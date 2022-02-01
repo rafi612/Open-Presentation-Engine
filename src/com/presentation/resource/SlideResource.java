@@ -2,6 +2,7 @@
 package com.presentation.resource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import com.audio.Sound;
 import com.io.IoUtil;
@@ -32,30 +33,29 @@ public class SlideResource
 	public SlideResource(String path) 
 	{
 		this.imagepath = path;
-		if (Main.args.length < 1) 
-			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
-		else 
-			image = new ImageResource(Project.projectlocation + path);
+		image = loadImage(path);
 	}
 	
 	public void setSlideImage(String path)
 	{
 		this.imagepath = path;
 		if (path.equals("null")) return;
-		if (Main.args.length < 1) 
-			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
-		else 
-			image = new ImageResource(Project.projectlocation + path);
+		image = loadImage(path);
 	}
 	
 	public void setBg(String path)
 	{
 		bgpath = path;
 		if (path.equals("null")) return;
+		bgimage = loadImage(path);
+	}
+	
+	private static ImageResource loadImage(String path)
+	{
 		if (Main.args.length < 1)
-			bgimage = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
+			return new ImageResource(Project.projectlocation + IoUtil.slash() + path);
 		else 
-			bgimage = new ImageResource(path);
+			return new ImageResource(path);
 	}
 	
 	public void setTTS(String path)

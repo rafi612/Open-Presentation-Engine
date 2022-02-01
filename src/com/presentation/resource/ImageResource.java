@@ -3,6 +3,7 @@ package com.presentation.resource;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -30,32 +31,23 @@ public class ImageResource {
 	@SuppressWarnings("deprecation")
 	public ImageResource(String path) 
 	{
-		URL url = null;
-		profile = Renderer.getProfile();
-		try 
-		{
-			url = new File(path).toURL();
-		} 
-		catch (MalformedURLException e1) 
-		{
-			e1.printStackTrace();
-		}
-		
 		try 
 		{
 			//System.out.println(url);
-			image = ImageIO.read(url);
+			image = ImageIO.read(new File(path));
+			profile = Renderer.getProfile();
 		} 
 		catch (IOException e) 
 		{
-			//e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "File " + path + " not found");
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "File" + path +" not found");
 		}
 		
 		if (image != null)
 		{
 			image.flush();
 		}
+		
 	}
 	
 	
