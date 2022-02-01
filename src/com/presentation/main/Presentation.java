@@ -49,15 +49,15 @@ public class Presentation
 		if (window != null)
 			if (window.isVisible())
 				stop();
-		
-		sm = new SlideManager();
-		load();
 	    
 		GLProfile.initSingleton();
 	    profile = GLProfile.get(GLProfile.GL2);
 	    GLCapabilities cabs = new GLCapabilities(profile);
 	    
 	    Renderer.profile = profile;
+	    
+		sm = new SlideManager();
+		load();
 	       
 	    window = GLWindow.create(cabs);
 	    window.setSize(WIDTH,HEIGHT);
