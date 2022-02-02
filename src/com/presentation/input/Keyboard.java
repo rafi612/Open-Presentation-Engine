@@ -1,37 +1,29 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.input;
 
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.KeyListener;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import static org.lwjgl.glfw.GLFW.*;
 
-public class Keyboard implements KeyListener
+public class Keyboard extends GLFWKeyCallback
 {
-
-	private static final int Count = 200;
+	private static final int Count = 385;
 	private static boolean keys[] = new boolean[Count];
 	private static boolean keys_prev[] = new boolean[Count];
-	
-	public Keyboard()
-	{
-		for(int i = 0; i < Count;i++)
-			keys[i] = false;
-		for(int i = 0; i < Count;i++)
-			keys_prev[i] = false;
-	}
-	
-	public void keyPressed(KeyEvent arg0) 
-	{		
-		keys[arg0.getKeyCode()] = true;
-	}
 
-	
-	public void keyReleased(KeyEvent arg0) 
+	@Override
+	public void invoke(long window, int key, int scancode, int action, int mods)
 	{
-		if(arg0.isAutoRepeat()) return;
-		keys[arg0.getKeyCode()] = false;
+		if (key == GLFW_KEY_UNKNOWN)
+			return;
+		
+		if (action == GLFW_PRESS)
+			keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			keys[key] = false;
 	}
-
-	public static void update(){
+	
+	public static void update()
+	{
 		for(int i = 0; i < Count;i++){
 			if(!keys[i])
 				keys_prev[i] = false;

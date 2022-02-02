@@ -230,6 +230,8 @@ public class Main
 			theme();
 			
 			frame.setVisible(true);
+			
+	        slidecreator.canvasLoop();
 
 		}
 		else 

@@ -1,7 +1,5 @@
 package com.presentation.animation;
 
-import com.jogamp.opengl.GL2;
-
 public class None extends Animation
 {
 
@@ -25,7 +23,7 @@ public class None extends Animation
 		
 	}
 
-	public void render(GL2 gl)
+	public void render()
 	{
 		
 	}

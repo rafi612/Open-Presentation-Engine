@@ -3,7 +3,6 @@ package com.presentation.resource.elements;
 import java.awt.Color;
 
 import com.io.XmlParser;
-import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
@@ -42,7 +41,7 @@ public class E_Shape extends Element
 		return "	<element name=" +  name + " type=" + type + "></element>";
 	}
 	
-	public void render(GL2 gl)
+	public void render()
 	{
 		Renderer.frectnofill(x,y,w,h,Color.RED);
 	}

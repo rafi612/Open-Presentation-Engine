@@ -31,7 +31,6 @@ import javax.swing.event.ChangeListener;
 import com.gui.SlideCreator;
 import com.io.IoUtil;
 import com.io.XmlParser;
-import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
@@ -44,7 +43,7 @@ public class E_Image extends Element
 	
 	public int id;
 	
-	public ImageResource image;
+	public ImageResource image = null;
 	
 	public boolean editing,moving,colided;
 	public boolean dragged;
@@ -53,6 +52,8 @@ public class E_Image extends Element
     public Point clickpoint = new Point(0,0);
     
     ArrayList<Resizer> resizers;
+    
+    public boolean changedimage = false;
 	
 	public E_Image()
 	{
@@ -139,6 +140,17 @@ public class E_Image extends Element
 			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 		
+		//temponary solution for loading image
+		if (changedimage)
+		{
+			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
+			w = image.width;
+			h = image.height;
+			frame.sw.setValue(image.width);
+			frame.sh.setValue(image.height);
+			changedimage = false;
+		}
+		
 		if (editing) frame.update();
 	}
 	
@@ -174,12 +186,14 @@ public class E_Image extends Element
 				+ "	</element>\n";
 	}
 	
-	public void render(GL2 gl)
+	public void render()
 	{
-		if (path.equals(""))
+		if (path.equals("") || changedimage)
 			Renderer.frectnofill(x,y,w,h,Color.BLACK);
 		else
+		{
 			Renderer.drawImage(image,x,y,w,h);
+		}
 		
 		if (colided)
 			Renderer.frectnofill(x,y,w,h,Color.BLUE);
@@ -188,7 +202,7 @@ public class E_Image extends Element
 			Renderer.frectnofill(x,y,w,h,Color.RED);
 		
 		for (int i = 0; i < resizers.size(); i++)
-			resizers.get(i).render(gl,colided);
+			resizers.get(i).render(colided);
 	}
 	
 	
@@ -277,7 +291,6 @@ class ImageFrame extends JDialog implements ChangeListener
 		sh.setValue(element.h);
 	}
 	
-	// setting elements value form JSpinner if it's dragged
 	@Override
 	public void stateChanged(ChangeEvent e) 
 	{
@@ -287,13 +300,14 @@ class ImageFrame extends JDialog implements ChangeListener
 			element.y = (int) sy.getValue();
 			element.w = (int) sw.getValue();
 			element.h = (int) sh.getValue();
+			
 		}
 	}
 	
 	class DragAndDrop extends DropTarget
 	{
 		private static final long serialVersionUID = 1L;
-		public synchronized void drop (DropTargetDropEvent evt)
+		public void drop (DropTargetDropEvent evt)
     	{
 			try 
 			{
@@ -307,13 +321,7 @@ class ImageFrame extends JDialog implements ChangeListener
 				else
 				{
 					element.path = IoUtil.getPathFromProject(file);
-					
-					element.image = new ImageResource(Project.projectlocation + IoUtil.slash() + element.path);
-					element.w = element.image.image.getWidth();
-					element.h = element.image.image.getHeight();
-					sw.setValue(element.image.image.getWidth());
-					sh.setValue(element.image.image.getHeight());
-					textfieldpath.setText(element.path);
+					element.changedimage = true;
 				}
 				     
 			} 

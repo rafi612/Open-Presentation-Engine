@@ -13,14 +13,16 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -29,39 +31,32 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import org.lwjgl.opengl.awt.AWTGLCanvas;
+import org.lwjgl.opengl.awt.GLData;
+
+import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.opengl.GL11.*;
 
 import com.io.IoUtil;
 import com.io.XmlParser;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
 import com.presentation.graphics.Renderer;
-import com.presentation.main.EventListener;
-import com.presentation.main.Presentation;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.project.Project;
 
-public class SlideCreator extends JPanel implements ActionListener, GLEventListener,MouseWheelListener,MouseMotionListener,MouseListener
+public class SlideCreator extends JPanel implements ActionListener,MouseMotionListener,MouseListener
 {
 	private static final long serialVersionUID = 1L;
-	
-	public GL2 gl = null;
-	public GLCanvas canvas;
-	public GLProfile profile;
-	public FPSAnimator animator;
-	GLCapabilities cabs;
 	
     public ArrayList<JButton> actions = new ArrayList<JButton>();
     
@@ -87,6 +82,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
     public boolean dragged = false;
     
     public ArrayList<Element> elements;
+    
+    AWTGLCanvas canvas;
 	
 	public SlideCreator() 
 	{
@@ -167,22 +164,8 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	
 	public void initCanvas()
 	{
-		GLProfile.initSingleton();
-	    profile = GLProfile.get(GLProfile.GL2);
-	    cabs = new GLCapabilities(profile);
-	    
-	    Renderer.profile = profile;
-	    Renderer.gl = gl;
-	    
 	    JPanel cpanel = new JPanel();
 	    cpanel.setLayout(new BorderLayout());
-	    canvas = new GLCanvas(cabs);
-	    canvas.addGLEventListener(this);
-	    canvas.addMouseWheelListener(this);
-	    canvas.addMouseMotionListener(this);
-	    canvas.addMouseListener(this);
-	    animator = new FPSAnimator(canvas,60);
-	    animator.start();
 	    
 	    movecheck = new JCheckBox("Move only checked");
 	    
@@ -190,38 +173,58 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 	    ppanel.add(position);
 	    ppanel.add(movecheck);
 	    cpanel.add(ppanel,BorderLayout.SOUTH);
-	    
-	    cpanel.add(canvas);
-	    
-		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
-	    
-	    add(cpanel);
+
+        GLData data = new GLData();
+        data.swapInterval = 1;
+        
+        cpanel.add(canvas = new AWTGLCanvas(data) 
+        {
+            private static final long serialVersionUID = 1L;
+            public void initGL() {
+                System.out.println("OpenGL version: " + effective.majorVersion + "." + effective.minorVersion + " (Profile: " + effective.profile + ")");
+                createCapabilities();
+                init();
+            }
+            public void paintGL()
+            {
+            	display();
+                swapBuffers();
+            }
+        });
+        
+        canvas.addMouseListener(this);
+        canvas.addMouseMotionListener(this);
+        
+        add(cpanel);
+        
+	}
+	
+	public void canvasLoop()
+	{ 
+        Runnable renderLoop = new Runnable()
+        {
+			public void run() {
+				if (!canvas.isValid())
+					return;
+				canvas.render();
+				SwingUtilities.invokeLater(this);
+			}
+		};
+		SwingUtilities.invokeLater(renderLoop);
 	}
 
-	@Override
-	public void display(GLAutoDrawable drawable)
+	public void display()
 	{
-		gl = drawable.getGL().getGL2();
-		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(1,1,1,1);
 		
-		Renderer.gl = gl;
+		reshape(canvas.getWidth(),canvas.getHeight());
 		
-		gl.glClearColor(1,1,1,1);
 		if (slideloaded)
-		{
-			Renderer.frect(0, 0, 1280, 720, new Color(0xFFFFFF));
-		
+		{		
 			if (elements.size() == 0)
 				Renderer.drawImage(canvasimage,0, 0, 1280, 720);
 		}
-		
-//		TextRenderer textRenderer = new TextRenderer(new Font("Sans", Font.BOLD, 40));
-//		textRenderer.beginRendering(1280,720);
-//		textRenderer.setColor(Color.BLACK);
-//		textRenderer.setSmoothing(true);
-//
-//		textRenderer.draw("Hello world!!\nlololo",0,600);
-//		textRenderer.endRendering();
 		
 		//update
 		if (movecheck.isSelected() && list.getSelectedIndex() != -1)
@@ -234,7 +237,7 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		
 		//render
 		for (int i = 0;i < elements.size();i++)
-			elements.get(i).render(gl);
+			elements.get(i).render();
 
 		//selected border
 		if (list.getSelectedIndex() > -1)
@@ -244,41 +247,37 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		}
 	}
 
-	@Override
-	public void dispose(GLAutoDrawable arg0) 
+	public void dispose() 
 	{
-		animator.stop();
 	}
 	
-	@Override
-	public void init(GLAutoDrawable drawable) 
+	public void init() 
 	{
 		System.out.println("Canvas init");
-		gl = drawable.getGL().getGL2();
 		
-		gl.glClearColor(1,1,1,1);
+		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 		
-		gl.glEnable(GL2.GL_TEXTURE_2D);
+		glClearColor(1,1,1,1);
 		
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
+	public void reshape(int width, int height) 
 	{
 		//System.out.println("Canvas reshape");
-		gl = drawable.getGL().getGL2();
 		
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 
-		gl.glViewport(0,0,(int)(width * getScale()),(int)(height * getScale()));
+		glViewport(0,0,(int)(width * getScale()),(int)(height * getScale()));
 		
-		gl.glOrtho(0,WIDTH,HEIGHT,0,1,-1);
+		glOrtho(0,WIDTH,HEIGHT,0,1,-1);
 		
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 	}
 	
 	Object source;
@@ -574,11 +573,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
 		enableComponents(this, false);
 		enableComponents(listpanel, false);
     }
-    
-	public GLProfile getProfile()
-	{
-		return profile;
-	}
 	
     public void enableComponents(Container container, boolean enable)
     {
@@ -590,12 +584,6 @@ public class SlideCreator extends JPanel implements ActionListener, GLEventListe
             }
         }
     }
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) 
-	{
-
-	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) 

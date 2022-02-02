@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 
 import com.gui.SlideCreator;
-import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 
@@ -143,7 +142,7 @@ public class Resizer
 	}
 	
 	//boolean render is for making visible if cursor colided with element
-	public void render(GL2 gl,boolean render)
+	public void render(boolean render)
 	{
 		if (render || colided)
 			Renderer.frect(x, y, w, h, Color.BLUE);

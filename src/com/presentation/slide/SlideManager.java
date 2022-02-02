@@ -3,9 +3,9 @@ package com.presentation.slide;
 
 import java.util.ArrayList;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import com.io.IoUtil;
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.graphics.Renderer;
@@ -46,7 +46,7 @@ public class SlideManager
 			if (!switchslide)
 			{
 				//key switching
-				if (Keyboard.getKeyOnce(KeyEvent.VK_UP))
+				if (Keyboard.getKeyOnce(GLFW_KEY_UP))
 				{
 					exitanimation = slide.get(choose).exitanimation;
 					exitanimation.reset();
@@ -55,7 +55,7 @@ public class SlideManager
 					switchside = 0;
 					
 				}
-				if (Keyboard.getKeyOnce(KeyEvent.VK_DOWN))
+				if (Keyboard.getKeyOnce(GLFW_KEY_DOWN))
 				{
 					exitanimation = slide.get(choose).exitanimation;
 					exitanimation.reset();
@@ -74,7 +74,6 @@ public class SlideManager
 					if (choose < slide.size() - 1) choose++;
 					startanimation.reset();
 					//System.out.println(choose);
-					Presentation.window.setTitle(Presentation.TITLE + " - Slide: " + (choose + 1));
 					switchside = -1;
 					switchslide = false;
 					ttsswitch = true;
@@ -83,11 +82,11 @@ public class SlideManager
 				{
 					if (choose > 0)choose--;
 					startanimation.reset();
-					Presentation.window.setTitle(Presentation.TITLE + " - Slide: " + (choose + 1));
 					switchside = -1;
 					switchslide = false;
 					ttsswitch = true;
 				}
+				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			}
 			
 			//tts auto
@@ -110,7 +109,7 @@ public class SlideManager
 			if (!startanimation.isRunning())
 			{
 				startanimation.start();
-				Presentation.window.setTitle(Presentation.TITLE + " - Slide: " + (choose + 1));
+				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			}
 			if (startanimation.isRunning()) startanimation.update();
 			
@@ -149,15 +148,15 @@ public class SlideManager
 		}
 	}
 	
-	public void render(GL2 gl)
+	public void render()
 	{
 		
 		if (slides == 0) Renderer.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
-			slide.get(choose).render(gl);
-			startanimation.render(gl);
-			exitanimation.render(gl);
+			slide.get(choose).render();
+			startanimation.render();
+			exitanimation.render();
 		}
 //		if (inputalpha > 2) Screen.frect(0, 0, 1280, 720, new Color(0,0,0,inputalpha));
 		//if (outputalpha <= 255) Screen.frect(0, 0, 1280, 720, new Color(0,0,0,outputalpha));

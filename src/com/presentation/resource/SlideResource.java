@@ -2,11 +2,9 @@
 package com.presentation.resource;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import com.audio.Sound;
 import com.io.IoUtil;
-import com.jogamp.opengl.GL2;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.graphics.Renderer;
@@ -83,7 +81,7 @@ public class SlideResource
 		exitanimation = Animation.getAnimation(path);
 	}
 	
-	public void render(GL2 gl)
+	public void render()
 	{
 		if (bgimage != null) Renderer.drawImage(bgimage, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);
 		if (image != null) Renderer.drawImage(image, 0 - camerax, 0 - cameray, 1280 - cameraw,720 - camerah);

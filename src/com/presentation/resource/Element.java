@@ -2,7 +2,6 @@ package com.presentation.resource;
 
 import com.gui.SlideCreator;
 import com.io.XmlParser;
-import com.jogamp.opengl.GL2;
 import com.presentation.resource.elements.E_Image;
 import com.presentation.resource.elements.E_Shape;
 
@@ -52,7 +51,7 @@ public class Element
 		
 	}
 
-	public void render(GL2 gl)
+	public void render()
 	{
 		
 	}

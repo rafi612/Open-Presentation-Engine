@@ -1,20 +1,19 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.main;
 
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryUtil.*;
+
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.opengl.GL;
 
 import com.io.IoUtil;
-import com.jogamp.nativewindow.WindowClosingProtocol.WindowClosingMode;
-import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.FPSAnimator;
 import com.main.Main;
-import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
-import com.presentation.resource.SlideResource;
 import com.presentation.slide.SlideManager;
 import com.project.Project;
 
@@ -26,60 +25,91 @@ public class Presentation
 	public static int TTSKeyCode = -1;
 	
 	//info
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
+	public static int WIDTH = 1280;
+	public static int HEIGHT = 720;
 	public static final String TITLE = "OPE Presentation";
 	
 	//okno
-	public static GLWindow window;
-	public static GLProfile profile;
-	public static FPSAnimator animator;
+	public static long window = NULL;
 	
 	public static SlideManager sm;
 	
 	public static boolean running = false;
 	
-	//public static int clock;
-	
-	//wejscie
-	//public static Keyboard keyboard = new Keyboard();
-	
 	public static void init()
 	{
-		if (window != null)
-			if (window.isVisible())
-				stop();
+		if (window != NULL)
+			stop();
+		
+		if (!glfwInit())
+			System.err.println("Error");
+
+	    glfwDefaultWindowHints();
 	    
-		GLProfile.initSingleton();
-	    profile = GLProfile.get(GLProfile.GL2);
-	    GLCapabilities cabs = new GLCapabilities(profile);
+	    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+	    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 	    
-	    Renderer.profile = profile;
+	    window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
+	    if (window == NULL)
+	      throw new RuntimeException("Failed to create the GLFW window");
+	    
+	    glfwSwapInterval(1);
+	    
+	    glfwSetKeyCallback(window, new Keyboard());
+	    glfwSetMouseButtonCallback(window, (wind,button,action,mods) -> Mouse.mouseButton(button, action, mods));
+	    glfwSetCursorPosCallback(window,(wind,xpos,ypos) -> Mouse.mouseMove(wind, xpos, ypos));
+	    
+	    glfwMakeContextCurrent(window);
+	    GL.createCapabilities();
 	    
 		sm = new SlideManager();
 		load();
-	       
-	    window = GLWindow.create(cabs);
-	    window.setSize(WIDTH,HEIGHT);
-	    window.setTitle(TITLE);
-	    window.addGLEventListener(new EventListener());
-	    window.addKeyListener(new Keyboard());
-	    window.addMouseListener(new Mouse());
-	    window.setDefaultCloseOperation(WindowClosingMode.DISPOSE_ON_CLOSE);
-//	    if (Main.args.length < 1)
-//	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml(Project.projectlocation + Stream.slash() + "config.xml", "summary", "fullscreen")));
-//	    else
-//	    	window.setFullscreen(Boolean.parseBoolean(Stream.readXml("config.xml", "summary", "fullscreen")));
-	    window.setFullscreen(fullscreen);
-	    window.setVisible(true);
-		
-	    animator = new FPSAnimator(window,60);
-	    animator.start();
+	    
+	    EventListener.init();
+	    
+	    glfwShowWindow(window);
+	    
+	    EventListener.reshape(window,WIDTH,HEIGHT);
+	    
+	    glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback()
+	    {
+	        @Override
+	        public void invoke(long window, int w, int h) 
+	        {
+	        	WIDTH = w;
+	        	HEIGHT = h;
+	        	
+	        	EventListener.reshape(window, WIDTH, HEIGHT);
+	        }
+	    });
 	    
 	    running = true;
 	    
-	    //System.out.println(window.getWidth() + ","+ window.getHeight());
+	    while (!glfwWindowShouldClose(window)) 
+	    {
+	    	EventListener.display();
+	    	
+	    	glfwSwapBuffers(window);
+	    	glfwPollEvents();
+	    }
+	    
+	    stop();
 		
+	}
+	
+	public static void Fullscreen(boolean b)
+	{
+//	    if ( fullscreen )
+//	    {
+//	    	glfwGetVideoMode(HEIGHT)
+//	        // switch to full screen
+//	        glfwSetWindowMonitor( _wnd, _monitor, 0, 0, mode->width, mode->height, 0 );
+//	    }
+//	    else
+//	    {
+//	        // restore last window size and position
+//	        glfwSetWindowMonitor( _wnd, nullptr,  _wndPos[0], _wndPos[1], _wndSize[0], _wndSize[1], 0 );
+//	    }
 	}
 	
 	private static void load()
@@ -107,8 +137,9 @@ public class Presentation
 	public static void stop()
 	{
 		running = false;
-		Presentation.animator.stop();
-		Presentation.window.destroy();
+		glfwDestroyWindow(window);
+		EventListener.dispose();
+		window = NULL;
 	}
 
 }

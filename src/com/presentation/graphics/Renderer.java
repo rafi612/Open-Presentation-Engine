@@ -1,104 +1,85 @@
-/* Copyright 2019-2020 by rafi612 */
 package com.presentation.graphics;
+
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.texture.Texture;
-import com.presentation.main.EventListener;
 import com.presentation.resource.ImageResource;
-
 public class Renderer
-{
-	public static GL2 gl;
-	public static GLProfile profile;
-	
+{	
 	public static void frect(float x,float y,float width,float height,Color color)
 	{
 		
-		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
-		gl.glBegin(GL2.GL_QUADS);
+		glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
+		glBegin(GL_QUADS);
 		
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(x + width,y);
-		gl.glVertex2f(x + width, y + height);
-		gl.glVertex2f(x, y + height);
+		glVertex2f(x, y);
+		glVertex2f(x + width,y);
+		glVertex2f(x + width, y + height);
+		glVertex2f(x, y + height);
 			
-		gl.glEnd();
-		gl.glFlush();
+		glEnd();
+		glFlush();
 	}
 	
 	public static void frectnofill(float x,float y,float width,float height,Color color)
 	{
 		
-		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
+		glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
 		
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		glBegin(GL_LINE_LOOP);
 		
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(x + width,y);
-		gl.glVertex2f(x + width, y + height);
-		gl.glVertex2f(x, y + height);
+		glVertex2f(x, y);
+		glVertex2f(x + width,y);
+		glVertex2f(x + width, y + height);
+		glVertex2f(x, y + height);
 			
-		gl.glEnd();
-		gl.glFlush();
+		glEnd();
+		glFlush();
 	}
 	
 	public static void drawImage(ImageResource image,float x,float y,float width,float height)
-	{
-		Texture tex = image.getTexture();
+	{		
+		glEnable(GL_TEXTURE_2D);
 		
-		if (tex != null) 
-		{
-			gl.glBindTexture(GL2.GL_TEXTURE_2D, tex.getTextureObject());
-		}
+		glBindTexture(GL_TEXTURE_2D, image.id);
 		
-		gl.glEnable(GL2.GL_TEXTURE_2D);
+		glColor4f(1,1,1,1);
+		glBegin(GL_QUADS);
 		
-		gl.glColor4f(1,1,1,1);
-		gl.glBegin(GL2.GL_QUADS);
+		glTexCoord2f(0,0);
+		glVertex2f(x, y);
 		
-		gl.glTexParameterf(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
+		glTexCoord2f(1, 0);
+		glVertex2f(x + width,y);
 		
-		gl.glTexCoord2f(0,0);
-		gl.glVertex2f(x, y);
+		glTexCoord2f(1, 1);
+		glVertex2f(x + width, y + height);
 		
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex2f(x + width,y);
+		glTexCoord2f(0, 1);
+		glVertex2f(x, y + height);
 		
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex2f(x + width, y + height);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex2f(x, y + height);
+		glEnd();
 		
-		gl.glBindTexture(GL2.GL_TEXTURE_2D, 0);
-		
-		gl.glEnd();
-		
-		gl.glDisable(GL2.GL_TEXTURE_2D);
-//		gl.glFlush();
+		glDisable(GL_TEXTURE_2D);
+		glFlush();
 	}
 	
 	public static void drawVerticalGradient(float x,float y,float width,float height,Color color,Color color2)
 	{
-		gl.glBegin(GL2.GL_QUADS);
+		glBegin(GL_QUADS);
 		
-		gl.glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(x + width,y);
-		gl.glColor4f((float) color2.getRed() / 255,(float) color2.getGreen() / 255,(float) color2.getBlue() / 255,(float) color2.getAlpha() / 255);
-		gl.glVertex2f(x + width, y + height);
-		gl.glVertex2f(x, y + height);
+		glColor4f((float) color.getRed() / 255,(float) color.getGreen() / 255,(float) color.getBlue() / 255,(float) color.getAlpha() / 255);
+		glVertex2f(x, y);
+		glVertex2f(x + width,y);
+		glColor4f((float) color2.getRed() / 255,(float) color2.getGreen() / 255,(float) color2.getBlue() / 255,(float) color2.getAlpha() / 255);
+		glVertex2f(x + width, y + height);
+		glVertex2f(x, y + height);
 			
-		gl.glEnd();
-		gl.glFlush();
-	}
-	
-	public static GLProfile getProfile()
-	{
-		return profile;
+		glEnd();
+		glFlush();
 	}
 
 }

@@ -2,7 +2,6 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
-import com.jogamp.opengl.GL2;
 import com.presentation.graphics.Renderer;
 
 public class Disappearance extends Animation 
@@ -31,7 +30,7 @@ public class Disappearance extends Animation
 		return outputalpha >= 250;
 	}
 
-	public void render(GL2 gl)
+	public void render()
 	{
 		if (isRunning)
 		{

@@ -1,90 +1,75 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.resource;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
-import com.presentation.graphics.Renderer;
-import com.presentation.main.Presentation;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.stb.STBImage;
 
-public class ImageResource {
+import static org.lwjgl.opengl.GL11.*;
+
+public class ImageResource 
+{
+	public int id = 0;
+	public int width;
+	public int height;
 	
-	// The OpenGL texture object
-	private Texture texture = null;
-	
-	// The bufferedimage of this image
-	public BufferedImage image = null;
-	
-	GLProfile profile;
-	
-	@SuppressWarnings("deprecation")
-	public ImageResource(String path) 
+	public ImageResource(String filename)
 	{
 		try 
 		{
-			//System.out.println(url);
-			image = ImageIO.read(new File(path));
-			profile = Renderer.getProfile();
+			load(new FileInputStream(filename));
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "File" + path +" not found");
+			JOptionPane.showMessageDialog(null, "File" + filename +" not found");
 		}
-		
-		if (image != null)
-		{
-			image.flush();
-		}
-		
 	}
 	
-	
-	public ImageResource(InputStream i) 
-	{		
+	public ImageResource(InputStream input)
+	{
 		try 
 		{
-			//System.out.println(url);
-			image = ImageIO.read(i);
-			profile = Renderer.getProfile();
+			load(input);
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "File in jar not found");
 		}
-		
-		if (image != null)
-		{
-			image.flush();
-		}
 	}
 	
-	
-	public Texture getTexture() 
-	{
-		if (image == null) 
-		{
-			return null;
-		}
+	private void load(InputStream input) throws IOException
+	{		
+		IntBuffer w = BufferUtils.createIntBuffer(1);
+		IntBuffer h = BufferUtils.createIntBuffer(1);
+		IntBuffer comp = BufferUtils.createIntBuffer(1);
+			
+		byte[] pixels_raw = input.readAllBytes();
+			
+		ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
+		imageBuffer.put(pixels_raw);
+		imageBuffer.flip();
 		
-		if (texture == null) 
-		{
-			texture = AWTTextureIO.newTexture(profile, image, true);
-		}
+		ByteBuffer pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4);
+			
+		this.width = w.get();
+		this.height = h.get();
+			
+		id = glGenTextures();
 		
-		return texture;
+		glBindTexture(GL_TEXTURE_2D, id);
+
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	        
+	    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	}
-	
+
 }
