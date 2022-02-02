@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="libs/lwjgl.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl3-awt-0.1.8.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl-glfw.jar"/>
-	<classpathentry kind="lib" path="libs/lwjgl-nfd.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl-opengl.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-glfw-natives-linux.jar"/>
@@ -29,14 +28,6 @@
 	<classpathentry kind="lib" path="libs/natives/lwjgl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-natives-windows-arm64.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-natives-windows-x86.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-linux.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-linux-arm32.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-linux-arm64.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-macos.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-macos-arm64.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-windows.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-windows-arm64.jar"/>
-	<classpathentry kind="lib" path="libs/natives/lwjgl-nfd-natives-windows-x86.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-opengl-natives-linux.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-opengl-natives-linux-arm32.jar"/>
 	<classpathentry kind="lib" path="libs/natives/lwjgl-opengl-natives-linux-arm64.jar"/>
@@ -55,5 +46,14 @@
 	<classpathentry kind="lib" path="libs/natives/lwjgl-stb-natives-windows-x86.jar"/>
 	<classpathentry kind="lib" path="libs/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl-jawt.jar"/>
+	<classpathentry kind="lib" path="libs/lwjgl-tinyfd.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-linux.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-linux-arm32.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-linux-arm64.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-macos.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-windows.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-windows-arm64.jar"/>
+	<classpathentry kind="lib" path="libs/natives/lwjgl-tinyfd-natives-windows-x86.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
