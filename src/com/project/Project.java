@@ -218,36 +218,28 @@ public class Project
 	
 	public static String newproject_dialog()
 	{
-		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		jfc.setDialogTitle("Choose project directory:");
+		String path = TinyFileDialogs.tinyfd_saveFileDialog("Create Project", System.getProperty("user.home") + File.separator, null, "Folder");
 		
-		int returnValue = jfc.showDialog(Main.frame,"Select this location");
-		if (returnValue == JFileChooser.APPROVE_OPTION)
+		if (path != null) 
 		{
-			if (jfc.getSelectedFile().isDirectory())
-			{
-				System.out.println("You selected the directory: " + jfc.getSelectedFile());
-			}
-			if (jfc.getSelectedFile().isDirectory()) 
-			{
-				String path = JOptionPane.showInputDialog(Main.frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE);
-				if (!(path == null)) 
-					Project.CreateNewProject(jfc.getSelectedFile().toString(),path);
-			}
+			File project = new File(path);
+			Project.CreateNewProject(project.getParent(),project.getName());
 		}
-		if (jfc.getSelectedFile() !=  null) return jfc.getSelectedFile().toString();
-		return "";
+		
+		return path;
 	}
 	
 	public static String load_dialog()
 	{
 		String path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
 		
-		if (new File(path).exists())
-			LoadNewProject(path);
-		else
-			JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
+		if(path != null)
+		{
+			if (new File(path).exists())
+				LoadNewProject(path);
+			else
+				JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
+		}
 		
 		return path;
 	}
