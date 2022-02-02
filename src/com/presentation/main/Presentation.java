@@ -75,11 +75,8 @@ public class Presentation
 	    {
 	        @Override
 	        public void invoke(long window, int w, int h) 
-	        {
-	        	WIDTH = w;
-	        	HEIGHT = h;
-	        	
-	        	EventListener.reshape(window, WIDTH, HEIGHT);
+	        {   	
+	        	EventListener.reshape(window, w, h);
 	        }
 	    });
 	    
