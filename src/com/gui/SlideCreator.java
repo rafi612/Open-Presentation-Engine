@@ -18,6 +18,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -249,11 +250,18 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 	public void dispose() 
 	{
+		
 	}
+	
+	float sx,sy;
 	
 	public void init() 
 	{
 		System.out.println("Canvas init");
+		
+		AffineTransform transform = canvas.getGraphicsConfiguration().getDefaultTransform();
+		sx = (float) transform.getScaleX();
+		sy = (float) transform.getScaleY();
 		
 		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 		
@@ -264,15 +272,18 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
+	
+	
 
 	public void reshape(int width, int height) 
 	{
 		//System.out.println("Canvas reshape");
 		
+		
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		glViewport(0,0,(int)(width * getScale()),(int)(height * getScale()));
+		glViewport(0,0,(int)(width * sx),(int)(height * sy));
 		
 		glOrtho(0,WIDTH,HEIGHT,0,1,-1);
 		
@@ -281,12 +292,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	}
 	
 	Object source;
-	
-	public static double getScale()
-	{
-		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	    return device.getDisplayMode().getWidth() / (double) device.getDefaultConfiguration().getBounds().width;
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
