@@ -22,6 +22,10 @@ import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
 import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.main.Presentation;
@@ -238,25 +242,14 @@ public class Project
 	
 	public static String load_dialog()
 	{
-		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		jfc.setDialogTitle("Choose a directory to load project:");
+		String path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
 		
-		int returnValue = jfc.showOpenDialog(Main.frame);
-		if (returnValue == JFileChooser.APPROVE_OPTION) 
-		{
-			if (jfc.getSelectedFile().isDirectory()) 
-			{
-				System.out.println("You selected the directory: " + jfc.getSelectedFile());
-				
-				if (new File(jfc.getSelectedFile().toString() + File.separator + "main.py").exists())
-					LoadNewProject(jfc.getSelectedFile().toString());
-				else
-					JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		if (jfc.getSelectedFile() != null) return jfc.getSelectedFile().toString();
-		return null;
+		if (new File(path).exists())
+			LoadNewProject(path);
+		else
+			JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
+		
+		return path;
 	}
 	
 	public static int lost_save_dialog()
