@@ -18,7 +18,7 @@ public class EventListener
 		glClear(GL_COLOR_BUFFER_BIT);		
 		
 		if (Keyboard.getKeyOnce(GLFW_KEY_ESCAPE))
-			Presentation.stop();
+			glfwSetWindowShouldClose(Presentation.window, true);
 		
 		if (Keyboard.getKeyOnce(GLFW_KEY_F11))
 		{

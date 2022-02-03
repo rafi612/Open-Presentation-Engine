@@ -7,6 +7,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.awt.event.KeyEvent;
 
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
@@ -38,6 +39,8 @@ public class Presentation
 	
 	public static void init()
 	{
+		GLFWErrorCallback.createPrint(System.err).set();
+		
 		if (window != NULL)
 			stop();
 		
@@ -53,14 +56,14 @@ public class Presentation
 	    if (window == NULL)
 	      throw new RuntimeException("Failed to create the GLFW window");
 	    
-	    glfwSwapInterval(1);
-	    
 	    glfwSetKeyCallback(window, new Keyboard());
 	    glfwSetMouseButtonCallback(window, (wind,button,action,mods) -> Mouse.mouseButton(button, action, mods));
 	    glfwSetCursorPosCallback(window,(wind,xpos,ypos) -> Mouse.mouseMove(wind, xpos, ypos));
 	    
 	    glfwMakeContextCurrent(window);
 	    GL.createCapabilities();
+	    
+	    glfwSwapInterval(1);
 	    
 		sm = new SlideManager();
 		load();
@@ -82,7 +85,7 @@ public class Presentation
 	    
 	    running = true;
 	    
-	    while (!glfwWindowShouldClose(window)) 
+	    while (!glfwWindowShouldClose(window) && running) 
 	    {
 	    	EventListener.display();
 	    	
@@ -134,9 +137,10 @@ public class Presentation
 	public static void stop()
 	{
 		running = false;
-		glfwDestroyWindow(window);
 		EventListener.dispose();
+		glfwDestroyWindow(window);
 		window = NULL;
+		glfwTerminate();
 	}
 
 }
