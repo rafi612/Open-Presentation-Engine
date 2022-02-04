@@ -21,6 +21,8 @@ public class ImageResource
 	public int width;
 	public int height;
 	
+	ByteBuffer pixels;
+	
 	public ImageResource(String filename)
 	{
 		try 
@@ -57,11 +59,14 @@ public class ImageResource
 		imageBuffer.put(pixels_raw);
 		imageBuffer.flip();
 		
-		ByteBuffer pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4);
+		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4);
 			
 		this.width = w.get();
 		this.height = h.get();
-			
+	}
+	
+	public void bind()
+	{
 		id = glGenTextures();
 		
 		glBindTexture(GL_TEXTURE_2D, id);
@@ -70,6 +75,8 @@ public class ImageResource
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	        
 	    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	    
+	    STBImage.stbi_image_free(pixels);
 	}
 
 }

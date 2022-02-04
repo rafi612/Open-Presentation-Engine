@@ -42,6 +42,9 @@ public class Renderer
 	{		
 		glEnable(GL_TEXTURE_2D);
 		
+		if (image.id == 0)
+			image.bind();
+		
 		glBindTexture(GL_TEXTURE_2D, image.id);
 		
 		glColor4f(1,1,1,1);

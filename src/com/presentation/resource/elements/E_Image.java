@@ -140,17 +140,6 @@ public class E_Image extends Element
 			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 		
-		//temponary solution for loading image
-		if (changedimage)
-		{
-			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
-			w = image.width;
-			h = image.height;
-			frame.sw.setValue(image.width);
-			frame.sh.setValue(image.height);
-			changedimage = false;
-		}
-		
 		if (editing) frame.update();
 	}
 	
@@ -188,7 +177,7 @@ public class E_Image extends Element
 	
 	public void render()
 	{
-		if (path.equals("") || changedimage)
+		if (path.equals(""))
 			Renderer.frectnofill(x,y,w,h,Color.BLACK);
 		else
 		{
@@ -321,7 +310,12 @@ class ImageFrame extends JDialog implements ChangeListener
 				else
 				{
 					element.path = IoUtil.getPathFromProject(file);
-					element.changedimage = true;
+					element.image = new ImageResource(Project.projectlocation + IoUtil.slash() + element.path);
+					element.w = element.image.width;
+					element.h = element.image.height;
+					sw.setValue(element.image.width);
+					sh.setValue(element.image.height);
+					textfieldpath.setText(element.path);
 				}
 				     
 			} 
