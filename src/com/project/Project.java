@@ -39,23 +39,14 @@ public class Project
 	public static void CreateNewProject(String location,String name)
 	{
 		if (projectIsLoaded) unloadProject();
+		
 		projectIsLoaded = true;
 		projectlocation = location + File.separator + name;
+		
 		new File(projectlocation).mkdir();
-		Main.textpane.setEnabled(true);
 		Main.frame.setTitle(Main.TITLE + " - " + location + File.separator + name);
-		Main.tree.setEnabled(true);
-		Main.save.setEnabled(true);
-		Main.copy.setEnabled(true);
-		Main.paste.setEnabled(true);
-		Main.cut.setEnabled(true);
-		Main.selectAll.setEnabled(true);
-		Main.run.setEnabled(true);
-		Main.refresh.setEnabled(true);
-		Main.export.setEnabled(true);
-		Main.exitproject.setEnabled(true);
-		Main.slidecreator.initenable();
-		Main.sliderack.setEnabled(true);
+		
+		interfaceEnable(true);
 		
         for (int i = 0;i < Main.actions.size(); i++)
         	Main.actions.get(i).setEnabled(true);
@@ -80,20 +71,9 @@ public class Project
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
 		projectlocation = name;
-		Main.textpane.setEnabled(true);
 		Main.frame.setTitle(Main.TITLE + " - " + name);
-		Main.tree.setEnabled(true);
-		Main.save.setEnabled(true);
-		Main.copy.setEnabled(true);
-		Main.paste.setEnabled(true);
-		Main.cut.setEnabled(true);
-		Main.selectAll.setEnabled(true);
-		Main.run.setEnabled(true);
-		Main.refresh.setEnabled(true);
-		Main.export.setEnabled(true);
-		Main.exitproject.setEnabled(true);
-		Main.slidecreator.initenable();
-		Main.sliderack.setEnabled(true);
+
+		interfaceEnable(true);
 		
         for (int i = 0;i < Main.actions.size(); i++)
         	Main.actions.get(i).setEnabled(true);
@@ -112,20 +92,9 @@ public class Project
 		projectlocation = "";
 		Main.workspace.removeAllChildren();
 		Main.textpane.setText("");
-		Main.textpane.setEnabled(false);
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
-		Main.tree.setEnabled(false);
-		Main.save.setEnabled(false);
-		Main.copy.setEnabled(false);
-		Main.paste.setEnabled(false);
-		Main.cut.setEnabled(false);
-		Main.selectAll.setEnabled(false);
-		Main.run.setEnabled(false);
-		Main.refresh.setEnabled(false);
-		Main.export.setEnabled(false);
-		Main.exitproject.setEnabled(false);
-		Main.slidecreator.disable();
-		//Main.sliderack.setEnabled(false);
+
+		interfaceEnable(false);
 		
 		Main.textpane.setText("Project is not loaded. Load project or create a new one.");
 		Main.textarea2.setText("Project is not loaded. Load project or create a new one.");
@@ -142,14 +111,31 @@ public class Project
     	refreshProject();
 	}
 	
+	public static void interfaceEnable(boolean b)
+	{
+		Main.textpane.setEnabled(b);
+		Main.tree.setEnabled(b);
+		Main.save.setEnabled(b);
+		Main.copy.setEnabled(b);
+		Main.paste.setEnabled(b);
+		Main.cut.setEnabled(b);
+		Main.selectAll.setEnabled(b);
+		Main.run.setEnabled(b);
+		Main.refresh.setEnabled(b);
+		Main.export.setEnabled(b);
+		Main.exitproject.setEnabled(b);
+		Main.sliderack.setEnabled(b);
+		
+		if(b)
+			Main.slidecreator.initenable();
+		else
+			Main.slidecreator.disable();
+		
+	}
 
 	public static void refreshProject()
 	{
 		Main.workspace.removeAllChildren();
-//	    for (final File file : new File(projectlocation).listFiles()) 
-//	    {
-//	        Main.workspace.add(new DefaultMutableTreeNode(file));
-//	    }
 		
 		createChildren(new File(projectlocation), Main.workspace);
 	    
