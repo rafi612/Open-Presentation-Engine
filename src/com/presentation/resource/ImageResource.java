@@ -2,7 +2,6 @@
 package com.presentation.resource;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -59,7 +58,7 @@ public class ImageResource
 		imageBuffer.put(pixels_raw);
 		imageBuffer.flip();
 		
-		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4);
+		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
 			
 		this.width = w.get();
 		this.height = h.get();

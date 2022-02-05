@@ -136,11 +136,14 @@ public class Presentation
 	
 	public static void stop()
 	{
-		running = false;
-		EventListener.dispose();
-		glfwDestroyWindow(window);
-		window = NULL;
-		glfwTerminate();
+		if (running)
+		{
+			running = false;
+			EventListener.dispose();
+			glfwDestroyWindow(window);
+			window = NULL;
+			glfwTerminate();
+		}
 	}
 
 }
