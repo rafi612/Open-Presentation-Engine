@@ -19,23 +19,20 @@ public class AudioDecoder
 {
     public static class SoundInfo
     {
-    	public SoundInfo(int channels,int samplerate)
-    	{
-    		this.channels = channels;
-    		this.samplerate = samplerate;
-    	}
     	public int channels = 0,samplerate = 0;
+    	public ShortBuffer buffer;
     }
     
-    public static ShortBuffer decodeMPEG(InputStream input,SoundInfo info) throws BitstreamException, DecoderException, IOException
+    public static SoundInfo decodeMPEG(InputStream input) throws BitstreamException, DecoderException, IOException
     {
     	ArrayList<ShortBuffer> frames = new ArrayList<ShortBuffer>();
     	
     	Bitstream bitstream = new Bitstream(input);
     	Decoder decoder = new Decoder();
     	
-    	info.channels = decoder.getOutputChannels();
-    	info.samplerate = decoder.getOutputFrequency();
+    	SoundInfo info = new SoundInfo();
+    	
+    	System.out.println(info.samplerate);
     	
     	while (true)
     	{
@@ -63,6 +60,10 @@ public class AudioDecoder
     	
     	buf.flip();
     	
-		return buf;
+    	info.channels = decoder.getOutputChannels();
+    	info.samplerate = decoder.getOutputFrequency();
+    	info.buffer = buf;
+    	
+    	return info;
     }
 }

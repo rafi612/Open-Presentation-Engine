@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.audio.Sound;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
 import com.gui.Tree;
@@ -208,6 +209,9 @@ public class Main
 	public static void main(String[] args)
 	{
 		Main.args = args;
+		
+		Sound.init();
+		
 		//wm_class();
 		if (args.length < 1)
 		{

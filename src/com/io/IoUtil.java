@@ -37,6 +37,21 @@ public class IoUtil
 		   }
 	}
 	
+    
+	public static String FileExtension(File file)
+	{
+		// convert the file name into string
+		String fileName = file.toString();
+	
+		int index = fileName.lastIndexOf('.');
+		if(index > 0) 
+		{
+			String extension = fileName.substring(index + 1);
+			return extension;
+		}
+		return "";
+	}
+	
 	public static void copyFileondrive(String input,String output)
 	{
         File source = new File(input);

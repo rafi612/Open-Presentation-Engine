@@ -2,6 +2,7 @@ package com.audio;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -14,9 +15,16 @@ public class Sound
 	
 	String path;
 	
-	public Sound(String path)
+	InputStream input;
+	
+	public Sound(String path) throws FileNotFoundException
 	{
-		this.path = path;
+		this(new FileInputStream(path));
+	}
+	
+	public Sound(InputStream input)
+	{
+		this.input = input;
 	}
 	
 	public boolean getPlay()
@@ -24,14 +32,19 @@ public class Sound
 		return isPlay;
 	}
 	
+	public static void init()
+	{
+		
+	}
+	
 	public void play()
 	{
 		try 
 		{
-			player = new Player(new FileInputStream(path));
+			player = new Player(input);
 			player.play();
 		} 
-		catch (JavaLayerException | FileNotFoundException e)
+		catch (JavaLayerException e)
 		{
 			e.printStackTrace();
 		}
@@ -43,27 +56,15 @@ public class Sound
 		
 		Thread thread = new Thread()
 		{
-			@SuppressWarnings("deprecation")
 			public void run()
 			{
-				try 
-				{
-					player = new Player(new FileInputStream(path));
-					player.play();
-					
-					player.close();
-					stop();
-				} 
-				catch (JavaLayerException | FileNotFoundException e)
-				{
-					e.printStackTrace();
-				}
+				play();
 			}
 			
 		};
 		thread.start();
 
-		isPlay = false;
+		
 	}
 	
 	public void stop()

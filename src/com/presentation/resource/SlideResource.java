@@ -2,6 +2,7 @@
 package com.presentation.resource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import com.audio.Sound;
 import com.io.IoUtil;
@@ -64,10 +65,15 @@ public class SlideResource
 		File f1 = new File(path);
 		if (f.exists() || f1.exists())
 		{
-			if (Main.args.length < 1)
-				tts = new Sound(Project.projectlocation + IoUtil.slash() + path);
-			else 
-				tts = new Sound(path);
+			try {
+				if (Main.args.length < 1)
+					tts = new Sound(Project.projectlocation + IoUtil.slash() + path);
+				else 
+					tts = new Sound(path);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
