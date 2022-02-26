@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
 import com.audio.Sound;
-import com.io.IoUtil;
+import com.io.Util;
 import com.main.Main;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
@@ -134,16 +134,16 @@ public class Presentation
 	{
 		String path;
 		if (Main.args.length < 1)
-			path = Project.projectlocation + IoUtil.slash();
+			path = Project.projectlocation + Util.slash();
 		else path = "";
 		
 		String config = path + "config.xml";
 		
-		sm.slides = Integer.parseInt(IoUtil.readXml(config, "summary", "slides"));
-		generalMusic = IoUtil.readXml(config, "summary", "general_music");
-		fullscreen = Boolean.parseBoolean(IoUtil.readXml(config, "summary", "fullscreen"));
+		sm.slides = Integer.parseInt(Util.readXml(config, "summary", "slides"));
+		generalMusic = Util.readXml(config, "summary", "general_music");
+		fullscreen = Boolean.parseBoolean(Util.readXml(config, "summary", "fullscreen"));
 		
-		String key = IoUtil.readXml(config, "summary", "ttskey");
+		String key = Util.readXml(config, "summary", "ttskey");
 		if (!key.equals("auto"))
 			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
 		else TTSKeyCode = -1;

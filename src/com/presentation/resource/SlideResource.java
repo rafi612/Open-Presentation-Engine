@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 
 import com.audio.Sound;
 import com.graphics.Renderer;
-import com.io.IoUtil;
+import com.io.Util;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.project.Project;
@@ -52,7 +52,7 @@ public class SlideResource
 	private static ImageResource loadImage(String path)
 	{
 		if (Main.args.length < 1)
-			return new ImageResource(Project.projectlocation + IoUtil.slash() + path);
+			return new ImageResource(Project.projectlocation + Util.slash() + path);
 		else 
 			return new ImageResource(path);
 	}
@@ -61,13 +61,13 @@ public class SlideResource
 	{
 		ttspath = path;
 		if (path.equals("null")) return;
-		File f = new File(Project.projectlocation + IoUtil.slash() + path);
+		File f = new File(Project.projectlocation + Util.slash() + path);
 		File f1 = new File(path);
 		if (f.exists() || f1.exists())
 		{
 			try {
 				if (Main.args.length < 1)
-					tts = new Sound(Project.projectlocation + IoUtil.slash() + path);
+					tts = new Sound(Project.projectlocation + Util.slash() + path);
 				else 
 					tts = new Sound(path);
 				//tts.setPitch(2000f);

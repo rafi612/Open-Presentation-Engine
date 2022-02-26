@@ -24,7 +24,7 @@ import org.lwjgl.system.MemoryUtil;
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
 import com.audio.AudioDecoder.SoundInfo;
-import com.io.IoUtil;
+import com.io.Util;
 
 public class Sound 
 {	
@@ -51,7 +51,7 @@ public class Sound
 	public Sound(String path) throws FileNotFoundException
 	{
 		Type t = null;
-		switch (IoUtil.FileExtension(new File(path)))
+		switch (Util.FileExtension(new File(path)))
 		{
 		case "mp3":
 			t = Type.MPEG;

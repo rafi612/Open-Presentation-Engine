@@ -30,7 +30,7 @@ import javax.swing.event.ChangeListener;
 
 import com.graphics.Renderer;
 import com.gui.SlideCreator;
-import com.io.IoUtil;
+import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
 import com.presentation.resource.Element;
@@ -158,7 +158,7 @@ public class E_Image extends Element
 			
 			//loading image
 			path = data.getAttribute("src");
-			image = new ImageResource(Project.projectlocation + IoUtil.slash() + path);
+			image = new ImageResource(Project.projectlocation + Util.slash() + path);
 			
 			x = Integer.parseInt(data.getAttribute("x"));
 			y = Integer.parseInt(data.getAttribute("y"));
@@ -314,8 +314,8 @@ class ImageFrame extends JDialog implements ChangeListener
 				}
 				else
 				{
-					element.path = IoUtil.getPathFromProject(file);
-					element.image = new ImageResource(Project.projectlocation + IoUtil.slash() + element.path);
+					element.path = Util.getPathFromProject(file);
+					element.image = new ImageResource(Project.projectlocation + Util.slash() + element.path);
 					element.w = element.image.width;
 					element.h = element.image.height;
 					sw.setValue(element.image.width);

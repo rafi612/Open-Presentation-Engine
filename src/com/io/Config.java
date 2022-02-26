@@ -8,8 +8,8 @@ import com.main.Main;
 
 public class Config 
 {
-	public static String configwindows = System.getenv("APPDATA") + IoUtil.slash() + "ope.xml";
-	public static String configlinux = System.getProperty("user.home") + IoUtil.slash() + ".config" + IoUtil.slash() + ".ope.xml";
+	public static String configwindows = System.getenv("APPDATA") + Util.slash() + "ope.xml";
+	public static String configlinux = System.getProperty("user.home") + Util.slash() + ".config" + Util.slash() + ".ope.xml";
 	
 	public static void loadinterpreterpath() 
 	{
@@ -30,8 +30,8 @@ public class Config
 			conf = configlinux;
 		}
 		
-		Main.interpreterpath = IoUtil.readXml(conf, "settings", "pypath");
-		Main.interpretertype = IoUtil.readXml(conf, "settings", "pytype");
+		Main.interpreterpath = Util.readXml(conf, "settings", "pypath");
+		Main.interpretertype = Util.readXml(conf, "settings", "pytype");
 		
 		switch (Main.interpretertype)
 		{
@@ -130,7 +130,7 @@ public class Config
 		else if(Platform.get() == Platform.LINUX)
 			confpath = configlinux;
 		
-		IoUtil.saveFile(confpath,
+		Util.saveFile(confpath,
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
 			"<class>\n" +
 			"<settings>\n" +

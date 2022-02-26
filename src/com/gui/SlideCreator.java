@@ -48,7 +48,7 @@ import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.graphics.Renderer;
-import com.io.IoUtil;
+import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
 import com.presentation.resource.Element;
@@ -479,7 +479,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			{
 				dialog.dispose();
 				
-				XmlParser xml = new XmlParser(Project.projectlocation + IoUtil.slash() + text.getText());
+				XmlParser xml = new XmlParser(Project.projectlocation + Util.slash() + text.getText());
 				
 				org.w3c.dom.Element[] elements_ = xml.getElements(xml.getElementsByTagName("element"));
 				
@@ -518,7 +518,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 					evt.acceptDrop(DnDConstants.ACTION_COPY);
 					File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
 					
-					String path = IoUtil.getPathFromProject(file);
+					String path = Util.getPathFromProject(file);
 					
 					text.setText(path);
 				} 
@@ -549,7 +549,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		xml = xml + "</slide>";
 		
 		//save file
-		IoUtil.saveFile(Project.projectlocation + IoUtil.slash() + path + ".layout", xml);
+		Util.saveFile(Project.projectlocation + Util.slash() + path + ".layout", xml);
 		
 		Project.refreshProject();
 	}

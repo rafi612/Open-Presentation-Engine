@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 
 import com.project.Project;
 
-public class IoUtil 
+public class Util 
 {
 	public static void insert(String s,int p,JTextPane t) 
 	{
@@ -83,7 +83,7 @@ public class IoUtil
 	public static void copyFile(String input,String output)
 	{
         //File source = new File(input);
-        InputStream is = IoUtil.class.getResourceAsStream(input);
+        InputStream is = Util.class.getResourceAsStream(input);
         File dest = new File(output);
 
         try (//FileInputStream fis = new FileInputStream(source);

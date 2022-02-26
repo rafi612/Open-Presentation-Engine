@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import com.io.IoUtil;
+import com.io.Util;
 import com.main.Main;
 
 public class A_Slide extends Atribute
@@ -39,7 +39,7 @@ public class A_Slide extends Atribute
 				
 				if (file.getName().contains(".layout"))
 				{
-					path = IoUtil.getPathFromProject(file);
+					path = Util.getPathFromProject(file);
 					
 					setText(Atribute.Type.SLIDE.getFullName() + ": " + file.getName());
 				}

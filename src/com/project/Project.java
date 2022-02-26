@@ -26,7 +26,7 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
-import com.io.IoUtil;
+import com.io.Util;
 import com.main.Main;
 import com.presentation.main.Presentation;
 
@@ -54,11 +54,11 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
 		
-		IoUtil.copyFile("/script/main.py",projectlocation + File.separator +"main.py");
-		IoUtil.copyFile("/script/config.xml",projectlocation + File.separator + "config.xml");
+		Util.copyFile("/script/main.py",projectlocation + File.separator +"main.py");
+		Util.copyFile("/script/config.xml",projectlocation + File.separator + "config.xml");
 		
 		new File(Project.projectlocation + File.separator + "ope").mkdir();
-		IoUtil.copyFile("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
+		Util.copyFile("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
