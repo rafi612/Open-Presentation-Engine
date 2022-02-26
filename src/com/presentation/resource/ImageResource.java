@@ -77,5 +77,10 @@ public class ImageResource
 	    
 	    STBImage.stbi_image_free(pixels);
 	}
+	
+	public void destroy()
+	{
+		glDeleteTextures(id);
+	}
 
 }

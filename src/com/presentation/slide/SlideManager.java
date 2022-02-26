@@ -95,14 +95,14 @@ public class SlideManager
 				if (slide.get(choose).tts != null)
 					if (startanimation.isEnding() && ttsswitch)
 				{
-					slide.get(choose).tts.playInBg();
+					slide.get(choose).tts.play();
 					ttsswitch = false;
 				}
 			}
 			//tts key
 			else if (Keyboard.getKeyOnce(Presentation.TTSKeyCode))
 			{
-				slide.get(choose).tts.playInBg();
+				slide.get(choose).tts.play();
 			}
 
 			//animation update

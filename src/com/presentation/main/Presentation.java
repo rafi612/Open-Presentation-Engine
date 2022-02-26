@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
+import com.audio.Sound;
 import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.input.Keyboard;
@@ -39,13 +40,14 @@ public class Presentation
 	
 	public static void init()
 	{
+		
 		GLFWErrorCallback.createPrint(System.err).set();
 		
 		if (window != NULL)
 			stop();
 		
 		if (!glfwInit())
-			System.err.println("Error");
+			System.err.println("Error Init GLFW");
 
 	    glfwDefaultWindowHints();
 	    
@@ -74,14 +76,7 @@ public class Presentation
 	    
 	    EventListener.reshape(window,WIDTH,HEIGHT);
 	    
-	    glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback()
-	    {
-	        @Override
-	        public void invoke(long window, int w, int h) 
-	        {   	
-	        	EventListener.reshape(window, w, h);
-	        }
-	    });
+	    glfwSetWindowSizeCallback(window, (window,w,h) -> EventListener.reshape(window, w, h));
 	    
 	    running = true;
 	    
@@ -140,6 +135,7 @@ public class Presentation
 		{
 			running = false;
 			EventListener.dispose();
+			
 			glfwDestroyWindow(window);
 			window = NULL;
 			glfwTerminate();

@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 

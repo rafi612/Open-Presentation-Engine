@@ -2,11 +2,16 @@ package com.audio;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.stb.STBVorbisInfo;
+
+import static org.lwjgl.stb.STBVorbis.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.BitstreamException;
@@ -17,22 +22,19 @@ import javazoom.jl.decoder.SampleBuffer;
 
 public class AudioDecoder 
 {
-    public static class SoundInfo
-    {
-    	public int channels = 0,samplerate = 0;
-    	public ShortBuffer buffer;
-    }
+	public static class SoundInfo
+	{
+		int channels,samplerate;
+	}
     
-    public static SoundInfo decodeMPEG(InputStream input) throws BitstreamException, DecoderException, IOException
+    public static ShortBuffer decodeMPEG(InputStream input,SoundInfo info) throws BitstreamException, DecoderException, IOException
     {
     	ArrayList<ShortBuffer> frames = new ArrayList<ShortBuffer>();
     	
     	Bitstream bitstream = new Bitstream(input);
     	Decoder decoder = new Decoder();
     	
-    	SoundInfo info = new SoundInfo();
-    	
-    	System.out.println(info.samplerate);
+    	int divider = 1;
     	
     	while (true)
     	{
@@ -42,7 +44,16 @@ public class AudioDecoder
     			break;
     		
     		SampleBuffer sb = (SampleBuffer)decoder.decodeFrame(header, bitstream);
-    		ShortBuffer sbuf = BufferUtils.createShortBuffer(decoder.getOutputBlockSize());
+   		
+        	if (divider == 1) 
+        	{
+				if (decoder.getOutputFrequency() <= 24000)
+					divider *= 2;
+				if (decoder.getOutputChannels() == 1)
+					divider *= 2;
+			}
+        	
+			ShortBuffer sbuf = BufferUtils.createShortBuffer(decoder.getOutputBlockSize());
     		sbuf.put(sb.getBuffer());
     		sbuf.flip();
     		
@@ -51,19 +62,52 @@ public class AudioDecoder
     		bitstream.closeFrame();
     	}
     	
-    	ShortBuffer buf = BufferUtils.createShortBuffer(frames.size() * decoder.getOutputBlockSize());
-    	for (ShortBuffer sb : frames)
-    		buf.put(sb);
+    	info.channels = decoder.getOutputChannels();
+    	info.samplerate = decoder.getOutputFrequency();
+    	
+    	ShortBuffer buf = BufferUtils.createShortBuffer(frames.size() * decoder.getOutputBlockSize() / divider);
+    	for (int i = 0;i < frames.size();i++)
+    	{
+    		for (int j = 0;j < decoder.getOutputBlockSize() / divider;j++)
+    			buf.put(frames.get(i).get(j));
+    	}
     	frames.clear();
     	
     	input.close();
     	
     	buf.flip();
     	
-    	info.channels = decoder.getOutputChannels();
-    	info.samplerate = decoder.getOutputFrequency();
-    	info.buffer = buf;
+    	return buf;
+    }
+    
+    public static ShortBuffer decodeVorbis(InputStream input,SoundInfo info) throws IOException
+    {
+    	byte[] rawfile = input.readAllBytes();
+    	input.close();
     	
-    	return info;
+    	ByteBuffer filebuffer = BufferUtils.createByteBuffer(rawfile.length);
+    	filebuffer.put(rawfile);
+    	filebuffer.flip();
+    	
+        IntBuffer error = BufferUtils.createIntBuffer(1);
+        long decoder = stb_vorbis_open_memory(filebuffer, error, null);
+        if (decoder == NULL) {
+            throw new IOException("Failed to open Ogg Vorbis file. Error: " + error.get(0));
+        }
+        
+        STBVorbisInfo vorbisinfo = STBVorbisInfo.malloc();
+        
+        stb_vorbis_get_info(decoder, vorbisinfo);
+
+        info.channels = vorbisinfo.channels();
+        info.samplerate = vorbisinfo.sample_rate();
+    	
+        ShortBuffer pcm = BufferUtils.createShortBuffer(stb_vorbis_stream_length_in_samples(decoder) * vorbisinfo.channels());
+
+        stb_vorbis_get_samples_short_interleaved(decoder, vorbisinfo.channels(), pcm);
+        stb_vorbis_close(decoder);
+
+        return pcm;
+    	
     }
 }
