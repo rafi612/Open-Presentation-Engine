@@ -50,6 +50,11 @@ public class Element
 	{
 		
 	}
+	
+	public void destroy()
+	{
+		
+	}
 
 	public void render()
 	{

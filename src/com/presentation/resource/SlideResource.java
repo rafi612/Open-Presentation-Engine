@@ -70,6 +70,7 @@ public class SlideResource
 					tts = new Sound(Project.projectlocation + IoUtil.slash() + path);
 				else 
 					tts = new Sound(path);
+				//tts.setPitch(2000f);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

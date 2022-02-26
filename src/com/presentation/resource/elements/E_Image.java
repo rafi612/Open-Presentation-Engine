@@ -167,6 +167,11 @@ public class E_Image extends Element
 		}
 	}
 	
+	public void destroy()
+	{
+		image.destroy();
+	}
+	
 	public String save()
 	{
 		//creating xml tag with element data

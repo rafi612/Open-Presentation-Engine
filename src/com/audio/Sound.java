@@ -28,9 +28,10 @@ import com.io.IoUtil;
 
 public class Sound 
 {	
-	private boolean isPlay = false;
 	static long device,context;
 	static ALCapabilities caps;
+	
+	private boolean isPlay = false;
 	
 	public SoundInfo info;
 	
@@ -39,6 +40,8 @@ public class Sound
 	int buffer,source;
 	
 	Type type;
+	
+	float gain = 1,pitch = 1,pan = 0;
 	
 	public enum Type
 	{
@@ -60,7 +63,7 @@ public class Sound
 			t = Type.VORBIS;
 			break;
 		}
-		
+
 		try 
 		{
 			load(new FileInputStream(path),t);
@@ -135,13 +138,27 @@ public class Sound
 		alcCloseDevice(device);
 	}
 	
-	public void playAndWait()
+	public void play_()
 	{
-        //set up source input
+		alSourcef(source,AL_PITCH,pitch); 
+		alSourcef(source,AL_GAIN,gain);
+		
+		System.out.println((float)-Math.sqrt(1.0f - Math.pow(pan, pan)));
+		
+		alSource3f(source, AL_POSITION, pan, 0, (float)-Math.sqrt(1.0f - Math.pow(pan, pan)));
+		
+		//set up source input
         alSourcei(source, AL_BUFFER, buffer);
+        
+        isPlay = true;
         
         //play source
         alSourcePlay(source);
+	}
+	
+	public void playAndWait()
+	{
+		play_();
 		
 		while (alGetSourcei(source, AL_SOURCE_STATE) != AL_STOPPED)
 			try {
@@ -156,13 +173,7 @@ public class Sound
 	
 	public void play()
 	{
-		//set up source input
-		alSourcei(source, AL_BUFFER, buffer);
-		
-		isPlay = true;
-		
-		//play source
-		alSourcePlay(source);
+		play_();
 
 		new Thread(this::waitForEnd).start();
 	}
@@ -182,8 +193,43 @@ public class Sound
         stop();
 	}
 	
+	public void setPitch(float f)
+	{
+		pitch = f;
+	}
+	
+	public void setGain(float f)
+	{
+		gain = Math.min(1.0f, f);
+	}
+	
+	public void setPan(float f)
+	{
+		pan = f;
+	}
+	
+	public float getPitch()
+	{
+		return pitch;
+	}
+	
+	public float getGain()
+	{
+		return gain;
+	}
+	
+	public float getPan()
+	{
+		return pan;
+	}
+	
 	public void stop()
 	{
+		alSourcef(source,AL_PITCH,1f); 
+		alSourcef(source,AL_GAIN,1f);
+		
+		alSource3f(source, AL_POSITION, 0, 0,-1);
+		
 		alSourceStop(source);
 	}
 	

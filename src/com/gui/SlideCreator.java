@@ -402,8 +402,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete " + listModel.get(list.getSelectedIndex()) + "?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if (choose == 0)
 				{
-					elements.remove(list.getSelectedIndex());
-					listModel.remove(list.getSelectedIndex());
+					int index = list.getSelectedIndex();
+					elements.get(index).destroy();
+					
+					elements.remove(index);
+					listModel.remove(index);
 				}
 			}
 		}
