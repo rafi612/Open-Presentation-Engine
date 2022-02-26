@@ -32,6 +32,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.lwjgl.system.Platform;
+
 import com.audio.Sound;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
@@ -344,7 +346,7 @@ public class Main
         winpy.addActionListener(new Action());
         group.add(winpy);
         // Python/ folder exist
-        if (new File("Python").exists() && IoUtil.isWindows())
+        if (new File("Python").exists() && Platform.get() == Platform.WINDOWS)
         	winpy.setEnabled(true);
         python.add(winpy);
         
@@ -352,7 +354,7 @@ public class Main
         winsystem.setEnabled(false);
         winsystem.addActionListener(new Action());
         group.add(winsystem);
-        if (IoUtil.isWindows())
+        if (Platform.get() == Platform.WINDOWS)
         	winsystem.setEnabled(true);
         python.add(winsystem);
         
@@ -360,7 +362,7 @@ public class Main
         linux.setEnabled(false);
         linux.addActionListener(new Action());
         group.add(linux);
-        if (IoUtil.isLinux())
+        if (Platform.get() == Platform.LINUX)
         	linux.setEnabled(true);
         python.add(linux);
         
@@ -368,7 +370,7 @@ public class Main
         macos.setEnabled(false);
         macos.addActionListener(new Action());
         group.add(macos);
-        if (IoUtil.isMac())
+        if (Platform.get() == Platform.MACOSX)
         	macos.setEnabled(true);
         python.add(macos);
         
@@ -423,7 +425,7 @@ public class Main
 	
 	public static void wm_class()
 	{
-		if (IoUtil.isLinux())
+		if (Platform.get() == Platform.LINUX)
 		{
 //			Toolkit xToolkit = Toolkit.getDefaultToolkit();
 //			Field awtAppClassNameField;

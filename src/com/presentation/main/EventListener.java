@@ -8,6 +8,9 @@ import com.presentation.resource.SlideResource;
 import com.presentation.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.system.Platform;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class EventListener
@@ -56,7 +59,7 @@ public class EventListener
 		System.out.println("========================================");
 		System.out.println("Open Presentation Engine by rafi612");
 		System.out.println("========================================");
-		System.out.println("System: " + IoUtil.getOsName());
+		System.out.println("System: " + Platform.get());
 		System.out.println("GL_VENDOR: " + glGetString(GL_VENDOR));
 		System.out.println("GL_RENDERER: " + glGetString(GL_RENDERER));
 		System.out.println("GL_VERSION: " + glGetString(GL_VERSION));

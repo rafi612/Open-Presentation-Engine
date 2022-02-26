@@ -37,7 +37,7 @@ public class Presentation
 	
 	public static boolean running = false;
 	
-	public static void init()
+	public static void init_()
 	{
 		GLFWErrorCallback.createPrint(System.err).set();
 		

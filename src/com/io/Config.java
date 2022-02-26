@@ -2,6 +2,8 @@ package com.io;
 
 import java.io.File;
 
+import org.lwjgl.system.Platform;
+
 import com.main.Main;
 
 public class Config 
@@ -11,18 +13,22 @@ public class Config
 	
 	public static void loadinterpreterpath() 
 	{
+		String conf = "";
+		
 		//windows
-		if (IoUtil.isWindows())
+		if (Platform.get() == Platform.WINDOWS)
+		{
 			if (!new File(configwindows).exists())
 				createOPExml();
+			conf = configwindows;
+		}
 		//linux
-		if (IoUtil.isLinux())
+		if (Platform.get() == Platform.LINUX)
+		{
 			if (!new File(configlinux).exists())
 				createOPExml();
-		
-		String conf = "";
-		if (IoUtil.isWindows()) conf = configwindows;
-		else if (IoUtil.isLinux()) conf = configlinux;
+			conf = configlinux;
+		}
 		
 		Main.interpreterpath = IoUtil.readXml(conf, "settings", "pypath");
 		Main.interpretertype = IoUtil.readXml(conf, "settings", "pytype");
@@ -82,7 +88,7 @@ public class Config
 		String path = "",type = "";
 		
 		//windows 
-		if (IoUtil.isWindows())
+		if (Platform.get() == Platform.WINDOWS)
 		{
 			//buildin
 			if (new File("Python\\python.exe").exists())
@@ -97,12 +103,12 @@ public class Config
 				type = "winsystem";
 			}
 		}
-		else if (IoUtil.isLinux())
+		else if (Platform.get() == Platform.LINUX)
 		{
 			path = "python3";
 			type = "linux";
 		}
-		else if (IoUtil.isMac())
+		else if (Platform.get() == Platform.MACOSX)
 		{
 			path = "python";
 			type = "macos";
@@ -112,16 +118,19 @@ public class Config
 			path = "";
 			type = "custom";
 		}
+		
 		saveOPExml(type, path);
 	}
 	
 	public static void saveOPExml(String type,String path)
 	{
-		String configpath = "";
-		if (IoUtil.isWindows()) configpath = configwindows;
-		else if (IoUtil.isLinux()) configpath = configlinux;
+		String confpath = "";
+		if (Platform.get() == Platform.WINDOWS)
+			confpath = configwindows;
+		else if(Platform.get() == Platform.LINUX)
+			confpath = configlinux;
 		
-		IoUtil.saveFile(configpath,
+		IoUtil.saveFile(confpath,
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
 			"<class>\n" +
 			"<settings>\n" +

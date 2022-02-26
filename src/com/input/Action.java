@@ -25,6 +25,8 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import org.lwjgl.system.Platform;
+
 import com.io.Config;
 import com.io.IoUtil;
 import com.main.Main;
@@ -190,12 +192,12 @@ public class Action implements ActionListener
 		{
 			try 
 			{
-				if (IoUtil.isWindows())
+				if (Platform.get() == Platform.WINDOWS)
 				{
 					Process process = Runtime.getRuntime().exec("cmd /c start " + Main.interpreterpath);
 					process.waitFor();
 				}
-				if (IoUtil.isLinux())
+				if (Platform.get() == Platform.LINUX)
 				{
 					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e " + Main.interpreterpath);
 					process.waitFor();
