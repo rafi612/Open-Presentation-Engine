@@ -124,10 +124,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
         edit = new JButton("Edit");
         edit.addActionListener(this);
         
-        up = new JButton("▲");
+        up = new JButton("\u25B2");
         up.addActionListener(this);
         
-        down = new JButton("▼");
+        down = new JButton("\u25BC");
         down.addActionListener(this);
         
         rename = new JButton("Rename");

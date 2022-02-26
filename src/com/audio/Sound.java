@@ -24,6 +24,7 @@ import org.lwjgl.system.MemoryUtil;
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
 import com.audio.AudioDecoder.SoundInfo;
+import com.io.IoUtil;
 
 public class Sound 
 {	
@@ -44,24 +45,10 @@ public class Sound
 		MPEG,WAVE,VORBIS
 	}
 	
-	public static String FileExtension(File file)
-	{
-		// convert the file name into string
-		String fileName = file.toString();
-	
-		int index = fileName.lastIndexOf('.');
-		if(index > 0) 
-		{
-			String extension = fileName.substring(index + 1);
-			return extension;
-		}
-		return "";
-	}
-	
 	public Sound(String path) throws FileNotFoundException
 	{
 		Type t = null;
-		switch (FileExtension(new File(path)))
+		switch (IoUtil.FileExtension(new File(path)))
 		{
 		case "mp3":
 			t = Type.MPEG;
@@ -148,11 +135,6 @@ public class Sound
 		alcCloseDevice(device);
 	}
 	
-	public boolean getPlay()
-	{
-		return isPlay;
-	}
-	
 	public void playAndWait()
 	{
         //set up source input
@@ -169,15 +151,16 @@ public class Sound
 				e.printStackTrace();
 			}
 
-        //stop source
-        alSourceStop(source);
+        stop();
 	}
 	
 	public void play()
 	{
 		//set up source input
 		alSourcei(source, AL_BUFFER, buffer);
-		        
+		
+		isPlay = true;
+		
 		//play source
 		alSourcePlay(source);
 
@@ -186,7 +169,7 @@ public class Sound
 	
 	public void waitForEnd()
 	{
-		while (alGetSourcei(source, AL_SOURCE_STATE) != AL_STOPPED)
+		while (alGetSourcei(source, AL_SOURCE_STATE) != AL_STOPPED && isPlay)
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -194,8 +177,9 @@ public class Sound
 				e.printStackTrace();
 			}
 
-        //stop source
-        alSourceStop(source);
+		isPlay = false;
+		
+        stop();
 	}
 	
 	public void stop()
