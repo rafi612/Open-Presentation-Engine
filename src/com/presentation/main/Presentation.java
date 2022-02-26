@@ -6,8 +6,12 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.awt.event.KeyEvent;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
@@ -16,6 +20,7 @@ import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
+import com.presentation.resource.ImageResource;
 import com.presentation.slide.SlideManager;
 import com.project.Project;
 
@@ -57,6 +62,9 @@ public class Presentation
 	    window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
 	    if (window == NULL)
 	      throw new RuntimeException("Failed to create the GLFW window");
+        
+	    GLFWImage.Buffer icon = icon("/images/icon.png");
+	    glfwSetWindowIcon(window,icon);
 	    
 	    glfwSetKeyCallback(window, new Keyboard());
 	    glfwSetMouseButtonCallback(window, (wind,button,action,mods) -> Mouse.mouseButton(button, action, mods));
@@ -90,6 +98,21 @@ public class Presentation
 	    
 	    stop();
 		
+	}
+	
+	private static GLFWImage.Buffer icon(String path)
+	{
+		IntBuffer w = BufferUtils.createIntBuffer(1);
+		IntBuffer h = BufferUtils.createIntBuffer(1);
+		IntBuffer comp = BufferUtils.createIntBuffer(1);
+		
+		ByteBuffer imgbuff = ImageResource.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
+		GLFWImage image = GLFWImage.malloc(); 
+		GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
+        image.set(w.get(),h.get(),imgbuff);
+        imagebf.put(0, image);
+        
+        return imagebf;
 	}
 	
 	public static void Fullscreen(boolean b)

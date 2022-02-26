@@ -64,6 +64,24 @@ public class ImageResource
 		this.height = h.get();
 	}
 	
+	public static ByteBuffer load_image(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
+	{
+		try
+		{
+			byte[] pixels_raw = in.readAllBytes();
+			
+			ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
+			imageBuffer.put(pixels_raw);
+			imageBuffer.flip();
+			return STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public void bind()
 	{
 		id = glGenTextures();
