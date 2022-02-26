@@ -1,4 +1,4 @@
-package com.presentation.graphics;
+package com.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 

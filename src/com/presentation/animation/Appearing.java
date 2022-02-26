@@ -2,7 +2,7 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
-import com.presentation.graphics.Renderer;
+import com.graphics.Renderer;
 
 public class Appearing extends Animation 
 {

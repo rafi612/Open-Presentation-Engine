@@ -1,8 +1,8 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.presentation.main;
 
+import com.graphics.Renderer;
 import com.io.IoUtil;
-import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.resource.SlideResource;
 import com.presentation.slide.SlideManager;

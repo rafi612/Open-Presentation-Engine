@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import com.graphics.Renderer;
 import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.animation.Animation;
-import com.presentation.graphics.Renderer;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;
 import com.presentation.resource.ImageResource;

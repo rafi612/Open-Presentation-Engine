@@ -28,11 +28,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.graphics.Renderer;
 import com.gui.SlideCreator;
 import com.io.IoUtil;
 import com.io.XmlParser;
 import com.main.Main;
-import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.project.Project;

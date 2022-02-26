@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.audio.Sound;
+import com.graphics.Renderer;
 import com.io.IoUtil;
 import com.main.Main;
 import com.presentation.animation.Animation;
-import com.presentation.graphics.Renderer;
 import com.project.Project;
 
 public class SlideResource

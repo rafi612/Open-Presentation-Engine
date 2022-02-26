@@ -2,8 +2,8 @@ package com.presentation.resource.elements;
 
 import java.awt.Color;
 
+import com.graphics.Renderer;
 import com.io.XmlParser;
-import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.presentation.resource.e_frames.E_ShapeFrame;

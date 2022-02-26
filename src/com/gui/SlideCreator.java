@@ -47,10 +47,10 @@ import org.lwjgl.opengl.awt.GLData;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 
+import com.graphics.Renderer;
 import com.io.IoUtil;
 import com.io.XmlParser;
 import com.main.Main;
-import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 import com.presentation.resource.ImageResource;
 import com.project.Project;

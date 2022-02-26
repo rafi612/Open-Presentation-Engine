@@ -3,8 +3,8 @@ package com.presentation.resource.elements;
 import java.awt.Color;
 import java.awt.Point;
 
+import com.graphics.Renderer;
 import com.gui.SlideCreator;
-import com.presentation.graphics.Renderer;
 import com.presentation.resource.Element;
 
 public class Resizer 
