@@ -194,7 +194,7 @@ public class Project
 			Project.loadTextFromFileToTextArea(Project.projectlocation + File.separator + "config.xml", Main.textarea2);
 			Project.refreshProject();
 			
-			if (run) Presentation.init();
+			if (run) new Thread(Presentation::init).start();
 		}
 		catch (Exception e)
 		{
