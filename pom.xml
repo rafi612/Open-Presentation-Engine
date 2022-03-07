@@ -32,8 +32,11 @@
 			  <archive>
 				<manifest>
 				  <addClasspath>true</addClasspath>
-				  <mainClass>com.main.Main</mainClass>
+				  <mainClass>com.main.JarLoader</mainClass>
 				</manifest>
+				<manifestEntries>
+				  <Rsrc-Main-Class>com.main.Main</Rsrc-Main-Class>
+				</manifestEntries>
 			  </archive>
 			</configuration>
 	  </plugin>
@@ -42,13 +45,13 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-dependencies</id>
+            <id>copy-dependencies</id>
             <phase>prepare-package</phase>
             <goals>
-              <goal>unpack-dependencies</goal>
+              <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/classes/</outputDirectory>
+              <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
