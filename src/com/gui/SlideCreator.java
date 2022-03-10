@@ -292,12 +292,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		glLoadIdentity();
 	}
 	
-	Object source;
-	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		source = e.getSource();
+		Object source = e.getSource();
 		//new element
 		if (source == newelement)
 		{
@@ -543,10 +541,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//saving elements to xml string
 		for (int i = 0;i < elements.size();i++)
 		{
-			xml = xml + elements.get(i).save();
+			xml += elements.get(i).save();
 		}
-		xml = xml + "<all>" + elements.size() + "</all>\n";
-		xml = xml + "</slide>";
+		xml += "<all>" + elements.size() + "</all>\n";
+		xml += "</slide>";
 		
 		//save file
 		Util.saveFile(Project.projectlocation + Util.slash() + path + ".layout", xml);
