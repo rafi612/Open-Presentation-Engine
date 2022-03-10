@@ -143,8 +143,6 @@ public class Sound
 		alSourcef(source,AL_PITCH,pitch); 
 		alSourcef(source,AL_GAIN,gain);
 		
-		System.out.println((float)-Math.sqrt(1.0f - Math.pow(pan, pan)));
-		
 		alSource3f(source, AL_POSITION, pan, 0, (float)-Math.sqrt(1.0f - Math.pow(pan, pan)));
 		
 		//set up source input
