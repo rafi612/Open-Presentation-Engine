@@ -12,6 +12,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
@@ -115,19 +116,29 @@ public class Presentation
         return imagebf;
 	}
 	
+	static IntBuffer lastx,lasty,lastw,lasth;
 	public static void Fullscreen(boolean b)
 	{
-//	    if ( fullscreen )
-//	    {
-//	    	glfwGetVideoMode(HEIGHT)
-//	        // switch to full screen
-//	        glfwSetWindowMonitor( _wnd, _monitor, 0, 0, mode->width, mode->height, 0 );
-//	    }
-//	    else
-//	    {
-//	        // restore last window size and position
-//	        glfwSetWindowMonitor( _wnd, nullptr,  _wndPos[0], _wndPos[1], _wndSize[0], _wndSize[1], 0 );
-//	    }
+		long monitor = glfwGetPrimaryMonitor();
+		GLFWVidMode mode = glfwGetVideoMode(monitor);
+		
+	    if ( fullscreen )
+	    {
+			lastx = BufferUtils.createIntBuffer(1);
+			lasty = BufferUtils.createIntBuffer(1);
+			lastw = BufferUtils.createIntBuffer(1);
+			lasth = BufferUtils.createIntBuffer(1);
+			
+	    	glfwGetWindowPos(window, lastx, lasty);
+	    	glfwGetWindowSize(window, lastw, lasth);
+	    	
+	    	glfwSetWindowMonitor(window,monitor,0,0,mode.width(),mode.height(),GLFW_DONT_CARE);
+	    }
+	    else
+	    {
+	        // restore last window size and position
+	        glfwSetWindowMonitor(window, NULL, lastx.get(),lasty.get(),lastw.get(),lasth.get(),GLFW_DONT_CARE);
+	    }
 	}
 	
 	private static void load()
