@@ -12,19 +12,26 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public class JarLoader
 {
+	public static boolean loadedAsJarloader = false;
+	public static String jarLoaderLibDir;
+	
 	public static void main(String[] args) throws IOException 
 	{
-		Enumeration<URL> resEnum = Thread.currentThread().getContextClassLoader().getResources("META-INF/MANIFEST.MF");
+		loadedAsJarloader = true;
+		
+		Enumeration<URL> resEnum = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
 		String rsrcMainClass = null;
 		String[] classpath = null;
 		
 		String libdir = "/lib";
 		
 		File tempdir = Files.createTempDirectory("ope_jarloader").toFile();
+		jarLoaderLibDir = tempdir.getPath();
 		tempdir.deleteOnExit();
 		
 		while (resEnum.hasMoreElements())
