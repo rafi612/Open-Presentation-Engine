@@ -27,6 +27,7 @@ import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import com.io.Util;
+import com.main.JarLoader;
 import com.main.Main;
 import com.presentation.main.Presentation;
 
@@ -194,7 +195,14 @@ public class Project
 			Project.loadTextFromFileToTextArea(Project.projectlocation + File.separator + "config.xml", Main.textarea2);
 			Project.refreshProject();
 			
-			if (run) new Thread(Presentation::init).start();
+			if (run) //new Thread(Presentation::start).start();
+			{
+				String javaexe = System.getProperty("java.home") + Util.slash() + "bin" + Util.slash() + "java";
+				
+				ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation + Util.slash() + "config.xml");
+				pb.directory(new File(projectlocation));
+				pb.start();
+			}
 		}
 		catch (Exception e)
 		{

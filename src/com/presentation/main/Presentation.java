@@ -46,11 +46,7 @@ public class Presentation
 	
 	public static void init()
 	{
-		
 		GLFWErrorCallback.createPrint(System.err).set();
-		
-		if (window != NULL)
-			stop();
 		
 		if (!glfwInit())
 			System.err.println("Error Init GLFW");
@@ -59,7 +55,13 @@ public class Presentation
 	    
 	    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 	    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	    
+	}
+	
+	public static void start()
+	{
+		if (window != NULL)
+			stop();
+		
 	    window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
 	    if (window == NULL)
 	      throw new RuntimeException("Failed to create the GLFW window");

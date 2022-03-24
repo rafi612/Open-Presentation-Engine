@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -19,6 +21,8 @@ public class JarLoader
 {
 	public static boolean loadedAsJarloader = false;
 	public static String jarLoaderLibDir;
+	
+	public static String[] libs;
 	
 	public static void main(String[] args) throws IOException 
 	{
@@ -63,12 +67,18 @@ public class JarLoader
 			for (String path : classpath)
 				copyFile(libdir + "/" + path, tempdir + File.separator + path);
 			
+			libs = new String[classpath.length+1];
+			
 			URL[] urls = new URL[classpath.length+1];
 			for (int i = 0;i < classpath.length;i++)
 			{
 				urls[i] = new URL("file:" + tempdir.getPath() + "/" + classpath[i]);
+				libs[i] = new File(urls[i].toURI()).getPath();
 			}
 			urls[urls.length-1] = JarLoader.class.getProtectionDomain().getCodeSource().getLocation();
+			libs[urls.length-1] = new File(urls[urls.length-1].toURI()).getPath();
+			
+			System.setProperty("java.class.path", String.join(":", libs));
 			
 			URLClassLoader loader = new URLClassLoader(urls,null);
 			
@@ -76,7 +86,7 @@ public class JarLoader
 			Method main = classToLoad.getMethod("main", String[].class);
 			main.invoke((Object) null, new Object[] { args });
 			
-		} catch (ClassNotFoundException | SecurityException  | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
+		} catch (ClassNotFoundException | SecurityException  | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | URISyntaxException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();

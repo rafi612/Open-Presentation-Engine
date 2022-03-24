@@ -215,6 +215,8 @@ public class Main
 		
 		Sound.init();
 		
+		Presentation.init();
+		
 		//wm_class();
 		if (args.length < 1)
 		{
@@ -242,7 +244,7 @@ public class Main
 
 		}
 		else 
-			Presentation.init();
+			Presentation.start();
 		
 		for (int i = 0;i < args.length;i++)
 			System.out.println(args[i]);
