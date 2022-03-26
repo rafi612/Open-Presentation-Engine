@@ -1,9 +1,9 @@
-package com.presentation.resource;
+package com.presentation.slide;
 
 import com.gui.SlideCreator;
 import com.io.XmlParser;
-import com.presentation.resource.elements.E_Image;
-import com.presentation.resource.elements.E_Shape;
+import com.presentation.slide.elements.E_Image;
+import com.presentation.slide.elements.E_Shape;
 
 public class Element 
 {

@@ -1,22 +1,23 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.presentation.resource;
+package com.presentation.slide;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.audio.Sound;
 import com.graphics.Renderer;
+import com.graphics.Texture;
 import com.io.Util;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.project.Project;
 
-public class SlideResource
+public class Slide
 {
 	public String imagepath,bgpath;
 	public String ent_animation,exit_animation;
 	
-	public ImageResource image,bgimage;
+	public Texture image,bgimage;
 	
 	public Animation startanimation,exitanimation;
 	
@@ -27,9 +28,9 @@ public class SlideResource
 	
 	int camerax,cameray,cameraw,camerah;
 	
-	public SlideResource() {} 
+	public Slide() {} 
 
-	public SlideResource(String path) 
+	public Slide(String path) 
 	{
 		this.imagepath = path;
 		image = loadImage(path);
@@ -49,12 +50,12 @@ public class SlideResource
 		bgimage = loadImage(path);
 	}
 	
-	private static ImageResource loadImage(String path)
+	private static Texture loadImage(String path)
 	{
 		if (Main.args.length < 1)
-			return new ImageResource(Util.projectPath(path));
+			return new Texture(Util.projectPath(path));
 		else 
-			return new ImageResource(path);
+			return new Texture(path);
 	}
 	
 	public void setTTS(String path)

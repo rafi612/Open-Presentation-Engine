@@ -48,11 +48,11 @@ import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.graphics.Renderer;
+import com.graphics.Texture;
 import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
-import com.presentation.resource.Element;
-import com.presentation.resource.ImageResource;
+import com.presentation.slide.Element;
 import com.project.Project;
 
 public class SlideCreator extends JPanel implements ActionListener,MouseMotionListener,MouseListener
@@ -76,7 +76,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
     public int elementsint = 0;
     public int xPixel,yPixel;
     
-    ImageResource canvasimage;
+    Texture canvasimage;
     
     public boolean slideloaded = false;
     public boolean elementopen = false;
@@ -266,7 +266,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		sx = (float) transform.getScaleX();
 		sy = (float) transform.getScaleY();
 		
-		canvasimage = new ImageResource(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
+		canvasimage = new Texture(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 		
 		glClearColor(1,1,1,1);
 		

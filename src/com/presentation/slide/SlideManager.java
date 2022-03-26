@@ -6,23 +6,22 @@ import java.util.ArrayList;
 import static org.lwjgl.glfw.GLFW.*;
 
 import com.graphics.Renderer;
+import com.graphics.Texture;
 import com.io.Util;
 import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;
-import com.presentation.resource.ImageResource;
-import com.presentation.resource.SlideResource;
 import com.project.Project;
 
 public class SlideManager
 {
-	public ArrayList<SlideResource> slide = new ArrayList<SlideResource>();
+	public ArrayList<Slide> slide = new ArrayList<Slide>();
 	
 	public int slides;
 	
 	public int choose;
-	ImageResource empty;
+	Texture empty;
 	
 	boolean switchslide = false;
 	int switchside;
@@ -33,7 +32,7 @@ public class SlideManager
 	public SlideManager()
 	{
 		choose = 0;
-		empty = new ImageResource(SlideManager.class.getResourceAsStream("/images/empty.png"));
+		empty = new Texture(SlideManager.class.getResourceAsStream("/images/empty.png"));
 	}
 	boolean ttsswitch = true;
 	
@@ -131,7 +130,7 @@ public class SlideManager
 		
 		for (int i = 0;i < slides;i++)
 		{
-			SlideResource slideres = new SlideResource();
+			Slide slideres = new Slide();
 			slideres.setSlideImage(Util.readXml(path, "slide" + (i + 1), "path"));
 			slideres.setBg(Util.readXml(path, "slide" + (i + 1), "bg"));
 			slideres.setTTS(Util.readXml(path, "slide" + (i + 1), "tts"));

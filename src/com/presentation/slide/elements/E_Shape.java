@@ -1,18 +1,18 @@
-package com.presentation.resource.elements;
+package com.presentation.slide.elements;
 
 import java.awt.Color;
 
 import com.graphics.Renderer;
+import com.graphics.Texture;
 import com.io.XmlParser;
-import com.presentation.resource.Element;
-import com.presentation.resource.ImageResource;
-import com.presentation.resource.e_frames.E_ShapeFrame;
+import com.presentation.slide.Element;
+import com.presentation.slide.e_frames.E_ShapeFrame;
 
 public class E_Shape extends Element
 {
 	String path;
 	
-	ImageResource image;
+	Texture image;
 	
 	public E_Shape()
 	{

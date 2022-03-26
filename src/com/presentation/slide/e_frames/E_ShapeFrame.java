@@ -1,4 +1,4 @@
-package com.presentation.resource.e_frames;
+package com.presentation.slide.e_frames;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -9,7 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.main.Main;
-import com.presentation.resource.elements.E_Shape;
+import com.presentation.slide.elements.E_Shape;
 
 public class E_ShapeFrame extends JDialog implements ChangeListener
 {

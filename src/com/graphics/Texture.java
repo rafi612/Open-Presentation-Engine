@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.presentation.resource;
+package com.graphics;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import org.lwjgl.stb.STBImage;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class ImageResource 
+public class Texture 
 {
 	public int id = 0;
 	public int width;
@@ -22,7 +22,7 @@ public class ImageResource
 	
 	ByteBuffer pixels;
 	
-	public ImageResource(String filename)
+	public Texture(String filename)
 	{
 		try 
 		{
@@ -34,7 +34,7 @@ public class ImageResource
 		}
 	}
 	
-	public ImageResource(InputStream input)
+	public Texture(InputStream input)
 	{
 		try 
 		{

@@ -19,11 +19,11 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
 
 import com.audio.Sound;
+import com.graphics.Texture;
 import com.io.Util;
 import com.main.Main;
 import com.presentation.input.Keyboard;
 import com.presentation.input.Mouse;
-import com.presentation.resource.ImageResource;
 import com.presentation.slide.SlideManager;
 import com.project.Project;
 
@@ -112,7 +112,7 @@ public class Presentation
 		IntBuffer h = BufferUtils.createIntBuffer(1);
 		IntBuffer comp = BufferUtils.createIntBuffer(1);
 		
-		ByteBuffer imgbuff = ImageResource.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
+		ByteBuffer imgbuff = Texture.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
 		GLFWImage image = GLFWImage.malloc(); 
 		GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
         image.set(w.get(),h.get(),imgbuff);

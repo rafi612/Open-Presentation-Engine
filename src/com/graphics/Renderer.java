@@ -3,8 +3,6 @@ package com.graphics;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
-
-import com.presentation.resource.ImageResource;
 public class Renderer
 {	
 	public static void frect(float x,float y,float width,float height,Color color)
@@ -38,7 +36,7 @@ public class Renderer
 		glFlush();
 	}
 	
-	public static void drawImage(ImageResource image,float x,float y,float width,float height)
+	public static void drawImage(Texture image,float x,float y,float width,float height)
 	{		
 		glEnable(GL_TEXTURE_2D);
 		

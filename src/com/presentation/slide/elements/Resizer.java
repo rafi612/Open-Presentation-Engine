@@ -1,11 +1,11 @@
-package com.presentation.resource.elements;
+package com.presentation.slide.elements;
 
 import java.awt.Color;
 import java.awt.Point;
 
 import com.graphics.Renderer;
 import com.gui.SlideCreator;
-import com.presentation.resource.Element;
+import com.presentation.slide.Element;
 
 public class Resizer 
 {

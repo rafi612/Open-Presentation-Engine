@@ -1,4 +1,4 @@
-package com.presentation.resource.elements;
+package com.presentation.slide.elements;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -29,12 +29,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.graphics.Renderer;
+import com.graphics.Texture;
 import com.gui.SlideCreator;
 import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
-import com.presentation.resource.Element;
-import com.presentation.resource.ImageResource;
+import com.presentation.slide.Element;
 import com.project.Project;
 
 public class E_Image extends Element
@@ -43,7 +43,7 @@ public class E_Image extends Element
 	
 	public int id;
 	
-	public ImageResource image = null;
+	public Texture image = null;
 	
 	public boolean editing,moving,colided;
 	public boolean dragged;
@@ -79,7 +79,7 @@ public class E_Image extends Element
 		type = "Image";
 		
 		if (!path.equals(""))
-			this.image = new ImageResource(path);
+			this.image = new Texture(path);
 		
 		frame = new ImageFrame(this);
 	}
@@ -158,7 +158,7 @@ public class E_Image extends Element
 			
 			//loading image
 			path = data.getAttribute("src");
-			image = new ImageResource(Util.projectPath(path));
+			image = new Texture(Util.projectPath(path));
 			
 			x = Integer.parseInt(data.getAttribute("x"));
 			y = Integer.parseInt(data.getAttribute("y"));
@@ -315,7 +315,7 @@ class ImageFrame extends JDialog implements ChangeListener
 				else
 				{
 					element.path = Util.getPathFromProject(file);
-					element.image = new ImageResource(Util.projectPath(element.path));
+					element.image = new Texture(Util.projectPath(element.path));
 					element.w = element.image.width;
 					element.h = element.image.height;
 					sw.setValue(element.image.width);
