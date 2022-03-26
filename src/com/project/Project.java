@@ -201,6 +201,10 @@ public class Project
 				
 				ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation + Util.slash() + "config.xml");
 				pb.directory(new File(projectlocation));
+				
+				//redirect output to terminal
+				pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+				
 				pb.start();
 			}
 		}

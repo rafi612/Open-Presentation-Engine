@@ -15,6 +15,7 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryUtil;
 
 import com.audio.Sound;
 import com.io.Util;
@@ -100,6 +101,7 @@ public class Presentation
 	    }
 	    
 	    stop();
+	
 		
 	}
 	
