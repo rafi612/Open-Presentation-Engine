@@ -8,8 +8,10 @@ import com.main.Main;
 
 public class Config 
 {
-	public static String configwindows = System.getenv("APPDATA") + Util.slash() + "ope.xml";
-	public static String configlinux = System.getProperty("user.home") + Util.slash() + ".config" + Util.slash() + ".ope.xml";
+	public static String configwindows = Platform.get() == Platform.WINDOWS ?
+			Util.path(System.getenv("APPDATA"),"ope.xml") : "";
+	public static String configlinux = Platform.get() == Platform.LINUX ? 
+			Util.path(System.getProperty("user.home"),".config",".ope.xml") : "";
 	
 	public static void loadinterpreterpath() 
 	{

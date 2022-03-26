@@ -479,7 +479,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			{
 				dialog.dispose();
 				
-				XmlParser xml = new XmlParser(Project.projectlocation + Util.slash() + text.getText());
+				XmlParser xml = new XmlParser(Util.projectPath(text.getText()));
 				
 				org.w3c.dom.Element[] elements_ = xml.getElements(xml.getElementsByTagName("element"));
 				
@@ -549,7 +549,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		xml += "</slide>";
 		
 		//save file
-		Util.saveFile(Project.projectlocation + Util.slash() + path + ".layout", xml);
+		Util.saveFile(Util.projectPath(path + ".layout"), xml);
 		
 		Project.refreshProject();
 	}

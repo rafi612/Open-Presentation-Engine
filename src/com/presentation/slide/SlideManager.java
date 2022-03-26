@@ -124,7 +124,7 @@ public class SlideManager
 		String path = "";
 		if (Main.args.length < 1)
 		{
-			path = Project.projectlocation + Util.slash() + "config.xml";
+			path = Util.projectPath("config.xml");
 		}
 		else
 			path = Main.args[0];

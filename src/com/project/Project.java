@@ -195,11 +195,11 @@ public class Project
 			Project.loadTextFromFileToTextArea(Project.projectlocation + File.separator + "config.xml", Main.textarea2);
 			Project.refreshProject();
 			
-			if (run) //new Thread(Presentation::start).start();
+			if (run)
 			{
-				String javaexe = System.getProperty("java.home") + Util.slash() + "bin" + Util.slash() + "java";
+				String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 				
-				ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation + Util.slash() + "config.xml");
+				ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),Util.projectPath("config.xml"));
 				pb.directory(new File(projectlocation));
 				
 				//redirect output to terminal

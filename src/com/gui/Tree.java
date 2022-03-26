@@ -103,7 +103,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					//copying files
 					for (File file : droppedFiles)
 					{
-						Util.copyFileondrive(file.getPath(), copypath + Util.slash() + file.getName());
+						Util.copyFileondrive(file.getPath(), Util.path(copypath,file.getName()));
 						Project.refreshProject();
 					}        
 				} 
@@ -128,14 +128,14 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		if (source == newfile)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
-			Util.saveFile(Project.projectlocation + Util.slash() + name, "");
+			Util.saveFile(Util.projectPath(name), "");
 				
 			Project.refreshProject();
 		}
 		if (source == newfolder)
 		{
 			String folder = JOptionPane.showInputDialog(Main.frame, "Enter folder name:", "Create new folder", JOptionPane.QUESTION_MESSAGE);
-			new File(Project.projectlocation + Util.slash() + folder).mkdir();
+			new File(Util.projectPath(folder)).mkdir();
 				
 			Project.refreshProject();
 		}
@@ -154,7 +154,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
 			//rename file
-			select.renameTo(new File(select.getParent() + Util.slash() + name));
+			select.renameTo(new File(Util.projectPath(select.getParent(),name)));
 			Project.refreshProject();
 		}
 		if (source == cutfile)
@@ -199,12 +199,12 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			if (operation == 0)
 			{
 				//cut
-				copy.renameTo(new File(destdir + Util.slash() + copy.getName()));
+				copy.renameTo(new File(Util.projectPath(destdir.getPath(),copy.getName())));
 			}
 			else if (operation == 1)
 			{
 				//copy
-				Util.copyFileondrive(copy.getPath(),destdir.getPath() + Util.slash() + copy.getName());
+				Util.copyFileondrive(copy.getPath(),Util.projectPath(destdir.getPath(),copy.getName()));
 			}
 			
 			Project.refreshProject();

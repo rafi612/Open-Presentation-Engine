@@ -52,7 +52,7 @@ public class SlideResource
 	private static ImageResource loadImage(String path)
 	{
 		if (Main.args.length < 1)
-			return new ImageResource(Project.projectlocation + Util.slash() + path);
+			return new ImageResource(Util.projectPath(path));
 		else 
 			return new ImageResource(path);
 	}
@@ -61,13 +61,13 @@ public class SlideResource
 	{
 		ttspath = path;
 		if (path.equals("null")) return;
-		File f = new File(Project.projectlocation + Util.slash() + path);
+		File f = new File(Util.projectPath(path));
 		File f1 = new File(path);
 		if (f.exists() || f1.exists())
 		{
 			try {
 				if (Main.args.length < 1)
-					tts = new Sound(Project.projectlocation + Util.slash() + path);
+					tts = new Sound(Util.projectPath(path));
 				else 
 					tts = new Sound(path);
 				//tts.setPitch(2000f);

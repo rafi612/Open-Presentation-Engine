@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -149,7 +150,7 @@ public class Presentation
 	{
 		String path;
 		if (Main.args.length < 1)
-			path = Project.projectlocation + Util.slash();
+			path = Project.projectlocation + File.separator;
 		else path = "";
 		
 		String config = path + "config.xml";

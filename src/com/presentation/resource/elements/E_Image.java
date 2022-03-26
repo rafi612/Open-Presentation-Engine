@@ -158,7 +158,7 @@ public class E_Image extends Element
 			
 			//loading image
 			path = data.getAttribute("src");
-			image = new ImageResource(Project.projectlocation + Util.slash() + path);
+			image = new ImageResource(Util.projectPath(path));
 			
 			x = Integer.parseInt(data.getAttribute("x"));
 			y = Integer.parseInt(data.getAttribute("y"));
@@ -315,7 +315,7 @@ class ImageFrame extends JDialog implements ChangeListener
 				else
 				{
 					element.path = Util.getPathFromProject(file);
-					element.image = new ImageResource(Project.projectlocation + Util.slash() + element.path);
+					element.image = new ImageResource(Util.projectPath(element.path));
 					element.w = element.image.width;
 					element.h = element.image.height;
 					sw.setValue(element.image.width);

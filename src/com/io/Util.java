@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -156,28 +158,20 @@ public class Util
 		catch (Exception e){}
 		return return_;
 	}
-//	public static String getOsName()
-//	{
-//		return System.getProperty("os.name");
-//	}
-//		
-//	public static boolean isWindows()
-//	{
-//		return getOsName().startsWith("Windows");
-//	}
-//		   
-//	public static boolean isLinux()
-//	{
-//		return getOsName().contains("nux");
-//	}
-//		   
-//	public static boolean isMac()
-//	{
-//		return getOsName().contains("mac") || getOsName().contains("darwin");
-//	}
-		   
-	public static String slash()
+	
+	public static String path(String... files)
 	{
-			   return File.separator;
+		//System.out.println(String.join("/", files));
+		return Paths.get("",files).toString();
 	}
+	
+	public static String projectPath(String... files)
+	{
+		return Paths.get(Project.projectlocation,files).toString();
+	}
+//		   
+//	public static String slash()
+//	{
+//			   return File.separator;
+//	}
 }

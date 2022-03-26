@@ -72,7 +72,7 @@ public class Speak
             	{
 					try 
 					{
-						download((Language) lang.getSelectedItem(),text,Project.projectlocation + Util.slash() + name + ".mp3");
+						download((Language) lang.getSelectedItem(),text,Util.projectPath(name + ".mp3"));
 						
 					} catch (UnknownHostException e) 
 					{
