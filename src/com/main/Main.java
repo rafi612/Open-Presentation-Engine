@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -43,7 +42,6 @@ import com.input.Action;
 import com.input.ColoredKeywords;
 import com.input.Window;
 import com.io.Config;
-import com.io.Util;
 import com.presentation.main.Presentation;
 import com.project.Project;
 
@@ -217,7 +215,6 @@ public class Main
 		
 		Presentation.init();
 		
-		//wm_class();
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);
@@ -425,29 +422,6 @@ public class Main
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
 	}
-	
-	public static void wm_class()
-	{
-		if (Platform.get() == Platform.LINUX)
-		{
-//			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-//			Field awtAppClassNameField;
-//			try {
-//				awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-//				awtAppClassNameField.set(xToolkit, "Open-Presentation-Engine");
-//				awtAppClassNameField.setAccessible(true);
-//			} catch (NoSuchFieldException e) {
-//				e.printStackTrace();
-//			} catch (SecurityException e) {
-//				e.printStackTrace();
-//			} catch (IllegalArgumentException e) {
-//				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				e.printStackTrace();
-//			}
-		}
-	}
-	
 	
 	public static Image loadIcon(String path)
 	{
