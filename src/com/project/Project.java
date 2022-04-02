@@ -24,6 +24,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.Platform;
+import org.lwjgl.util.nfd.NativeFileDialog;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import com.io.Util;
@@ -229,7 +231,18 @@ public class Project
 	
 	public static String load_dialog()
 	{
-		String path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
+		String path = null;
+		//NFD have better file dialog on windows
+		if (Platform.get() == Platform.WINDOWS)
+		{
+			PointerBuffer p = MemoryUtil.memAllocPointer(1);
+			
+			NativeFileDialog.NFD_PickFolder(System.getProperty("user.home") + File.separator, p);
+			
+			path = p.getStringUTF8();
+		}
+		else 
+			path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
 		
 		if(path != null)
 		{

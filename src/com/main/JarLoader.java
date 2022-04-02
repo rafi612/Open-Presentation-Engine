@@ -69,10 +69,12 @@ public class JarLoader
 			
 			libs = new String[classpath.length+1];
 			
+			String url_slash = System.getProperty("os.name").contains("Win") ? "///" : "/";
+			
 			URL[] urls = new URL[classpath.length+1];
 			for (int i = 0;i < classpath.length;i++)
 			{
-				urls[i] = new URL("file:" + tempdir.getPath() + "/" + classpath[i]);
+				urls[i] = new URL("file:" + url_slash + tempdir.getPath() + "/" + classpath[i]);
 				libs[i] = new File(urls[i].toURI()).getPath();
 			}
 			urls[urls.length-1] = JarLoader.class.getProtectionDomain().getCodeSource().getLocation();

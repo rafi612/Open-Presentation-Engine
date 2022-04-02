@@ -1,4 +1,3 @@
-/* Copyright 2019-2020 by rafi612 */
 package com.graphics;
 
 import java.io.FileInputStream;
@@ -64,6 +63,32 @@ public class Texture
 		this.height = h.get();
 	}
 	
+	public void bind()
+	{		
+		if (id == 0)
+		{
+			id = glGenTextures();
+			
+			glBindTexture(GL_TEXTURE_2D, id);
+
+		    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		        
+		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		    
+		    STBImage.stbi_image_free(pixels);
+		}
+		
+		glBindTexture(GL_TEXTURE_2D, id);
+	}
+	
+	public void destroy()
+	{
+		glDeleteTextures(id);
+	}
+	
 	public static ByteBuffer load_image(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
 	{
 		try
@@ -80,25 +105,6 @@ public class Texture
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	public void bind()
-	{
-		id = glGenTextures();
-		
-		glBindTexture(GL_TEXTURE_2D, id);
-
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	        
-	    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-	    
-	    STBImage.stbi_image_free(pixels);
-	}
-	
-	public void destroy()
-	{
-		glDeleteTextures(id);
 	}
 
 }
