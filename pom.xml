@@ -67,6 +67,7 @@
 	<lwjgl.version>3.3.1</lwjgl.version>
 	<lwjgl3-awt.version>0.1.8</lwjgl3-awt.version>
 	<jlayer.version>1.0.1</jlayer.version>
+	<joml.version>1.10.4</joml.version>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 </properties>
 
@@ -93,6 +94,11 @@
 		<groupId>org.lwjglx</groupId>
 		<artifactId>lwjgl3-awt</artifactId>
 		<version>${lwjgl3-awt.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.joml</groupId>
+		<artifactId>joml</artifactId>
+		<version>${joml.version}</version>
 	</dependency>
 <!--=================LWJGL================-->
 	<dependency>
@@ -368,6 +374,51 @@
 	<dependency>
 		<groupId>org.lwjgl</groupId>
 		<artifactId>lwjgl-tinyfd</artifactId>
+		<classifier>natives-windows-arm64</classifier>
+	</dependency>
+<!--Natives for lwjgl-nfd-->
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-linux</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-linux-arm64</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-linux-arm32</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-macos</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-macos-arm64</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-windows</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
+		<classifier>natives-windows-x86</classifier>
+	</dependency>
+	<dependency>
+		<groupId>org.lwjgl</groupId>
+		<artifactId>lwjgl-nfd</artifactId>
 		<classifier>natives-windows-arm64</classifier>
 	</dependency>
 </dependencies>
