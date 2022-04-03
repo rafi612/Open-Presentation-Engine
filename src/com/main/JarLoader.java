@@ -69,7 +69,7 @@ public class JarLoader
 			
 			libs = new String[classpath.length+1];
 			
-			String url_slash = System.getProperty("os.name").contains("Win") ? "///" : "/";
+			String url_slash = System.getProperty("os.name").contains("Win") ? "///" : "";
 			
 			URL[] urls = new URL[classpath.length+1];
 			for (int i = 0;i < classpath.length;i++)
