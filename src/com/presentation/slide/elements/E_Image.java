@@ -37,6 +37,8 @@ import com.main.Main;
 import com.presentation.slide.Element;
 import com.project.Project;
 
+import org.joml.Vector4f;
+
 public class E_Image extends Element
 {
 	public String path;
@@ -169,7 +171,8 @@ public class E_Image extends Element
 	
 	public void destroy()
 	{
-		image.destroy();
+		if (image != null)
+			image.destroy();
 	}
 	
 	public String save()
@@ -183,17 +186,17 @@ public class E_Image extends Element
 	public void render()
 	{
 		if (path.equals(""))
-			Renderer.frectnofill(x,y,w,h,Color.BLACK);
+			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,0,1));
 		else
 		{
 			Renderer.drawImage(image,x,y,w,h);
 		}
 		
 		if (colided)
-			Renderer.frectnofill(x,y,w,h,Color.BLUE);
+			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,1,1));
 		
 		if (dragged && colided)
-			Renderer.frectnofill(x,y,w,h,Color.RED);
+			Renderer.frectnofill(x,y,w,h,new Vector4f(1,0,0,1));
 		
 		for (int i = 0; i < resizers.size(); i++)
 			resizers.get(i).render(colided);

@@ -3,6 +3,8 @@ package com.presentation.slide.elements;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.joml.Vector4f;
+
 import com.graphics.Renderer;
 import com.gui.SlideCreator;
 import com.presentation.slide.Element;
@@ -145,7 +147,7 @@ public class Resizer
 	public void render(boolean render)
 	{
 		if (render || colided)
-			Renderer.frect(x, y, w, h, Color.BLUE);
+			Renderer.frect(x, y, w, h, new Vector4f(0,0,1,1));
 	}
 
 }

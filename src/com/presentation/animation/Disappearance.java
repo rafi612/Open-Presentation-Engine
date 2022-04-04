@@ -2,6 +2,8 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
+import org.joml.Vector4f;
+
 import com.graphics.Renderer;
 
 public class Disappearance extends Animation 
@@ -34,7 +36,7 @@ public class Disappearance extends Animation
 	{
 		if (isRunning)
 		{
-			if (outputalpha <= 255) Renderer.frect(0, 0, 1280, 720, new Color(0,0,0,outputalpha));
+			if (outputalpha <= 255) Renderer.frect(0, 0, 1280, 720, new Vector4f(0,0,0,(float)outputalpha/255));
 		}
 	}
 

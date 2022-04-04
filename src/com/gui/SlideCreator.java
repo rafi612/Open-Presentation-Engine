@@ -247,7 +247,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		if (list.getSelectedIndex() > -1)
 		{
 			Element e = elements.get(list.getSelectedIndex());
-			Renderer.frectnofill(e.x, e.y, e.w, e.h, new Color(0xFFA200));
+			Renderer.frectnofill(e.x, e.y, e.w, e.h, Renderer.color(0xFFA200));
 		}
 	}
 
@@ -261,6 +261,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public void init() 
 	{
 		System.out.println("Canvas init");
+		
+		Renderer.init();
 		
 		AffineTransform transform = canvas.getGraphicsConfiguration().getDefaultTransform();
 		sx = (float) transform.getScaleX();
@@ -283,15 +285,15 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//System.out.println("Canvas reshape");
 		
 		
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
+//		glMatrixMode(GL_PROJECTION);
+//		glLoadIdentity();
 
 		glViewport(0,0,(int)(width * sx),(int)(height * sy));
 		
-		glOrtho(0,WIDTH,HEIGHT,0,1,-1);
+		//glOrtho(0,WIDTH,HEIGHT,0,1,-1);
 		
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+//		glMatrixMode(GL_MODELVIEW);
+//		glLoadIdentity();
 	}
 	
 	@Override

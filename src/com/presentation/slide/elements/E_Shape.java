@@ -2,6 +2,8 @@ package com.presentation.slide.elements;
 
 import java.awt.Color;
 
+import org.joml.Vector4f;
+
 import com.graphics.Renderer;
 import com.graphics.Texture;
 import com.io.XmlParser;
@@ -43,7 +45,7 @@ public class E_Shape extends Element
 	
 	public void render()
 	{
-		Renderer.frectnofill(x,y,w,h,Color.RED);
+		Renderer.frectnofill(x,y,w,h,new Vector4f(1,0,0,1));
 	}
 	
 	public void frame()

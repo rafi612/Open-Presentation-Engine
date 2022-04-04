@@ -2,6 +2,8 @@ package com.presentation.animation;
 
 import java.awt.Color;
 
+import org.joml.Vector4f;
+
 import com.graphics.Renderer;
 
 public class Appearing extends Animation 
@@ -34,7 +36,7 @@ public class Appearing extends Animation
 	{
 		if (isRunning)
 		{
-			if (inputalpha > 2) Renderer.frect(0, 0, 1280, 720, new Color(0,0,0,inputalpha));
+			if (inputalpha > 2) Renderer.frect(0, 0, 1280, 720, new Vector4f(0,0,0,(float)inputalpha/255));
 		}
 	}
 

@@ -49,12 +49,15 @@ public class EventListener
 
 	public static void init() 
 	{
+		
 		glClearColor(0, 0, 0, 1);
 		
 		glEnable(GL_TEXTURE_2D);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		Renderer.init();
 		
 		System.out.println("========================================");
 		System.out.println("Open Presentation Engine by rafi612");
