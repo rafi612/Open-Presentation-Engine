@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -36,7 +37,9 @@ public class Shader
 		
 		if (error.get() == 0)
 		{
-			System.out.println("Vertex Error");
+			System.out.println("===========" + vertexpath + "===========");
+			String infoLog = glGetShaderInfoLog(vertex, glGetShaderi(vertex, GL_INFO_LOG_LENGTH));
+			System.out.println("Vertex Error:" + infoLog);
 		}
 		
 		
@@ -50,7 +53,9 @@ public class Shader
 		
 		if (error2.get() == 0)
 		{
-			System.out.println("Fragment Error");
+			System.out.println("===========" + fragmentpath + "===========");
+			String infoLog = glGetShaderInfoLog(fragment, glGetShaderi(fragment, GL_INFO_LOG_LENGTH));
+			System.out.println("Fragment Error:" + infoLog);
 		}
 		
 		// shader Program

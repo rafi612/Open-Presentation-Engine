@@ -178,8 +178,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
         GLData data = new GLData();
         data.swapInterval = 1;
         data.profile = GLData.Profile.CORE;
-        data.majorVersion = 1;
-        data.minorVersion = 1;
         
         cpanel.add(canvas = new AWTGLCanvas(data) 
         {

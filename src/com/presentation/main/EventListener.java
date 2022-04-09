@@ -83,12 +83,6 @@ public class EventListener
 	public static void reshape(long window,int width, int height) 
 	{
 		glViewport(0, 0, width, height);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		
-		//gl.glOrtho(0,1280,0,720,-1, 1);
-		glOrtho(0,1280,720,0,-1, 1);
-		glMatrixMode(GL_MODELVIEW);
 	}
 
 }

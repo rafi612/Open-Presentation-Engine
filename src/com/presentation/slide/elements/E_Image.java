@@ -318,6 +318,10 @@ class ImageFrame extends JDialog implements ChangeListener
 				else
 				{
 					element.path = Util.getPathFromProject(file);
+					
+					if (element.image != null)
+						element.image.destroy();
+					
 					element.image = new Texture(Util.projectPath(element.path));
 					element.w = element.image.width;
 					element.h = element.image.height;

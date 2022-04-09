@@ -78,7 +78,7 @@ public class Presentation
 	    glfwMakeContextCurrent(window);
 	    GL.createCapabilities();
 	    
-	    glfwSwapInterval(0);
+	    glfwSwapInterval(1);
 	    
 		sm = new SlideManager();
 		load();
