@@ -376,35 +376,10 @@
 		<artifactId>lwjgl-tinyfd</artifactId>
 		<classifier>natives-windows-arm64</classifier>
 	</dependency>
-<!--Natives for lwjgl-nfd-->
+<!--Natives for lwjgl-nfd (only windows)-->
 	<dependency>
 		<groupId>org.lwjgl</groupId>
 		<artifactId>lwjgl-nfd</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl-nfd</artifactId>
-		<classifier>natives-linux</classifier>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl-nfd</artifactId>
-		<classifier>natives-linux-arm64</classifier>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl-nfd</artifactId>
-		<classifier>natives-linux-arm32</classifier>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl-nfd</artifactId>
-		<classifier>natives-macos</classifier>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl-nfd</artifactId>
-		<classifier>natives-macos-arm64</classifier>
 	</dependency>
 	<dependency>
 		<groupId>org.lwjgl</groupId>
