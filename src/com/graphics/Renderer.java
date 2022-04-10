@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL30.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL;
 
 public class Renderer 
 {
@@ -17,53 +18,68 @@ public class Renderer
     
     static Mesh quad,line_strip;
     
+    static boolean fallback = false;
+    
 	public static void init() 
 	{
-		texture_shader = new Shader("/shaders/texture.vs","/shaders/texture.fs");
-		rect_shader = new Shader("/shaders/rect.vs","/shaders/rect.fs");
-		gradient_shader = new Shader("/shaders/gradient.vs","/shaders/gradient.fs");
-		
-	    // configure VAO/VBO
-	    float vertices[] = { 
-	        // pos 
-	        0.0f, 1.0f, 0.0f,
-	        1.0f, 0.0f, 0.0f,
-	        0.0f, 0.0f, 0.0f,
-	        1.0f, 1.0f, 0.0f
-	    };
-	    
-	    // configure tex coords
-	    float tex[] = { 
-	        0.0f, 1.0f,
-	        1.0f, 0.0f,
-	        
-	        0.0f, 0.0f, 
-	        1.0f, 1.0f,
-	    };
-	    
-	    int indices[] = {  // note that we start from 0!
-	    	    0, 2, 1,   // first triangle
-	    	    0, 3, 1    // second triangle
-	    }; 
-	    
-	    quad = new Mesh(vertices,indices);
-	    quad.storeInAttributes(1, 2, tex);
-	    
-	    float line_vertecies[] = { 
-		        // pos
+		if (!isFallback())
+		{
+			texture_shader = new Shader("/shaders/texture.vs","/shaders/texture.fs");
+			rect_shader = new Shader("/shaders/rect.vs","/shaders/rect.fs");
+			gradient_shader = new Shader("/shaders/gradient.vs","/shaders/gradient.fs");
+			
+		    // configure VAO/VBO
+		    float vertices[] = { 
+		        // pos 
+		        0.0f, 1.0f, 0.0f,
 		        1.0f, 0.0f, 0.0f,
 		        0.0f, 0.0f, 0.0f,
-		        0.0f, 1.0f, 0.0f,
-		        1.0f, 1.0f, 0.0f,
-		};
-	    
-	    int line_indices[] = {
-	    	    0,1,
-	    	    2,3,
-	    	    3,0
-	    };
-	    
-	    line_strip = new Mesh(line_vertecies,line_indices);
+		        1.0f, 1.0f, 0.0f
+		    };
+		    
+		    // configure tex coords
+		    float tex[] = { 
+		        0.0f, 1.0f,
+		        1.0f, 0.0f,
+		        
+		        0.0f, 0.0f, 
+		        1.0f, 1.0f,
+		    };
+		    
+		    int indices[] = {  // note that we start from 0!
+		    	    0, 2, 1,   // first triangle
+		    	    0, 3, 1    // second triangle
+		    }; 
+		    
+		    quad = new Mesh(vertices,indices);
+		    quad.storeInAttributes(1, 2, tex);
+		    
+		    float line_vertecies[] = { 
+			        // pos
+			        1.0f, 0.0f, 0.0f,
+			        0.0f, 0.0f, 0.0f,
+			        0.0f, 1.0f, 0.0f,
+			        1.0f, 1.0f, 0.0f,
+			};
+		    
+		    int line_indices[] = {
+		    	    0,1,
+		    	    2,3,
+		    	    3,0
+		    };
+		    
+		    line_strip = new Mesh(line_vertecies,line_indices);
+		}
+	}
+	
+	public static boolean isFallback()
+	{
+		return !GL.getCapabilities().OpenGL33 || fallback;
+	}
+	
+	public static void fallbackResize()
+	{
+		FallbackRenderer.resize();
 	}
 	
 	public static void rotate(float ang)
@@ -88,6 +104,12 @@ public class Renderer
 	
 	public static void drawImage(Texture tex,float x,float y,float w,float h)
 	{
+		if (isFallback())
+		{
+			FallbackRenderer.drawImage(tex, x, y, w, h);
+			return;
+		}
+		
 		Matrix4f model = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
@@ -112,6 +134,11 @@ public class Renderer
 	
 	public static void frect(float x,float y,float w,float h,Vector4f color)
 	{
+		if (isFallback())
+		{
+			FallbackRenderer.frect(x, y, w, h, color);
+			return;
+		}
 		Matrix4f model = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
@@ -131,6 +158,12 @@ public class Renderer
 	
 	public static void frectnofill(float x,float y,float w,float h,Vector4f color)
 	{
+		if (isFallback())
+		{
+			FallbackRenderer.frectnofill(x, y, w, h, color);
+			return;
+		}
+		
 		Matrix4f model = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
@@ -143,17 +176,18 @@ public class Renderer
 		rect_shader.setVector4f("rectColor", color);
 		rect_shader.setMatrix4("projection", projection);
 		
-		glBindVertexArray(line_strip.VAO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, line_strip.EBO);
-	    glDrawElements(GL_LINE_STRIP,line_strip.indices_size,GL_UNSIGNED_INT,0);
-	    
-	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	    glBindVertexArray(0);
+		line_strip.drawLines();
 	    
 	    reset();
 	}
 	public static void drawVerticalGradient(float x,float y,float w,float h,Vector4f color,Vector4f color2)
 	{
+		if (isFallback())
+		{
+			FallbackRenderer.drawVerticalGradient(x, y, w, h, color, color2);
+			return;
+		}
+		
 		Matrix4f model = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
@@ -173,5 +207,4 @@ public class Renderer
 	    reset();
 	}
 	
-
 }

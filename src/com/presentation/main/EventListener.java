@@ -82,6 +82,9 @@ public class EventListener
 
 	public static void reshape(long window,int width, int height) 
 	{
+		if (Renderer.isFallback())
+			Renderer.fallbackResize();
+		
 		glViewport(0, 0, width, height);
 	}
 

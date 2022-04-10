@@ -280,18 +280,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 	public void reshape(int width, int height) 
 	{
-		//System.out.println("Canvas reshape");
+		if (Renderer.isFallback())
+			Renderer.fallbackResize();
 		
-		
-//		glMatrixMode(GL_PROJECTION);
-//		glLoadIdentity();
-
 		glViewport(0,0,(int)(width * sx),(int)(height * sy));
-		
-		//glOrtho(0,WIDTH,HEIGHT,0,1,-1);
-		
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadIdentity();
 	}
 	
 	@Override

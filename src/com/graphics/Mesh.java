@@ -54,5 +54,15 @@ public class Mesh
 	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	    glBindVertexArray(0);
 	}
+	
+	public void drawLines()
+	{
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	    glDrawElements(GL_LINE_STRIP,indices_size,GL_UNSIGNED_INT,0);
+	    
+	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	    glBindVertexArray(0);
+	}
 
 }
