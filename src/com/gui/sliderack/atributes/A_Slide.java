@@ -10,10 +10,11 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import com.gui.TreeFileChooser;
 import com.io.Util;
 import com.main.Main;
 
-public class A_Slide extends Atribute
+public class A_Slide extends Atribute implements TreeFileChooser.Target
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,33 +25,19 @@ public class A_Slide extends Atribute
 		super(Atribute.Type.SLIDE.getFullName() + ": None");
 		canBeMultiple = false;
 		isAlways = true;
-		setDropTarget(new DragAndDrop());
 	}
-	
-	class DragAndDrop extends DropTarget
+
+	@Override
+	public void fileSelected(String path) 
 	{
-		private static final long serialVersionUID = 1L;
-		public synchronized void drop (DropTargetDropEvent evt)
-    	{
-			evt.acceptDrop(DnDConstants.ACTION_COPY);
-			try 
-			{
-				File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
-				
-				if (file.getName().contains(".layout"))
-				{
-					path = Util.getPathFromProject(file);
-					
-					setText(Atribute.Type.SLIDE.getFullName() + ": " + file.getName());
-				}
-				else
-					JOptionPane.showMessageDialog(Main.frame, "This file is not layout file","Error",JOptionPane.ERROR_MESSAGE);
-			}
-			catch (UnsupportedFlavorException | IOException e) 
-			{
-				e.printStackTrace();
-			}
-    	}
+		if (name.contains(".layout"))
+		{
+			path = Util.getPathFromProject(new File(path));
+			
+			setText(Atribute.Type.SLIDE.getFullName() + ": " + path);
+		}
+		else
+			JOptionPane.showMessageDialog(Main.frame, "This file is not layout file","Error",JOptionPane.ERROR_MESSAGE);
 	}
 
 }
