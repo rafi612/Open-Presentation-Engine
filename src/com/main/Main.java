@@ -38,6 +38,7 @@ import org.lwjgl.system.Platform;
 import org.lwjgl.util.nfd.NativeFileDialog;
 
 import com.audio.Sound;
+import com.gui.AboutDialog;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
 import com.gui.Tree;
@@ -97,10 +98,14 @@ public class Main
     
     public static SlideCreator slidecreator;
     public static SlideRack sliderack;
+    
+    public static AboutDialog aboutdialog;
 
     public static void initUI()
     {
     	tabs = new JTabbedPane();
+    	
+    	aboutdialog = new AboutDialog();
     	
         JPopupMenu textareapopup = new JPopupMenu();
 //        textareapopup.add(copy);
@@ -424,6 +429,7 @@ public class Main
 	    }
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
+	    SwingUtilities.updateComponentTreeUI(aboutdialog);
 	}
 	
 	public static Image loadIcon(String path)
