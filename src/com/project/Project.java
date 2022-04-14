@@ -183,16 +183,13 @@ public class Project
 			if (process.exitValue() != 0)
 			{
 				String lines = "Python Output:\n";
-				Main.areaconsole.setText("");
 				for (int i = 0;i < pyout.size();i++)
 				{
 					lines = lines + "<html><font color=#FF0000>"+ pyout.get(i) + "</font></html>" + "\n";
-					Main.areaconsole.append(pyout.get(i) + "\n");
 				}
 				int yesno = JOptionPane.showConfirmDialog(Main.frame, "Python return exit code " + process.exitValue() + ". Do you want to run?\n" + lines, "Error", JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
 				if (yesno == 1) run = false;
 			}
-			else Main.areaconsole.setText("No python output");
 			
 			Project.loadTextFromFileToTextArea(Project.projectlocation + File.separator + "config.xml", Main.textarea2);
 			Project.refreshProject();

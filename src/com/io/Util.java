@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -127,7 +126,7 @@ public class Util
             System.err.format("IOException: %s%n", e);
         }
 	}
-	  //public  String readXml(String Scieszka,String ElementsByTagName,String tag)
+
 	public static String readXml(String path,String ElementsByTagName,String tag)
 	{
 		String return_ = null;
@@ -169,9 +168,4 @@ public class Util
 	{
 		return Paths.get(Project.projectlocation,files).toString();
 	}
-//		   
-//	public static String slash()
-//	{
-//			   return File.separator;
-//	}
 }

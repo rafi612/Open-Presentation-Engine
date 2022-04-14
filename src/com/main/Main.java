@@ -87,9 +87,8 @@ public class Main
     public static DefaultMutableTreeNode workspace;
     
     public static JScrollPane scrollpane;
-	public static JScrollPane scrollpane2,scrollpane3;
+	public static JScrollPane scrollpane3;
     public static JTextPane textpane,textarea2;
-    public static JTextArea areaconsole;
     
     public static ArrayList<JButton> actions = new ArrayList<JButton>();
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
@@ -127,13 +126,8 @@ public class Main
         textarea2.setFont(new Font(textarea2.getFont().getName(), Font.TRUETYPE_FONT, 16));
         textarea2.setEditable(false);
         
-        areaconsole = new JTextArea("No python output");
-        areaconsole.setFont(new Font(areaconsole.getFont().getName(), Font.TRUETYPE_FONT, 16));
-        areaconsole.setEditable(false);
-        
         textpane.setEnabled(false);
         scrollpane = new JScrollPane(textpane);
-        scrollpane2 = new JScrollPane(textarea2);
         
         textpanel.add(scrollpane);
 
@@ -178,9 +172,6 @@ public class Main
         //tabs====================================
         tabs.add("Main.py",textpanel);
         tabs.add("Slides",sliderack);
-        tabs.add("Config.xml",scrollpane2);
-        //tabs.add("Template Chooser",tchooser);
-        tabs.add("Console",new JScrollPane(areaconsole));
         tabs.add("Slide Creator",slidecreator);
         
         frame.add(tabs);
@@ -188,9 +179,7 @@ public class Main
         //tree=======================================
         workspace = new DefaultMutableTreeNode("Workspace"); 
         tree = new Tree(workspace);
-        
-        scrollpane2 = new JScrollPane(tree);
-        frame.add(scrollpane2,BorderLayout.WEST);
+        frame.add(new JScrollPane(tree),BorderLayout.WEST);
         
         JPanel buttons = new JPanel();
         
