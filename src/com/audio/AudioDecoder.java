@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBVorbisInfo;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -53,7 +54,7 @@ public class AudioDecoder
 					divider *= 2;
 			}
         	
-			ShortBuffer sbuf = BufferUtils.createShortBuffer(decoder.getOutputBlockSize());
+			ShortBuffer sbuf = MemoryUtil.memAllocShort(decoder.getOutputBlockSize());
     		sbuf.put(sb.getBuffer());
     		sbuf.flip();
     		
@@ -65,11 +66,12 @@ public class AudioDecoder
     	info.channels = decoder.getOutputChannels();
     	info.samplerate = decoder.getOutputFrequency();
     	
-    	ShortBuffer buf = BufferUtils.createShortBuffer(frames.size() * decoder.getOutputBlockSize() / divider);
+    	ShortBuffer buf = MemoryUtil.memAllocShort(frames.size() * decoder.getOutputBlockSize() / divider);
     	for (int i = 0;i < frames.size();i++)
     	{
     		for (int j = 0;j < decoder.getOutputBlockSize() / divider;j++)
     			buf.put(frames.get(i).get(j));
+    		MemoryUtil.memFree(frames.get(i));
     	}
     	frames.clear();
     	
@@ -85,7 +87,7 @@ public class AudioDecoder
     	byte[] rawfile = input.readAllBytes();
     	input.close();
     	
-    	ByteBuffer filebuffer = BufferUtils.createByteBuffer(rawfile.length);
+    	ByteBuffer filebuffer = MemoryUtil.memAlloc(rawfile.length);
     	filebuffer.put(rawfile);
     	filebuffer.flip();
     	
@@ -106,6 +108,8 @@ public class AudioDecoder
 
         stb_vorbis_get_samples_short_interleaved(decoder, vorbisinfo.channels(), pcm);
         stb_vorbis_close(decoder);
+        
+        MemoryUtil.memFree(filebuffer);
 
         return pcm;
     	

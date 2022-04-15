@@ -1,20 +1,15 @@
 package com.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -22,8 +17,6 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -32,7 +25,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -41,10 +33,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 
-import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.graphics.Renderer;
@@ -184,7 +176,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
             private static final long serialVersionUID = 1L;
             public void initGL() {
                 System.out.println("OpenGL version: " + effective.majorVersion + "." + effective.minorVersion + " (Profile: " + effective.profile + ")");
-                createCapabilities();
+                GL.createCapabilities();
                 init();
             }
             public void paintGL()
@@ -225,7 +217,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		if (slideloaded)
 		{		
 			if (elements.size() == 0)
-				Renderer.drawImage(canvasimage,0, 0, 1280, 720);
+				Renderer.drawImage(canvasimage,0, 0,WIDTH, HEIGHT);
 		}
 		
 		//update
@@ -247,11 +239,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			Element e = elements.get(list.getSelectedIndex());
 			Renderer.frectnofill(e.x, e.y, e.w, e.h, Renderer.color(0xFFA200));
 		}
-	}
-
-	public void dispose() 
-	{
-		
 	}
 	
 	float sx,sy;

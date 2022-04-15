@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -46,19 +48,20 @@ public class Texture
 	}
 	
 	private void load(InputStream input) throws IOException
-	{		
-		IntBuffer w = BufferUtils.createIntBuffer(1);
-		IntBuffer h = BufferUtils.createIntBuffer(1);
-		IntBuffer comp = BufferUtils.createIntBuffer(1);
-			
+	{	
+		IntBuffer w = MemoryUtil.memAllocInt(1);
+		IntBuffer h = MemoryUtil.memAllocInt(1);
+		IntBuffer comp = MemoryUtil.memAllocInt(1);
+				
 		byte[] pixels_raw = input.readAllBytes();
-			
-		ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
+				
+		ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
 		imageBuffer.put(pixels_raw);
 		imageBuffer.flip();
-		
-		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
 			
+		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+		MemoryUtil.memFree(imageBuffer);
+				
 		this.width = w.get();
 		this.height = h.get();
 	}
@@ -91,7 +94,7 @@ public class Texture
 	
 	public static ByteBuffer load_image(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
 	{
-		try
+		try 
 		{
 			byte[] pixels_raw = in.readAllBytes();
 			

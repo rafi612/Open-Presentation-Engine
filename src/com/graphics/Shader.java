@@ -15,6 +15,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 public class Shader 
 {
@@ -32,7 +34,7 @@ public class Shader
 		glShaderSource(vertex, vShaderCode);
 		glCompileShader(vertex);
 		
-		IntBuffer error = BufferUtils.createIntBuffer(1);
+		IntBuffer error = MemoryUtil.memAllocInt(1);
 		glGetShaderiv(vertex, GL_COMPILE_STATUS, error);
 		
 		if (error.get() == 0)
@@ -41,6 +43,7 @@ public class Shader
 			String infoLog = glGetShaderInfoLog(vertex, glGetShaderi(vertex, GL_INFO_LOG_LENGTH));
 			System.out.println("Vertex Error:" + infoLog);
 		}
+		MemoryUtil.memFree(error);
 		
 		
 		//fragment shader
@@ -48,7 +51,7 @@ public class Shader
 		glShaderSource(fragment, fShaderCode);
 		glCompileShader(fragment);
 		
-		IntBuffer error2 = BufferUtils.createIntBuffer(1);
+		IntBuffer error2 = MemoryUtil.memAllocInt(1);
 		glGetShaderiv(fragment, GL_COMPILE_STATUS, error2);
 		
 		if (error2.get() == 0)
@@ -57,6 +60,7 @@ public class Shader
 			String infoLog = glGetShaderInfoLog(fragment, glGetShaderi(fragment, GL_INFO_LOG_LENGTH));
 			System.out.println("Fragment Error:" + infoLog);
 		}
+		MemoryUtil.memFree(error2);
 		
 		// shader Program
 		ID = glCreateProgram();
@@ -104,10 +108,13 @@ public class Shader
     
     public void setMatrix4(String name, Matrix4f mat)
     {
-    	FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-    	mat.get(matrixBuffer);
-    	
-    	glUniformMatrix4fv(glGetUniformLocation(ID,name),false,matrixBuffer);
+    	try (MemoryStack stack = MemoryStack.stackPush())
+    	{
+			FloatBuffer matrixBuffer = stack.mallocFloat(16);
+			mat.get(matrixBuffer);
+			
+			glUniformMatrix4fv(glGetUniformLocation(ID,name),false,matrixBuffer);
+		}
     }
     
     private static String load(InputStream i)

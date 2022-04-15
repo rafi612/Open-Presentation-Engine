@@ -16,6 +16,7 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import com.audio.Sound;
@@ -108,17 +109,20 @@ public class Presentation
 	
 	private static GLFWImage.Buffer icon(String path)
 	{
-		IntBuffer w = BufferUtils.createIntBuffer(1);
-		IntBuffer h = BufferUtils.createIntBuffer(1);
-		IntBuffer comp = BufferUtils.createIntBuffer(1);
-		
-		ByteBuffer imgbuff = Texture.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
-		GLFWImage image = GLFWImage.malloc(); 
-		GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
-        image.set(w.get(),h.get(),imgbuff);
-        imagebf.put(0, image);
-        
-        return imagebf;
+		try (MemoryStack stack = MemoryStack.stackPush()) 
+		{
+			IntBuffer w = stack.mallocInt(1);
+			IntBuffer h = stack.mallocInt(1);
+			IntBuffer comp = stack.mallocInt(1);
+			
+			ByteBuffer imgbuff = Texture.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
+			GLFWImage image = GLFWImage.malloc(); 
+			GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
+			image.set(w.get(),h.get(),imgbuff);
+			imagebf.put(0, image);
+			
+			return imagebf;
+		}
 	}
 	
 	static IntBuffer lastx,lasty,lastw,lasth;
