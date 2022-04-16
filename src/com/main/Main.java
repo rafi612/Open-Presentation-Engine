@@ -210,8 +210,6 @@ public class Main
 		
 		Sound.init();
 		
-		Presentation.init();
-		
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);

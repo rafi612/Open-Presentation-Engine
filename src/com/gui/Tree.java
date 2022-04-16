@@ -199,12 +199,12 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			if (operation == 0)
 			{
 				//cut
-				copy.renameTo(new File(Util.projectPath(destdir.getPath(),copy.getName())));
+				copy.renameTo(new File(Util.path(destdir.getPath(),copy.getName())));
 			}
 			else if (operation == 1)
 			{
 				//copy
-				Util.copyFileondrive(copy.getPath(),Util.projectPath(destdir.getPath(),copy.getName()));
+				Util.copyFileondrive(copy.getPath(),destdir.getPath());
 			}
 			
 			Project.refreshProject();

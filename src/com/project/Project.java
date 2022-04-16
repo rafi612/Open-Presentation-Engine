@@ -37,7 +37,7 @@ public class Project
 {
 	public static boolean projectIsLoaded = false;
 	
-	public static String projectlocation = "";
+	public static String projectlocation = "",projectXmlName = "project.xml";
 	
 	public static void CreateNewProject(String location,String name)
 	{
@@ -65,8 +65,19 @@ public class Project
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
+		
+		createProjectXml(Util.projectPath(projectXmlName));
     	    	
     	refreshProject();
+	}
+	
+	//TODO: old config.xml based code will be removed
+	private static void createProjectXml(String path)
+	{
+		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<project>\n"
+				+ "</project>";
+		Util.saveFile(path, lines);
 	}
 	
 	public static void LoadNewProject(String name)
@@ -151,6 +162,8 @@ public class Project
 	{
 		SaveTextFromTextArea(Project.projectlocation + File.separator + "main.py");
 		SaveTextFromTextArea(Project.projectlocation + File.separator + "config.xml",Main.textarea2);
+		
+		Main.sliderack.build(Util.projectPath(projectXmlName));
 	}
 	
 	public static void run()
@@ -192,6 +205,9 @@ public class Project
 			}
 			
 			Project.loadTextFromFileToTextArea(Project.projectlocation + File.separator + "config.xml", Main.textarea2);
+			
+			Main.sliderack.build(Util.projectPath(projectXmlName));
+			
 			Project.refreshProject();
 			
 			if (run)
@@ -203,6 +219,8 @@ public class Project
 				
 				//redirect output to terminal
 				pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+				pb.redirectError(ProcessBuilder.Redirect.INHERIT);
+				pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
 				
 				pb.start();
 			}
@@ -237,6 +255,8 @@ public class Project
 			NativeFileDialog.NFD_PickFolder(System.getProperty("user.home") + File.separator, p);
 			
 			path = p.getStringUTF8();
+			
+			MemoryUtil.memFree(p);
 		}
 		else 
 			path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);

@@ -2,7 +2,7 @@ package com.gui.sliderack.atributes;
 
 import javax.swing.JButton;
 
-public class Atribute extends JButton
+public class Attribute extends JButton
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -33,18 +33,23 @@ public class Atribute extends JButton
 		}
 	}
 
-	public Atribute(String name)
+	public Attribute(String name)
 	{
 		this.name = name;
 		this.setText(name);
 	}
 	
-	public static Atribute getAtributeByName(String n)
+	public String getXmlTag()
+	{
+		return "";
+	}
+	
+	public static Attribute getAtributeByName(String n)
 	{
 		if (n.equals("slide")) return new A_Slide();
 		else if (n.equals("tts")) return new A_TTS();
 		else if (n.equals("start animation")) return new A_Start_Animation();
 		else if (n.equals("exit animation")) return new A_Exit_Animation();
-		return new Atribute(n);
+		return new Attribute(n);
 	}
 }

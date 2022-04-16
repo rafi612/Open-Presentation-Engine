@@ -24,6 +24,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import com.gui.sliderack.RackElement;
+import com.io.Util;
 import com.main.Main;
 
 public class SlideRack extends JPanel implements ActionListener
@@ -178,6 +179,19 @@ public class SlideRack extends JPanel implements ActionListener
 		}
 		
 		return list;
+	}
+	
+	public void build(String path)
+	{
+		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+						"<project>\n";
+		for (int i = 0;i < elements.size();i++)
+		{
+			lines += elements.get(i).getSlideXmlTag(i) + "\n";
+		}
+		lines += "</project>";
+		
+		Util.saveFile(path, lines);
 	}
 	
 	

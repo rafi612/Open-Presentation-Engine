@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.gui.SlideRack;
 import com.gui.sliderack.atributes.A_Slide;
-import com.gui.sliderack.atributes.Atribute;
+import com.gui.sliderack.atributes.Attribute;
 import com.main.Main;
 
 public class RackElement extends JPanel implements ActionListener
@@ -46,11 +47,17 @@ public class RackElement extends JPanel implements ActionListener
 	
 	SlideRack sliderack;
 	
-	AtributesChooser chooser;
+	AttributesChooser chooser;
+	
+	public ArrayList<Attribute> attributes; 
+	
+	int hexcolor = -1;
 
 	public RackElement(String name_,SlideRack sliderack) 
 	{
 		this.sliderack = sliderack;
+		
+		attributes = new ArrayList<Attribute>();
 		
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setLayout(new BorderLayout());
@@ -93,7 +100,7 @@ public class RackElement extends JPanel implements ActionListener
 		add(centerpanel,BorderLayout.CENTER);
 		
 		sliderack.selectAllEvent();
-		chooser = new AtributesChooser(this);
+		chooser = new AttributesChooser(this);
 		chooser.sync();
 	}
 	
@@ -128,9 +135,21 @@ public class RackElement extends JPanel implements ActionListener
 		}
 	}
 	
+	public String getSlideXmlTag(int id)
+	{
+		String lines = "<slide id=\"" + id + "\" name=\"" + name.getText() + "\" color=\"" + hexcolor + "\">\n";
+		for (Attribute a : attributes)
+		{
+			lines += a.getXmlTag() + "\n";
+		}
+		lines += "</slide>";
+		return lines;
+	}
+	
 	public void setColor(Color color)
 	{
 		toppanel.setBackground(color);
+		hexcolor = color.getRGB() & 0xFFFFFF;
 	}
 	
 	public Color getColor()
@@ -166,7 +185,7 @@ public class RackElement extends JPanel implements ActionListener
 		return name.getText();
 	}
 	
-	public void addAtribute(Atribute a)
+	public void addAtribute(Attribute a)
 	{
 		centerpanel.add(a);
 	}

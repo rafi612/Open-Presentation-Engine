@@ -14,7 +14,7 @@ import com.gui.TreeFileChooser;
 import com.io.Util;
 import com.main.Main;
 
-public class A_Slide extends Atribute implements TreeFileChooser.Target
+public class A_Slide extends Attribute implements TreeFileChooser.Target
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -22,7 +22,7 @@ public class A_Slide extends Atribute implements TreeFileChooser.Target
 	
 	public A_Slide()
 	{
-		super(Atribute.Type.SLIDE.getFullName() + ": None");
+		super(Attribute.Type.SLIDE.getFullName() + ": None");
 		canBeMultiple = false;
 		isAlways = true;
 	}
@@ -34,10 +34,15 @@ public class A_Slide extends Atribute implements TreeFileChooser.Target
 		{
 			path = Util.getPathFromProject(new File(path));
 			
-			setText(Atribute.Type.SLIDE.getFullName() + ": " + path);
+			setText(Attribute.Type.SLIDE.getFullName() + ": " + path);
 		}
 		else
 			JOptionPane.showMessageDialog(Main.frame, "This file is not layout file","Error",JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public String getXmlTag()
+	{
+		return "\t<layout>" + path + "</layout>";
 	}
 
 }

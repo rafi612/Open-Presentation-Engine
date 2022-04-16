@@ -24,9 +24,9 @@ public class Renderer
 	{
 		if (!isFallback())
 		{
-			texture_shader = new Shader("/shaders/texture.vs","/shaders/texture.fs");
-			rect_shader = new Shader("/shaders/rect.vs","/shaders/rect.fs");
-			gradient_shader = new Shader("/shaders/gradient.vs","/shaders/gradient.fs");
+			texture_shader = new Shader("/shaders/texture_vs.glsl","/shaders/texture_fs.glsl");
+			rect_shader = new Shader("/shaders/rect_vs.glsl","/shaders/rect_fs.glsl");
+			gradient_shader = new Shader("/shaders/gradient_vs.glsl","/shaders/gradient_fs.glsl");
 			
 		    // configure VAO/VBO
 		    float vertices[] = { 

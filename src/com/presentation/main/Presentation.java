@@ -62,6 +62,8 @@ public class Presentation
 	
 	public static void start()
 	{
+		init();
+		
 		if (window != NULL)
 			stop();
 		
@@ -84,19 +86,19 @@ public class Presentation
 		sm = new SlideManager();
 		load();
 	    
-	    EventListener.init();
+	    MainLoop.init();
 	    
 	    glfwShowWindow(window);
 	    
-	    EventListener.reshape(window,WIDTH,HEIGHT);
+	    MainLoop.reshape(window,WIDTH,HEIGHT);
 	    
-	    glfwSetWindowSizeCallback(window, (window,w,h) -> EventListener.reshape(window, w, h));
+	    glfwSetWindowSizeCallback(window, (window,w,h) -> MainLoop.reshape(window, w, h));
 	    
 	    running = true;
 	    
 	    while (!glfwWindowShouldClose(window) && running) 
 	    {
-	    	EventListener.display();
+	    	MainLoop.display();
 	    	
 	    	glfwSwapBuffers(window);
 	    	glfwPollEvents();
@@ -177,7 +179,7 @@ public class Presentation
 		if (running)
 		{
 			running = false;
-			EventListener.dispose();
+			MainLoop.dispose();
 			
 			glfwDestroyWindow(window);
 			window = NULL;

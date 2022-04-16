@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
 
-import com.gui.sliderack.atributes.Atribute;
+import com.gui.sliderack.atributes.Attribute;
 import com.main.Main;
 
-public class AtributesChooser extends JDialog implements ActionListener
+public class AttributesChooser extends JDialog implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -23,9 +23,9 @@ public class AtributesChooser extends JDialog implements ActionListener
 	JPanel panel;
 	
 	public ArrayList<JCheckBox> checkbox = new ArrayList<JCheckBox>();
-	public ArrayList<Atribute> atributes = new ArrayList<Atribute>();
+	public ArrayList<Attribute> atributes = new ArrayList<Attribute>();
 	
-	public AtributesChooser(RackElement rackelement)
+	public AttributesChooser(RackElement rackelement)
 	{
 		this.rackelement = rackelement;
 		
@@ -45,20 +45,25 @@ public class AtributesChooser extends JDialog implements ActionListener
 	public void sync()
 	{
 		rackelement.centerpanel.removeAll();
+		rackelement.attributes.clear();
+		
 		for (int i = 0; i < atributes.size();i++)
 			if (checkbox.get(i).isSelected())
+			{
 				rackelement.centerpanel.add(atributes.get(i));
+				rackelement.attributes.add(atributes.get(i));
+			}
 		rackelement.centerpanel.validate();
 		rackelement.centerpanel.repaint();
 	}
 	
 	private void init()
 	{
-		for (Atribute.Type type : Atribute.Type.values())
+		for (Attribute.Type type : Attribute.Type.values())
 		{
 			JPanel elementpanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			
-			Atribute atrib = Atribute.getAtributeByName(type.getName());
+			Attribute atrib = Attribute.getAtributeByName(type.getName());
 			
 			JCheckBox cbox = new JCheckBox(type.getFullName());
 			cbox.addActionListener(this);

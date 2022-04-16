@@ -13,11 +13,10 @@ import org.lwjgl.system.Platform;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class EventListener
+public class MainLoop
 {
 	public static void display()
 	{
-		
 		glClear(GL_COLOR_BUFFER_BIT);		
 		
 		if (Keyboard.getKeyOnce(GLFW_KEY_ESCAPE))
