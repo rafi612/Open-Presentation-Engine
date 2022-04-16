@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import org.w3c.dom.Element;
+
 import com.gui.TreeFileChooser;
 import com.io.Util;
 import com.main.Main;
@@ -43,6 +45,11 @@ public class A_Slide extends Attribute implements TreeFileChooser.Target
 	public String getXmlTag()
 	{
 		return "\t<layout>" + path + "</layout>";
+	}
+	
+	public void load(Element element)
+	{
+		path = element.getTextContent();
 	}
 
 }

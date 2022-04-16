@@ -3,6 +3,8 @@ package com.gui.sliderack.atributes;
 public class A_Exit_Animation extends Attribute 
 {
 	private static final long serialVersionUID = 1L;
+	
+	String animation;
 
 	public A_Exit_Animation()
 	{
@@ -10,9 +12,9 @@ public class A_Exit_Animation extends Attribute
 		canBeMultiple = false;
 		isAlways = false;
 	}
-
+	
 	public String getXmlTag()
 	{
-		return "";
+		return "\t<exit_animation>" + animation + "</exit_animation>";
 	}
 }

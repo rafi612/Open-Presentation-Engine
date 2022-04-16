@@ -23,8 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
+import org.w3c.dom.Element;
+
 import com.gui.sliderack.RackElement;
 import com.io.Util;
+import com.io.XmlParser;
 import com.main.Main;
 
 public class SlideRack extends JPanel implements ActionListener
@@ -107,8 +110,7 @@ public class SlideRack extends JPanel implements ActionListener
 		{
 			RackElement element = new RackElement("Slide " + elements.size(),this);
 			//r.setColor(new Color(new Random().nextInt()));
-			elements.add(element);
-			rackpanel.add(element);
+			addElement(element);
 			
 			selected.setEnabled(true);
 		}
@@ -134,6 +136,25 @@ public class SlideRack extends JPanel implements ActionListener
 		//update
 		slidecount.setText("Slides: " + elements.size());
 		selectAllEvent();
+		validate();
+		repaint();
+	}
+	
+	public void addElement(RackElement element)
+	{
+		elements.add(element);
+		rackpanel.add(element);
+		
+		selected.setEnabled(true);
+	}
+	
+	public void clear()
+	{
+		rackpanel.removeAll();
+		elements.clear();
+		
+		selected.setEnabled(false);
+		
 		validate();
 		repaint();
 	}
@@ -192,6 +213,28 @@ public class SlideRack extends JPanel implements ActionListener
 		lines += "</project>";
 		
 		Util.saveFile(path, lines);
+	}
+	
+	public void load(String path)
+	{
+		XmlParser xml = new XmlParser(path);
+		
+		Element[] elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
+		
+		for (int i = 0;i < elements.length;i++)
+		{
+			RackElement elem = new RackElement(elements[i].getAttribute("name"), this);
+			int color = Integer.parseInt(elements[i].getAttribute("color"));
+
+			if (color != -1)
+				elem.setColor(new Color(color));
+			
+			
+			elem.load(elements[i]);
+			
+			addElement(elem);
+		}
+		
 	}
 	
 	

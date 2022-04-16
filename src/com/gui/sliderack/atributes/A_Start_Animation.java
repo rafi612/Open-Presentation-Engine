@@ -3,6 +3,8 @@ package com.gui.sliderack.atributes;
 public class A_Start_Animation extends Attribute 
 {
 	private static final long serialVersionUID = 1L;
+	
+	String animation;
 
 	public A_Start_Animation()
 	{
@@ -13,6 +15,6 @@ public class A_Start_Animation extends Attribute
 
 	public String getXmlTag()
 	{
-		return "";
+		return "\t<start_animation>" + animation + "</start_animation>";
 	}
 }

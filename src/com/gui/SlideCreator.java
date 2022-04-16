@@ -460,7 +460,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				
 				XmlParser xml = new XmlParser(Util.projectPath(text.getText()));
 				
-				org.w3c.dom.Element[] elements_ = xml.getElements(xml.getElementsByTagName("element"));
+				org.w3c.dom.Element[] elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
 				
 				for (int i = 0;i < elements_.length;i++)
 				{

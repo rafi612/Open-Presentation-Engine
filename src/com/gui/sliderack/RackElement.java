@@ -26,9 +26,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.w3c.dom.Element;
+
 import com.gui.SlideRack;
 import com.gui.sliderack.atributes.A_Slide;
 import com.gui.sliderack.atributes.Attribute;
+import com.io.XmlParser;
 import com.main.Main;
 
 public class RackElement extends JPanel implements ActionListener
@@ -137,13 +140,29 @@ public class RackElement extends JPanel implements ActionListener
 	
 	public String getSlideXmlTag(int id)
 	{
-		String lines = "<slide id=\"" + id + "\" name=\"" + name.getText() + "\" color=\"" + hexcolor + "\">\n";
+		String lines = "<slide name=\"" + name.getText() + "\" color=\"" + hexcolor + "\">\n";
 		for (Attribute a : attributes)
 		{
 			lines += a.getXmlTag() + "\n";
 		}
 		lines += "</slide>";
 		return lines;
+	}
+	
+	public void load(Element element)
+	{
+		centerpanel.removeAll();
+		
+		Element[] elements = XmlParser.getElementsFromElement(element);
+		
+		for (Element e : elements)
+		{
+			Attribute attribute = Attribute.getAtributeByName(e.getTagName());
+			
+			attribute.load(e);
+			
+			addAtribute(attribute);
+		}
 	}
 	
 	public void setColor(Color color)

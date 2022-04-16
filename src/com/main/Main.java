@@ -170,9 +170,9 @@ public class Main
         sliderack = new SlideRack();
 
         //tabs====================================
-        tabs.add("Main.py",textpanel);
         tabs.add("Slides",sliderack);
         tabs.add("Slide Creator",slidecreator);
+        tabs.add("Main.py",textpanel);
         
         frame.add(tabs);
     	 

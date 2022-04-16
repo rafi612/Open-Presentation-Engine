@@ -148,7 +148,7 @@ public class E_Image extends Element
 	public void load(XmlParser xml,int id)
 	{
 		//getting tag element from id
-		org.w3c.dom.Element element = xml.getElements(xml.getElementsByTagName("element"))[id];
+		org.w3c.dom.Element element = XmlParser.getElements(xml.getElementsByTagName("element"))[id];
 		
 		if (element.getAttribute("type").equals("Image"))
 		{
@@ -156,7 +156,7 @@ public class E_Image extends Element
 			name = element.getAttribute("name");
 			
 			//[0] getting first element from array
-			org.w3c.dom.Element data = xml.getElementsFromElementByName(element,"data")[0];
+			org.w3c.dom.Element data = XmlParser.getElementsFromElementByName(element,"data")[0];
 			
 			//loading image
 			path = data.getAttribute("src");

@@ -2,6 +2,7 @@ package com.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,28 +45,37 @@ public class XmlParser
 		return doc.getElementsByTagName(ElementsByTagName);
 	}
 	
-	public Element[] getElements(NodeList nList)
+	public static Element[] getElements(NodeList nList)
 	{
-		Element[] elements = new Element[nList.getLength()];
+		ArrayList<Element> elements = new ArrayList<Element>();
 		
 		for (int i = 0; i < nList.getLength(); i++)
 		{
 			Node nNode = nList.item(i);
-			Element eElement = (Element) nNode;
 			
-			elements[i] = eElement;
+			if (nNode.getNodeType() == Node.ELEMENT_NODE)
+			{
+				Element eElement = (Element) nNode;
+			
+				elements.add(eElement);
+			}
 		}
 		
-		return elements;
+		Element[] earray = new Element[elements.size()];
+		
+		for (int i = 0;i < earray.length;i++)
+			earray[i] = elements.get(i);
+		
+		return earray;
 	}
 
-	public Element[] getElementsFromElement(Element element)
+	public static Element[] getElementsFromElement(Element element)
 	{
 		return getElements(element.getChildNodes());
 		
 	}
 	
-	public Element[] getElementsFromElementByName(Element element,String name)
+	public static Element[] getElementsFromElementByName(Element element,String name)
 	{
 		return getElements(element.getElementsByTagName(name));
 		

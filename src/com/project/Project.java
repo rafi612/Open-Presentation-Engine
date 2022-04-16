@@ -85,6 +85,14 @@ public class Project
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
 		projectlocation = name;
+		
+		if (!new File(Util.projectPath(projectXmlName)).exists())
+		{
+			JOptionPane.showMessageDialog(Main.frame, "This is not project folder (project.xml missing)", "Can't load project", JOptionPane.ERROR_MESSAGE);
+			unloadProject();
+			return;
+		}
+		
 		Main.frame.setTitle(Main.TITLE + " - " + name);
 
 		interfaceEnable(true);
@@ -98,13 +106,14 @@ public class Project
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
     	
+		Main.sliderack.load(Util.projectPath(projectXmlName));
+		
     	refreshProject();
 	}
 	public static void unloadProject()
 	{
 		projectIsLoaded = false;
 		projectlocation = "";
-		Main.workspace.removeAllChildren();
 		Main.textpane.setText("");
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
 
@@ -119,8 +128,7 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(false);
 		
-    	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
-    	model.reload(Main.workspace);
+    	Main.sliderack.clear();
     	
     	refreshProject();
 	}
