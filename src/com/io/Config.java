@@ -2,144 +2,92 @@ package com.io;
 
 import java.io.File;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import org.lwjgl.system.Platform;
 
 import com.main.Main;
 
 public class Config 
 {
-	public static String configwindows = Platform.get() == Platform.WINDOWS ?
-			Util.path(System.getenv("APPDATA"),"ope.xml") : "";
-	public static String configlinux = Platform.get() == Platform.LINUX ? 
-			Util.path(System.getProperty("user.home"),".config",".ope.xml") : "";
+	public static String lookandfeel;
+	public static String configpath = "";
 	
 	public static void loadSettings() 
 	{
-		String conf = "";
 		
-		//windows
-		if (Platform.get() == Platform.WINDOWS)
+		switch (Platform.get())
 		{
-			if (!new File(configwindows).exists())
-				createOPExml();
-			conf = configwindows;
-		}
-		//linux
-		if (Platform.get() == Platform.LINUX)
-		{
-			if (!new File(configlinux).exists())
-				createOPExml();
-			conf = configlinux;
+		case WINDOWS:
+			configpath = Util.path(System.getenv("APPDATA"),"ope.xml");
+			break;
+		case LINUX:
+			configpath = Util.path(System.getProperty("user.home"),".config","ope.xml");
+			break;
+		case MACOSX:
+			configpath = Util.path(System.getProperty("user.home"),"Library","Application Support","ope.xml");
+			break;
 		}
 		
-		Main.interpreterpath = Util.readXml(conf, "settings", "pypath");
-		Main.interpretertype = Util.readXml(conf, "settings", "pytype");
+		if (!new File(configpath).exists())
+			createOPExml();
 		
-		switch (Main.interpretertype)
-		{
-			case "winpy":
-				Main.winpy.setSelected(true);
-			break;
-			
-			case "winsystem":
-				Main.winsystem.setSelected(true);
-			break;
-			
-			case "linux":
-				Main.linux.setSelected(true);
-			break;
-				
-			case "macos":
-				Main.macos.setSelected(true);
-			break;
-			case "custom":
-				Main.custom.setSelected(true);
-				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
-			break;
-		}
-	}
+		XmlParser xml = new XmlParser(configpath);
+		
+		lookandfeel = XmlParser.getElements(xml.getElementsByTagName("theme"))[0].getTextContent();
 	
-	public static void selectPy()
-	{
-		switch (Main.interpretertype)
-		{
-			case "winpy":
-				Main.winpy.setSelected(true);
-			break;
-			
-			case "winsystem":
-				Main.winsystem.setSelected(true);
-			break;
-			
-			case "linux":
-				Main.linux.setSelected(true);
-			break;
-				
-			case "macos":
-				Main.macos.setSelected(true);
-			break;
-			case "custom":
-				Main.custom.setSelected(true);
-				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
-			break;
-		}
+
+		if (lookandfeel.equals(getSystemTheme()))
+			Main.m_system.setSelected(true);
+		else if (lookandfeel.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
+			Main.m_metal.setSelected(true);
+		else if (lookandfeel.equals("javax.swing.plaf.nimbus.NimbusLookAndFeel"))
+			Main.m_nimbus.setSelected(true);
+		
+		reloadTheme();
 	}
 	
 	public static void createOPExml()
 	{
-		String path = "",type = "";
-		
-		//windows 
-		if (Platform.get() == Platform.WINDOWS)
-		{
-			//buildin
-			if (new File("Python\\python.exe").exists())
-			{
-				path = "Python\\python.exe";
-				type = "winpy";
-			}
-			//system
-			else
-			{
-				path = "python.exe";
-				type = "winsystem";
-			}
-		}
-		else if (Platform.get() == Platform.LINUX)
-		{
-			path = "python3";
-			type = "linux";
-		}
-		else if (Platform.get() == Platform.MACOSX)
-		{
-			path = "python";
-			type = "macos";
-		}
-		else 
-		{
-			path = "";
-			type = "custom";
-		}
-		
-		saveOPExml(type, path);
+    	lookandfeel = getSystemTheme();
+		saveXML();
 	}
 	
-	public static void saveOPExml(String type,String path)
+	public static String getSystemTheme()
 	{
-		String confpath = "";
-		if (Platform.get() == Platform.WINDOWS)
-			confpath = configwindows;
-		else if(Platform.get() == Platform.LINUX)
-			confpath = configlinux;
-		
-		Util.saveFile(confpath,
+    	switch (Platform.get())
+    	{
+    	case LINUX:
+    		return "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    	default:
+    		return UIManager.getSystemLookAndFeelClassName();
+    	}
+	}
+	
+	public static void saveXML()
+	{
+		Util.saveFile(configpath,
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
-			"<class>\n" +
-			"<settings>\n" +
-			"<pytype>" + type + "</pytype>\n" + 
-			"<pypath>" + path + "</pypath>\n" + 
-			"</settings>\n" +
-			"</class>");
+			"<config>\n" +
+			"<theme>" + lookandfeel + "</theme>\n" + 
+			"</config>");
+	}
+	
+	
+	public static void reloadTheme()
+	{
+		try {
+			UIManager.setLookAndFeel(Config.lookandfeel);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	    SwingUtilities.updateComponentTreeUI(Main.frame);
+	    SwingUtilities.updateComponentTreeUI(Main.aboutdialog);
 	}
 
 }

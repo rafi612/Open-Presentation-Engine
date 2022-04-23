@@ -184,7 +184,8 @@ public class Project
 			ArrayList<String> pyout = new ArrayList<String>();
 			//String pyout = "Python output:";
 			
-			ProcessBuilder builder = new ProcessBuilder(Main.interpreterpath, Project.projectlocation + File.separator + "main.py");
+			//TODO: Remove
+			ProcessBuilder builder = new ProcessBuilder("python3", Project.projectlocation + File.separator + "main.py");
 			builder.directory(new File(projectlocation + File.separator));
 			process = builder.start();
 				

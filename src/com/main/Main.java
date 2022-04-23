@@ -28,6 +28,7 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -52,8 +53,6 @@ public class Main
     public static JMenuBar menubar;
     public static JMenu file,edit,tools,run,settings,help;
     
-    public static String interpreterpath = "",interpretertype = "";
-    
     public static final String TITLE = "Open Presentation Engine";
     
     //file
@@ -63,16 +62,15 @@ public class Main
     public static JMenuItem cut,paste,copy,selectAll;
     
     //tools
-    public static JMenuItem refresh,shell;
+    public static JMenuItem refresh;
     
     //run
     public static JMenuItem runandbuild,run_;
     
     //settings
-    public static JMenu python;
-    
-    public static JRadioButtonMenuItem winpy,winsystem,linux,macos;
-    public static JRadioButtonMenuItem custom;
+    public static JMenu theme;
+
+    public static JRadioButtonMenuItem m_system,m_metal,m_nimbus;
     
     //help
     public static JMenuItem about,license;
@@ -221,8 +219,6 @@ public class Main
 			
 			Config.loadSettings();
 			
-			theme();
-			
 			frame.setVisible(true);
 			
 	        slidecreator.canvasLoop();
@@ -301,9 +297,6 @@ public class Main
         
         
         //narzędzia
-        shell = new JMenuItem("OPE Python Shell"); 
-        shell.addActionListener(new Action());
-        tools.add(shell);
         refresh = new JMenuItem("Refresh Project"); 
         refresh.addActionListener(new Action());
         refresh.setEnabled(false);
@@ -315,7 +308,7 @@ public class Main
         runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         runandbuild.addActionListener(new Action());
         //shell.addActionListener(new Action());
-        tools.add(shell);
+        
         run_ = new JMenuItem("Run"); 
         run_.setIcon(new ImageIcon(Util.loadIcon("/icons/run.png")));
         run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));
@@ -324,52 +317,31 @@ public class Main
         run.add(run_);
         
         //settings
-        python = new JMenu("Set Python interpreter");
-        python.addActionListener(new Action()); 
+        theme = new JMenu("Theme");
         
         ButtonGroup group = new ButtonGroup();
         
-        winpy = new JRadioButtonMenuItem("Windows - OPE build in (Python\\python.exe)");
-        winpy.setEnabled(false);
-        winpy.addActionListener(new Action());
-        group.add(winpy);
-        // Python/ folder exist
-        if (new File("Python").exists() && Platform.get() == Platform.WINDOWS)
-        	winpy.setEnabled(true);
-        python.add(winpy);
+        String type = Platform.get() == Platform.WINDOWS ? "Win32" : 
+        	(Platform.get() == Platform.LINUX ? "GTK+" : "Aqua");
         
-        winsystem = new JRadioButtonMenuItem("Windows - System (python.exe)");
-        winsystem.setEnabled(false);
-        winsystem.addActionListener(new Action());
-        group.add(winsystem);
-        if (Platform.get() == Platform.WINDOWS)
-        	winsystem.setEnabled(true);
-        python.add(winsystem);
+        m_system = new JRadioButtonMenuItem("System (" + type + ")");
+        m_system.addActionListener(new Action());
+        group.add(m_system);
+        theme.add(m_system);
         
-        linux = new JRadioButtonMenuItem("Linux (python3)");
-        linux.setEnabled(false);
-        linux.addActionListener(new Action());
-        group.add(linux);
-        if (Platform.get() == Platform.LINUX)
-        	linux.setEnabled(true);
-        python.add(linux);
+        theme.add(new JSeparator());
         
-        macos = new JRadioButtonMenuItem("MacOS (python)");
-        macos.setEnabled(false);
-        macos.addActionListener(new Action());
-        group.add(macos);
-        if (Platform.get() == Platform.MACOSX)
-        	macos.setEnabled(true);
-        python.add(macos);
+        m_metal = new JRadioButtonMenuItem("Metal");
+        m_metal.addActionListener(new Action());
+        group.add(m_metal);
+        theme.add(m_metal);
         
-        python.add(new JSeparator());
-        
-        custom = new JRadioButtonMenuItem("Custom");
-        custom.addActionListener(new Action());
-        group.add(custom);
-        python.add(custom);
-        
-        settings.add(python);
+        m_nimbus = new JRadioButtonMenuItem("Nimbus");
+        m_nimbus.addActionListener(new Action());
+        group.add(m_nimbus);
+        theme.add(m_nimbus);
+    
+        settings.add(theme);
         
         //help 
         about = new JMenuItem("About");
@@ -387,31 +359,6 @@ public class Main
         menubar.add(run);
         menubar.add(settings);
         menubar.add(help);
-	}
-	
-
-	
-	public static void theme()
-	{
-	    try 
-	    {
-	    	switch (Platform.get())
-	    	{
-	    	case LINUX:
-	    		UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-	    		break;
-	    	default:
-	    		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    		break;
-	    	}
-		} 
-	    catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-	
-	    SwingUtilities.updateComponentTreeUI(frame);
-	    SwingUtilities.updateComponentTreeUI(aboutdialog);
 	}
 
 }

@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -36,12 +37,11 @@ import com.tts.Speak;
 
 public class Action implements ActionListener 
 {
-	Object source;
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		source = e.getSource();
+		Object source = e.getSource();
 		
 		//import
 		if (source == Main.autoscripts.get(0))
@@ -187,77 +187,29 @@ public class Action implements ActionListener
 		if (source == Main.refresh)
 			Project.refreshProject();
 		
-		//shell
-		if (source == Main.shell)
+		//settings
+		if (source == Main.m_system)
 		{
-			try 
-			{
-				if (Platform.get() == Platform.WINDOWS)
-				{
-					Process process = Runtime.getRuntime().exec("cmd /c start " + Main.interpreterpath);
-					process.waitFor();
-				}
-				if (Platform.get() == Platform.LINUX)
-				{
-					Process process = Runtime.getRuntime().exec("/usr/bin/x-terminal-emulator -e " + Main.interpreterpath);
-					process.waitFor();
-				}
-			} 
-			catch (IOException e1) 
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	    	Config.lookandfeel = Config.getSystemTheme();
+	    	
+	    	Config.saveXML();
+	    	Config.reloadTheme();
 		}
 		
-		//python 
-		if (source == Main.winpy)
+		if (source == Main.m_metal)
 		{
-			Main.interpreterpath = "Python\\python.exe";
-			Main.interpretertype = "winpy";
-			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
-			Main.custom.setText("Custom");
+			Config.lookandfeel = "javax.swing.plaf.metal.MetalLookAndFeel";
+	    	Config.saveXML();
+			Config.reloadTheme();
 		}
-		if (source == Main.winsystem)
+		
+		if (source == Main.m_nimbus)
 		{
-			Main.interpreterpath = "python.exe";
-			Main.interpretertype = "winsystem";
-			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
-			Main.custom.setText("Custom");
+			Config.lookandfeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
+	    	Config.saveXML();
+			Config.reloadTheme();
 		}
-		if (source == Main.linux)
-		{
-			Main.interpreterpath = "python3.7";
-			Main.interpretertype = "linux";
-			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
-			Main.custom.setText("Custom");
-		}
-		if (source == Main.macos)
-		{
-			Main.interpreterpath = "python";
-			Main.interpretertype = "macos";
-			Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
-			Main.custom.setText("Custom");
-		}
-		if (source == Main.custom)
-		{
-			String path = JOptionPane.showInputDialog(Main.frame, "Enter Python path:", "Python",JOptionPane.QUESTION_MESSAGE);
-			if (!(path == null))
-			{
-				Main.interpreterpath = path;
-				Main.custom.setText("Custom " + "(" + Main.interpreterpath + ")");
-				Main.interpretertype = "custom";
-				Config.saveOPExml(Main.interpretertype, Main.interpreterpath);
-			}
-			else
-			{
-				Config.selectPy();
-			}
-			
-		}
+		
 		//license
 		if (source == Main.license)
 		{
