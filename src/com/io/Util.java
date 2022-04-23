@@ -1,6 +1,7 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.io;
 
+import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,6 +23,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.main.Main;
 import com.project.Project;
 
 public class Util 
@@ -167,5 +170,22 @@ public class Util
 	public static String projectPath(String... files)
 	{
 		return Paths.get(Project.projectlocation,files).toString();
+	}
+	
+	
+	public static Image loadIcon(String path)
+	{
+		Image i = null;
+		
+		try
+		{
+			i = ImageIO.read(Main.class.getResourceAsStream(path));
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return i;
 	}
 }

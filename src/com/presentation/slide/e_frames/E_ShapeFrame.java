@@ -8,6 +8,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.io.Util;
 import com.main.Main;
 import com.presentation.slide.elements.E_Shape;
 
@@ -28,7 +29,7 @@ public class E_ShapeFrame extends JDialog implements ChangeListener
 		setTitle("Image");
 		setSize(300,200);
 		setLocationRelativeTo(Main.frame);
-		setIconImage(Main.loadIcon("/images/icon.png"));
+		setIconImage(Util.loadIcon("/images/icon.png"));
 		setVisible(true);
 		setResizable(false);
 		setLayout(null);

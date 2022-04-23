@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
 
 import com.gui.sliderack.atributes.Attribute;
+import com.io.Util;
 import com.main.Main;
 
 public class AttributesChooser extends JDialog implements ActionListener
@@ -32,7 +33,7 @@ public class AttributesChooser extends JDialog implements ActionListener
 		setSize(600,400);
 		setTitle("Atributes");
 		setLocationRelativeTo(null);
-		setIconImage(Main.loadIcon("/images/icon.png"));
+		setIconImage(Util.loadIcon("/images/icon.png"));
 		
 		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

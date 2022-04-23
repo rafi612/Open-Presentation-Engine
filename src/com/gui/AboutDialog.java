@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.io.Util;
 import com.main.Main;
 
 public class AboutDialog extends JDialog
@@ -29,7 +30,7 @@ public class AboutDialog extends JDialog
 		JPanel logo = new JPanel();
 		logo.setLayout(new BorderLayout());
 		
-		JLabel l = new JLabel(new ImageIcon(Main.loadIcon("/images/iconsmall.png")));
+		JLabel l = new JLabel(new ImageIcon(Util.loadIcon("/images/iconsmall.png")));
 		
 		logo.add(new JLabel("        "),BorderLayout.WEST);
 		logo.add(l,BorderLayout.CENTER);

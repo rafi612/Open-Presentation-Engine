@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import com.gui.SlideRack;
 import com.gui.sliderack.atributes.A_Slide;
 import com.gui.sliderack.atributes.Attribute;
+import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
 
@@ -80,7 +81,7 @@ public class RackElement extends JPanel implements ActionListener
 		add(toppanel,BorderLayout.NORTH);
 		
 		add = new JButton();
-		add.setIcon(new ImageIcon(Main.loadIcon("/icons/rack_add.png")));
+		add.setIcon(new ImageIcon(Util.loadIcon("/icons/rack_add.png")));
 		add.addActionListener(this);
 		add(add,BorderLayout.EAST);
 		

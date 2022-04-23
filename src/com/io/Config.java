@@ -13,7 +13,7 @@ public class Config
 	public static String configlinux = Platform.get() == Platform.LINUX ? 
 			Util.path(System.getProperty("user.home"),".config",".ope.xml") : "";
 	
-	public static void loadinterpreterpath() 
+	public static void loadSettings() 
 	{
 		String conf = "";
 		

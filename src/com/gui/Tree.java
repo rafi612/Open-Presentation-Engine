@@ -278,17 +278,17 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 				setText(file.getName());
 				
 				if (extension(file).equals("png"))
-					setIcon(new ImageIcon(Main.loadIcon("/icons/files/image.png")));
+					setIcon(new ImageIcon(Util.loadIcon("/icons/files/image.png")));
 				else if (extension(file).equals("layout"))
-					setIcon(new ImageIcon(Main.loadIcon("/icons/files/layout.png")));
+					setIcon(new ImageIcon(Util.loadIcon("/icons/files/layout.png")));
 				else if (extension(file).equals("xml"))
-					setIcon(new ImageIcon(Main.loadIcon("/icons/files/xml.png")));
+					setIcon(new ImageIcon(Util.loadIcon("/icons/files/xml.png")));
 				else
 				{
 					if (file.isFile())
-						setIcon(new ImageIcon(Main.loadIcon("/icons/files/file.png")));
+						setIcon(new ImageIcon(Util.loadIcon("/icons/files/file.png")));
 					else 
-						setIcon(new ImageIcon(Main.loadIcon("/icons/files/directory.png")));
+						setIcon(new ImageIcon(Util.loadIcon("/icons/files/directory.png")));
 				}
 			}
 		}

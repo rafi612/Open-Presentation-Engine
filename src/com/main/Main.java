@@ -24,7 +24,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -32,10 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.system.Platform;
-import org.lwjgl.util.nfd.NativeFileDialog;
 
 import com.audio.Sound;
 import com.gui.AboutDialog;
@@ -44,8 +40,8 @@ import com.gui.SlideRack;
 import com.gui.Tree;
 import com.input.Action;
 import com.input.ColoredKeywords;
-import com.input.Window;
 import com.io.Config;
+import com.io.Util;
 import com.presentation.main.Presentation;
 import com.project.Project;
 
@@ -189,8 +185,6 @@ public class Main
         actions.add(new JButton("Build & Run"));
         actions.add(new JButton("Save"));
         actions.add(new JButton("Stop"));
-//        actions.add(new JButton("Open XML editor"));
-//        actions.add(new JButton("Open Python editor"));
         
         for (int i = 0;i < actions.size(); i++)
         	actions.get(i).addActionListener(new Action());
@@ -214,10 +208,9 @@ public class Main
 		{
 			frame = new JFrame(TITLE);
 			frame.setSize(1280,720);
-			frame.setIconImage(loadIcon("/images/icon.png"));
+			frame.setIconImage(Util.loadIcon("/images/icon.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
-			frame.addWindowListener(new Window());
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			menubar = new JMenuBar(); 
@@ -226,7 +219,7 @@ public class Main
 			
 			initUI();
 			
-			Config.loadinterpreterpath();
+			Config.loadSettings();
 			
 			theme();
 			
@@ -252,16 +245,16 @@ public class Main
         run = new JMenu("Run");
         help = new JMenu("Help");
         
-        //plik
+        //file
         newproject = new JMenuItem("New Project");
         newproject.addActionListener(new Action());
-        newproject.setIcon(new ImageIcon(loadIcon("/icons/new.png")));
+        newproject.setIcon(new ImageIcon(Util.loadIcon("/icons/new.png")));
         newproject.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
         file.add(newproject);
         
         loadproject = new JMenuItem("Load Project");
         loadproject.addActionListener(new Action());
-        loadproject.setIcon(new ImageIcon(loadIcon("/icons/open.png")));
+        loadproject.setIcon(new ImageIcon(Util.loadIcon("/icons/open.png")));
         loadproject.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
         file.add(loadproject);
         
@@ -270,7 +263,7 @@ public class Main
         save = new JMenuItem("Save");
         save.addActionListener(new Action());
         save.setEnabled(false);
-        save.setIcon(new ImageIcon(loadIcon("/icons/save.png")));
+        save.setIcon(new ImageIcon(Util.loadIcon("/icons/save.png")));
         save.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
         file.add(save);
         
@@ -282,7 +275,7 @@ public class Main
         exitproject = new JMenuItem("Exit Project");
         exitproject.addActionListener(new Action());
         exitproject.setEnabled(false);
-        exitproject.setIcon(new ImageIcon(loadIcon("/icons/exit.png")));
+        exitproject.setIcon(new ImageIcon(Util.loadIcon("/icons/exit.png")));
         file.add(exitproject);
         
         file.add(new JSeparator());
@@ -292,7 +285,7 @@ public class Main
         exit.setAccelerator(KeyStroke.getKeyStroke("alt F4"));
         file.add(exit);
         
-        //edytuj
+        //edit
         copy= new JMenuItem("Copy");
         copy.setEnabled(false);
         edit.add(copy);
@@ -318,13 +311,13 @@ public class Main
         tools.add(refresh);
         
         runandbuild = new JMenuItem("Build And Run"); 
-        runandbuild.setIcon(new ImageIcon(loadIcon("/icons/runandbuild.png")));
+        runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/runandbuild.png")));
         runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         runandbuild.addActionListener(new Action());
         //shell.addActionListener(new Action());
         tools.add(shell);
         run_ = new JMenuItem("Run"); 
-        run_.setIcon(new ImageIcon(loadIcon("/icons/run.png")));
+        run_.setIcon(new ImageIcon(Util.loadIcon("/icons/run.png")));
         run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));
         //refresh.addActionListener(new Action());
         run.add(runandbuild);
@@ -378,17 +371,16 @@ public class Main
         
         settings.add(python);
         
-        //pomoc 
+        //help 
         about = new JMenuItem("About");
         about.addActionListener(new Action());
-        about.setIcon(new ImageIcon(loadIcon("/icons/about.png")));
+        about.setIcon(new ImageIcon(Util.loadIcon("/icons/about.png")));
         help.add(about);
         license = new JMenuItem("View License");
         license.addActionListener(new Action());
-        license.setIcon(new ImageIcon(loadIcon("/icons/license.png")));
+        license.setIcon(new ImageIcon(Util.loadIcon("/icons/license.png")));
         help.add(license);
         
-        //dodawanie
         menubar.add(file);
         menubar.add(edit);
         menubar.add(tools);
@@ -420,22 +412,6 @@ public class Main
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
 	    SwingUtilities.updateComponentTreeUI(aboutdialog);
-	}
-	
-	public static Image loadIcon(String path)
-	{
-		Image i = null;
-		
-		try
-		{
-			i = ImageIO.read(Main.class.getResourceAsStream(path));
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return i;
 	}
 
 }

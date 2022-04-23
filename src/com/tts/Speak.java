@@ -36,7 +36,7 @@ public class Speak
 		JDialog f = new JDialog(Main.frame,"Text-to-Speech Creator");
 		f.setSize(640, 480);
 		f.setLocationRelativeTo(Main.frame);
-		f.setIconImage(Main.loadIcon("/images/icon.png"));
+		f.setIconImage(Util.loadIcon("/images/icon.png"));
 		f.setLayout(new BorderLayout());
 		f.setResizable(false);
 		
