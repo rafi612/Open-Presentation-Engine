@@ -401,19 +401,22 @@ public class Main
 	
 	public static void theme()
 	{
-	    try {
-	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	        //UIManager.getDefaults().put("TextArea.font", UIManager.getFont("TextField.font"));
-	        
-	    } catch (ClassNotFoundException e) {
-	            e.printStackTrace();
-	    } catch (InstantiationException e) {
-	            e.printStackTrace();
-	    } catch (IllegalAccessException e) {
-	            e.printStackTrace();
-	    } catch (UnsupportedLookAndFeelException e) {
-	            e.printStackTrace();
-	    }
+	    try 
+	    {
+	    	switch (Platform.get())
+	    	{
+	    	case LINUX:
+	    		UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+	    		break;
+	    	default:
+	    		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    		break;
+	    	}
+		} 
+	    catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	
 	    SwingUtilities.updateComponentTreeUI(frame);
 	    SwingUtilities.updateComponentTreeUI(aboutdialog);
