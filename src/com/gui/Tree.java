@@ -249,8 +249,14 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 class TreeCellRenderer extends DefaultTreeCellRenderer 
 {
 	private static final long serialVersionUID = 1L;
-//	private FileSystemView fsv = FileSystemView.getFileSystemView();
-        
+	
+	ImageIcon image = new ImageIcon(Util.loadIcon("/icons/files/image.png"));
+	ImageIcon layout = new ImageIcon(Util.loadIcon("/icons/files/layout.png"));
+	ImageIcon xml = new ImageIcon(Util.loadIcon("/icons/files/xml.png"));
+	ImageIcon file = new ImageIcon(Util.loadIcon("/icons/files/file.png"));
+	ImageIcon directory_open = new ImageIcon(Util.loadIcon("/icons/files/directory_open.png"));
+	ImageIcon directory_closed = new ImageIcon(Util.loadIcon("/icons/files/directory_closed.png"));
+	
 	public String extension(File file)
 	{
 		// convert the file name into string
@@ -278,17 +284,22 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 				setText(file.getName());
 				
 				if (extension(file).equals("png"))
-					setIcon(new ImageIcon(Util.loadIcon("/icons/files/image.png")));
+					setIcon(image);
 				else if (extension(file).equals("layout"))
-					setIcon(new ImageIcon(Util.loadIcon("/icons/files/layout.png")));
+					setIcon(layout);
 				else if (extension(file).equals("xml"))
-					setIcon(new ImageIcon(Util.loadIcon("/icons/files/xml.png")));
+					setIcon(xml);
 				else
 				{
 					if (file.isFile())
-						setIcon(new ImageIcon(Util.loadIcon("/icons/files/file.png")));
-					else 
-						setIcon(new ImageIcon(Util.loadIcon("/icons/files/directory.png")));
+						setIcon(this.file);
+					else if (file.isDirectory())
+					{
+						if (expanded)
+							setIcon(directory_open);
+						else
+							setIcon(directory_closed);
+					}
 				}
 			}
 		}
