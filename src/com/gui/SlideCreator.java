@@ -21,7 +21,6 @@ import java.util.Collections;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -61,9 +60,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
     
     JButton newelement,edit,up,down,rename,delete;
     JLabel position;
-    JCheckBox movecheck;
-    
-    boolean canOnlyMoveCheck;
     
     public int elementsint = 0;
     public int xPixel,yPixel;
@@ -71,8 +67,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
     Texture canvasimage;
     
     public boolean slideloaded = false;
-    public boolean elementopen = false;
     public boolean dragged = false;
+    
+    public int currentColidedID = -1,currentMovedID = -1;
     
     public ArrayList<Element> elements;
     
@@ -160,11 +157,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	    JPanel cpanel = new JPanel();
 	    cpanel.setLayout(new BorderLayout());
 	    
-	    movecheck = new JCheckBox("Move only checked");
-	    
 	    JPanel ppanel = new JPanel();
 	    ppanel.add(position);
-	    ppanel.add(movecheck);
 	    cpanel.add(ppanel,BorderLayout.SOUTH);
 
         GLData data = new GLData();
@@ -174,9 +168,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
         cpanel.add(canvas = new AWTGLCanvas(data) 
         {
             private static final long serialVersionUID = 1L;
-            public void initGL() {
+            public void initGL() 
+            {
                 System.out.println("OpenGL version: " + effective.majorVersion + "." + effective.minorVersion + " (Profile: " + effective.profile + ")");
                 GL.createCapabilities();
+                
+        		if (Renderer.isFallback())
+        			System.out.println("Using fallback renderer");
+                
                 init();
             }
             public void paintGL()
@@ -209,7 +208,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 	public void display()
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(1,1,1,1);
 		
 		reshape(canvas.getWidth(),canvas.getHeight());
@@ -220,28 +219,28 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				Renderer.drawImage(canvasimage,0, 0,WIDTH, HEIGHT);
 		}
 		
-		//update
-		if (movecheck.isSelected() && list.getSelectedIndex() != -1)
+		for (int i = 0;i < elements.size() ;i++)
 		{
-			elements.get(list.getSelectedIndex()).update(this);
+			elements.get(i).update(this);
+			//if (currentColidedID != -1) break;
 		}
-		else
-			for (int i = 0;i < elements.size();i++)
-				elements.get(i).update(this);
+		
+		//setting moved element as selected on list
+		list.setSelectedIndex(currentMovedID);
 		
 		//render
 		for (int i = 0;i < elements.size();i++)
 			elements.get(i).render();
-
-		//selected border
-		if (list.getSelectedIndex() > -1)
-		{
-			Element e = elements.get(list.getSelectedIndex());
-			Renderer.frectnofill(e.x, e.y, e.w, e.h, Renderer.color(0xFFA200));
-		}
+//
+//		//selected border
+//		if (list.getSelectedIndex() > -1)
+//		{
+//			Element e = elements.get(list.getSelectedIndex());
+//			Renderer.frectnofill(e.x, e.y, e.w, e.h, Renderer.color(0xFFA200));
+//		}
 	}
 	
-	float sx,sy;
+	private float sx,sy;
 	
 	public void init() 
 	{
@@ -296,18 +295,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			else
 				elementname = textfield.getText();
 			
+			Element elem = Element.getElementsByName(combo.getSelectedItem().toString());
+			elem.id = elements.size();
+		    elem.name = elementname;
+		    elem.frame();
+		    
 			//get and add element
-		    elements.add(Element.getElementsByName(combo.getSelectedItem().toString()));
+		    elements.add(elem);
 		    listModel.addElement(elementname);
-		    
-		    //setting name
-		    elements.get(elements.size() - 1).name = elementname;
-		    
-		    //set id
-		    //elements.get(elements.size() - 1).id = elements.size() - 1;
-		    
-		    //frame
-		    elements.get(elements.size() - 1).frame();
 		}
 		//new slide
 		if (source == actions.get(0))
@@ -355,6 +350,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				swaplist(old,new_);
 				//set selection
 				list.setSelectedIndex(new_);
+				
+				refreshElementsID();
 			}
 		}
 		//down
@@ -370,8 +367,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				swaplist(old,new_);
 				//set selection
 				list.setSelectedIndex(new_);
+				
+				refreshElementsID();
 			}
 		}
+		//delete
 		if (source == delete)
 		{
 			if (list.getSelectedIndex() == -1)
@@ -387,6 +387,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 					elements.remove(index);
 					listModel.remove(index);
 				}
+				
+				refreshElementsID();
 			}
 		}
 		if (source == rename)
@@ -412,6 +414,15 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		if (source == actions.get(1))
 		{
 			opendialog();
+		}
+	}
+	
+	private void refreshElementsID()
+	{
+		//refresh id
+		for (int i = 0;i < elements.size();i++)
+		{
+			elements.get(i).id = i;
 		}
 	}
 	

@@ -42,9 +42,6 @@ import org.joml.Vector4f;
 public class E_Image extends Element
 {
 	public String path;
-	
-	public int id;
-	
 	public Texture image = null;
 	
 	public boolean editing,moving,colided;
@@ -54,8 +51,6 @@ public class E_Image extends Element
     public Point clickpoint = new Point(0,0);
     
     ArrayList<Resizer> resizers;
-    
-    public boolean changedimage = false;
 	
 	public E_Image()
 	{
@@ -88,7 +83,7 @@ public class E_Image extends Element
 	
 	public void update(SlideCreator sc)
 	{
-		//grobal dragged value
+		//global dragged value
 		dragged = sc.dragged;
 		
 		//check tracking on all elements
@@ -104,10 +99,17 @@ public class E_Image extends Element
 		}
 		
 		//checking AABB colision on click
-		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel)
+		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel 
+				&& sc.currentColidedID <= id && sc.currentMovedID == -1)
+		{
 			colided = true;
+			sc.currentColidedID = id;
+		}
 		else
+		{
 			colided = false;
+			sc.currentColidedID = -1;
+		}
 		
 		//executing on dragging
 		if (sc.dragged && canTracked)
@@ -126,6 +128,8 @@ public class E_Image extends Element
 			//executing on moving
 			if (moving)
 			{
+				sc.currentColidedID = id;
+				sc.currentMovedID = id;
 		        int xMoved = (x + sc.xPixel) - (x + clickpoint.x);
 		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
 		        x += xMoved;
@@ -139,6 +143,7 @@ public class E_Image extends Element
 		if (!sc.dragged)
 		{
 			moving = false;
+			sc.currentMovedID = -1;
 			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 		
@@ -195,7 +200,7 @@ public class E_Image extends Element
 		if (colided)
 			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,1,1));
 		
-		if (dragged && colided)
+		if (moving)
 			Renderer.frectnofill(x,y,w,h,new Vector4f(1,0,0,1));
 		
 		for (int i = 0; i < resizers.size(); i++)
