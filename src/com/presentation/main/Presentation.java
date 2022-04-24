@@ -49,6 +49,8 @@ public class Presentation
 	
 	public static void init()
 	{
+		Sound.init();
+		
 		GLFWErrorCallback.createPrint(System.err).set();
 		
 		if (!glfwInit())

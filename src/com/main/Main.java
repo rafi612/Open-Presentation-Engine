@@ -192,8 +192,6 @@ public class Main
 	{
 		Main.args = args;
 		
-		Sound.init();
-		
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);

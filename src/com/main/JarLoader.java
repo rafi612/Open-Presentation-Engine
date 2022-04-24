@@ -22,11 +22,10 @@ public class JarLoader
 	public static boolean loadedAsJarloader = false;
 	public static String jarLoaderLibDir;
 	
-	public static String[] libs;
-	
 	public static void main(String[] args) throws IOException 
 	{
 		loadedAsJarloader = true;
+		String[] libs;
 		
 		Enumeration<URL> resEnum = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
 		String rsrcMainClass = null;
