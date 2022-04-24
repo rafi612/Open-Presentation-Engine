@@ -1,14 +1,11 @@
 package com.presentation.slide.elements;
 
-import java.awt.Color;
-
 import org.joml.Vector4f;
 
 import com.graphics.Renderer;
 import com.graphics.Texture;
 import com.io.XmlParser;
 import com.presentation.slide.Element;
-import com.presentation.slide.e_frames.E_ShapeFrame;
 
 public class E_Shape extends Element
 {
@@ -50,6 +47,6 @@ public class E_Shape extends Element
 	
 	public void frame()
 	{
-		new E_ShapeFrame(this);
+		
 	}
 }
