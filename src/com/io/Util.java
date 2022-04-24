@@ -130,6 +130,7 @@ public class Util
         }
 	}
 
+	//TODO: Remove
 	public static String readXml(String path,String ElementsByTagName,String tag)
 	{
 		String return_ = null;

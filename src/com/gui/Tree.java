@@ -256,38 +256,24 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 	ImageIcon file = new ImageIcon(Util.loadIcon("/icons/files/file.png"));
 	ImageIcon directory_open = new ImageIcon(Util.loadIcon("/icons/files/directory_open.png"));
 	ImageIcon directory_closed = new ImageIcon(Util.loadIcon("/icons/files/directory_closed.png"));
-	
-	public String extension(File file)
-	{
-		// convert the file name into string
-		String fileName = file.toString();
-
-		int index = fileName.lastIndexOf('.');
-		if(index > 0) 
-		{
-			String extension = fileName.substring(index + 1);
-			return extension;
-		}
-		return "";
-	}
  
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) 
 	{
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-		if (value instanceof DefaultMutableTreeNode) {
+		if (value instanceof DefaultMutableTreeNode) 
+		{
 			value = ((DefaultMutableTreeNode)value).getUserObject();
 			if (value instanceof File) 
 			{
 				File file = (File) value;
 				//setIcon(fsv.getSystemIcon(file));
-				setText(file.getName());
 				
-				if (extension(file).equals("png"))
+				if (Util.FileExtension(file).equals("png"))
 					setIcon(image);
-				else if (extension(file).equals("layout"))
+				else if (Util.FileExtension(file).equals("layout"))
 					setIcon(layout);
-				else if (extension(file).equals("xml"))
+				else if (Util.FileExtension(file).equals("xml"))
 					setIcon(xml);
 				else
 				{
