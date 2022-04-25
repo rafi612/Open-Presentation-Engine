@@ -19,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.border.Border;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
@@ -250,12 +251,14 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 {
 	private static final long serialVersionUID = 1L;
 	
-	ImageIcon image = new ImageIcon(Util.loadIcon("/icons/files/image.png"));
-	ImageIcon layout = new ImageIcon(Util.loadIcon("/icons/files/layout.png"));
-	ImageIcon xml = new ImageIcon(Util.loadIcon("/icons/files/xml.png"));
-	ImageIcon file = new ImageIcon(Util.loadIcon("/icons/files/file.png"));
-	ImageIcon directory_open = new ImageIcon(Util.loadIcon("/icons/files/directory_open.png"));
-	ImageIcon directory_closed = new ImageIcon(Util.loadIcon("/icons/files/directory_closed.png"));
+	private ImageIcon image = new ImageIcon(Util.loadIcon("/icons/files/image.png"));
+	private ImageIcon layout = new ImageIcon(Util.loadIcon("/icons/files/layout.png"));
+	private ImageIcon xml = new ImageIcon(Util.loadIcon("/icons/files/xml.png"));
+	private ImageIcon file = new ImageIcon(Util.loadIcon("/icons/files/file.png"));
+	private ImageIcon directory_open = new ImageIcon(Util.loadIcon("/icons/files/directory_open.png"));
+	private ImageIcon directory_closed = new ImageIcon(Util.loadIcon("/icons/files/directory_closed.png"));
+	
+	private Border border = BorderFactory.createEmptyBorder(2,2,2,2);
  
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) 
@@ -289,6 +292,8 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 					}
 				}
 			}
+			//setting border
+			this.setBorder(border);
 		}
 		return this;
 	}

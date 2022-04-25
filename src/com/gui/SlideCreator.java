@@ -423,8 +423,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		for (int i = 0;i < elements.size();i++)
 		{
 			elements.get(i).id = i;
-			System.out.println(listModel.getElementAt(i));
-			System.out.println("==============");
 		}
 	}
 	
