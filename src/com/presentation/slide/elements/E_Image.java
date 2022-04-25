@@ -9,7 +9,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -30,45 +29,28 @@ import com.gui.SlideCreator;
 import com.io.Util;
 import com.io.XmlParser;
 import com.main.Main;
-import com.presentation.slide.Element;
 import com.project.Project;
 
-import org.joml.Vector2i;
 import org.joml.Vector4f;
 
-public class E_Image extends Element
+public class E_Image extends SquareBasedElement
 {
 	public String path;
 	public Texture image;
 	
-	public boolean editing,moving,colided;
-	public boolean dragged;
+	public boolean editing;
 	ImageFrame frame;
 	
-    public Vector2i clickpoint = new Vector2i(0,0);
-    
-    ArrayList<Resizer> resizers;
-	
-	public E_Image()
-	{
-		type = "Image";
-		frame();
-	}
 
 	public E_Image(String path,int x,int y,int w,int h)
 	{
 		super();
+		
 		this.path = path;
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		
-		resizers = new ArrayList<Resizer>();
-		resizers.add(new Resizer(Resizer.Type.DOWN_RIGHT));
-		resizers.add(new Resizer(Resizer.Type.DOWN_LEFT));
-		resizers.add(new Resizer(Resizer.Type.UP_LEFT));
-		resizers.add(new Resizer(Resizer.Type.UP_RIGHT));
 		
 		type = "Image";
 		
@@ -80,70 +62,7 @@ public class E_Image extends Element
 	
 	public void update(SlideCreator sc)
 	{
-		//global dragged value
-		dragged = sc.dragged;
-		
-		//check tracking on all elements
-		boolean canTracked = true;
-		//resizer update and track
-		for (int i = 0; i < resizers.size(); i++)
-		{
-			resizers.get(i).track(this);
-			resizers.get(i).update(sc);
-			
-			//if one is false, then all is false
-			canTracked = canTracked && resizers.get(i).canTrakedElementMove;
-		}
-		
-		//checking AABB colision on click
-		if (x < sc.xPixel && x + w > sc.xPixel && y < sc.yPixel && y + h > sc.yPixel 
-				&& sc.currentColidedID <= id && sc.currentMovedID == -1)
-		{
-			colided = true;
-			sc.currentColidedID = id;
-		}
-		else
-		{
-			colided = false;
-			if (sc.currentColidedID == id)
-				sc.currentColidedID = -1;
-		}
-		
-		//executing on dragging
-		if (sc.dragged && canTracked)
-		{
-			//if colided
-			if (colided)
-			{
-				colided = true;
-				if (!moving)
-				{
-					moving = true;
-					//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-					clickpoint.set(sc.xPixel, sc.yPixel);
-				}
-			}
-			//executing on moving
-			if (moving)
-			{
-				sc.currentColidedID = id;
-				sc.currentMovedID = id;
-		        int xMoved = (x + sc.xPixel) - (x + clickpoint.x);
-		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
-		        x += xMoved;
-		        y += yMoved;
-			}
-	        
-	        clickpoint.set(sc.xPixel,sc.yPixel);
-		}
-		
-		// reseting "moving" after release mouse
-		if (!sc.dragged)
-		{
-			moving = false;
-			sc.currentMovedID = -1;
-			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
+		super.update(sc);
 		
 		if (editing) frame.update();
 	}
@@ -176,6 +95,8 @@ public class E_Image extends Element
 	{
 		if (image != null)
 			image.destroy();
+		
+		frame.dispose();
 	}
 	
 	public String save()
@@ -195,14 +116,8 @@ public class E_Image extends Element
 			Renderer.drawImage(image,x,y,w,h);
 		}
 		
-		if (colided)
-			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,1,1));
-		
-		if (moving)
-			Renderer.frectnofill(x,y,w,h,new Vector4f(1,0,0,1));
-		
-		for (int i = 0; i < resizers.size(); i++)
-			resizers.get(i).render(colided);
+		//rendering SquareBasedElement overlay
+		super.render();
 	}
 	
 	

@@ -143,7 +143,7 @@ public class Resizer
 	
 	//boolean render is for making visible if cursor colided with element
 	public void render(boolean render)
-	{
+	{		
 		if (render || colided)
 			Renderer.frect(x, y, w, h, new Vector4f(0,0,1,1));
 	}
