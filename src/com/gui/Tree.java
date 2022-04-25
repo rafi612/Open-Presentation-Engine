@@ -267,6 +267,7 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 			if (value instanceof File) 
 			{
 				File file = (File) value;
+				setText(file.getName());
 				//setIcon(fsv.getSystemIcon(file));
 				
 				if (Util.FileExtension(file).equals("png"))

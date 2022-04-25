@@ -1,17 +1,13 @@
 package com.presentation.slide.elements;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -37,18 +33,19 @@ import com.main.Main;
 import com.presentation.slide.Element;
 import com.project.Project;
 
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 public class E_Image extends Element
 {
 	public String path;
-	public Texture image = null;
+	public Texture image;
 	
 	public boolean editing,moving,colided;
 	public boolean dragged;
 	ImageFrame frame;
 	
-    public Point clickpoint = new Point(0,0);
+    public Vector2i clickpoint = new Vector2i(0,0);
     
     ArrayList<Resizer> resizers;
 	
@@ -108,7 +105,8 @@ public class E_Image extends Element
 		else
 		{
 			colided = false;
-			sc.currentColidedID = -1;
+			if (sc.currentColidedID == id)
+				sc.currentColidedID = -1;
 		}
 		
 		//executing on dragging
@@ -122,7 +120,7 @@ public class E_Image extends Element
 				{
 					moving = true;
 					//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-					clickpoint.setLocation(sc.xPixel, sc.yPixel);
+					clickpoint.set(sc.xPixel, sc.yPixel);
 				}
 			}
 			//executing on moving
@@ -136,7 +134,7 @@ public class E_Image extends Element
 		        y += yMoved;
 			}
 	        
-	        clickpoint = new Point(sc.xPixel,sc.yPixel);
+	        clickpoint.set(sc.xPixel,sc.yPixel);
 		}
 		
 		// reseting "moving" after release mouse

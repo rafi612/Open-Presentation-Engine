@@ -1,8 +1,6 @@
 package com.presentation.slide.elements;
 
-import java.awt.Color;
-import java.awt.Point;
-
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 import com.graphics.Renderer;
@@ -16,7 +14,7 @@ public class Resizer
 	
 	public boolean canTrakedElementMove;
 	
-	Point clickpoint = new Point();
+	Vector2i clickpoint = new Vector2i();
 	
 	Type type;
 	
@@ -48,7 +46,7 @@ public class Resizer
 				{
 					moving = true;
 					//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-					clickpoint.setLocation(sc.xPixel, sc.yPixel);
+					clickpoint.set(sc.xPixel, sc.yPixel);
 				}
 			}
 			//executing on moving
@@ -60,7 +58,7 @@ public class Resizer
 		        y += yMoved;
 			}
 	        
-	        clickpoint = new Point(sc.xPixel,sc.yPixel);
+	        clickpoint.set(sc.xPixel,sc.yPixel);
 		}
 		
 		// reseting "moving" after release mouse
@@ -84,26 +82,26 @@ public class Resizer
 			switch (type)
 			{
 				case DOWN_RIGHT:
-					e.w = x - e.x;
-					e.h = y - e.y;
+					e.w = x + w - e.x;
+					e.h = y + h - e.y;
 				break;
 				case DOWN_LEFT:
-					e.x = x + w;
+					e.x = x;
 					e.w -= (x - lastx);
 					
-					e.h = y - e.y;
+					e.h = y + h - e.y;
 				break;
 				case UP_LEFT:
-					e.x = x + w;
+					e.x = x;
 					e.w -= (x - lastx);
 					
-					e.y = y + h;
+					e.y = y;
 					e.h -= (y - lasty);
 				break;
 				case UP_RIGHT:
-					e.w = x - e.x;
+					e.w = x + w - e.x;
 					
-					e.y = y + h;
+					e.y = y;
 					e.h -= (y - lasty);
 				break;
 				case CUSTOM:
@@ -118,20 +116,20 @@ public class Resizer
 			switch (type)
 			{
 				case DOWN_RIGHT:
-					x = e.x + e.w;
-					y = e.y + e.h;
+					x = e.x + e.w - w;
+					y = e.y + e.h - h;
 				break;
 				case DOWN_LEFT:
-					x = e.x - w;
-					y = e.y + e.h;
+					x = e.x;
+					y = e.y + e.h - h;
 				break;
 				case UP_LEFT:
-					x = e.x - w;
-					y = e.y - h;
+					x = e.x;
+					y = e.y;
 				break;
 				case UP_RIGHT:
-					x = e.x + e.w;
-					y = e.y - h;
+					x = e.x + e.w - w;
+					y = e.y;
 				break;
 				case CUSTOM:
 					break;
