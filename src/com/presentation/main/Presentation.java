@@ -119,7 +119,7 @@ public class Presentation
 			IntBuffer h = stack.mallocInt(1);
 			IntBuffer comp = stack.mallocInt(1);
 			
-			ByteBuffer imgbuff = Texture.load_image(Presentation.class.getResourceAsStream(path),w,h,comp);
+			ByteBuffer imgbuff = Util.loadImageToBuffer(Presentation.class.getResourceAsStream(path),w,h,comp);
 			GLFWImage image = GLFWImage.malloc(); 
 			GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
 			image.set(w.get(),h.get(),imgbuff);

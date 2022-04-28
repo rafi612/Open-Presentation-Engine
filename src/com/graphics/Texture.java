@@ -8,9 +8,7 @@ import java.nio.IntBuffer;
 
 import javax.swing.JOptionPane;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -64,6 +62,8 @@ public class Texture
 				
 		this.width = w.get();
 		this.height = h.get();
+		
+		input.close();
 	}
 	
 	public void bind()
@@ -89,25 +89,12 @@ public class Texture
 	
 	public void destroy()
 	{
-		glDeleteTextures(id);
-	}
-	
-	public static ByteBuffer load_image(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
-	{
-		try 
-		{
-			byte[] pixels_raw = in.readAllBytes();
-			
-			ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
-			imageBuffer.put(pixels_raw);
-			imageBuffer.flip();
-			return STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		if (id != 0)
+			glDeleteTextures(id);
 	}
 
+	protected void finalize()
+	{
+		destroy();
+	}
 }

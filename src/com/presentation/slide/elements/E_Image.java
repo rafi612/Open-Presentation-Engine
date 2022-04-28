@@ -126,6 +126,11 @@ public class E_Image extends SquareBasedElement
 		editing = true;
 		frame.setVisible(true);
 	}
+	
+	protected void finalize()
+	{
+		destroy();
+	}
 }
 
 class ImageFrame extends JDialog implements ChangeListener

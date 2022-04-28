@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
@@ -18,6 +20,8 @@ import javax.swing.text.BadLocationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.stb.STBImage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -188,5 +192,24 @@ public class Util
 		}
 		
 		return i;
+	}
+	
+	
+	public static ByteBuffer loadImageToBuffer(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
+	{
+		try 
+		{
+			byte[] pixels_raw = in.readAllBytes();
+			
+			ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
+			imageBuffer.put(pixels_raw);
+			imageBuffer.flip();
+			return STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
