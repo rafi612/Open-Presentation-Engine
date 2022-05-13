@@ -12,7 +12,6 @@ import com.main.Main;
 import com.presentation.animation.Animation;
 import com.presentation.input.Keyboard;
 import com.presentation.main.Presentation;
-import com.project.Project;
 
 public class SlideManager
 {

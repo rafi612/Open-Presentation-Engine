@@ -10,7 +10,6 @@ import com.graphics.Texture;
 import com.io.Util;
 import com.main.Main;
 import com.presentation.animation.Animation;
-import com.project.Project;
 
 public class Slide
 {

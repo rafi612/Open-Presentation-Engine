@@ -2,10 +2,7 @@
 package com.presentation.main;
 
 import com.graphics.Renderer;
-import com.io.Util;
 import com.presentation.input.Keyboard;
-import com.presentation.slide.Slide;
-import com.presentation.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
 

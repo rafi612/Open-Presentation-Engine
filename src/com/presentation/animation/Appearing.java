@@ -1,7 +1,5 @@
 package com.presentation.animation;
 
-import java.awt.Color;
-
 import org.joml.Vector4f;
 
 import com.graphics.Renderer;
