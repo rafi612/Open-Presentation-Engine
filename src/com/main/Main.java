@@ -26,7 +26,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.lwjgl.system.Platform;
 
-import com.audio.Sound;
 import com.gui.AboutDialog;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
