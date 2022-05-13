@@ -9,18 +9,14 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import org.w3c.dom.Element;
@@ -151,6 +147,11 @@ public class SlideRack extends JPanel implements ActionListener
 	public void clear()
 	{
 		rackpanel.removeAll();
+		
+		//repaint
+		rackpanel.validate();
+		rackpanel.repaint();
+		
 		elements.clear();
 		
 		selected.setEnabled(false);

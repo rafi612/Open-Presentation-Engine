@@ -9,6 +9,8 @@ public class A_Exit_Animation extends Attribute
 	public A_Exit_Animation()
 	{
 		super(Attribute.Type.EXIT_ANIMATION.getFullName() + ": None");
+		type = Attribute.Type.EXIT_ANIMATION;
+		
 		canBeMultiple = false;
 		isAlways = false;
 	}

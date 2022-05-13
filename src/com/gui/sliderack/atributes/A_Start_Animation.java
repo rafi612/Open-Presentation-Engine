@@ -9,6 +9,8 @@ public class A_Start_Animation extends Attribute
 	public A_Start_Animation()
 	{
 		super(Attribute.Type.START_ANIMATION.getFullName() + ": None");
+		type = Attribute.Type.START_ANIMATION;
+		
 		canBeMultiple = false;
 		isAlways = false;
 	}

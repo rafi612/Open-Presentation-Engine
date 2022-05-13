@@ -6,13 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,17 +18,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import org.w3c.dom.Element;
 
 import com.gui.SlideRack;
-import com.gui.sliderack.atributes.A_Slide;
 import com.gui.sliderack.atributes.Attribute;
 import com.io.Util;
-import com.io.XmlParser;
 import com.main.Main;
 
 public class RackElement extends JPanel implements ActionListener
@@ -151,19 +142,10 @@ public class RackElement extends JPanel implements ActionListener
 	}
 	
 	public void load(Element element)
-	{
-		centerpanel.removeAll();
+	{	
+		chooser.load(element);
 		
-		Element[] elements = XmlParser.getElementsFromElement(element);
-		
-		for (Element e : elements)
-		{
-			Attribute attribute = Attribute.getAtributeByName(e.getTagName());
-			
-			attribute.load(e);
-			
-			addAtribute(attribute);
-		}
+		chooser.sync();
 	}
 	
 	public void setColor(Color color)

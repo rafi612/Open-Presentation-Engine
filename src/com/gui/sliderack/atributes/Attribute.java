@@ -11,6 +11,8 @@ public class Attribute extends JButton
 	public String name;
 	public boolean canBeMultiple,isAlways;
 	
+	public Type type;
+	
 	public enum Type
 	{
 		SLIDE("layout","Slide Layout"),
@@ -39,6 +41,8 @@ public class Attribute extends JButton
 	{
 		this.name = name;
 		this.setText(name);
+		
+		addActionListener((actionEvent) -> this.onActivate());
 	}
 	
 	public String getXmlTag()
@@ -47,6 +51,11 @@ public class Attribute extends JButton
 	}
 	
 	public void load(Element element)
+	{
+		
+	}
+	
+	public void onActivate()
 	{
 		
 	}

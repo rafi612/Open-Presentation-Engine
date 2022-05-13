@@ -11,5 +11,10 @@ public class TreeFileChooser
 	{
 		
 	}
+	
+	public void open(Target target)
+	{
+		
+	}
 
 }

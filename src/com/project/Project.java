@@ -11,11 +11,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -29,9 +27,7 @@ import org.lwjgl.util.nfd.NativeFileDialog;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import com.io.Util;
-import com.main.JarLoader;
 import com.main.Main;
-import com.presentation.main.Presentation;
 
 public class Project 
 {
@@ -44,7 +40,7 @@ public class Project
 		if (projectIsLoaded) unloadProject();
 		
 		projectIsLoaded = true;
-		projectlocation = location + File.separator + name;
+		projectlocation = Util.path(location,name);
 		
 		new File(projectlocation).mkdir();
 		Main.frame.setTitle(Main.TITLE + " - " + location + File.separator + name);
@@ -80,11 +76,11 @@ public class Project
 		Util.saveFile(path, lines);
 	}
 	
-	public static void LoadNewProject(String name)
+	public static void LoadNewProject(String path)
 	{
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
-		projectlocation = name;
+		projectlocation = path;
 		
 		if (!new File(Util.projectPath(projectXmlName)).exists())
 		{
@@ -93,7 +89,7 @@ public class Project
 			return;
 		}
 		
-		Main.frame.setTitle(Main.TITLE + " - " + name);
+		Main.frame.setTitle(Main.TITLE + " - " + path);
 
 		interfaceEnable(true);
 		
@@ -156,7 +152,7 @@ public class Project
 	}
 
 	public static void refreshProject()
-	{
+	{		
 		Main.workspace.removeAllChildren();
 		
 		createChildren(new File(projectlocation), Main.workspace);

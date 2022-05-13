@@ -9,11 +9,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.w3c.dom.Element;
+
 import javax.swing.JCheckBox;
 
 import com.gui.sliderack.atributes.Attribute;
 import com.io.Util;
-import com.main.Main;
+import com.io.XmlParser;
 
 public class AttributesChooser extends JDialog implements ActionListener
 {
@@ -83,6 +86,25 @@ public class AttributesChooser extends JDialog implements ActionListener
 		validate();
 		repaint();
 	}
+	
+	public void load(Element element)
+	{
+		rackelement.centerpanel.removeAll();
+		rackelement.attributes.clear();
+		
+		Element[] elements = XmlParser.getElementsFromElement(element);
+		
+		for (Element e : elements)
+		{
+			Attribute attribute = getAttributeByName(e.getTagName());
+			
+			attribute.load(e);
+			
+			JCheckBox cbox = checkbox.get(atributes.lastIndexOf(attribute));
+			cbox.setSelected(true);
+		}
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
@@ -97,5 +119,15 @@ public class AttributesChooser extends JDialog implements ActionListener
 			}
 
 		}
+	}
+	
+	public Attribute getAttributeByName(String name)
+	{
+		for (Attribute a : atributes)
+		{
+			if (a.type.getName().equals(name))
+				return a;
+		}
+		return null;
 	}
 }

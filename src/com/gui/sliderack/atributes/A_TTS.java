@@ -7,13 +7,15 @@ public class A_TTS extends Attribute
 	public A_TTS()
 	{
 		super(Attribute.Type.TTS.getFullName());
+		type = Attribute.Type.TTS;
+		
 		canBeMultiple = false;
 		isAlways = false;
 	}
 	
 	public String getXmlTag()
 	{
-		return "";
+		return "<tts></tts>";
 	}
 
 }
