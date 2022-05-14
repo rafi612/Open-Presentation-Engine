@@ -54,7 +54,6 @@ public class SlideRack extends JPanel implements ActionListener
 		actionbuttons.add(new JButton("Delete Slide"));
 		actionbuttons.add(new JButton("Move Up"));
 		actionbuttons.add(new JButton("Move Down"));
-		//actionbuttons.add(new JButton("Select All Slides"));
 		
 	    for (int i = 0;i < actionbuttons.size(); i++)
 	    {
@@ -66,7 +65,7 @@ public class SlideRack extends JPanel implements ActionListener
 	    add(actions,BorderLayout.EAST);
 		
 		elements = new ArrayList<RackElement>();
-//		
+		
 		JPanel toppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		toppanel.setBorder(BorderFactory.createTitledBorder(""));
 		
@@ -138,6 +137,8 @@ public class SlideRack extends JPanel implements ActionListener
 	
 	public void addElement(RackElement element)
 	{
+		slidecount.setText("Slides: " + (elements.size() + 1));
+		
 		elements.add(element);
 		rackpanel.add(element);
 		
@@ -146,6 +147,8 @@ public class SlideRack extends JPanel implements ActionListener
 	
 	public void clear()
 	{
+		slidecount.setText("Slides: 0");
+		
 		rackpanel.removeAll();
 		
 		//repaint

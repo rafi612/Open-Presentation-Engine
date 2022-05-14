@@ -76,7 +76,7 @@ public class Project
 		Util.saveFile(path, lines);
 	}
 	
-	public static void LoadNewProject(String path)
+	public static void LoadProject(String path)
 	{
 		if (projectIsLoaded) unloadProject();
 		projectIsLoaded = true;
@@ -269,7 +269,7 @@ public class Project
 		if(path != null)
 		{
 			if (new File(path).exists())
-				LoadNewProject(path);
+				LoadProject(path);
 			else
 				JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
 		}

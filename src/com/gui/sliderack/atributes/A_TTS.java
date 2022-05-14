@@ -15,7 +15,7 @@ public class A_TTS extends Attribute
 	
 	public String getXmlTag()
 	{
-		return "<tts></tts>";
+		return "\t<tts></tts>";
 	}
 
 }

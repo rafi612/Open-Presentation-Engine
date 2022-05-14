@@ -40,7 +40,7 @@ public class Attribute extends JButton
 	public Attribute(String name)
 	{
 		this.name = name;
-		this.setText(name);
+		super.setText(name);
 		
 		addActionListener((actionEvent) -> this.onActivate());
 	}

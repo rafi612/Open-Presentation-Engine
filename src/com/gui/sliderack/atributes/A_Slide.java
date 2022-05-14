@@ -33,6 +33,7 @@ public class A_Slide extends Attribute
 	public void load(Element element)
 	{
 		path = element.getTextContent();
+		setText(path.equals("") ? "None" : path);
 	}
 	
 	public void onActivate()
@@ -51,6 +52,11 @@ public class A_Slide extends Attribute
 			else
 				JOptionPane.showMessageDialog(Main.frame, "This file is not layout file","Error",JOptionPane.ERROR_MESSAGE);
 		});
+	}
+	
+	public void setText(String text)
+	{
+		super.setText(type.getFullName() + ": " + text);
 	}
 
 }

@@ -152,7 +152,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
 			//rename file
-			select.renameTo(new File(Util.projectPath(select.getParent(),name)));
+			select.renameTo(new File(Util.projectPath(select.getParent() + File.separator + name)));
 			Project.refreshProject();
 		}
 		if (source == cutfile)
@@ -270,7 +270,7 @@ class TreeCellRenderer extends DefaultTreeCellRenderer
 				setText(file.getName());
 				//setIcon(fsv.getSystemIcon(file));
 				
-				if (Util.FileExtension(file).equals("png"))
+				if (Util.FileExtension(file).equals("png") || Util.FileExtension(file).equals("jpg"))
 					setIcon(image);
 				else if (Util.FileExtension(file).equals("layout"))
 					setIcon(layout);
