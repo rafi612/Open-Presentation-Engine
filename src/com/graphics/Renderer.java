@@ -29,7 +29,7 @@ public class Renderer
 			gradient_shader = new Shader("/shaders/gradient_vs.glsl","/shaders/gradient_fs.glsl");
 			
 		    // configure VAO/VBO
-		    float vertices[] = { 
+		    float[] vertices = { 
 		        // pos 
 		        0.0f, 1.0f, 0.0f,
 		        1.0f, 0.0f, 0.0f,
@@ -38,7 +38,7 @@ public class Renderer
 		    };
 		    
 		    // configure tex coords
-		    float tex[] = { 
+		    float[] tex = { 
 		        0.0f, 1.0f,
 		        1.0f, 0.0f,
 		        
@@ -46,7 +46,7 @@ public class Renderer
 		        1.0f, 1.0f,
 		    };
 		    
-		    int indices[] = {  // note that we start from 0!
+		    int[] indices = {  // note that we start from 0!
 		    	    0, 2, 1,   // first triangle
 		    	    0, 3, 1    // second triangle
 		    }; 
@@ -54,7 +54,7 @@ public class Renderer
 		    quad = new Mesh(vertices,indices);
 		    quad.storeInAttributes(1, 2, tex);
 		    
-		    float line_vertecies[] = { 
+		    float[] line_vertecies = { 
 			        // pos
 			        1.0f, 0.0f, 0.0f,
 			        0.0f, 0.0f, 0.0f,
@@ -62,7 +62,7 @@ public class Renderer
 			        1.0f, 1.0f, 0.0f,
 			};
 		    
-		    int line_indices[] = {
+		    int[] line_indices = {
 		    	    0,1,
 		    	    2,3,
 		    	    3,0
