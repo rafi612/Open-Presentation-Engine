@@ -2,14 +2,17 @@
 package com.io;
 
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Paths;
@@ -60,7 +63,7 @@ public class Util
 		return "";
 	}
 	
-	public static void copyFileondrive(String input,String output)
+	public static void copyFile(String input,String output)
 	{
         File source = new File(input);
         File dest = new File(output);
@@ -86,17 +89,14 @@ public class Util
 			e.printStackTrace();
 		}
 	}
-
-//	
-	public static void copyFile(String input,String output)
+	
+	public static void copyFileFromJar(String input,String output)
 	{
-        //File source = new File(input);
         InputStream is = Util.class.getResourceAsStream(input);
         File dest = new File(output);
 
-        try (//FileInputStream fis = new FileInputStream(source);
-        	FileOutputStream fos = new FileOutputStream(dest)) {
-
+        try (FileOutputStream fos = new FileOutputStream(dest))
+        {
             byte[] buffer = new byte[1024];
             int length;
 
@@ -126,12 +126,58 @@ public class Util
         try (FileWriter writer = new FileWriter(path);
              BufferedWriter bw = new BufferedWriter(writer)) 
         {
-
             bw.write(text);
-
-        } catch (IOException e) {
-            System.err.format("IOException: %s%n", e);
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
         }
+	}
+	
+	public static String readFile(String path)
+	{
+		String text = "";
+		try 
+		{
+			BufferedReader in = new BufferedReader(new FileReader(new File(path)));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				text += str + "\n";
+			}
+			in.close();
+		} 
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		return text;
+	}
+	
+	public static String readFileFromJar(String path)
+	{
+		String text = "";
+		try 
+		{
+			BufferedReader in = new BufferedReader(new InputStreamReader(Util.class.getResourceAsStream(path)));
+			String str;
+			while ((str = in.readLine()) != null) 
+			{
+				text += str + "\n";
+			}
+			in.close();
+		} 
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		return text;
+	}
+	
+	
+	public static String getLicense()
+	{
+		return readFileFromJar("/LICENSE.txt");
 	}
 
 	//TODO: Remove

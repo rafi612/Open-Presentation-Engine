@@ -101,7 +101,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					//copying files
 					for (File file : droppedFiles)
 					{
-						Util.copyFileondrive(file.getPath(), Util.path(copypath,file.getName()));
+						Util.copyFile(file.getPath(), Util.path(copypath,file.getName()));
 						Project.refreshProject();
 					}        
 				} 
@@ -202,7 +202,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			else if (operation == 1)
 			{
 				//copy
-				Util.copyFileondrive(copy.getPath(),destdir.getPath());
+				Util.copyFile(copy.getPath(),destdir.getPath());
 			}
 			
 			Project.refreshProject();

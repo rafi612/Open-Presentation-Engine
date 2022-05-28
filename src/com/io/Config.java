@@ -40,11 +40,11 @@ public class Config
 	
 
 		if (lookandfeel.equals(getSystemTheme()))
-			Main.m_system.setSelected(true);
+			Main.menubar.m_system.setSelected(true);
 		else if (lookandfeel.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
-			Main.m_metal.setSelected(true);
+			Main.menubar.m_metal.setSelected(true);
 		else if (lookandfeel.equals("javax.swing.plaf.nimbus.NimbusLookAndFeel"))
-			Main.m_nimbus.setSelected(true);
+			Main.menubar.m_nimbus.setSelected(true);
 		
 		reloadTheme();
 	}
@@ -87,7 +87,7 @@ public class Config
 		}
 		
 	    SwingUtilities.updateComponentTreeUI(Main.frame);
-	    SwingUtilities.updateComponentTreeUI(Main.aboutdialog);
+	    SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
 	}
 
 }

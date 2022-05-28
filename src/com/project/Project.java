@@ -53,11 +53,11 @@ public class Project
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
 		
-		Util.copyFile("/script/main.py",projectlocation + File.separator +"main.py");
-		Util.copyFile("/script/config.xml",projectlocation + File.separator + "config.xml");
+		Util.copyFileFromJar("/script/main.py",projectlocation + File.separator +"main.py");
+		Util.copyFileFromJar("/script/config.xml",projectlocation + File.separator + "config.xml");
 		
 		new File(Project.projectlocation + File.separator + "ope").mkdir();
-		Util.copyFile("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
+		Util.copyFileFromJar("/script/ope/slide.py", Project.projectlocation + File.separator + "ope" + File.separator + "slide.py");
 
 		loadTextFromFileToTextArea(projectlocation + File.separator + "main.py");
 		loadTextFromFileToTextArea(projectlocation + File.separator + "config.xml",Main.textarea2);
@@ -133,15 +133,15 @@ public class Project
 	{
 		Main.textpane.setEnabled(b);
 		Main.tree.setEnabled(b);
-		Main.save.setEnabled(b);
-		Main.copy.setEnabled(b);
-		Main.paste.setEnabled(b);
-		Main.cut.setEnabled(b);
-		Main.selectAll.setEnabled(b);
-		Main.run.setEnabled(b);
-		Main.refresh.setEnabled(b);
-		Main.export.setEnabled(b);
-		Main.exitproject.setEnabled(b);
+		Main.menubar.save.setEnabled(b);
+		Main.menubar.copy.setEnabled(b);
+		Main.menubar.paste.setEnabled(b);
+		Main.menubar.cut.setEnabled(b);
+		Main.menubar.selectAll.setEnabled(b);
+		Main.menubar.run.setEnabled(b);
+		Main.menubar.refresh.setEnabled(b);
+		Main.menubar.export.setEnabled(b);
+		Main.menubar.exitproject.setEnabled(b);
 		Main.sliderack.setEnabled(b);
 		
 		if(b)

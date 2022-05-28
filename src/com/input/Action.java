@@ -1,26 +1,17 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.input;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import com.io.Config;
 import com.main.Main;
 import com.presentation.main.Presentation;
 import com.project.Project;
@@ -28,7 +19,6 @@ import com.tts.Speak;
 
 public class Action implements ActionListener 
 {
-
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -116,7 +106,7 @@ public class Action implements ActionListener
 		}
 		
 		//run
-		if (source == Main.actions.get(0) || source == Main.runandbuild)
+		if (source == Main.actions.get(0) || source == Main.menubar.runandbuild)
 		{
 			Project.run();
 		}
@@ -134,94 +124,6 @@ public class Action implements ActionListener
 			
 		}
 		
-		
-		//menu===================================
-		//new project
-		if (source == Main.newproject)
-		{
-			int yesno = 0;
-			if (Project.projectIsLoaded) 
-				yesno = Project.lost_save_dialog();
-			
-			if (yesno != 2) Project.newproject_dialog();
-		}
-		if (source == Main.loadproject)
-		{
-			int yesno = 0;
-			if (Project.projectIsLoaded) 
-				yesno = Project.lost_save_dialog();
-			
-			if (yesno != 2) Project.load_dialog();
-		}
-		
-		//save
-		if (source == Main.save)
-		{
-			Project.save_dialog();
-		}
-		
-		//exit project
-		if (source == Main.exitproject)
-		{
-			int yesno = 0;
-			if (Project.projectIsLoaded) 
-				yesno = Project.lost_save_dialog();
-			
-			if (yesno != 2) Project.unloadProject();
-		}
-		
-		//exit 
-		if (source == Main.exit)
-			System.exit(0);
-		
-		//refresh
-		if (source == Main.refresh)
-			Project.refreshProject();
-		
-		//settings
-		if (source == Main.m_system)
-		{
-	    	Config.lookandfeel = Config.getSystemTheme();
-	    	
-	    	Config.saveXML();
-	    	Config.reloadTheme();
-		}
-		
-		if (source == Main.m_metal)
-		{
-			Config.lookandfeel = "javax.swing.plaf.metal.MetalLookAndFeel";
-	    	Config.saveXML();
-			Config.reloadTheme();
-		}
-		
-		if (source == Main.m_nimbus)
-		{
-			Config.lookandfeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
-	    	Config.saveXML();
-			Config.reloadTheme();
-		}
-		
-		//license
-		if (source == Main.license)
-		{
-			JDialog dialog = new JDialog(Main.frame,"OPE License");
-			dialog.setSize(600,600);
-			dialog.setLayout(new BorderLayout());
-			dialog.setLocationRelativeTo(Main.frame);
-			JTextArea text = getLicense();
-			text.setFont(new Font(text.getFont().getName(), Font.TRUETYPE_FONT, 12));
-			
-			JScrollPane s = new JScrollPane(text);
-			dialog.add(s,BorderLayout.CENTER);
-			dialog.setVisible(true);
-		}
-		
-		if (source == Main.about)
-		{
-			Main.aboutdialog.setVisible(true);
-		}
-		
-		
 	}
 	
 	public void insert(String s,int p,JTextPane t) 
@@ -235,28 +137,6 @@ public class Action implements ActionListener
 		   {
 		      exc.printStackTrace();
 		   }
-	}
-	
-	private JTextArea getLicense()
-	{
-		JTextArea text = new JTextArea();
-		try 
-		{
-			BufferedReader in = new BufferedReader(new InputStreamReader(Action.class.getResourceAsStream("/LICENSE.txt")));
-			String str;
-			while ((str = in.readLine()) != null) 
-			{
-				text.append(str + "\n");
-			}
-		} 
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
-		text.setEditable(false);
-		text.setSelectionStart(0);
-		text.setSelectionEnd(0);
-		return text;
 	}
 
 }

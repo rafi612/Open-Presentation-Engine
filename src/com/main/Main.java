@@ -7,26 +7,16 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.lwjgl.system.Platform;
-
-import com.gui.AboutDialog;
+import com.gui.MenuBar;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
 import com.gui.Tree;
@@ -40,33 +30,9 @@ import com.project.Project;
 public class Main
 {
 	public static String[] args;
-	public static JFrame frame,scripteditor;
-    public static JMenuBar menubar;
-    public static JMenu file,edit,tools,run,settings,help;
-    
+	public static JFrame frame;
+	
     public static final String TITLE = "Open Presentation Engine";
-    
-    //file
-    public static JMenuItem newproject,loadproject,save,export,exitproject,exit;
-    
-    //edit
-    public static JMenuItem cut,paste,copy,selectAll;
-    
-    //tools
-    public static JMenuItem refresh;
-    
-    //run
-    public static JMenuItem runandbuild,run_;
-    
-    //settings
-    public static JMenu theme;
-
-    public static JRadioButtonMenuItem m_system,m_metal,m_nimbus;
-    
-    //help
-    public static JMenuItem about,license;
-    
-    //tree popup
     
     public static Tree tree;
     public static DefaultMutableTreeNode workspace;
@@ -80,24 +46,17 @@ public class Main
     
     public static JTabbedPane tabs;
     
+    public static MenuBar menubar;
+    
     public static SlideCreator slidecreator;
     public static SlideRack sliderack;
-    
-    public static AboutDialog aboutdialog;
 
     public static void initUI()
     {
     	tabs = new JTabbedPane();
     	
-    	aboutdialog = new AboutDialog();
-    	
         JPopupMenu textareapopup = new JPopupMenu();
-//        textareapopup.add(copy);
-//        textareapopup.add(paste);
-//        textareapopup.add(cut);
-//        textareapopup.add(selectAll);
         
-    	//text=============================
     	JPanel textpanel = new JPanel();
     	textpanel.setLayout(new BorderLayout());
         
@@ -183,7 +142,10 @@ public class Main
         
         frame.add(buttons,BorderLayout.SOUTH);
         
-        //Project.CreateNewProject("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop", JOptionPane.showInputDialog(frame,"Project Name:","Project",JOptionPane.QUESTION_MESSAGE));
+		menubar = new MenuBar(frame); 
+	    frame.setJMenuBar(menubar);
+      
+	    
         Project.unloadProject();
     }
 
@@ -200,10 +162,6 @@ public class Main
 			frame.setLayout(new BorderLayout());
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
-			menubar = new JMenuBar(); 
-			menu();
-		    frame.setJMenuBar(menubar);
-			
 			initUI();
 			
 			Config.loadSettings();
@@ -216,138 +174,8 @@ public class Main
 		else 
 			Presentation.start();
 		
+		//debug
 		for (int i = 0;i < args.length;i++)
 			System.out.println(args[i]);
 	}
-	
-	public static void menu()
-	{
-        //menu
-        file = new JMenu("File");
-        edit = new JMenu("Edit");
-        tools = new JMenu("Tools");
-        settings = new JMenu("Settings");
-        run = new JMenu("Run");
-        help = new JMenu("Help");
-        
-        //file
-        newproject = new JMenuItem("New Project");
-        newproject.addActionListener(new Action());
-        newproject.setIcon(new ImageIcon(Util.loadIcon("/icons/new.png")));
-        newproject.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
-        file.add(newproject);
-        
-        loadproject = new JMenuItem("Load Project");
-        loadproject.addActionListener(new Action());
-        loadproject.setIcon(new ImageIcon(Util.loadIcon("/icons/open.png")));
-        loadproject.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
-        file.add(loadproject);
-        
-        file.add(new JSeparator());
-        
-        save = new JMenuItem("Save");
-        save.addActionListener(new Action());
-        save.setEnabled(false);
-        save.setIcon(new ImageIcon(Util.loadIcon("/icons/save.png")));
-        save.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
-        file.add(save);
-        
-        export = new JMenuItem("Export");
-        export.setEnabled(false);
-        export.setAccelerator(KeyStroke.getKeyStroke("ctrl E"));
-        file.add(export);
-        
-        exitproject = new JMenuItem("Exit Project");
-        exitproject.addActionListener(new Action());
-        exitproject.setEnabled(false);
-        exitproject.setIcon(new ImageIcon(Util.loadIcon("/icons/exit.png")));
-        file.add(exitproject);
-        
-        file.add(new JSeparator());
-        
-        exit = new JMenuItem("Exit");
-        exit.addActionListener(new Action());
-        exit.setAccelerator(KeyStroke.getKeyStroke("alt F4"));
-        file.add(exit);
-        
-        //edit
-        copy= new JMenuItem("Copy");
-        copy.setEnabled(false);
-        edit.add(copy);
-        paste= new JMenuItem("Paste");   
-        paste.setEnabled(false);
-        edit.add(paste);
-        cut= new JMenuItem("Cut");
-        cut.setEnabled(false);
-        edit.add(cut);
-        selectAll= new JMenuItem("Select All"); 
-        selectAll.setEnabled(false);
-        edit.add(selectAll);
-        
-        
-        //narzędzia
-        refresh = new JMenuItem("Refresh Project"); 
-        refresh.addActionListener(new Action());
-        refresh.setEnabled(false);
-        refresh.setAccelerator(KeyStroke.getKeyStroke("F5"));
-        tools.add(refresh);
-        
-        runandbuild = new JMenuItem("Build And Run"); 
-        runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/runandbuild.png")));
-        runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
-        runandbuild.addActionListener(new Action());
-        //shell.addActionListener(new Action());
-        
-        run_ = new JMenuItem("Run"); 
-        run_.setIcon(new ImageIcon(Util.loadIcon("/icons/run.png")));
-        run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));
-        //refresh.addActionListener(new Action());
-        run.add(runandbuild);
-        run.add(run_);
-        
-        //settings
-        theme = new JMenu("Theme");
-        
-        ButtonGroup group = new ButtonGroup();
-        
-        String type = Platform.get() == Platform.WINDOWS ? "Win32" : 
-        	(Platform.get() == Platform.LINUX ? "GTK+" : "Aqua");
-        
-        m_system = new JRadioButtonMenuItem("System (" + type + ")");
-        m_system.addActionListener(new Action());
-        group.add(m_system);
-        theme.add(m_system);
-        
-        theme.add(new JSeparator());
-        
-        m_metal = new JRadioButtonMenuItem("Metal");
-        m_metal.addActionListener(new Action());
-        group.add(m_metal);
-        theme.add(m_metal);
-        
-        m_nimbus = new JRadioButtonMenuItem("Nimbus");
-        m_nimbus.addActionListener(new Action());
-        group.add(m_nimbus);
-        theme.add(m_nimbus);
-    
-        settings.add(theme);
-        
-        //help 
-        about = new JMenuItem("About");
-        about.addActionListener(new Action());
-        about.setIcon(new ImageIcon(Util.loadIcon("/icons/about.png")));
-        help.add(about);
-        license = new JMenuItem("View License");
-        license.addActionListener(new Action());
-        license.setIcon(new ImageIcon(Util.loadIcon("/icons/license.png")));
-        help.add(license);
-        
-        menubar.add(file);
-        menubar.add(edit);
-        menubar.add(tools);
-        menubar.add(run);
-        menubar.add(settings);
-        menubar.add(help);
-	}
-
 }
