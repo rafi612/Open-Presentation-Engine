@@ -60,8 +60,8 @@ public class Main
         actionpanel = new ActionPanel();
         frame.add(actionpanel,BorderLayout.SOUTH);
         
-		menubar = new MenuBar(frame); 
-	    frame.setJMenuBar(menubar);
+        menubar = new MenuBar(frame); 
+        frame.setJMenuBar(menubar);
 	    
         Project.unloadProject();
     }
@@ -85,7 +85,7 @@ public class Main
 			
 			frame.setVisible(true);
 			
-	        slidecreator.canvasLoop();
+			slidecreator.canvasLoop();
 
 		}
 		else 
