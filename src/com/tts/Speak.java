@@ -28,9 +28,9 @@ import com.project.Project;
 
 public class Speak
 {
-
 	//"https://translate.google.com/translate_tts?ie=UTF-8&tl=pl-PL&client=tw-ob&q=hello+world"
 	
+	//TODO: Optimalize code
 	public static void TTSFrame()
 	{
 		JDialog f = new JDialog(Main.frame,"Text-to-Speech Creator");
@@ -85,7 +85,7 @@ public class Speak
 					{
 						e.printStackTrace();
 					}
-					Util.insert("slide.setSlideTTS(\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
+					//Util.insert("slide.setSlideTTS(\"" + name + ".mp3\")\n", Main.textpane.getCaretPosition(),Main.textpane);
 	            	Project.refreshProject();
             	}
             	else
