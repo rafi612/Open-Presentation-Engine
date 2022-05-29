@@ -35,7 +35,7 @@
 				  <mainClass>com.main.JarLoader</mainClass>
 				</manifest>
 				<manifestEntries>
-				  <Rsrc-Main-Class>com.main.Main</Rsrc-Main-Class>
+				  <Rsrc-Main-Class>com.ope.main.Main</Rsrc-Main-Class>
 				</manifestEntries>
 			  </archive>
 			</configuration>
