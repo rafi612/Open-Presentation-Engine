@@ -46,9 +46,6 @@ public class Project
 		Main.frame.setTitle(Main.TITLE + " - " + location + File.separator + name);
 		
 		interfaceEnable(true);
-		
-        for (int i = 0;i < Main.actions.size(); i++)
-        	Main.actions.get(i).setEnabled(true);
         
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
@@ -92,9 +89,6 @@ public class Project
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 
 		interfaceEnable(true);
-		
-        for (int i = 0;i < Main.actions.size(); i++)
-        	Main.actions.get(i).setEnabled(true);
         
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(true);
@@ -117,9 +111,6 @@ public class Project
 		
 		Main.textpane.setText("Project is not loaded. Load project or create a new one.");
 		Main.textarea2.setText("Project is not loaded. Load project or create a new one.");
-		
-        for (int i = 0;i < Main.actions.size(); i++)
-        	Main.actions.get(i).setEnabled(false);
         
         for (int i = 0;i < Main.autoscripts.size(); i++)
         	Main.autoscripts.get(i).setEnabled(false);
@@ -129,22 +120,24 @@ public class Project
     	refreshProject();
 	}
 	
-	public static void interfaceEnable(boolean b)
+	public static void interfaceEnable(boolean enabled)
 	{
-		Main.textpane.setEnabled(b);
-		Main.tree.setEnabled(b);
-		Main.menubar.save.setEnabled(b);
-		Main.menubar.copy.setEnabled(b);
-		Main.menubar.paste.setEnabled(b);
-		Main.menubar.cut.setEnabled(b);
-		Main.menubar.selectAll.setEnabled(b);
-		Main.menubar.run.setEnabled(b);
-		Main.menubar.refresh.setEnabled(b);
-		Main.menubar.export.setEnabled(b);
-		Main.menubar.exitproject.setEnabled(b);
-		Main.sliderack.setEnabled(b);
+		Main.textpane.setEnabled(enabled);
+		Main.tree.setEnabled(enabled);
+		Main.menubar.save.setEnabled(enabled);
+		Main.menubar.copy.setEnabled(enabled);
+		Main.menubar.paste.setEnabled(enabled);
+		Main.menubar.cut.setEnabled(enabled);
+		Main.menubar.selectAll.setEnabled(enabled);
+		Main.menubar.run.setEnabled(enabled);
+		Main.menubar.refresh.setEnabled(enabled);
+		Main.menubar.export.setEnabled(enabled);
+		Main.menubar.exitproject.setEnabled(enabled);
+		Main.sliderack.setEnabled(enabled);
 		
-		if(b)
+        Main.actionpanel.setEnabled(enabled);
+		
+		if(enabled)
 			Main.slidecreator.initenable();
 		else
 			Main.slidecreator.disable();
@@ -157,7 +150,7 @@ public class Project
 		
 		createChildren(new File(projectlocation), Main.workspace);
 	    
-    	DefaultTreeModel model=(DefaultTreeModel)Main.tree.getModel();
+    	DefaultTreeModel model = (DefaultTreeModel) Main.tree.getModel();
     	model.reload(Main.workspace);
 	}
 	

@@ -16,6 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.gui.ActionPanel;
 import com.gui.MenuBar;
 import com.gui.SlideCreator;
 import com.gui.SlideRack;
@@ -41,7 +42,6 @@ public class Main
 	public static JScrollPane scrollpane3;
     public static JTextPane textpane,textarea2;
     
-    public static ArrayList<JButton> actions = new ArrayList<JButton>();
     public static ArrayList<JButton> autoscripts = new ArrayList<JButton>();
     
     public static JTabbedPane tabs;
@@ -50,6 +50,8 @@ public class Main
     
     public static SlideCreator slidecreator;
     public static SlideRack sliderack;
+    
+    public static ActionPanel actionpanel;
 
     public static void initUI()
     {
@@ -125,26 +127,11 @@ public class Main
         tree = new Tree(workspace);
         frame.add(new JScrollPane(tree),BorderLayout.WEST);
         
-        JPanel buttons = new JPanel();
-        
-        buttons.setBorder(BorderFactory.createTitledBorder("Actions"));
-        buttons.setToolTipText("Necessary actions");
-        
-        actions.add(new JButton("Build & Run"));
-        actions.add(new JButton("Save"));
-        actions.add(new JButton("Stop"));
-        
-        for (int i = 0;i < actions.size(); i++)
-        	actions.get(i).addActionListener(new Action());
-        
-        for (int i = 0;i < actions.size(); i++)
-        	buttons.add(actions.get(i));
-        
-        frame.add(buttons,BorderLayout.SOUTH);
+        actionpanel = new ActionPanel();
+        frame.add(actionpanel,BorderLayout.SOUTH);
         
 		menubar = new MenuBar(frame); 
 	    frame.setJMenuBar(menubar);
-      
 	    
         Project.unloadProject();
     }

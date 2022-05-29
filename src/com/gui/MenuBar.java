@@ -97,6 +97,7 @@ public class MenuBar extends JMenuBar implements ActionListener
         exitproject = new JMenuItem("Exit Project");
         exitproject.addActionListener(this::actionPerformed);
         exitproject.setEnabled(false);
+        exitproject.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
         exitproject.setIcon(new ImageIcon(Util.loadIcon("/icons/exit.png")));
         file.add(exitproject);
         
@@ -277,6 +278,11 @@ public class MenuBar extends JMenuBar implements ActionListener
 			JScrollPane s = new JScrollPane(text);
 			dialog.add(s,BorderLayout.CENTER);
 			dialog.setVisible(true);
+		}
+		
+		if (source == runandbuild)
+		{
+			Project.run();
 		}
 		
 		if (source == about)

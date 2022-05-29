@@ -13,10 +13,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import com.main.Main;
-import com.presentation.main.Presentation;
-import com.project.Project;
 import com.tts.Speak;
 
+//TODO: Remove
 public class Action implements ActionListener 
 {
 	@Override
@@ -103,25 +102,6 @@ public class Action implements ActionListener
 		if (source == Main.autoscripts.get(Main.autoscripts.size() - 2))
 		{
 			insert("\nslide.End()", Main.textpane.getCaretPosition(),Main.textpane);
-		}
-		
-		//run
-		if (source == Main.actions.get(0) || source == Main.menubar.runandbuild)
-		{
-			Project.run();
-		}
-		
-		//stop
-		if (source == Main.actions.get(2))
-		{
-			Presentation.stop();
-		}
-		
-		//action save
-		if (source == Main.actions.get(1))
-		{			
-			Project.save_dialog();
-			
 		}
 		
 	}
