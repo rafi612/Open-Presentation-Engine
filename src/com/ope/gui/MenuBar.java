@@ -122,7 +122,7 @@ public class MenuBar extends JMenuBar implements ActionListener
         edit.add(selectAll);
         
         
-        //narzędzia
+        //tools
         refresh = new JMenuItem("Refresh Project"); 
         refresh.addActionListener(this::actionPerformed);
         refresh.setEnabled(false);
@@ -133,12 +133,10 @@ public class MenuBar extends JMenuBar implements ActionListener
         runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/runandbuild.png")));
         runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         runandbuild.addActionListener(this::actionPerformed);
-        //shell.addActionListener(this::actionPerformed);
         
         run_ = new JMenuItem("Run"); 
         run_.setIcon(new ImageIcon(Util.loadIcon("/icons/run.png")));
-        run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));
-        //refresh.addActionListener(this::actionPerformed);
+        run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));;
         run.add(runandbuild);
         run.add(run_);
         
