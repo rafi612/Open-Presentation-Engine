@@ -35,7 +35,7 @@ public class AboutDialog extends JDialog
 		logo.add(new JLabel("        "),BorderLayout.WEST);
 		logo.add(l,BorderLayout.CENTER);
 		logo.add(new JLabel("        "),BorderLayout.EAST);
-		//logo.setBorder(BorderFactory.createTitledBorder(""));
+
 		add(logo,BorderLayout.WEST);
 		
 		//botton panel
@@ -70,7 +70,7 @@ public class AboutDialog extends JDialog
 		main.add(text2);
 		main.add(text3);
 		main.add(new JLabel("            "));
-		//main.add(new JScrollPane(getLicense()));
+
 		main.add(new JLabel("            "));
 		
 		add(main);
