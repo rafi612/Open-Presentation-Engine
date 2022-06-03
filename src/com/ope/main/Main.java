@@ -25,7 +25,6 @@ public class Main
     public static final String TITLE = "Open Presentation Engine";
     
     public static Tree tree;
-    public static DefaultMutableTreeNode workspace;
     
     public static JTabbedPane tabs;
     
@@ -53,8 +52,8 @@ public class Main
         frame.add(tabs);
     	 
         //tree
-        workspace = new DefaultMutableTreeNode("Workspace"); 
-        tree = new Tree(workspace);
+        DefaultMutableTreeNode treerootnode = new DefaultMutableTreeNode("Workspace"); 
+        tree = new Tree(treerootnode);
         frame.add(new JScrollPane(tree),BorderLayout.WEST);
         
         actionpanel = new ActionPanel();

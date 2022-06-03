@@ -112,12 +112,11 @@ public class Project
 
 	public static void refreshProject()
 	{		
-		Main.workspace.removeAllChildren();
+		Main.tree.getRootNode().removeAllChildren();
 		
-		createChildren(new File(projectlocation), Main.workspace);
+		createChildren(new File(projectlocation), Main.tree.getRootNode());
 	    
-    	DefaultTreeModel model = (DefaultTreeModel) Main.tree.getModel();
-    	model.reload(Main.workspace);
+    	((DefaultTreeModel) Main.tree.getModel()).reload(Main.tree.getRootNode());
 	}
 	
 	
@@ -130,7 +129,7 @@ public class Project
 	{
 		try
 		{
-			Main.sliderack.build(Util.projectPath(projectXmlName));
+			save();
 			
 			Project.refreshProject();
 			
@@ -224,9 +223,7 @@ public class Project
         	childNode = new DefaultMutableTreeNode(file);
             node.add(childNode);
             if (file.isDirectory()) 
-            {
-            	createChildren(file, childNode);
-            }    
+            	createChildren(file, childNode); 
         }
     }
 }

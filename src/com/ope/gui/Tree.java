@@ -30,20 +30,22 @@ import com.ope.project.Project;
 public class Tree extends JTree implements ActionListener,TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
+	
     public JMenuItem newfile, newfolder, deletefile,renamefile,cutfile,copyfile,pastefile;
-	DefaultMutableTreeNode selected = null;
+	DefaultMutableTreeNode selected = null,mainroot = null;
 	
 	File copy = null;
 	
-	// 1 = copy 0 = cut -1 = none operation
+	// 1 = copy, 0 = cut, -1 = none operation
 	int operation = -1;
-
-	public Tree(DefaultMutableTreeNode workspace) 
+	
+	public Tree(DefaultMutableTreeNode mainroot) 
 	{       
-		super(workspace);
+		super(mainroot);
+		this.mainroot = mainroot;
 		setPreferredSize(new Dimension(215,0));
 		
-        //popup drzewka
+        //popup menu
         newfile = new JMenuItem("New file");
         newfile.addActionListener(this);
         newfolder = new JMenuItem("New Folder");
@@ -228,6 +230,11 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	public void valueChanged(TreeSelectionEvent e) 
 	{
 		selected = (DefaultMutableTreeNode)getLastSelectedPathComponent();
+	}
+	
+	public DefaultMutableTreeNode getRootNode()
+	{
+		return mainroot;
 	}
 	
 	public void setEnabled(boolean b)

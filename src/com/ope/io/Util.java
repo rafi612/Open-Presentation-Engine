@@ -18,13 +18,11 @@ import java.nio.IntBuffer;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,21 +32,7 @@ import com.ope.main.Main;
 import com.ope.project.Project;
 
 public class Util 
-{
-	public static void insert(String s,int p,JTextPane t) 
-	{
-		   try 
-		   {
-			  javax.swing.text.Document doc = t.getDocument();
-		      doc.insertString(p, s, null);
-		   } 
-		   catch(BadLocationException exc) 
-		   {
-		      exc.printStackTrace();
-		   }
-	}
-	
-    
+{ 
 	public static String FileExtension(File file)
 	{
 		// convert the file name into string
@@ -102,7 +86,6 @@ public class Util
 
             while ((length = is.read(buffer)) > 0)
             {
-
                 fos.write(buffer, 0, length);
             }
         } 
@@ -214,7 +197,6 @@ public class Util
 	
 	public static String path(String... files)
 	{
-		//System.out.println(String.join("/", files));
 		return Paths.get("",files).toString();
 	}
 	
@@ -226,28 +208,25 @@ public class Util
 	
 	public static Image loadIcon(String path)
 	{
-		Image i = null;
-		
 		try
 		{
-			i = ImageIO.read(Main.class.getResourceAsStream(path));
+			return ImageIO.read(Main.class.getResourceAsStream(path));
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		return i;
+		return null;
 	}
 	
 	
 	public static ByteBuffer loadImageToBuffer(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
 	{
-		try 
+		try (MemoryStack stack = MemoryStack.stackPush())
 		{
 			byte[] pixels_raw = in.readAllBytes();
 			
-			ByteBuffer imageBuffer = BufferUtils.createByteBuffer(pixels_raw.length);
+			ByteBuffer imageBuffer = stack.malloc(pixels_raw.length);
 			imageBuffer.put(pixels_raw);
 			imageBuffer.flip();
 			return STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
