@@ -47,7 +47,7 @@ public class JarLoader
 				Attributes mainAttribs = manifest.getMainAttributes();
 				String main = mainAttribs.getValue("Main-Class");
 				
-				if (main.equals("com.main.JarLoader"))
+				if (main.equals("com.ope.main.JarLoader"))
 				{
 					rsrcMainClass = mainAttribs.getValue("Rsrc-Main-Class");
 					classpath = mainAttribs.getValue("Class-Path").split(" ");

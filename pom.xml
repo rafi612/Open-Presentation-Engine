@@ -32,7 +32,7 @@
 			  <archive>
 				<manifest>
 				  <addClasspath>true</addClasspath>
-				  <mainClass>com.main.JarLoader</mainClass>
+				  <mainClass>com.ope.main.JarLoader</mainClass>
 				</manifest>
 				<manifestEntries>
 				  <Rsrc-Main-Class>com.ope.main.Main</Rsrc-Main-Class>
