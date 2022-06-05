@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -157,7 +158,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	    JPanel cpanel = new JPanel();
 	    cpanel.setLayout(new BorderLayout());
 	    
-	    JPanel ppanel = new JPanel();
+	    JPanel ppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    ppanel.add(position);
 	    cpanel.add(ppanel,BorderLayout.SOUTH);
 
@@ -196,7 +197,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{ 
         Runnable renderLoop = new Runnable()
         {
-			public void run() {
+			public void run() 
+			{
 				if (!canvas.isValid())
 					return;
 				canvas.render();
