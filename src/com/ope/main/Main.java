@@ -2,6 +2,10 @@
 package com.ope.main;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -61,6 +65,24 @@ public class Main
         
         menubar = new MenuBar(frame); 
         frame.setJMenuBar(menubar);
+        
+        frame.addWindowListener(new WindowAdapter() {
+        	public void windowClosing(WindowEvent event)
+        	{
+        		if (Project.projectIsLoaded)
+        		{
+        			int choose = Project.lost_save_dialog();
+        		
+	        		if (choose != 2)
+	        		{
+	        			if (choose == 0)
+	        				Project.save();
+	        		}
+	        		else return;
+        		}
+        		System.exit(0);
+        	}
+		});
 	    
         Project.unloadProject();
     }
@@ -76,7 +98,7 @@ public class Main
 			frame.setIconImage(Util.loadIcon("/images/icon.png"));
 			frame.setLocationRelativeTo(null);
 			frame.setLayout(new BorderLayout());
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			
 			initUI();
 			
