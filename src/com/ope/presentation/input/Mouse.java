@@ -39,7 +39,7 @@ public class Mouse
 	
 	}
 	
-	public static void mouseButton(int button, int action, int mods)
+	public static void mouseButton(long window,int button, int action, int mods)
 	{
 		boolean stat = false;
 		if (action == GLFW_PRESS)

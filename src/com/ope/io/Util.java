@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -222,14 +223,19 @@ public class Util
 	
 	public static ByteBuffer loadImageToBuffer(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
 	{
-		try (MemoryStack stack = MemoryStack.stackPush())
+		try
 		{
 			byte[] pixels_raw = in.readAllBytes();
 			
-			ByteBuffer imageBuffer = stack.malloc(pixels_raw.length);
+			ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
 			imageBuffer.put(pixels_raw);
 			imageBuffer.flip();
-			return STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+			ByteBuffer result =  STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+			
+			MemoryUtil.memFree(imageBuffer);
+			in.close();
+			
+			return result;
 		} 
 		catch (Exception e)
 		{

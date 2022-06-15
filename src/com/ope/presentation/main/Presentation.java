@@ -32,20 +32,23 @@ public class Presentation
 	public static boolean fullscreen = false;
 	public static int TTSKeyCode = -1;
 	
-	//info
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 	public static final String TITLE = "OPE Presentation";
 	
-	//okno
 	public static long window = NULL;
-	
-	public static SlideManager sm;
 	
 	public static boolean running = false;
 	
-	public static void init()
-	{
+	private static SlideManager sm;
+	
+	public static void start()
+	{		
+		sm = new SlideManager();
+		
+		if (window != NULL)
+			stop();
+		
 		Sound.init();
 		
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -57,14 +60,6 @@ public class Presentation
 	    
 	    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 	    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	}
-	
-	public static void start()
-	{
-		init();
-		
-		if (window != NULL)
-			stop();
 		
 	    window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
 	    if (window == NULL)
@@ -73,39 +68,35 @@ public class Presentation
 	    GLFWImage.Buffer icon = icon("/images/icon.png");
 	    glfwSetWindowIcon(window,icon);
 	    
-	    glfwSetKeyCallback(window, new Keyboard());
-	    glfwSetMouseButtonCallback(window, (wind,button,action,mods) -> Mouse.mouseButton(button, action, mods));
-	    glfwSetCursorPosCallback(window,(wind,xpos,ypos) -> Mouse.mouseMove(wind, xpos, ypos));
+	    glfwSetKeyCallback(window, Keyboard::invoke);
+	    glfwSetMouseButtonCallback(window,Mouse::mouseButton);
+	    glfwSetCursorPosCallback(window,Mouse::mouseMove);
 	    
 	    glfwMakeContextCurrent(window);
 	    GL.createCapabilities();
 	    
 	    glfwSwapInterval(1);
 	    
-		sm = new SlideManager();
-		load();
-	    
-	    MainLoop.init();
+		load(sm);
+	    MainLoop.init(sm);
 	    
 	    glfwShowWindow(window);
 	    
 	    MainLoop.reshape(window,WIDTH,HEIGHT);
 	    
-	    glfwSetWindowSizeCallback(window, (window,w,h) -> MainLoop.reshape(window, w, h));
+	    glfwSetWindowSizeCallback(window,MainLoop::reshape);
 	    
 	    running = true;
 	    
 	    while (!glfwWindowShouldClose(window) && running) 
 	    {
-	    	MainLoop.display();
+	    	MainLoop.display(sm);
 	    	
 	    	glfwSwapBuffers(window);
 	    	glfwPollEvents();
 	    }
 	    
-	    stop();
-	
-		
+	    stop();	
 	}
 	
 	private static GLFWImage.Buffer icon(String path)
@@ -132,7 +123,7 @@ public class Presentation
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode mode = glfwGetVideoMode(monitor);
 		
-	    if ( fullscreen )
+	    if (fullscreen)
 	    {
 			lastx = BufferUtils.createIntBuffer(1);
 			lasty = BufferUtils.createIntBuffer(1);
@@ -151,7 +142,7 @@ public class Presentation
 	    }
 	}
 	
-	private static void load()
+	private static void load(SlideManager sm)
 	{
 		String path;
 		if (Main.args.length < 1)
@@ -178,7 +169,7 @@ public class Presentation
 		if (running)
 		{
 			running = false;
-			MainLoop.dispose();
+			MainLoop.dispose(sm);
 			
 			glfwDestroyWindow(window);
 			window = NULL;

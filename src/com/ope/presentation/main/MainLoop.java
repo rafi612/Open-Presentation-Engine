@@ -3,6 +3,8 @@ package com.ope.presentation.main;
 
 import com.ope.graphics.Renderer;
 import com.ope.presentation.input.Keyboard;
+import com.ope.presentation.slide.Slide;
+import com.ope.presentation.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,7 +14,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class MainLoop
 {
-	public static void display()
+	public static void display(SlideManager sm)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);		
 		
@@ -27,23 +29,18 @@ public class MainLoop
 		
 		if (Presentation.running)
 		{
-			Presentation.sm.update();
-			Presentation.sm.render();
+			sm.update();
+			sm.render();
 			Keyboard.update();
 		}
 	}
 
-	public static void dispose() 
+	public static void dispose(SlideManager sm) 
 	{
-//		for (int i = 0;i < Presentation.sm.slide.size();i++)
-//		{
-//			Presentation.sm.slide.get(i).image.image.flush();
-//		}
-		
-		Presentation.sm.slide.clear();
+		sm.slide.clear();
 	}
 
-	public static void init() 
+	public static void init(SlideManager sm) 
 	{
 		
 		glClearColor(0, 0, 0, 1);
@@ -63,14 +60,16 @@ public class MainLoop
 		System.out.println("GL_RENDERER: " + glGetString(GL_RENDERER));
 		System.out.println("GL_VERSION: " + glGetString(GL_VERSION));
 		System.out.println("========================================");
-		for (int i = 0;i < Presentation.sm.slides;i++)
+		int i = 0;
+		for (Slide s : sm.slide)
 		{
-			System.out.println("Slide " + (i + 1) + " Image: " + Presentation.sm.slide.get(i).imagepath);
-			System.out.println("Slide " + (i + 1) + " Bg: " + Presentation.sm.slide.get(i).bgpath);
-			System.out.println("Slide " + (i + 1) + " TTS: " + Presentation.sm.slide.get(i).ttspath);
-			System.out.println("Slide " + (i + 1) + " Start animation: " + Presentation.sm.slide.get(i).startanimation);
-			System.out.println("Slide " + (i + 1) + " Exit animation: " + Presentation.sm.slide.get(i).exitanimation);
+			System.out.println("Slide " + (i + 1) + " Image: " + s.imagepath);
+			System.out.println("Slide " + (i + 1) + " Bg: " + s.bgpath);
+			System.out.println("Slide " + (i + 1) + " TTS: " + s.ttspath);
+			System.out.println("Slide " + (i + 1) + " Start animation: " + s.startanimation);
+			System.out.println("Slide " + (i + 1) + " Exit animation: " + s.exitanimation);
 			System.out.println("=============================");
+			i++;
 		}
 		
 		//System.out.println(gl.glGetString(GL.GL_VENDOR) + "," + gl.glGetString(GL.GL_RENDERER) + "," + gl.glGetString(GL.GL_VERSION));c

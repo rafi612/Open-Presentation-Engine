@@ -1,17 +1,15 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.ope.presentation.input;
 
-import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Keyboard extends GLFWKeyCallback
+public class Keyboard
 {
 	private static final int Count = 385;
 	private static boolean keys[] = new boolean[Count];
 	private static boolean keys_prev[] = new boolean[Count];
 
-	@Override
-	public void invoke(long window, int key, int scancode, int action, int mods)
+	public static void invoke(long window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_UNKNOWN)
 			return;
