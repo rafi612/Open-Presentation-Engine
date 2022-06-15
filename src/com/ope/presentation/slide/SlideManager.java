@@ -43,47 +43,36 @@ public class SlideManager
 			//if slide not switching
 			if (!switchslide)
 			{
+				exitanimation = slide.get(choose).exitanimation;
+				
+				exitanimation.reset();
+				exitanimation.start();
+				switchslide = true;
+				
 				//key switching
 				if (Keyboard.getKeyOnce(GLFW_KEY_UP))
-				{
-					exitanimation = slide.get(choose).exitanimation;
-					exitanimation.reset();
-					exitanimation.start();
-					switchslide = true;
 					switchside = 0;
-					
-				}
+				
 				if (Keyboard.getKeyOnce(GLFW_KEY_DOWN))
-				{
-					exitanimation = slide.get(choose).exitanimation;
-					exitanimation.reset();
-					exitanimation.start();
-					switchslide = true;
 					switchside = 1;
-				}
 			}
 			
 			//new slide opened
 			if (switchslide && (exitanimation.isEnding() || !exitanimation.isRunning()))
 			{
 				startanimation = slide.get(choose).startanimation;
+				
 				if (switchside == 0)
-				{	
 					if (choose < slide.size() - 1) choose++;
-					startanimation.reset();
-					//System.out.println(choose);
-					switchside = -1;
-					switchslide = false;
-					ttsswitch = true;
-				}
+				
 				if (switchside == 1)
-				{
-					if (choose > 0)choose--;
-					startanimation.reset();
-					switchside = -1;
-					switchslide = false;
-					ttsswitch = true;
-				}
+					if (choose > 0) choose--;
+
+				startanimation.reset();
+				switchside = -1;
+				switchslide = false;
+				ttsswitch = true;
+				
 				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			}
 			
@@ -109,10 +98,11 @@ public class SlideManager
 				startanimation.start();
 				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			}
-			if (startanimation.isRunning()) startanimation.update();
+			if (startanimation.isRunning()) 
+				startanimation.update();
 			
-			
-			if (exitanimation.isRunning()) exitanimation.update();
+			if (exitanimation.isRunning()) 
+				exitanimation.update();
 		}
 		
 	}
@@ -148,15 +138,13 @@ public class SlideManager
 	
 	public void render()
 	{
-		
-		if (slides == 0) Renderer.drawImage(empty, 0, 0, 1280,720);
+		if (slides == 0) 
+			Renderer.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
 			slide.get(choose).render();
 			startanimation.render();
 			exitanimation.render();
 		}
-//		if (inputalpha > 2) Screen.frect(0, 0, 1280, 720, new Color(0,0,0,inputalpha));
-		//if (outputalpha <= 255) Screen.frect(0, 0, 1280, 720, new Color(0,0,0,outputalpha));
 	}
 }
