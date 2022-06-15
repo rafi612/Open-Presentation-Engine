@@ -38,16 +38,17 @@ public class A_Slide extends Attribute
 	
 	public void onActivate()
 	{
-		TreeFileChooser chooser = new TreeFileChooser();
+		TreeFileChooser chooser = new TreeFileChooser(null);
 		
 		chooser.open((path) -> 
 		{
 			//executing when file selected
-			if (name.contains(".layout"))
+			File file = new File(path);
+			if (file.getName().contains(".layout"))
 			{
-				this.path = Util.getPathFromProject(new File(path));
+				this.path = Util.getPathFromProject(file);
 				
-				setText(Attribute.Type.SLIDE.getFullName() + ": " + path);
+				setText(file.getName());
 			}
 			else
 				JOptionPane.showMessageDialog(Main.frame, "This file is not layout file","Error",JOptionPane.ERROR_MESSAGE);

@@ -154,7 +154,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter new file/folder name:", "Rename", JOptionPane.QUESTION_MESSAGE);
 			//rename file
-			select.renameTo(new File(Util.projectPath(select.getParent() + File.separator + name)));
+			select.renameTo(new File(select.getParent() + File.separator + name));
 			Project.refreshProject();
 		}
 		if (source == cutfile)

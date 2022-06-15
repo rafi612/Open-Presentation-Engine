@@ -2,22 +2,17 @@ package com.ope.presentation.slide.elements;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -26,10 +21,10 @@ import javax.swing.event.ChangeListener;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.gui.SlideCreator;
+import com.ope.gui.TreeFileEvent;
 import com.ope.io.Util;
 import com.ope.io.XmlParser;
 import com.ope.main.Main;
-import com.ope.project.Project;
 
 import org.joml.Vector4f;
 
@@ -140,7 +135,7 @@ class ImageFrame extends JDialog implements ChangeListener
 	public JSpinner sy;
 	JSpinner sw;
 	JSpinner sh;
-	JTextField textfieldpath;
+	JButton buttonpath;
 	
 	E_Image element;
 	public ImageFrame(E_Image element)
@@ -161,9 +156,31 @@ class ImageFrame extends JDialog implements ChangeListener
 			}
 		});
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		setDropTarget(new DragAndDrop());
 		
-		textfieldpath = new JTextField(element.path);
+		buttonpath = new JButton("Select Image");
+		buttonpath.addActionListener((e) -> {
+			
+			buttonpath.setText(TreeFileEvent.DEFAULT_TEXT);
+			buttonpath.setEnabled(false);
+			
+			TreeFileEvent event = new TreeFileEvent();
+			
+			event.open((path) -> {
+				element.path = Util.getPathFromProject(new File(path));
+				
+				if (element.image != null)
+					element.image.destroy();
+				
+				element.image = new Texture(Util.projectPath(element.path));
+				element.w = element.image.width;
+				element.h = element.image.height;
+				sw.setValue(element.image.width);
+				sh.setValue(element.image.height);
+				
+				buttonpath.setText(element.path);
+				buttonpath.setEnabled(true);
+			});
+		});
 		
 		SpinnerModel modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sx = new JSpinner(modelx);
@@ -177,8 +194,8 @@ class ImageFrame extends JDialog implements ChangeListener
 		SpinnerModel modelh = new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1);       
 		sh = new JSpinner(modelh);
 		
-		String[] labels = {"Path:","X:","Y:","Width:","Height"};
-		JComponent[] components = {textfieldpath,sx,sy,sw,sh};
+		String[] labels = {"","X:","Y:","Width:","Height"};
+		JComponent[] components = {buttonpath,sx,sy,sw,sh};
 		
 		for (JComponent comp : components)
 		{
@@ -220,47 +237,7 @@ class ImageFrame extends JDialog implements ChangeListener
 			element.y = (int) sy.getValue();
 			element.w = (int) sw.getValue();
 			element.h = (int) sh.getValue();
-			
 		}
-	}
-	
-	class DragAndDrop extends DropTarget
-	{
-		private static final long serialVersionUID = 1L;
-		public void drop (DropTargetDropEvent evt)
-    	{
-			try 
-			{
-				evt.acceptDrop(DnDConstants.ACTION_COPY);
-				File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
-				if (!file.getPath().startsWith(Project.projectlocation))
-				{
-					System.out.println("Error");
-					return;
-				}
-				else
-				{
-					element.path = Util.getPathFromProject(file);
-					
-					if (element.image != null)
-						element.image.destroy();
-					
-					element.image = new Texture(Util.projectPath(element.path));
-					element.w = element.image.width;
-					element.h = element.image.height;
-					sw.setValue(element.image.width);
-					sh.setValue(element.image.height);
-					textfieldpath.setText(element.path);
-				}
-				     
-			} 
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
-			}
-    	}
-
 	}
 	
 }
