@@ -117,16 +117,8 @@ public class Sound
         
         context = alcCreateContext(device, (IntBuffer)null);
         
-//        boolean useTLC = deviceCaps.ALC_EXT_thread_local_context && alcSetThreadContext(context);
-//        if (!useTLC) {
-//            if (!alcMakeContextCurrent(context)) {
-//                throw new IllegalStateException();
-//            }
-//        }
         if (!alcMakeContextCurrent(context)) 
-        {
         	throw new IllegalStateException();
-        }
         
         caps = AL.createCapabilities(deviceCaps, MemoryUtil::memCallocPointer);
 	}
