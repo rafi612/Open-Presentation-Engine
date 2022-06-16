@@ -108,9 +108,10 @@ public class TreeFileChooser extends JDialog
 	public void open(Target target)
 	{
 		this.target = target;
-		Main.tree.addTreeSelectionListener(treelistener);
 		
 		Main.tree.clearSelection();
+		
+		Main.tree.addTreeSelectionListener(treelistener);
 		
 		if (parent != null)
 		{

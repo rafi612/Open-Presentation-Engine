@@ -92,9 +92,4 @@ public class Texture
 		if (id != 0)
 			glDeleteTextures(id);
 	}
-
-	protected void finalize()
-	{
-		destroy();
-	}
 }

@@ -124,7 +124,7 @@ public class E_Image extends SquareBasedElement
 	
 	protected void finalize()
 	{
-		destroy();
+		frame.dispose();
 	}
 }
 

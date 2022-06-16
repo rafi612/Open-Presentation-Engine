@@ -3,9 +3,9 @@ package com.ope.presentation.animation;
 public class Animation 
 {
 	
-	public static final int APPEARING = 0;
-	public static final int DISAPPEARANCE = 1;
-	public static final int GLITCH = 2;
+//	public static final int APPEARING = 0;
+//	public static final int DISAPPEARANCE = 1;
+//	public static final int GLITCH = 2;
 	
 	protected boolean isRunning = false;
 	public int x,y;
