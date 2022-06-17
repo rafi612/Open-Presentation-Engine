@@ -1,6 +1,7 @@
 # Open Presentation Engine
 ![License](https://img.shields.io/github/license/rafi612/Open-Presentation-Engine)
 ![Repo size](https://img.shields.io/github/repo-size/rafi612/Open-Presentation-Engine)
+![Total lines](https://img.shields.io/tokei/lines/github/rafi612/Open-Presentation-Engine)
 
 [WIP] Open source presentation engine write in Java
 
