@@ -160,10 +160,7 @@ class ImageFrame extends JDialog implements ChangeListener
 		buttonpath = new JButton("Select Image");
 		buttonpath.addActionListener((e) -> {
 			
-			buttonpath.setText(TreeFileEvent.DEFAULT_TEXT);
-			buttonpath.setEnabled(false);
-			
-			TreeFileEvent event = new TreeFileEvent();
+			TreeFileEvent event = new TreeFileEvent(buttonpath);
 			
 			event.open((path) -> {
 				element.path = Util.getPathFromProject(new File(path));
@@ -177,8 +174,7 @@ class ImageFrame extends JDialog implements ChangeListener
 				sw.setValue(element.image.width);
 				sh.setValue(element.image.height);
 				
-				buttonpath.setText(element.path);
-				buttonpath.setEnabled(true);
+				event.setButtonResultText(element.path);
 			});
 		});
 		

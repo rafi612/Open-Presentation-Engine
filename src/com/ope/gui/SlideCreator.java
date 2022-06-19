@@ -5,17 +5,12 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,7 +19,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -221,11 +215,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				Renderer.drawImage(canvasimage,0, 0,WIDTH, HEIGHT);
 		}
 		
-		for (int i = 0;i < elements.size() ;i++)
-		{
-			elements.get(i).update(this);
-			//if (currentColidedID != -1) break;
-		}
+		for (Element element : elements)
+			element.update(this);
 		
 		//setting moved element as selected on list
 		list.setSelectedIndex(currentMovedID);
@@ -233,13 +224,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//render
 		for (int i = 0;i < elements.size();i++)
 			elements.get(i).render();
-//
-//		//selected border
-//		if (list.getSelectedIndex() > -1)
-//		{
-//			Element e = elements.get(list.getSelectedIndex());
-//			Renderer.frectnofill(e.x, e.y, e.w, e.h, Renderer.color(0xFFA200));
-//		}
 	}
 	
 	private float sx,sy;
@@ -415,7 +399,12 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//open slide
 		if (source == actions.get(1))
 		{
-			opendialog();
+			//check discard
+			if (discarddialog() != 0) return;
+			
+			TreeFileEvent event = new TreeFileEvent(actions.get(1));
+			
+			event.open(this::openslide);
 		}
 	}
 	
@@ -450,80 +439,27 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		actions.get(3).setEnabled(b);
 	}
 	
-	private void opendialog()
+	private void openslide(String path)
 	{
-		//check discard
-		if (discarddialog() != 0) return;
+		XmlParser xml = new XmlParser(path);
 		
-		JDialog dialog = new JDialog(Main.frame,"Open");
-		dialog.setSize(300, 110);
-		dialog.setLayout(new BorderLayout());
-		dialog.setLocationRelativeTo(null);
-		dialog.setResizable(false);
+		org.w3c.dom.Element[] elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
 		
-		JTextField text = new JTextField();
-		text.setDropTarget(null);
-		JButton ok = new JButton("Ok");
-		ok.addActionListener(new ActionListener()
+		for (int i = 0;i < elements_.length;i++)
 		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				dialog.dispose();
-				
-				XmlParser xml = new XmlParser(Util.projectPath(text.getText()));
-				
-				org.w3c.dom.Element[] elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
-				
-				for (int i = 0;i < elements_.length;i++)
-				{
-					Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
-					elem.id = i;
-					elem.load(xml, i);
-					
-					elements.add(elem);
-					listModel.addElement(elements_[i].getAttribute("name"));
-					slideloaded = true;
-				}
-				
-				//enable
-				enableComponents(listpanel, true);
-				savediscardenable(true);
-			}
-		});
+			Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
+			elem.id = i;
+			elem.load(xml, i);
+			
+			elements.add(elem);
+			listModel.addElement(elements_[i].getAttribute("name"));
+		}
 		
-		JPanel okpanel = new JPanel();
+		slideloaded = true;
 		
-		dialog.add(new JLabel("  Enter path or drop file here:"),BorderLayout.NORTH);
-		dialog.add(text,BorderLayout.CENTER);
-		
-		okpanel.add(ok);
-		dialog.add(okpanel,BorderLayout.SOUTH);
-		
-		//drag and drop
-		dialog.setDropTarget(new DropTarget()
-		{
-			private static final long serialVersionUID = 1L;
-			public synchronized void drop (DropTargetDropEvent evt)
-        	{
-				try 
-				{
-					evt.acceptDrop(DnDConstants.ACTION_COPY);
-					File file = new File((String) evt.getTransferable().getTransferData(DataFlavor.stringFlavor));
-					
-					String path = Util.getPathFromProject(file);
-					
-					text.setText(path);
-				} 
-				catch (Exception ex)
-				{
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(Main.frame,ex.getStackTrace(), "Unsupported file type", JOptionPane.ERROR_MESSAGE);
-				}
-        	}
-	
-		});
-		dialog.setVisible(true);
+		//enable
+		enableComponents(listpanel, true);
+		savediscardenable(true);
 	}
 	
 	private void savedialog()

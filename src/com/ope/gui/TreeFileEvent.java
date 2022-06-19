@@ -2,6 +2,7 @@ package com.ope.gui;
 
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -18,8 +19,22 @@ public class TreeFileEvent
 	
 	public static final String DEFAULT_TEXT = "Select file in Project Explorer";
 	
+	public JButton button;
+	
+	public String resulttext = "";
+	
+	public TreeFileEvent(JButton button)
+	{
+		this.button = button;
+	}
+	
 	public void open(Target target) 
 	{
+		String text = button.getText();
+		
+		button.setText(TreeFileEvent.DEFAULT_TEXT);
+		button.setEnabled(false);
+		
 		listener = (event) -> {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)Main.tree.getLastSelectedPathComponent();
 			File file = new File(node.toString());
@@ -27,6 +42,9 @@ public class TreeFileEvent
 			target.fileSelected(file.getPath());
 			
 			Main.tree.removeTreeSelectionListener(listener);
+			
+			button.setText(resulttext.equals("") ? text : resulttext);
+			button.setEnabled(true);
 		};
 		
 		Main.tree.clearSelection();
@@ -34,4 +52,9 @@ public class TreeFileEvent
 		Main.tree.addTreeSelectionListener(listener);
 	}
 
+	
+	public void setButtonResultText(String text)
+	{
+		this.resulttext = text;
+	}
 }
