@@ -57,7 +57,7 @@ public class MainLoop
 		System.out.println("========================================");
 		System.out.println("Open Presentation Engine by rafi612");
 		System.out.println("========================================");
-		System.out.println("System: " + Platform.get());
+		System.out.println("System: " + System.getProperty("os.name"));
 		System.out.println("GL_VENDOR: " + glGetString(GL_VENDOR));
 		System.out.println("GL_RENDERER: " + glGetString(GL_RENDERER));
 		System.out.println("GL_VERSION: " + glGetString(GL_VERSION));
