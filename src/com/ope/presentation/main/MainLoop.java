@@ -9,8 +9,6 @@ import com.ope.presentation.slide.SlideManager;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.glfw.GLFW.*;
 
-import org.lwjgl.system.Platform;
-
 public class MainLoop
 {
 	public static void display(SlideManager sm)
