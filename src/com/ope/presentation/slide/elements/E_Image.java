@@ -62,10 +62,8 @@ public class E_Image extends SquareBasedElement
 		if (editing) frame.update();
 	}
 	
-	public void load(XmlParser xml,int id)
+	public void load(org.w3c.dom.Element element)
 	{
-		//getting tag element from id
-		org.w3c.dom.Element element = XmlParser.getElements(xml.getElementsByTagName("element"))[id];
 		
 		if (element.getAttribute("type").equals("Image"))
 		{

@@ -5,7 +5,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -19,7 +18,6 @@ import org.lwjgl.system.MemoryStack;
 
 import com.ope.audio.Sound;
 import com.ope.io.Util;
-import com.ope.main.Main;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
 import com.ope.presentation.slide.SlideManager;
@@ -27,10 +25,7 @@ import com.ope.project.Project;
 
 public class Presentation 
 {
-	
-	public static String generalMusic = "null";
 	public static boolean fullscreen = false;
-	public static int TTSKeyCode = -1;
 	
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
@@ -42,8 +37,11 @@ public class Presentation
 	
 	private static SlideManager sm;
 	
-	public static void start()
-	{		
+	public static void start(String configpath)
+	{
+		//setting project location
+		Project.projectlocation = new File(configpath).getParent();
+		
 		sm = new SlideManager();
 		
 		if (window != NULL)
@@ -143,24 +141,7 @@ public class Presentation
 	}
 	
 	private static void load(SlideManager sm)
-	{
-		String path;
-		if (Main.args.length < 1)
-			path = Project.projectlocation + File.separator;
-		else path = "";
-		
-		String config = path + "config.xml";
-		
-		sm.slides = Integer.parseInt(Util.readXml(config, "summary", "slides"));
-		generalMusic = Util.readXml(config, "summary", "general_music");
-		fullscreen = Boolean.parseBoolean(Util.readXml(config, "summary", "fullscreen"));
-		
-		String key = Util.readXml(config, "summary", "ttskey");
-		if (!key.equals("auto"))
-			TTSKeyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
-		else TTSKeyCode = -1;
-		
-		
+	{		
 	    sm.load();
 	}
 	

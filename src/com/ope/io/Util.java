@@ -18,15 +18,9 @@ import java.nio.IntBuffer;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.ope.main.Main;
 import com.ope.project.Project;
@@ -161,38 +155,6 @@ public class Util
 	public static String getLicense()
 	{
 		return readFileFromJar("/LICENSE.txt");
-	}
-
-	//TODO: Remove
-	public static String readXml(String path,String ElementsByTagName,String tag)
-	{
-		String return_ = null;
-		try 
-		{
-			File inputFile = new File(path);
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(inputFile);
-			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName(ElementsByTagName);
-			
-			for (int temp = 0; temp < nList.getLength(); temp++)
-			{
-				Node nNode = nList.item(temp);
-				
-				if (nNode.getNodeType() == Node.ELEMENT_NODE)
-				{
-					Element eElement = (Element) nNode;
-//					System.out.println(eElement.getAttribute("rollno"));
-//					System.out.println(eElement.getElementsByTagName("firstname").item(0).getTextContent());
-//					System.out.println(eElement .getElementsByTagName("lastname").item(0).getTextContent());
-//					System.out.println(eElement.getElementsByTagName("nickname").item(0).getTextContent());
-					return_ = eElement.getElementsByTagName(tag).item(0).getTextContent();
-				}
-			}
-		}
-		catch (Exception e){}
-		return return_;
 	}
 	
 	public static String path(String... files)

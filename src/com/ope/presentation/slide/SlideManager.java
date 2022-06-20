@@ -8,17 +8,16 @@ import static org.lwjgl.glfw.GLFW.*;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.Util;
-import com.ope.main.Main;
+import com.ope.io.XmlParser;
 import com.ope.presentation.animation.Animation;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.main.Presentation;
+import com.ope.project.Project;
 
 public class SlideManager
 {
-	public ArrayList<Slide> slide = new ArrayList<Slide>();
-	
-	public int slides;
-	
+	public ArrayList<Slide> slides;
+
 	public int choose;
 	Texture empty;
 	
@@ -32,117 +31,109 @@ public class SlideManager
 	{
 		choose = 0;
 		empty = new Texture(SlideManager.class.getResourceAsStream("/images/empty.png"));
+		
+		slides = new ArrayList<Slide>();
 	}
 	boolean ttsswitch = true;
 	
 	public void update()
 	{
+		//TODO: rewrite logic engine
+		
 		// if not 0
-		if (!(slides == 0))
+		if (slides.size() != 0)
 		{
 			//if slide not switching
 			if (!switchslide)
 			{
-				exitanimation = slide.get(choose).exitanimation;
-				
-				exitanimation.reset();
-				exitanimation.start();
-				switchslide = true;
-				
 				//key switching
 				if (Keyboard.getKeyOnce(GLFW_KEY_UP))
+				{
+					exitanimation = slides.get(choose).exitanimation;
+					exitanimation.reset();
+					exitanimation.start();
+					switchslide = true;
 					switchside = 0;
-				
+					
+				}
 				if (Keyboard.getKeyOnce(GLFW_KEY_DOWN))
+				{
+					exitanimation = slides.get(choose).exitanimation;
+					exitanimation.reset();
+					exitanimation.start();
+					switchslide = true;
 					switchside = 1;
+				}
 			}
 			
 			//new slide opened
 			if (switchslide && (exitanimation.isEnding() || !exitanimation.isRunning()))
 			{
-				startanimation = slide.get(choose).startanimation;
-				
 				if (switchside == 0)
-					if (choose < slide.size() - 1) choose++;
-				
-				if (switchside == 1)
-					if (choose > 0) choose--;
-
-				startanimation.reset();
-				switchside = -1;
-				switchslide = false;
-				ttsswitch = true;
-				
-				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
-			}
-			
-			//tts auto
-			if (Presentation.TTSKeyCode == -1)
-			{
-				if (slide.get(choose).tts != null)
-					if (startanimation.isEnding() && ttsswitch)
-				{
-					slide.get(choose).tts.play();
-					ttsswitch = false;
+				{	
+					if (choose < slides.size() - 1) choose++;
+					startanimation = slides.get(choose).startanimation;
+					startanimation.reset();
+					
+					switchside = -1;
+					switchslide = false;
+					ttsswitch = true;
 				}
-			}
-			//tts key
-			else if (Keyboard.getKeyOnce(Presentation.TTSKeyCode))
-			{
-				slide.get(choose).tts.play();
+				if (switchside == 1)
+				{
+					if (choose > 0)choose--;
+					startanimation = slides.get(choose).startanimation;
+					startanimation.reset();
+					switchside = -1;
+					switchslide = false;
+					ttsswitch = true;
+				}
 			}
 
 			//animation update
 			if (!startanimation.isRunning())
 			{
 				startanimation.start();
+				
 				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			}
-			if (startanimation.isRunning()) 
-				startanimation.update();
+			if (startanimation.isRunning()) startanimation.update();
 			
-			if (exitanimation.isRunning()) 
-				exitanimation.update();
+			
+			if (exitanimation.isRunning()) exitanimation.update();
 		}
 		
 	}
 	
 	public void load()
 	{
-		String path = "";
-		if (Main.args.length < 1)
-		{
-			path = Util.projectPath("config.xml");
-		}
-		else
-			path = Main.args[0];
+		XmlParser xml = new XmlParser(Util.projectPath(Project.PROJECT_XML_NAME));
 		
-		for (int i = 0;i < slides;i++)
+		org.w3c.dom.Element[] elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
+		
+		for (org.w3c.dom.Element element : elements)
 		{
-			Slide slideres = new Slide();
-			slideres.setSlideImage(Util.readXml(path, "slide" + (i + 1), "path"));
-			slideres.setBg(Util.readXml(path, "slide" + (i + 1), "bg"));
-			slideres.setTTS(Util.readXml(path, "slide" + (i + 1), "tts"));
-			slideres.setStartAnimation(Util.readXml(path, "slide" + (i + 1), "ent_ani"));
-			slideres.setExitAnimation(Util.readXml(path, "slide" + (i + 1), "exi_ani"));
+			Slide slide = new Slide();
+			slide.load(element);
 			
-			slide.add(slideres);
+			slides.add(slide);
 		}
 		
-		if (slides > 0)
+		if (slides.size() > 0)
 		{
-			startanimation = slide.get(0).startanimation;
-			exitanimation = slide.get(0).exitanimation;
+			startanimation = slides.get(0).startanimation;
+			exitanimation = slides.get(0).exitanimation;
 		}
+
 	}
 	
 	public void render()
 	{
-		if (slides == 0) 
+		if (slides.size() == 0) 
 			Renderer.drawImage(empty, 0, 0, 1280,720);
 		else
 		{
-			slide.get(choose).render();
+			slides.get(choose).render();
 			startanimation.render();
 			exitanimation.render();
 		}

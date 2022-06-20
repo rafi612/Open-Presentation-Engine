@@ -21,33 +21,18 @@ public class Project
 	public static boolean projectIsLoaded = false;
 	
 	public static String projectlocation;
-	public static String projectXmlName = "project.xml";
+	public final static String PROJECT_XML_NAME = "project.xml";
 	
 	public static void CreateNewProject(String location,String name)
 	{
 		if (projectIsLoaded) 
 			unloadProject();
 		
-		projectIsLoaded = true;
-		projectlocation = Util.path(location,name);
+		String path = Util.path(location,name);
+		new File(path).mkdir();
+		createProjectXml(Util.path(path,PROJECT_XML_NAME));
 		
-		new File(projectlocation).mkdir();
-		Main.frame.setTitle(Main.TITLE + " - " + location + File.separator + name);
-		
-		interfaceEnable(true);
-		
-		createProjectXml(Util.projectPath(projectXmlName));
-    	    	
-    	refreshProject();
-	}
-	
-	//TODO: old config.xml based code will be removed
-	private static void createProjectXml(String path)
-	{
-		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<project>\n"
-				+ "</project>";
-		Util.saveFile(path, lines);
+		LoadProject(path);
 	}
 	
 	public static void LoadProject(String path)
@@ -58,7 +43,7 @@ public class Project
 		projectIsLoaded = true;
 		projectlocation = path;
 		
-		if (!new File(Util.projectPath(projectXmlName)).exists())
+		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
 		{
 			JOptionPane.showMessageDialog(Main.frame, "This is not project folder (project.xml missing)", "Can't load project", JOptionPane.ERROR_MESSAGE);
 			unloadProject();
@@ -69,7 +54,7 @@ public class Project
 
 		interfaceEnable(true);
     	
-		Main.sliderack.load(Util.projectPath(projectXmlName));
+		Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
 		
     	refreshProject();
 	}
@@ -85,6 +70,14 @@ public class Project
     	Main.sliderack.clear();
     	
     	refreshProject();
+	}
+	
+	private static void createProjectXml(String path)
+	{
+		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<project>\n"
+				+ "</project>";
+		Util.saveFile(path, lines);
 	}
 	
 	public static void interfaceEnable(boolean enabled)
@@ -122,7 +115,7 @@ public class Project
 	
 	public static void save()
 	{
-		Main.sliderack.build(Util.projectPath(projectXmlName));
+		Main.sliderack.build(Util.projectPath(PROJECT_XML_NAME));
 	}
 	
 	public static void run()
@@ -135,7 +128,7 @@ public class Project
 			
 			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 				
-			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),Util.projectPath("config.xml"));
+			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),Util.projectPath(PROJECT_XML_NAME));
 			pb.directory(new File(projectlocation));
 				
 			//redirect output to terminal

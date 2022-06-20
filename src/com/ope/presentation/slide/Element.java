@@ -1,9 +1,7 @@
 package com.ope.presentation.slide;
 
 import com.ope.gui.SlideCreator;
-import com.ope.io.XmlParser;
 import com.ope.presentation.slide.elements.E_Image;
-import com.ope.presentation.slide.elements.E_Shape;
 
 public class Element 
 {
@@ -31,12 +29,11 @@ public class Element
 	
 	public static Element getElementsByName(String s)
 	{
-		if (s.equals("Image")) return new E_Image("",1,1,200,200);
-		if (s.equals("Shape")) return new E_Shape(1,1,200,200);
+		if (s.equals("Image")) return new E_Image("",0,0,200,200);
 		return null;
 	}
 	
-	public void load(XmlParser xml,int id)
+	public void load(org.w3c.dom.Element element)
 	{
 		
 	}
@@ -60,6 +57,4 @@ public class Element
 	{
 		
 	}
-	
-
 }

@@ -22,7 +22,6 @@ import com.ope.project.Project;
 
 public class Main
 {
-	public static String[] args;
 	public static JFrame frame;
 	
     public static final String TITLE = "Open Presentation Engine";
@@ -88,8 +87,6 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		Main.args = args;
-		
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);
@@ -109,10 +106,6 @@ public class Main
 
 		}
 		else 
-			Presentation.start();
-		
-		//debug
-		for (int i = 0;i < args.length;i++)
-			System.out.println(args[i]);
+			Presentation.start(args[0]);
 	}
 }
