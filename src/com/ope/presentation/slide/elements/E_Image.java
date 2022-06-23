@@ -5,12 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
@@ -50,7 +52,14 @@ public class E_Image extends SquareBasedElement
 		type = "Image";
 		
 		if (!path.equals(""))
-			this.image = new Texture(path);
+			try 
+			{
+				this.image = new Texture(path);
+			} 
+			catch (IOException e)
+			{
+				JOptionPane.showMessageDialog(null, "File" + path +" not found");
+			}
 		
 		frame = new ImageFrame(this);
 	}
@@ -75,7 +84,14 @@ public class E_Image extends SquareBasedElement
 			
 			//loading image
 			path = data.getAttribute("src");
-			image = new Texture(Util.projectPath(path));
+			try
+			{
+				image = new Texture(Util.projectPath(path));
+			} 
+			catch (IOException e)
+			{
+				JOptionPane.showMessageDialog(null, "File" + path +" not found");
+			}
 			
 			x = Integer.parseInt(data.getAttribute("x"));
 			y = Integer.parseInt(data.getAttribute("y"));
@@ -166,7 +182,14 @@ class ImageFrame extends JDialog implements ChangeListener
 				if (element.image != null)
 					element.image.destroy();
 				
-				element.image = new Texture(Util.projectPath(element.path));
+				try
+				{
+					element.image = new Texture(Util.projectPath(element.path));
+				} 
+				catch (IOException ex)
+				{
+					JOptionPane.showMessageDialog(null, "File" + path + " not found");
+				}
 				element.w = element.image.width;
 				element.h = element.image.height;
 				sw.setValue(element.image.width);

@@ -6,34 +6,26 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import javax.swing.JOptionPane;
-
-import org.lwjgl.stb.STBImage;
+import static org.lwjgl.stb.STBImage.*;
 import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture 
 {
-	public int id = 0;
+	public int id;
 	public int width;
 	public int height;
 	
 	ByteBuffer pixels;
 	
-	public Texture(String filename)
+	public Texture(String filename) throws IOException
 	{
-		try 
-		{
-			load(new FileInputStream(filename));
-		} 
-		catch (IOException e) 
-		{
-			JOptionPane.showMessageDialog(null, "File" + filename +" not found");
-		}
+		load(new FileInputStream(filename));
 	}
 	
-	public Texture(InputStream input)
+	
+	public Texture(InputStream input) 
 	{
 		try 
 		{
@@ -41,12 +33,12 @@ public class Texture
 		} 
 		catch (IOException e) 
 		{
-			JOptionPane.showMessageDialog(null, "File in jar not found");
+			e.printStackTrace();
 		}
 	}
 	
 	private void load(InputStream input) throws IOException
-	{	
+	{
 		IntBuffer w = MemoryUtil.memAllocInt(1);
 		IntBuffer h = MemoryUtil.memAllocInt(1);
 		IntBuffer comp = MemoryUtil.memAllocInt(1);
@@ -57,7 +49,7 @@ public class Texture
 		imageBuffer.put(pixels_raw);
 		imageBuffer.flip();
 			
-		pixels = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+		pixels = stbi_load_from_memory(imageBuffer, w, h, comp, STBI_rgb_alpha);
 		MemoryUtil.memFree(imageBuffer);
 				
 		this.width = w.get();
@@ -81,7 +73,7 @@ public class Texture
 		        
 		    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		    
-		    STBImage.stbi_image_free(pixels);
+		    stbi_image_free(pixels);
 		}
 		
 		glBindTexture(GL_TEXTURE_2D, id);
