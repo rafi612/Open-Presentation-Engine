@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.nio.IntBuffer;
 
-import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
 
 public class Mouse
 {
@@ -53,15 +53,18 @@ public class Mouse
 	
     public static void mouseMove(long window, double xpos, double ypos) 
     {
-		X = (int)xpos;
-		Y = (int)ypos;
-		
-		IntBuffer w = BufferUtils.createIntBuffer(1);
-		IntBuffer h = BufferUtils.createIntBuffer(1);
-		glfwGetWindowSize(window, w, h);
-		
-		Xpixel = (int)((float)X*(1280 / ((float)w.get())));
-		Ypixel = (int)((float)Y*(720 / ((float)h.get())));
+    	try (MemoryStack stack = MemoryStack.stackPush())
+    	{
+			X = (int)xpos;
+			Y = (int)ypos;
+			
+			IntBuffer w = stack.mallocInt(1);
+			IntBuffer h = stack.mallocInt(1);
+			glfwGetWindowSize(window, w, h);
+			
+			Xpixel = (int)((float)X*(1280 / ((float)w.get())));
+			Ypixel = (int)((float)Y*(720 / ((float)h.get())));
+    	}
     }
 
 }

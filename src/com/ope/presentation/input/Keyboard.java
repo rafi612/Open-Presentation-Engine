@@ -22,7 +22,8 @@ public class Keyboard
 	
 	public static void update()
 	{
-		for(int i = 0; i < Count;i++){
+		for(int i = 0; i < Count;i++)
+		{
 			if(!keys[i])
 				keys_prev[i] = false;
 		}
@@ -35,7 +36,8 @@ public class Keyboard
 	
 	public static boolean getKeyOnce(int Key)
 	{
-		if(!keys_prev[Key] && keys[Key]){
+		if(!keys_prev[Key] && keys[Key])
+		{
 			keys_prev[Key] = true;
 			return true;
 		}

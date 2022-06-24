@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.stb.STBImage.*;
-import org.lwjgl.system.MemoryUtil;
+import static org.lwjgl.system.MemoryUtil.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -39,21 +39,25 @@ public class Texture
 	
 	private void load(InputStream input) throws IOException
 	{
-		IntBuffer w = MemoryUtil.memAllocInt(1);
-		IntBuffer h = MemoryUtil.memAllocInt(1);
-		IntBuffer comp = MemoryUtil.memAllocInt(1);
+		IntBuffer w = memAllocInt(1);
+		IntBuffer h = memAllocInt(1);
+		IntBuffer comp = memAllocInt(1);
 				
 		byte[] pixels_raw = input.readAllBytes();
 				
-		ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
+		ByteBuffer imageBuffer = memAlloc(pixels_raw.length);
 		imageBuffer.put(pixels_raw);
 		imageBuffer.flip();
 			
 		pixels = stbi_load_from_memory(imageBuffer, w, h, comp, STBI_rgb_alpha);
-		MemoryUtil.memFree(imageBuffer);
+		memFree(imageBuffer);
 				
 		this.width = w.get();
 		this.height = h.get();
+		
+		memFree(w);
+		memFree(h);
+		memFree(comp);
 		
 		input.close();
 	}

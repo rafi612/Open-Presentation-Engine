@@ -86,9 +86,9 @@ public class JarLoader
 			Method main = classToLoad.getMethod("main", String[].class);
 			main.invoke((Object) null, new Object[] { args });
 			
-		} catch (ClassNotFoundException | SecurityException  | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | URISyntaxException e)
+		} 
+		catch (ClassNotFoundException | SecurityException  | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | URISyntaxException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -96,20 +96,17 @@ public class JarLoader
 
 	public static void copyFile(String input,String output)
 	{
-        //File source = new File(input);
         InputStream is = JarLoader.class.getResourceAsStream(input);
         File dest = new File(output);
         dest.deleteOnExit();
 
-        try (//FileInputStream fis = new FileInputStream(source);
-        	FileOutputStream fos = new FileOutputStream(dest)) {
-
+        try (FileOutputStream fos = new FileOutputStream(dest)) 
+        {
             byte[] buffer = new byte[1024];
             int length;
 
             while ((length = is.read(buffer)) > 0)
             {
-
                 fos.write(buffer, 0, length);
             }
             is.close();
@@ -122,7 +119,5 @@ public class JarLoader
         {
 			e.printStackTrace();
 		}
-        
 	}
-
 }
