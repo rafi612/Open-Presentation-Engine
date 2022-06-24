@@ -7,14 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 
 public class Shader 
 {
@@ -32,16 +30,12 @@ public class Shader
 		glShaderSource(vertex, vShaderCode);
 		glCompileShader(vertex);
 		
-		IntBuffer error = MemoryUtil.memAllocInt(1);
-		glGetShaderiv(vertex, GL_COMPILE_STATUS, error);
-		
-		if (error.get() == 0)
+		if (glGetShaderi(vertex, GL_COMPILE_STATUS) == GL_FALSE)
 		{
 			System.out.println("===========" + vertexpath + "===========");
 			String infoLog = glGetShaderInfoLog(vertex, glGetShaderi(vertex, GL_INFO_LOG_LENGTH));
 			System.out.println("Vertex Error:" + infoLog);
 		}
-		MemoryUtil.memFree(error);
 		
 		
 		//fragment shader
@@ -49,16 +43,12 @@ public class Shader
 		glShaderSource(fragment, fShaderCode);
 		glCompileShader(fragment);
 		
-		IntBuffer error2 = MemoryUtil.memAllocInt(1);
-		glGetShaderiv(fragment, GL_COMPILE_STATUS, error2);
-		
-		if (error2.get() == 0)
+		if (glGetShaderi(fragment, GL_COMPILE_STATUS) == GL_FALSE)
 		{
 			System.out.println("===========" + fragmentpath + "===========");
 			String infoLog = glGetShaderInfoLog(fragment, glGetShaderi(fragment, GL_INFO_LOG_LENGTH));
 			System.out.println("Fragment Error:" + infoLog);
 		}
-		MemoryUtil.memFree(error2);
 		
 		// shader Program
 		ID = glCreateProgram();
@@ -119,7 +109,8 @@ public class Shader
     {	
     	String s = "";
     	String line;
-    	try {
+    	try 
+    	{
 			BufferedReader br = new BufferedReader(new InputStreamReader(i));
 			while ((line = br.readLine()) != null)
 			{
@@ -128,8 +119,9 @@ public class Shader
 			
 			br.close();
 			i.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+    	catch (IOException e) 
+    	{
 			e.printStackTrace();
 		}
     	
