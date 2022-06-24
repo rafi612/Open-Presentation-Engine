@@ -14,7 +14,7 @@ public class Renderer
     
     static float angle;
     
-    static Matrix4f projection = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
+    static Matrix4f projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
     
     static Mesh quad,line_strip;
     
@@ -110,7 +110,7 @@ public class Renderer
 			return;
 		}
 		
-		Matrix4f model = new Matrix4f()
+		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
 				.rotate(angle, 0.0f,0.0f,1.0f)
@@ -118,9 +118,8 @@ public class Renderer
 				.scale(w,h, 0);
 		
 		texture_shader.use();
-		texture_shader.setMatrix4("model", model);
-		texture_shader.setVector4f("spriteColor", new Vector4f(1,1,1,1));
-		texture_shader.setMatrix4("projection", projection);
+		texture_shader.setMatrix4("transformMatrix", transformMatrix);
+		texture_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		
 		glActiveTexture(GL_TEXTURE0);
 		
@@ -139,7 +138,7 @@ public class Renderer
 			FallbackRenderer.frect(x, y, w, h, color);
 			return;
 		}
-		Matrix4f model = new Matrix4f()
+		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
 				.rotate(angle, 0.0f,1.0f,0.0f)
@@ -147,9 +146,9 @@ public class Renderer
 				.scale(w,h,0);
 		
 		rect_shader.use();
-		rect_shader.setMatrix4("model", model);
-		rect_shader.setVector4f("rectColor", color);
-		rect_shader.setMatrix4("projection", projection);
+		rect_shader.setMatrix4("transformMatrix", transformMatrix);
+		rect_shader.setMatrix4("projection", projectionMatrix);
+		rect_shader.setVector4f("color", color);
 	    
 	    quad.draw();
 		
@@ -164,7 +163,7 @@ public class Renderer
 			return;
 		}
 		
-		Matrix4f model = new Matrix4f()
+		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
 				.rotate(angle, 0.0f,0.0f,1.0f)
@@ -172,9 +171,9 @@ public class Renderer
 				.scale(w,h, 0);
 		
 		rect_shader.use();
-		rect_shader.setMatrix4("model", model);
-		rect_shader.setVector4f("rectColor", color);
-		rect_shader.setMatrix4("projection", projection);
+		rect_shader.setMatrix4("transformMatrix", transformMatrix);
+		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
+		rect_shader.setVector4f("color", color);
 		
 		line_strip.drawLines();
 	    
@@ -188,7 +187,7 @@ public class Renderer
 			return;
 		}
 		
-		Matrix4f model = new Matrix4f()
+		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
 				.rotate(angle, 0.0f,1.0f,0.0f)
@@ -196,11 +195,11 @@ public class Renderer
 				.scale(w,h,0);
 		
 		gradient_shader.use();
-		gradient_shader.setMatrix4("model", model);
-		gradient_shader.setMatrix4("projection", projection);
-		gradient_shader.setVector4f("col1", color);
-		gradient_shader.setVector4f("col2", color2);
-		gradient_shader.setVector2f("dimension_", new Vector2f(w,h));
+		gradient_shader.setMatrix4("transformMatrix", transformMatrix);
+		gradient_shader.setMatrix4("projectionMatrix", projectionMatrix);
+		gradient_shader.setVector4f("color1", color);
+		gradient_shader.setVector4f("color2", color2);
+		gradient_shader.setVector2f("size", new Vector2f(w,h));
 	    
 	    quad.draw();
 		

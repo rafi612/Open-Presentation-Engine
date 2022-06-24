@@ -1,15 +1,15 @@
 #version 330 core
 
-layout (location = 0) in vec2 vertex;
-layout (location = 1) in vec2 tex;
+layout (location = 0) in vec2 verticies;
+layout (location = 1) in vec2 texCoords;
 
-out vec2 TexCoords;
+out vec2 processedTexCoords;
 
-uniform mat4 model;
-uniform mat4 projection;
+uniform mat4 transformMatrix;
+uniform mat4 projectionMatrix;
 
 void main()
 {
-    TexCoords = tex;
-    gl_Position = projection * model * vec4(vertex, 0.0, 1.0);
+    processedTexCoords = texCoords;
+    gl_Position = projectionMatrix * transformMatrix * vec4(verticies, 0.0, 1.0);
 }

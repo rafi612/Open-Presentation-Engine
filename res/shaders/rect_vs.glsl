@@ -1,15 +1,11 @@
 #version 330 core
 
-layout (location = 0) in vec4 aPos;
+layout (location = 0) in vec4 verticies;
 
-uniform mat4 model;
-uniform mat4 projection;
-
-uniform vec4 rectColor;
-out vec4 col;
+uniform mat4 transformMatrix;
+uniform mat4 projectionMatrix;
 
 void main()
 {
-	col = rectColor;
-    gl_Position = projection * model * aPos;
+    gl_Position = projectionMatrix * transformMatrix * verticies;
 }
