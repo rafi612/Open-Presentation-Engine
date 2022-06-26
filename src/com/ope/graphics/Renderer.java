@@ -147,7 +147,7 @@ public class Renderer
 		
 		rect_shader.use();
 		rect_shader.setMatrix4("transformMatrix", transformMatrix);
-		rect_shader.setMatrix4("projection", projectionMatrix);
+		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		rect_shader.setVector4f("color", color);
 	    
 	    quad.draw();

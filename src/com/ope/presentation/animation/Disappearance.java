@@ -34,7 +34,11 @@ public class Disappearance extends Animation
 	{
 		if (isRunning)
 		{
-			if (outputalpha <= 255) Renderer.frect(0, 0, 1280, 720, new Vector4f(0,0,0,(float)outputalpha/255));
+			if (outputalpha <= 255)
+			{
+				Renderer.frect(0, 0, 1280, 720, new Vector4f(0,0,0,(float)outputalpha/255));
+			}
+			
 		}
 	}
 
