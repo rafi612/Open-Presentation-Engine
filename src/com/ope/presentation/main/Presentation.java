@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -37,10 +38,23 @@ public class Presentation
 	
 	private static SlideManager sm;
 	
-	public static void start(String configpath)
+	public static void start(String projectpath)
 	{
-		//setting project location
-		Project.projectlocation = new File(configpath).getParent();
+		try
+		{
+			//setting project location
+			Project.projectlocation = new File(projectpath).getCanonicalPath();
+			
+			if (!new File(Util.projectPath(Project.PROJECT_XML_NAME)).exists())
+			{
+				System.err.println("ERROR: Folder " + Project.projectlocation + " is not OPE project folder");
+				System.exit(1);
+			}
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		sm = new SlideManager();
 		
