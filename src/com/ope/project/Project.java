@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.Platform;
 import org.lwjgl.util.nfd.NativeFileDialog;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
@@ -35,20 +35,16 @@ public class Project
 		LoadProject(path);
 	}
 	
-	public static void LoadProject(String path)
+	public static int LoadProject(String path)
 	{
+		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
+			return 1;
+		
 		if (projectIsLoaded) 
 			unloadProject();
 		
 		projectIsLoaded = true;
 		projectlocation = path;
-		
-		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
-		{
-			JOptionPane.showMessageDialog(Main.frame, "This is not project folder (project.xml missing)", "Can't load project", JOptionPane.ERROR_MESSAGE);
-			unloadProject();
-			return;
-		}
 		
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 
@@ -57,6 +53,8 @@ public class Project
 		Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
 		
     	refreshProject();
+    	
+    	return 0;
 	}
 	public static void unloadProject()
 	{
@@ -128,7 +126,7 @@ public class Project
 			
 			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 				
-			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),Util.projectPath(PROJECT_XML_NAME));
+			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation);
 			pb.directory(new File(projectlocation));
 				
 			//redirect output to terminal
@@ -163,23 +161,22 @@ public class Project
 		//NFD have better file dialog on windows
 		if (Platform.get() == Platform.WINDOWS)
 		{
-			PointerBuffer p = MemoryUtil.memAllocPointer(1);
+			try (MemoryStack stack = MemoryStack.stackPush())
+			{
+				PointerBuffer p = stack.mallocPointer(1);
 			
-			NativeFileDialog.NFD_PickFolder(System.getProperty("user.home") + File.separator, p);
+				NativeFileDialog.NFD_PickFolder(System.getProperty("user.home") + File.separator, p);
 			
-			path = p.getStringUTF8();
-			
-			MemoryUtil.memFree(p);
+				path = p.getStringUTF8();
+			}
 		}
 		else 
 			path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
 		
 		if(path != null)
 		{
-			if (new File(path).exists())
-				LoadProject(path);
-			else
-				JOptionPane.showMessageDialog(Main.frame, "This folder is not a project", "Error",JOptionPane.ERROR_MESSAGE);
+			if (LoadProject(path) != 0)
+				JOptionPane.showMessageDialog(Main.frame, "This is not project folder (project.xml missing)", "Can't load project", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return path;
