@@ -49,17 +49,17 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
     
     public static final int WIDTH = 1280,HEIGHT = 720;
     
-    DefaultListModel<String> listModel;
+    private DefaultListModel<String> listModel;
     public JList<String> list;
     public JPanel listpanel;
     
-    JButton newelement,edit,up,down,rename,delete;
-    JLabel position;
+    private JButton newelement,edit,up,down,rename,delete;
+    private JLabel position;
     
     public int elementsint = 0;
     public int xPixel,yPixel;
     
-    Texture canvasimage;
+    private Texture canvasimage;
     
     public boolean slideloaded = false;
     public boolean dragged = false;
@@ -68,7 +68,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
     
     public ArrayList<Element> elements;
     
-    AWTGLCanvas canvas;
+    private AWTGLCanvas canvas;
 	
 	public SlideCreator() 
 	{
