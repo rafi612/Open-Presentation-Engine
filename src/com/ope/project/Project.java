@@ -37,6 +37,8 @@ public class Project
 	
 	public static int LoadProject(String path)
 	{
+		projectlocation = path;
+		
 		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
 			return 1;
 		
@@ -44,7 +46,6 @@ public class Project
 			unloadProject();
 		
 		projectIsLoaded = true;
-		projectlocation = path;
 		
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 

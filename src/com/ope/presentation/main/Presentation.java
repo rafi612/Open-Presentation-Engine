@@ -89,7 +89,7 @@ public class Presentation
 	    
 	    glfwSwapInterval(1);
 	    
-		load(sm);
+	    sm.load();
 	    MainLoop.init(sm);
 	    
 	    glfwShowWindow(window);
@@ -154,10 +154,6 @@ public class Presentation
 	    }
 	}
 	
-	private static void load(SlideManager sm)
-	{		
-	    sm.load();
-	}
 	
 	public static void stop()
 	{
