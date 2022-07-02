@@ -48,18 +48,31 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
         //popup menu
         newfile = new JMenuItem("New file");
         newfile.addActionListener(this);
+        newfile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/new_file.png")));
+        
         newfolder = new JMenuItem("New Folder");
         newfolder.addActionListener(this);
+        newfolder.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/new_folder.png")));
+        
         deletefile = new JMenuItem("Delete");
         deletefile.addActionListener(this);
+        deletefile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/delete.png")));
+        
         renamefile = new JMenuItem("Rename");
         renamefile.addActionListener(this);
+        renamefile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/rename.png")));
+        
         cutfile = new JMenuItem("Cut");
         cutfile.addActionListener(this);
+        cutfile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/cut.png")));
+        
         copyfile = new JMenuItem("Copy");
         copyfile.addActionListener(this);
+        copyfile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/copy.png")));
+        
         pastefile = new JMenuItem("Paste");
         pastefile.addActionListener(this);
+        pastefile.setIcon(new ImageIcon(Util.loadIcon("/icons/tree/paste.png")));
 		
         JPopupMenu treepopup = new JPopupMenu();
         treepopup.add(newfile);
