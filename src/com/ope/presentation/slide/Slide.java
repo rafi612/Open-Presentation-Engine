@@ -34,9 +34,13 @@ public class Slide
 			
 			elements.add(elem);
 		}
+		if (XmlParser.existsFromElementByName(element, "start_animation"))
+			startanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"start_animation")[0].getTextContent());
+		else startanimation = Animation.getAnimation("none");
 		
-		startanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"start_animation")[0].getTextContent());
-		exitanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"exit_animation")[0].getTextContent());
+		if (XmlParser.existsFromElementByName(element, "exit_animation"))
+			exitanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"exit_animation")[0].getTextContent());
+		else exitanimation = Animation.getAnimation("none");
 	}
 	
 	

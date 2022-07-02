@@ -80,4 +80,9 @@ public class XmlParser
 		return getElements(element.getElementsByTagName(name));
 		
 	}
+	
+	public static boolean existsFromElementByName(Element element,String name)
+	{
+		return getElementsFromElementByName(element,name).length > 0;
+	};
 }
