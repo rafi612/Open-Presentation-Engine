@@ -70,13 +70,13 @@ public class MenuBar extends JMenuBar implements ActionListener
         //file
         newproject = new JMenuItem("New Project");
         newproject.addActionListener(this::actionPerformed);
-        newproject.setIcon(new ImageIcon(Util.loadIcon("/icons/new.png")));
+        newproject.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/new.png")));
         newproject.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
         file.add(newproject);
         
         loadproject = new JMenuItem("Load Project");
         loadproject.addActionListener(this::actionPerformed);
-        loadproject.setIcon(new ImageIcon(Util.loadIcon("/icons/open.png")));
+        loadproject.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/open.png")));
         loadproject.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
         file.add(loadproject);
         
@@ -85,7 +85,7 @@ public class MenuBar extends JMenuBar implements ActionListener
         save = new JMenuItem("Save");
         save.addActionListener(this::actionPerformed);
         save.setEnabled(false);
-        save.setIcon(new ImageIcon(Util.loadIcon("/icons/save.png")));
+        save.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/save.png")));
         save.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
         file.add(save);
         
@@ -97,7 +97,7 @@ public class MenuBar extends JMenuBar implements ActionListener
         exitproject = new JMenuItem("Exit Project");
         exitproject.addActionListener(this::actionPerformed);
         exitproject.setEnabled(false);
-        exitproject.setIcon(new ImageIcon(Util.loadIcon("/icons/exit.png")));
+        exitproject.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/exit.png")));
         file.add(exitproject);
         
         file.add(new JSeparator());
@@ -130,12 +130,12 @@ public class MenuBar extends JMenuBar implements ActionListener
         tools.add(refresh);
         
         runandbuild = new JMenuItem("Build And Run"); 
-        runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/runandbuild.png")));
+        runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/runandbuild.png")));
         runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         runandbuild.addActionListener(this::actionPerformed);
         
         run_ = new JMenuItem("Run"); 
-        run_.setIcon(new ImageIcon(Util.loadIcon("/icons/run.png")));
+        run_.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/run.png")));
         run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));;
         run.add(runandbuild);
         run.add(run_);
@@ -170,11 +170,11 @@ public class MenuBar extends JMenuBar implements ActionListener
         //help 
         about = new JMenuItem("About");
         about.addActionListener(this::actionPerformed);
-        about.setIcon(new ImageIcon(Util.loadIcon("/icons/about.png")));
+        about.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/about.png")));
         help.add(about);
         license = new JMenuItem("View License");
         license.addActionListener(this::actionPerformed);
-        license.setIcon(new ImageIcon(Util.loadIcon("/icons/license.png")));
+        license.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/license.png")));
         help.add(license);
         
         add(file);
