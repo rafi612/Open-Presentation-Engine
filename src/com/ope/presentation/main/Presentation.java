@@ -68,47 +68,47 @@ public class Presentation
 		if (!glfwInit())
 			System.err.println("Error Init GLFW");
 
-	    glfwDefaultWindowHints();
-	    
-	    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-	    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwDefaultWindowHints();
 		
-	    window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
-	    if (window == NULL)
-	      throw new RuntimeException("Failed to create the GLFW window");
-        
-	    GLFWImage.Buffer icon = icon("/images/icon.png");
-	    glfwSetWindowIcon(window,icon);
-	    
-	    glfwSetKeyCallback(window, Keyboard::invoke);
-	    glfwSetMouseButtonCallback(window,Mouse::mouseButton);
-	    glfwSetCursorPosCallback(window,Mouse::mouseMove);
-	    
-	    glfwMakeContextCurrent(window);
-	    GL.createCapabilities();
-	    
-	    glfwSwapInterval(1);
-	    
-	    sm.load();
-	    MainLoop.init(sm);
-	    
-	    glfwShowWindow(window);
-	    
-	    MainLoop.reshape(window,WIDTH,HEIGHT);
-	    
-	    glfwSetWindowSizeCallback(window,MainLoop::reshape);
-	    
-	    running = true;
-	    
-	    while (!glfwWindowShouldClose(window) && running) 
-	    {
-	    	MainLoop.display(sm);
-	    	
-	    	glfwSwapBuffers(window);
-	    	glfwPollEvents();
-	    }
-	    
-	    stop();	
+		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		
+		window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
+		if (window == NULL)
+		  throw new RuntimeException("Failed to create the GLFW window");
+		
+		GLFWImage.Buffer icon = icon("/images/icon.png");
+		glfwSetWindowIcon(window,icon);
+		
+		glfwSetKeyCallback(window, Keyboard::invoke);
+		glfwSetMouseButtonCallback(window,Mouse::mouseButton);
+		glfwSetCursorPosCallback(window,Mouse::mouseMove);
+		
+		glfwMakeContextCurrent(window);
+		GL.createCapabilities();
+		
+		glfwSwapInterval(1);
+		
+		sm.load();
+		MainLoop.init(sm);
+		
+		glfwShowWindow(window);
+		
+		MainLoop.reshape(window,WIDTH,HEIGHT);
+		
+		glfwSetWindowSizeCallback(window,MainLoop::reshape);
+		
+		running = true;
+		
+		while (!glfwWindowShouldClose(window) && running) 
+		{
+			MainLoop.display(sm);
+			
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+		}
+		
+		stop();	
 	}
 	
 	private static GLFWImage.Buffer icon(String path)
@@ -135,23 +135,23 @@ public class Presentation
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode mode = glfwGetVideoMode(monitor);
 		
-	    if (fullscreen)
-	    {
+		if (fullscreen)
+		{
 			lastx = BufferUtils.createIntBuffer(1);
 			lasty = BufferUtils.createIntBuffer(1);
 			lastw = BufferUtils.createIntBuffer(1);
 			lasth = BufferUtils.createIntBuffer(1);
 			
-	    	glfwGetWindowPos(window, lastx, lasty);
-	    	glfwGetWindowSize(window, lastw, lasth);
-	    	
-	    	glfwSetWindowMonitor(window,monitor,0,0,mode.width(),mode.height(),GLFW_DONT_CARE);
-	    }
-	    else
-	    {
-	        // restore last window size and position
-	        glfwSetWindowMonitor(window, NULL, lastx.get(),lasty.get(),lastw.get(),lasth.get(),GLFW_DONT_CARE);
-	    }
+			glfwGetWindowPos(window, lastx, lasty);
+			glfwGetWindowSize(window, lastw, lasth);
+			
+			glfwSetWindowMonitor(window,monitor,0,0,mode.width(),mode.height(),GLFW_DONT_CARE);
+		}
+		else
+		{
+			// restore last window size and position
+			glfwSetWindowMonitor(window, NULL, lastx.get(),lasty.get(),lastw.get(),lasth.get(),GLFW_DONT_CARE);
+		}
 	}
 	
 	

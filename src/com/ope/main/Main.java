@@ -24,66 +24,66 @@ public class Main
 {
 	public static JFrame frame;
 	
-    public static final String TITLE = "Open Presentation Engine";
-    
-    public static Tree tree;
-    
-    public static JTabbedPane tabs;
-    
-    public static MenuBar menubar;
-    
-    public static SlideCreator slidecreator;
-    public static SlideRack sliderack;
-    
-    public static ActionPanel actionpanel;
+	public static final String TITLE = "Open Presentation Engine";
 
-    public static void initUI()
-    {
-    	tabs = new JTabbedPane();
-        
-        //slide creator
-        slidecreator = new SlideCreator();
-        
-        //slide rack
-        sliderack = new SlideRack();
+	public static Tree tree;
 
-        //tabs
-        tabs.add("Slides",sliderack);
-        tabs.add("Slide Creator",slidecreator);
-        
-        frame.add(tabs);
-    	 
-        //tree
-        DefaultMutableTreeNode treerootnode = new DefaultMutableTreeNode("Workspace"); 
-        tree = new Tree(treerootnode);
-        frame.add(new JScrollPane(tree),BorderLayout.WEST);
-        
-        actionpanel = new ActionPanel();
-        frame.add(actionpanel,BorderLayout.SOUTH);
-        
-        menubar = new MenuBar(frame); 
-        frame.setJMenuBar(menubar);
-        
-        frame.addWindowListener(new WindowAdapter() {
-        	public void windowClosing(WindowEvent event)
-        	{
-        		if (Project.projectIsLoaded)
-        		{
-        			int choose = Project.lost_save_dialog();
-        		
-	        		if (choose != 2)
-	        		{
-	        			if (choose == 0)
-	        				Project.save();
-	        		}
-	        		else return;
-        		}
-        		System.exit(0);
-        	}
+	public static JTabbedPane tabs;
+
+	public static MenuBar menubar;
+
+	public static SlideCreator slidecreator;
+	public static SlideRack sliderack;
+
+	public static ActionPanel actionpanel;
+
+	public static void initUI()
+	{
+		tabs = new JTabbedPane();
+
+		//slide creator
+		slidecreator = new SlideCreator();
+		
+		//slide rack
+		sliderack = new SlideRack();
+
+		//tabs
+		tabs.add("Slides",sliderack);
+		tabs.add("Slide Creator",slidecreator);
+		
+		frame.add(tabs);
+		 
+		//tree
+		DefaultMutableTreeNode treerootnode = new DefaultMutableTreeNode("Workspace"); 
+		tree = new Tree(treerootnode);
+		frame.add(new JScrollPane(tree),BorderLayout.WEST);
+		
+		actionpanel = new ActionPanel();
+		frame.add(actionpanel,BorderLayout.SOUTH);
+		
+		menubar = new MenuBar(frame); 
+		frame.setJMenuBar(menubar);
+		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event)
+			{
+				if (Project.projectIsLoaded)
+				{
+					int choose = Project.lost_save_dialog();
+				
+					if (choose != 2)
+					{
+						if (choose == 0)
+							Project.save();
+					}
+					else return;
+				}
+				System.exit(0);
+			}
 		});
-	    
-        Project.unloadProject();
-    }
+		
+		Project.unloadProject();
+	}
 
 	public static void main(String[] args)
 	{

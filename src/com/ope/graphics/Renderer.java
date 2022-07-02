@@ -10,16 +10,16 @@ import org.lwjgl.opengl.GL;
 
 public class Renderer 
 {
-    static Shader texture_shader,rect_shader,gradient_shader;
-    
-    static float angle;
-    
-    static Matrix4f projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
-    
-    static Mesh quad,line_strip;
-    
-    static boolean fallback = false;
-    
+	static Shader texture_shader,rect_shader,gradient_shader;
+	
+	static float angle;
+	
+	static Matrix4f projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
+	
+	static Mesh quad,line_strip;
+	
+	static boolean fallback = false;
+	
 	public static void init() 
 	{
 		if (!isFallback())
@@ -28,47 +28,47 @@ public class Renderer
 			rect_shader = new Shader("/shaders/rect_vs.glsl","/shaders/rect_fs.glsl");
 			gradient_shader = new Shader("/shaders/gradient_vs.glsl","/shaders/gradient_fs.glsl");
 			
-		    // configure VAO/VBO
-		    float[] vertices = { 
-		        // pos 
-		        0.0f, 1.0f, 0.0f,
-		        1.0f, 0.0f, 0.0f,
-		        0.0f, 0.0f, 0.0f,
-		        1.0f, 1.0f, 0.0f
-		    };
-		    
-		    // configure tex coords
-		    float[] tex = { 
-		        0.0f, 1.0f,
-		        1.0f, 0.0f,
-		        
-		        0.0f, 0.0f, 
-		        1.0f, 1.0f,
-		    };
-		    
-		    int[] indices = {  // note that we start from 0!
-		    	    0, 2, 1,   // first triangle
-		    	    0, 3, 1    // second triangle
-		    }; 
-		    
-		    quad = new Mesh(vertices,indices);
-		    quad.storeInAttributes(1, 2, tex);
-		    
-		    float[] line_vertecies = { 
-			        // pos
-			        1.0f, 0.0f, 0.0f,
-			        0.0f, 0.0f, 0.0f,
-			        0.0f, 1.0f, 0.0f,
-			        1.0f, 1.0f, 0.0f,
+			// configure VAO/VBO
+			float[] vertices = { 
+				// pos 
+				0.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,
+				1.0f, 1.0f, 0.0f
 			};
-		    
-		    int[] line_indices = {
-		    	    0,1,
-		    	    2,3,
-		    	    3,0
-		    };
-		    
-		    line_strip = new Mesh(line_vertecies,line_indices);
+			
+			// configure tex coords
+			float[] tex = { 
+				0.0f, 1.0f,
+				1.0f, 0.0f,
+				
+				0.0f, 0.0f, 
+				1.0f, 1.0f,
+			};
+			
+			int[] indices = {  // note that we start from 0!
+					0, 2, 1,   // first triangle
+					0, 3, 1	// second triangle
+			}; 
+			
+			quad = new Mesh(vertices,indices);
+			quad.storeInAttributes(1, 2, tex);
+			
+			float[] line_vertecies = { 
+					// pos
+					1.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f,
+					1.0f, 1.0f, 0.0f,
+			};
+			
+			int[] line_indices = {
+					0,1,
+					2,3,
+					3,0
+			};
+			
+			line_strip = new Mesh(line_vertecies,line_indices);
 		}
 	}
 	
@@ -126,9 +126,9 @@ public class Renderer
 		tex.bind();
 		quad.draw();
 		
-	    glBindTexture(GL_TEXTURE_2D, 0);
-	    
-	    reset();
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		reset();
 	}
 	
 	public static void frect(float x,float y,float w,float h,Vector4f color)
@@ -149,10 +149,10 @@ public class Renderer
 		rect_shader.setMatrix4("transformMatrix", transformMatrix);
 		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		rect_shader.setVector4f("color", color);
-	    
-	    quad.draw();
 		
-	    reset();
+		quad.draw();
+		
+		reset();
 	}
 	
 	public static void frectnofill(float x,float y,float w,float h,Vector4f color)
@@ -176,8 +176,8 @@ public class Renderer
 		rect_shader.setVector4f("color", color);
 		
 		line_strip.drawLines();
-	    
-	    reset();
+		
+		reset();
 	}
 	public static void drawVerticalGradient(float x,float y,float w,float h,Vector4f color,Vector4f color2)
 	{
@@ -200,10 +200,10 @@ public class Renderer
 		gradient_shader.setVector4f("color1", color);
 		gradient_shader.setVector4f("color2", color2);
 		gradient_shader.setVector2f("size", new Vector2f(w,h));
-	    
-	    quad.draw();
 		
-	    reset();
+		quad.draw();
+		
+		reset();
 	}
 	
 }

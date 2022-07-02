@@ -14,18 +14,18 @@ public class SquareBasedElement extends Element
 	public boolean moving,colided;
 	public boolean dragged;
 	
-    public Vector2i clickpoint = new Vector2i(0,0);
-    
-    ArrayList<Resizer> resizers;
-    
-    public SquareBasedElement()
-    {
+	public Vector2i clickpoint = new Vector2i(0,0);
+	
+	ArrayList<Resizer> resizers;
+	
+	public SquareBasedElement()
+	{
 		resizers = new ArrayList<Resizer>();
 		resizers.add(new Resizer(Resizer.Type.DOWN_RIGHT));
 		resizers.add(new Resizer(Resizer.Type.DOWN_LEFT));
 		resizers.add(new Resizer(Resizer.Type.UP_LEFT));
 		resizers.add(new Resizer(Resizer.Type.UP_RIGHT));
-    }
+	}
 	
 	public void update(SlideCreator sc)
 	{
@@ -77,13 +77,13 @@ public class SquareBasedElement extends Element
 			{
 				sc.currentColidedID = id;
 				sc.currentMovedID = id;
-		        int xMoved = (x + sc.xPixel) - (x + clickpoint.x);
-		        int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
-		        x += xMoved;
-		        y += yMoved;
+				int xMoved = (x + sc.xPixel) - (x + clickpoint.x);
+				int yMoved = (y + sc.yPixel) - (y + clickpoint.y);
+				x += xMoved;
+				y += yMoved;
 			}
-	        
-	        clickpoint.set(sc.xPixel,sc.yPixel);
+			
+			clickpoint.set(sc.xPixel,sc.yPixel);
 		}
 		
 		// reseting "moving" after release mouse

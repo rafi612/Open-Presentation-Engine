@@ -61,56 +61,56 @@ public class Shader
 		glDeleteShader(fragment);
 	}
 
-    public void use()
-    {
-    	glUseProgram(ID);
-    }
+	public void use()
+	{
+		glUseProgram(ID);
+	}
 
-    public void setBool(String name, boolean value)
-    {
-    	glUniform1i(glGetUniformLocation(ID,name), value ? 1 : 0);
-    }
-    public void setInt(String name, int value)
-    {
-    	glUniform1i(glGetUniformLocation(ID,name),value);
-    }   
-    public void setFloat(String name, float value)
-    {
-    	glUniform1f(glGetUniformLocation(ID,name),value);
-    }
-    
-    public void setVector2f(String name, Vector2f vec)
-    {
-    	glUniform2f(glGetUniformLocation(ID,name),vec.x,vec.y);
-    }
-    
-    public void setVector3f(String name, Vector3f vec)
-    {
-    	glUniform3f(glGetUniformLocation(ID,name),vec.x,vec.y,vec.z);
-    }
-    
-    public void setVector4f(String name, Vector4f vec)
-    {
-    	glUniform4f(glGetUniformLocation(ID,name),vec.x,vec.y,vec.z,vec.w);
-    }
-    
-    public void setMatrix4(String name, Matrix4f mat)
-    {
-    	try (MemoryStack stack = MemoryStack.stackPush())
-    	{
+	public void setBool(String name, boolean value)
+	{
+		glUniform1i(glGetUniformLocation(ID,name), value ? 1 : 0);
+	}
+	public void setInt(String name, int value)
+	{
+		glUniform1i(glGetUniformLocation(ID,name),value);
+	}   
+	public void setFloat(String name, float value)
+	{
+		glUniform1f(glGetUniformLocation(ID,name),value);
+	}
+	
+	public void setVector2f(String name, Vector2f vec)
+	{
+		glUniform2f(glGetUniformLocation(ID,name),vec.x,vec.y);
+	}
+	
+	public void setVector3f(String name, Vector3f vec)
+	{
+		glUniform3f(glGetUniformLocation(ID,name),vec.x,vec.y,vec.z);
+	}
+	
+	public void setVector4f(String name, Vector4f vec)
+	{
+		glUniform4f(glGetUniformLocation(ID,name),vec.x,vec.y,vec.z,vec.w);
+	}
+	
+	public void setMatrix4(String name, Matrix4f mat)
+	{
+		try (MemoryStack stack = MemoryStack.stackPush())
+		{
 			FloatBuffer matrixBuffer = stack.mallocFloat(16);
 			mat.get(matrixBuffer);
 			
 			glUniformMatrix4fv(glGetUniformLocation(ID,name),false,matrixBuffer);
 		}
-    }
-    
-    private static String load(InputStream i)
-    {	
-    	String s = "";
-    	String line;
-    	try 
-    	{
+	}
+	
+	private static String load(InputStream i)
+	{	
+		String s = "";
+		String line;
+		try 
+		{
 			BufferedReader br = new BufferedReader(new InputStreamReader(i));
 			while ((line = br.readLine()) != null)
 			{
@@ -120,11 +120,11 @@ public class Shader
 			br.close();
 			i.close();
 		} 
-    	catch (IOException e) 
-    	{
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
-    	
-    	return s; 
-    }
+		
+		return s; 
+	}
 }

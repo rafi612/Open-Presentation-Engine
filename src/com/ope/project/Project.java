@@ -50,12 +50,12 @@ public class Project
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 
 		interfaceEnable(true);
-    	
+		
 		Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
 		
-    	refreshProject();
-    	
-    	return 0;
+		refreshProject();
+		
+		return 0;
 	}
 	public static void unloadProject()
 	{
@@ -66,9 +66,9 @@ public class Project
 
 		interfaceEnable(false);
 		
-    	Main.sliderack.clear();
-    	
-    	refreshProject();
+		Main.sliderack.clear();
+		
+		refreshProject();
 	}
 	
 	private static void createProjectXml(String path)
@@ -93,7 +93,7 @@ public class Project
 		Main.menubar.exitproject.setEnabled(enabled);
 		Main.sliderack.setEnabled(enabled);
 		
-        Main.actionpanel.setEnabled(enabled);
+		Main.actionpanel.setEnabled(enabled);
 		
 		if(enabled)
 			Main.slidecreator.initenable();
@@ -107,8 +107,8 @@ public class Project
 		Main.tree.getRootNode().removeAllChildren();
 		
 		createChildren(new File(projectlocation), Main.tree.getRootNode());
-	    
-    	((DefaultTreeModel) Main.tree.getModel()).reload(Main.tree.getRootNode());
+		
+		((DefaultTreeModel) Main.tree.getModel()).reload(Main.tree.getRootNode());
 	}
 	
 	
@@ -203,18 +203,18 @@ public class Project
 		return yesno;
 	}
 	
-    private static void createChildren(File fileRoot, DefaultMutableTreeNode node) 
-    {
-        File[] files = fileRoot.listFiles();
-        if (files == null) return;
-        for (File file : files) 
-        {
-        	DefaultMutableTreeNode childNode = null;
-        	
-        	childNode = new DefaultMutableTreeNode(file);
-            node.add(childNode);
-            if (file.isDirectory()) 
-            	createChildren(file, childNode); 
-        }
-    }
+	private static void createChildren(File fileRoot, DefaultMutableTreeNode node) 
+	{
+		File[] files = fileRoot.listFiles();
+		if (files == null) return;
+		for (File file : files) 
+		{
+			DefaultMutableTreeNode childNode = null;
+			
+			childNode = new DefaultMutableTreeNode(file);
+			node.add(childNode);
+			if (file.isDirectory()) 
+				createChildren(file, childNode); 
+		}
+	}
 }

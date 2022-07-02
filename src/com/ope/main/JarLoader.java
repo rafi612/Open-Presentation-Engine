@@ -96,27 +96,27 @@ public class JarLoader
 
 	public static void copyFile(String input,String output)
 	{
-        InputStream is = JarLoader.class.getResourceAsStream(input);
-        File dest = new File(output);
-        dest.deleteOnExit();
+		InputStream is = JarLoader.class.getResourceAsStream(input);
+		File dest = new File(output);
+		dest.deleteOnExit();
 
-        try (FileOutputStream fos = new FileOutputStream(dest)) 
-        {
-            byte[] buffer = new byte[1024];
-            int length;
+		try (FileOutputStream fos = new FileOutputStream(dest)) 
+		{
+			byte[] buffer = new byte[1024];
+			int length;
 
-            while ((length = is.read(buffer)) > 0)
-            {
-                fos.write(buffer, 0, length);
-            }
-            is.close();
-        } 
-        catch (FileNotFoundException e) 
-        {
+			while ((length = is.read(buffer)) > 0)
+			{
+				fos.write(buffer, 0, length);
+			}
+			is.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
 			e.printStackTrace();
 		} 
-        catch (IOException e)
-        {
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}

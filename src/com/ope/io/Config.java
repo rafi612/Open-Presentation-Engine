@@ -51,19 +51,19 @@ public class Config
 	
 	public static void createOPExml()
 	{
-    	lookandfeel = getSystemTheme();
+		lookandfeel = getSystemTheme();
 		saveXML();
 	}
 	
 	public static String getSystemTheme()
 	{
-    	switch (Platform.get())
-    	{
-    	case LINUX:
-    		return "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    	default:
-    		return UIManager.getSystemLookAndFeelClassName();
-    	}
+		switch (Platform.get())
+		{
+		case LINUX:
+			return "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+		default:
+			return UIManager.getSystemLookAndFeelClassName();
+		}
 	}
 	
 	public static void saveXML()
@@ -86,8 +86,8 @@ public class Config
 			e.printStackTrace();
 		}
 		
-	    SwingUtilities.updateComponentTreeUI(Main.frame);
-	    SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
+		SwingUtilities.updateComponentTreeUI(Main.frame);
+		SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
 	}
 
 }

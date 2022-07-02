@@ -15,22 +15,22 @@ public class ActionPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
-    public ArrayList<JButton> actions = new ArrayList<JButton>();
+	public ArrayList<JButton> actions = new ArrayList<JButton>();
 
 	public ActionPanel() 
 	{
-        setBorder(BorderFactory.createTitledBorder("Actions"));
-        setToolTipText("Necessary actions");
-        
-        actions.add(new JButton("Build & Run"));
-        actions.add(new JButton("Save"));
-        actions.add(new JButton("Stop"));
-        
-        for (JButton button : actions)
-        {
-        	button.addActionListener(this::actionPerformed);
-        	add(button);
-        }
+		setBorder(BorderFactory.createTitledBorder("Actions"));
+		setToolTipText("Necessary actions");
+		
+		actions.add(new JButton("Build & Run"));
+		actions.add(new JButton("Save"));
+		actions.add(new JButton("Stop"));
+		
+		for (JButton button : actions)
+		{
+			button.addActionListener(this::actionPerformed);
+			add(button);
+		}
 	}
 
 	@Override

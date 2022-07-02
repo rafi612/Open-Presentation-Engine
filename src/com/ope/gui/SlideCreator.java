@@ -45,30 +45,30 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 {
 	private static final long serialVersionUID = 1L;
 	
-    public ArrayList<JButton> actions = new ArrayList<JButton>();
-    
-    public static final int WIDTH = 1280,HEIGHT = 720;
-    
-    private DefaultListModel<String> listModel;
-    public JList<String> list;
-    public JPanel listpanel;
-    
-    private JButton newelement,edit,up,down,rename,delete;
-    private JLabel position;
-    
-    public int elementsint = 0;
-    public int xPixel,yPixel;
-    
-    private Texture canvasimage;
-    
-    public boolean slideloaded = false;
-    public boolean dragged = false;
-    
-    public int currentColidedID = -1,currentMovedID = -1;
-    
-    public ArrayList<Element> elements;
-    
-    private AWTGLCanvas canvas;
+	public ArrayList<JButton> actions = new ArrayList<JButton>();
+	
+	public static final int WIDTH = 1280,HEIGHT = 720;
+	
+	private DefaultListModel<String> listModel;
+	public JList<String> list;
+	public JPanel listpanel;
+	
+	private JButton newelement,edit,up,down,rename,delete;
+	private JLabel position;
+	
+	public int elementsint = 0;
+	public int xPixel,yPixel;
+	
+	private Texture canvasimage;
+	
+	public boolean slideloaded = false;
+	public boolean dragged = false;
+	
+	public int currentColidedID = -1,currentMovedID = -1;
+	
+	public ArrayList<Element> elements;
+	
+	private AWTGLCanvas canvas;
 	
 	public SlideCreator() 
 	{
@@ -77,120 +77,120 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		elements = new ArrayList<Element>();
 		
 		//actions
-        JPanel buttons = new JPanel();
-        
-        buttons.setBorder(BorderFactory.createTitledBorder(""));
-        buttons.setToolTipText("Necessary actions");
-        
-        actions.add(new JButton("Create new slide"));
-        actions.add(new JButton("Open slide"));
-        actions.add(new JButton("Save slide"));
-        actions.add(new JButton("Discard slide"));
-        
-        for (int i = 0;i < actions.size(); i++)
-        	actions.get(i).addActionListener(this);
-        
-        for (int i = 0;i < actions.size(); i++)
-        	buttons.add(actions.get(i));
-        
-        add(buttons,BorderLayout.SOUTH);
-        
-        //list
-        listpanel = new JPanel();
-        listpanel.setLayout(new BorderLayout());
+		JPanel buttons = new JPanel();
+		
+		buttons.setBorder(BorderFactory.createTitledBorder(""));
+		buttons.setToolTipText("Necessary actions");
+		
+		actions.add(new JButton("Create new slide"));
+		actions.add(new JButton("Open slide"));
+		actions.add(new JButton("Save slide"));
+		actions.add(new JButton("Discard slide"));
+		
+		for (int i = 0;i < actions.size(); i++)
+			actions.get(i).addActionListener(this);
+		
+		for (int i = 0;i < actions.size(); i++)
+			buttons.add(actions.get(i));
+		
+		add(buttons,BorderLayout.SOUTH);
+		
+		//list
+		listpanel = new JPanel();
+		listpanel.setLayout(new BorderLayout());
 
-        listModel = new DefaultListModel<String>();
-        list = new JList<String>(listModel);
-        
-        newelement = new JButton("+");
-        newelement.addActionListener(this);
-        
-        edit = new JButton("Edit");
-        edit.addActionListener(this);
-        
-        up = new JButton("\u25B2");
-        up.addActionListener(this);
-        
-        down = new JButton("\u25BC");
-        down.addActionListener(this);
-        
-        rename = new JButton("Rename");
-        rename.addActionListener(this);
-        
-        delete = new JButton("Delete");
-        delete.addActionListener(this);
-        
-        JPanel panel1 = new JPanel();
-        panel1.add(newelement);
-        panel1.add(edit);
-        panel1.add(up);
-        panel1.add(down);
-        
-        JPanel panel2 = new JPanel();
-        panel2.add(rename);
-        panel2.add(delete);
-        
-        JPanel bpanel = new JPanel();
-        bpanel.setLayout(new BorderLayout());
-        bpanel.add(panel1,BorderLayout.NORTH);
-        bpanel.add(panel2,BorderLayout.SOUTH);
-        
-        listpanel.add(new JScrollPane(list));
-        listpanel.add(bpanel,BorderLayout.SOUTH);
-        listpanel.setPreferredSize(new Dimension(200,0));
+		listModel = new DefaultListModel<String>();
+		list = new JList<String>(listModel);
+		
+		newelement = new JButton("+");
+		newelement.addActionListener(this);
+		
+		edit = new JButton("Edit");
+		edit.addActionListener(this);
+		
+		up = new JButton("\u25B2");
+		up.addActionListener(this);
+		
+		down = new JButton("\u25BC");
+		down.addActionListener(this);
+		
+		rename = new JButton("Rename");
+		rename.addActionListener(this);
+		
+		delete = new JButton("Delete");
+		delete.addActionListener(this);
+		
+		JPanel panel1 = new JPanel();
+		panel1.add(newelement);
+		panel1.add(edit);
+		panel1.add(up);
+		panel1.add(down);
+		
+		JPanel panel2 = new JPanel();
+		panel2.add(rename);
+		panel2.add(delete);
+		
+		JPanel bpanel = new JPanel();
+		bpanel.setLayout(new BorderLayout());
+		bpanel.add(panel1,BorderLayout.NORTH);
+		bpanel.add(panel2,BorderLayout.SOUTH);
+		
+		listpanel.add(new JScrollPane(list));
+		listpanel.add(bpanel,BorderLayout.SOUTH);
+		listpanel.setPreferredSize(new Dimension(200,0));
 		enableComponents(listpanel, false);
-        
-        add(listpanel,BorderLayout.WEST);
-        
-        position = new JLabel("X: " + xPixel + " Y:" + yPixel);
-        
-        initCanvas();
+		
+		add(listpanel,BorderLayout.WEST);
+		
+		position = new JLabel("X: " + xPixel + " Y:" + yPixel);
+		
+		initCanvas();
 	}
 	
 	public void initCanvas()
 	{
-	    JPanel cpanel = new JPanel();
-	    cpanel.setLayout(new BorderLayout());
-	    
-	    JPanel ppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    ppanel.add(position);
-	    cpanel.add(ppanel,BorderLayout.SOUTH);
+		JPanel cpanel = new JPanel();
+		cpanel.setLayout(new BorderLayout());
+		
+		JPanel ppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		ppanel.add(position);
+		cpanel.add(ppanel,BorderLayout.SOUTH);
 
-        GLData data = new GLData();
-        data.swapInterval = 1;
-        data.profile = GLData.Profile.CORE;
-        
-        cpanel.add(canvas = new AWTGLCanvas(data) 
-        {
-            private static final long serialVersionUID = 1L;
-            public void initGL() 
-            {
-                System.out.println("OpenGL version: " + effective.majorVersion + "." + effective.minorVersion + " (Profile: " + effective.profile + ")");
-                GL.createCapabilities();
-                
-        		if (Renderer.isFallback())
-        			System.out.println("Using fallback renderer");
-                
-                init();
-            }
-            public void paintGL()
-            {
-            	display();
-                swapBuffers();
-            }
-        });
-        
-        canvas.addMouseListener(this);
-        canvas.addMouseMotionListener(this);
-        
-        add(cpanel);
-        
+		GLData data = new GLData();
+		data.swapInterval = 1;
+		data.profile = GLData.Profile.CORE;
+		
+		cpanel.add(canvas = new AWTGLCanvas(data) 
+		{
+			private static final long serialVersionUID = 1L;
+			public void initGL() 
+			{
+				System.out.println("OpenGL version: " + effective.majorVersion + "." + effective.minorVersion + " (Profile: " + effective.profile + ")");
+				GL.createCapabilities();
+				
+				if (Renderer.isFallback())
+					System.out.println("Using fallback renderer");
+				
+				init();
+			}
+			public void paintGL()
+			{
+				display();
+				swapBuffers();
+			}
+		});
+		
+		canvas.addMouseListener(this);
+		canvas.addMouseMotionListener(this);
+		
+		add(cpanel);
+		
 	}
 	
 	public void canvasLoop()
 	{ 
-        Runnable renderLoop = new Runnable()
-        {
+		Runnable renderLoop = new Runnable()
+		{
 			public void run() 
 			{
 				if (!canvas.isValid())
@@ -283,12 +283,12 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			
 			Element elem = Element.getElementsByName(combo.getSelectedItem().toString());
 			elem.id = elements.size();
-		    elem.name = elementname;
-		    elem.frame();
-		    
+			elem.name = elementname;
+			elem.frame();
+			
 			//get and add element
-		    elements.add(elem);
-		    listModel.addElement(elementname);
+			elements.add(elem);
+			listModel.addElement(elementname);
 		}
 		//new slide
 		if (source == actions.get(0))
@@ -425,10 +425,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//swap in elements arraylist
 		Collections.swap(elements, old, new_);
 		//swap in JList
-        String aObject = listModel.getElementAt(old);
-        String bObject = listModel.getElementAt(new_);
-        listModel.set(old, bObject);
-        listModel.set(new_, aObject);
+		String aObject = listModel.getElementAt(old);
+		String bObject = listModel.getElementAt(new_);
+		listModel.set(old, bObject);
+		listModel.set(new_, aObject);
 	}
 	
 	//setting save & discard action button enable
@@ -499,30 +499,30 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		return choose;
 	}
-    
-    public void initenable()
-    {
+	
+	public void initenable()
+	{
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
 		savediscardenable(false);
-    }
+	}
    
-    public void disable()
-    {
+	public void disable()
+	{
 		enableComponents(this, false);
 		enableComponents(listpanel, false);
-    }
+	}
 	
-    public void enableComponents(Container container, boolean enable)
-    {
-        Component[] components = container.getComponents();
-        for (Component component : components) {
-            component.setEnabled(enable);
-            if (component instanceof Container) {
-                enableComponents((Container)component, enable);
-            }
-        }
-    }
+	public void enableComponents(Container container, boolean enable)
+	{
+		Component[] components = container.getComponents();
+		for (Component component : components) {
+			component.setEnabled(enable);
+			if (component instanceof Container) {
+				enableComponents((Container)component, enable);
+			}
+		}
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) 

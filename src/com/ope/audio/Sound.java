@@ -77,50 +77,50 @@ public class Sound
 	{
 		this.input = in;
 		
-        buffer = alGenBuffers();
-        source = alGenSources();
-        
-        ShortBuffer pcm = null;
-        
-        info = new SoundInfo();
-        
-        this.type = type;
-        
-        switch (type)
-        {
-        case MPEG:
-        	pcm = AudioDecoder.decodeMPEG(in,info);
-        	break;
-        case VORBIS:
-        	pcm = AudioDecoder.decodeVorbis(in, info);
-        	break;
+		buffer = alGenBuffers();
+		source = alGenSources();
+		
+		ShortBuffer pcm = null;
+		
+		info = new SoundInfo();
+		
+		this.type = type;
+		
+		switch (type)
+		{
+		case MPEG:
+			pcm = AudioDecoder.decodeMPEG(in,info);
+			break;
+		case VORBIS:
+			pcm = AudioDecoder.decodeVorbis(in, info);
+			break;
 		default:
 			throw new IOException("Unsupported format");
-        }
+		}
 
-        
-        alBufferData(buffer, info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, pcm,info.samplerate);
+		
+		alBufferData(buffer, info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, pcm,info.samplerate);
 	}
 	
 	public static void init()
 	{
-        device = alcOpenDevice((ByteBuffer)null);
-        if (device == NULL) {
-            throw new IllegalStateException("Failed to open an OpenAL device.");
-        }
+		device = alcOpenDevice((ByteBuffer)null);
+		if (device == NULL) {
+			throw new IllegalStateException("Failed to open an OpenAL device.");
+		}
 
-        ALCCapabilities deviceCaps = ALC.createCapabilities(device);
+		ALCCapabilities deviceCaps = ALC.createCapabilities(device);
 
-        if (!deviceCaps.OpenALC10) {
-            throw new IllegalStateException();
-        }
-        
-        context = alcCreateContext(device, (IntBuffer)null);
-        
-        if (!alcMakeContextCurrent(context)) 
-        	throw new IllegalStateException();
-        
-        caps = AL.createCapabilities(deviceCaps, MemoryUtil::memCallocPointer);
+		if (!deviceCaps.OpenALC10) {
+			throw new IllegalStateException();
+		}
+		
+		context = alcCreateContext(device, (IntBuffer)null);
+		
+		if (!alcMakeContextCurrent(context)) 
+			throw new IllegalStateException();
+		
+		caps = AL.createCapabilities(deviceCaps, MemoryUtil::memCallocPointer);
 	}
 	
 	public static void stopContext()
@@ -137,12 +137,12 @@ public class Sound
 		alSource3f(source, AL_POSITION, pan, 0, (float)-Math.sqrt(1.0f - Math.pow(pan, pan)));
 		
 		//set up source input
-        alSourcei(source, AL_BUFFER, buffer);
-        
-        isPlay = true;
-        
-        //play source
-        alSourcePlay(source);
+		alSourcei(source, AL_BUFFER, buffer);
+		
+		isPlay = true;
+		
+		//play source
+		alSourcePlay(source);
 	}
 	
 	public void playAndWait()
@@ -157,7 +157,7 @@ public class Sound
 				e.printStackTrace();
 			}
 
-        stop();
+		stop();
 	}
 	
 	public void play()
@@ -179,7 +179,7 @@ public class Sound
 
 		isPlay = false;
 		
-        stop();
+		stop();
 	}
 	
 	public void setPitch(float f)
@@ -225,10 +225,10 @@ public class Sound
 	public void destroy()
 	{
 		alSourceStop(source);
-        //delete buffers and sources
-        alDeleteSources(source);
+		//delete buffers and sources
+		alDeleteSources(source);
 
-        alDeleteBuffers(buffer);
+		alDeleteBuffers(buffer);
 	}
 
 }
