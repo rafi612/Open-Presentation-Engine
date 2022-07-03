@@ -142,6 +142,7 @@ public class MenuBar extends JMenuBar implements ActionListener
 		
 		//settings
 		theme = new JMenu("Theme");
+		theme.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/theme.png")));
 		
 		ButtonGroup group = new ButtonGroup();
 		
