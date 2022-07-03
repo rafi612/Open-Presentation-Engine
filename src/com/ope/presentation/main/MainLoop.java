@@ -4,6 +4,7 @@ package com.ope.presentation.main;
 import com.ope.graphics.Renderer;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
+import com.ope.presentation.slide.Slide;
 import com.ope.presentation.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -26,18 +27,19 @@ public class MainLoop
 			Presentation.Fullscreen(Presentation.fullscreen);
 		}
 		
-		if (Presentation.running)
-		{
-			sm.update();
-			sm.render();
-			
-			Keyboard.update();
-			Mouse.update();
-		}
+		sm.update();
+		
+		Keyboard.update();
+		Mouse.update();
+		
+		sm.render();
 	}
 
 	public static void dispose(SlideManager sm) 
 	{
+		for (Slide slide : sm.slides)
+			slide.destroy();
+		
 		sm.slides.clear();
 	}
 

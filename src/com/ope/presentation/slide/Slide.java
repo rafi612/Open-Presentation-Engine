@@ -43,6 +43,11 @@ public class Slide
 		else exitanimation = Animation.getAnimation("none");
 	}
 	
+	public void destroy()
+	{
+		for (Element element : elements)
+			element.destroy();
+	}
 	
 	public void render()
 	{
