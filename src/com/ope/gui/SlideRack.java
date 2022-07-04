@@ -90,7 +90,7 @@ public class SlideRack extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		Object source = e.getSource();
+		var source = e.getSource();
 		
 		if (source == selected)
 		{

@@ -109,7 +109,7 @@ public class AttributesChooser extends JDialog implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		Object source = e.getSource();
+		var source = e.getSource();
 		
 		for (int i = 0; i < checkbox.size();i++)
 		{

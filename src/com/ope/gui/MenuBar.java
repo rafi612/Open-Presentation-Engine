@@ -189,7 +189,7 @@ public class MenuBar extends JMenuBar implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{
-		Object source = event.getSource();
+		var source = event.getSource();
 		
 		//menu===================================
 		//new project

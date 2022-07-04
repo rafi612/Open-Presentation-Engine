@@ -87,12 +87,12 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		actions.add(new JButton("Save slide"));
 		actions.add(new JButton("Discard slide"));
 		
-		for (int i = 0;i < actions.size(); i++)
-			actions.get(i).addActionListener(this);
-		
-		for (int i = 0;i < actions.size(); i++)
-			buttons.add(actions.get(i));
-		
+		for (JButton button : actions)
+		{
+			button.addActionListener(this);
+			buttons.add(button);
+		}
+			
 		add(buttons,BorderLayout.SOUTH);
 		
 		//list
@@ -261,7 +261,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Object source = e.getSource();
+		var source = e.getSource();
 		//new element
 		if (source == newelement)
 		{

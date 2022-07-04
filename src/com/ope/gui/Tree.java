@@ -133,7 +133,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		Object source = e.getSource();
+		var source = e.getSource();
 		
 		File select = null;
 		if (selected != null) select = new File(selected.toString());
