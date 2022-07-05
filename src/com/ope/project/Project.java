@@ -96,9 +96,9 @@ public class Project
 		Main.actionpanel.setEnabled(enabled);
 		
 		if(enabled)
-			Main.slidecreator.initenable();
+			Main.slidecreator.initEnable();
 		else
-			Main.slidecreator.disable();
+			Main.slidecreator.setEnabled(enabled);
 		
 	}
 

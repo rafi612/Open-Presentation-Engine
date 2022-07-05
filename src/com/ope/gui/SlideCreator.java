@@ -321,10 +321,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				if (canvas == null)
 					initCanvas();
 				
-				enableComponents(listpanel, true);
-				enableComponents(toolbar, true);
-				
-				savediscardenable(true);
+				setEnabled(true);
 				
 				slideloaded = true;
 			}
@@ -463,15 +460,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		listModel.set(new_, aObject);
 	}
 	
-	//setting save & discard action button enable
-	private void savediscardenable(boolean b)
-	{
-		//save
-		actions.get(2).setEnabled(b);
-		//discard
-		actions.get(3).setEnabled(b);
-	}
-	
 	private void openslide(String path)
 	{
 		XmlParser xml = new XmlParser(path);
@@ -491,8 +479,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		slideloaded = true;
 		
 		//enable
-		enableComponents(listpanel, true);
-		savediscardenable(true);
+		setEnabled(true);
 	}
 	
 	private void savedialog()
@@ -525,33 +512,38 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		{
 			listModel.clear();
 			elements.clear();
-			initenable();
+			initEnable();
 			slideloaded = false;
 		}
 		
 		return choose;
 	}
 	
-	public void initenable()
+	public void initEnable()
 	{
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
 		enableComponents(toolbar, false);
-		savediscardenable(false);
+		
+		//save
+		actions.get(2).setEnabled(false);
+		//discard
+		actions.get(3).setEnabled(false);
 	}
    
-	public void disable()
+	public void setEnabled(boolean enable)
 	{
-		enableComponents(this, false);
-		enableComponents(listpanel, false);
+		enableComponents(this, enable);
 	}
 	
 	public void enableComponents(Container container, boolean enable)
 	{
 		Component[] components = container.getComponents();
-		for (Component component : components) {
+		for (Component component : components) 
+		{
 			component.setEnabled(enable);
-			if (component instanceof Container) {
+			if (component instanceof Container) 
+			{
 				enableComponents((Container)component, enable);
 			}
 		}
@@ -563,8 +555,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		dragged = true;
 		int X = e.getX();
 		int Y = e.getY();
-		xPixel = (int)((float)X*((1280) / ((float)canvas.getWidth())));
-		yPixel = (int)((float)Y*((720) / ((float)canvas.getHeight())));
+		xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
+		yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
 		
 		position.setText("X: " + xPixel + " Y:" + yPixel);
 	}
@@ -574,8 +566,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		int X = e.getX();
 		int Y = e.getY();
-		xPixel = (int)((float)X*((1280) / ((float)canvas.getWidth())));
-		yPixel = (int)((float)Y*((720) / ((float)canvas.getHeight())));
+		xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
+		yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
 		
 		position.setText("X: " + xPixel + " Y:" + yPixel);
 	}
