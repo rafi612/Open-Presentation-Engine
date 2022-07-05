@@ -16,15 +16,15 @@ import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.lwjgl.opengl.GL;
@@ -53,8 +53,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public JList<String> list;
 	public JPanel listpanel;
 	
-	private JButton newelement,edit,up,down,rename,delete;
+	private JButton edit,up,down,rename,delete;
 	private JLabel position;
+	
 	
 	public int elementsint = 0;
 	public int xPixel,yPixel;
@@ -69,6 +70,52 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public ArrayList<Element> elements;
 	
 	private AWTGLCanvas canvas;
+	
+	class ToolBar extends JToolBar implements ActionListener
+	{
+		private static final long serialVersionUID = 1L;
+		
+		SlideCreator sc;
+		
+		public JButton image,text;
+		
+		public ToolBar(SlideCreator sc)
+		{
+			this.sc = sc;
+			image = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/image.png")));
+			image.setToolTipText("Add image");
+			image.addActionListener(this);
+			add(image);
+			
+			text = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/text.png")));
+			text.setToolTipText("Add Text");
+			text.addActionListener(this);
+			add(text);
+			
+			add(new JSeparator(JSeparator.VERTICAL));
+		}
+		
+		private String getNameWithNum(String name)
+		{
+			int repeat = 0;
+			for (Element element : sc.elements)
+				if (element.name.startsWith(name))
+					repeat++;
+			
+			return repeat == 0 ? name : name + " #" + repeat;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			var source = e.getSource();
+			
+			if (source == image)
+				sc.addElement(Element.getElementsByName("Image"),getNameWithNum("Image"));
+		}
+	}
+	
+	private ToolBar toolbar;
 	
 	public SlideCreator() 
 	{
@@ -92,6 +139,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			button.addActionListener(this);
 			buttons.add(button);
 		}
+		
+		toolbar = new ToolBar(this);
+		add(toolbar,BorderLayout.NORTH);
 			
 		add(buttons,BorderLayout.SOUTH);
 		
@@ -101,9 +151,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 		listModel = new DefaultListModel<String>();
 		list = new JList<String>(listModel);
-		
-		newelement = new JButton("+");
-		newelement.addActionListener(this);
 		
 		edit = new JButton("Edit");
 		edit.addActionListener(this);
@@ -121,7 +168,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		delete.addActionListener(this);
 		
 		JPanel panel1 = new JPanel();
-		panel1.add(newelement);
 		panel1.add(edit);
 		panel1.add(up);
 		panel1.add(down);
@@ -158,7 +204,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 		GLData data = new GLData();
 		data.swapInterval = 1;
-		data.profile = GLData.Profile.CORE;
 		
 		cpanel.add(canvas = new AWTGLCanvas(data) 
 		{
@@ -262,34 +307,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public void actionPerformed(ActionEvent e)
 	{
 		var source = e.getSource();
-		//new element
-		if (source == newelement)
-		{
-			JComboBox<String> combo = new JComboBox<String>(Element.types);
-			JTextField textfield = new JTextField();
-			JComponent[] c = {new JLabel("Choose Element:"),combo,new JLabel("Name:"),textfield};
-			
-			JOptionPane.showConfirmDialog(Main.frame,c, "New Element", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-			
-			elementsint++;
-			
-			String elementname;
-			
-			//getting name
-			if (textfield.getText().equals(""))
-				elementname = combo.getSelectedItem().toString();
-			else
-				elementname = textfield.getText();
-			
-			Element elem = Element.getElementsByName(combo.getSelectedItem().toString());
-			elem.id = elements.size();
-			elem.name = elementname;
-			elem.frame();
-			
-			//get and add element
-			elements.add(elem);
-			listModel.addElement(elementname);
-		}
+
 		//new slide
 		if (source == actions.get(0))
 		{
@@ -304,6 +322,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 					initCanvas();
 				
 				enableComponents(listpanel, true);
+				enableComponents(toolbar, true);
 				
 				savediscardenable(true);
 				
@@ -409,6 +428,19 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		}
 	}
 	
+	public void addElement(Element element,String name)
+	{
+		elementsint++;
+		
+		element.id = elements.size();
+		element.name = name;
+		element.frame();
+		
+		//get and add element
+		elements.add(element);
+		listModel.addElement(name);
+	}
+	
 	private void refreshElementsID()
 	{
 		//refresh id
@@ -504,6 +536,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
+		enableComponents(toolbar, false);
 		savediscardenable(false);
 	}
    
@@ -546,34 +579,23 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		position.setText("X: " + xPixel + " Y:" + yPixel);
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) 
-	{
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-		
-	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) 
 	{
 		dragged = false;
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-
-		
-	}
+	public void mousePressed(MouseEvent e){}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 
 }
