@@ -209,9 +209,8 @@ public class Project
 		if (files == null) return;
 		for (File file : files) 
 		{
-			DefaultMutableTreeNode childNode = null;
+			var childNode = new DefaultMutableTreeNode(file);
 			
-			childNode = new DefaultMutableTreeNode(file);
 			node.add(childNode);
 			if (file.isDirectory()) 
 				createChildren(file, childNode); 

@@ -267,8 +267,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		list.setSelectedIndex(currentMovedID);
 		
 		//render
-		for (int i = 0;i < elements.size();i++)
-			elements.get(i).render();
+		for (Element element : elements)
+			element.render();
 	}
 	
 	private float sx,sy;
@@ -464,7 +464,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		XmlParser xml = new XmlParser(path);
 		
-		org.w3c.dom.Element[] elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
+		var elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
 		
 		for (int i = 0;i < elements_.length;i++)
 		{
@@ -490,9 +490,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				+ "<slide>\n";
 		
 		//saving elements to xml string
-		for (int i = 0;i < elements.size();i++)
+		for (Element element : elements)
 		{
-			xml += elements.get(i).save();
+			xml += element.save();
 		}
 		xml += "<all>" + elements.size() + "</all>\n";
 		xml += "</slide>";

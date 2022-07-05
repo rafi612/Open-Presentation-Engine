@@ -109,9 +109,9 @@ public class SlideManager
 	{
 		XmlParser xml = new XmlParser(Util.projectPath(Project.PROJECT_XML_NAME));
 		
-		org.w3c.dom.Element[] elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
+		var elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
 		
-		for (org.w3c.dom.Element element : elements)
+		for (var element : elements)
 		{
 			Slide slide = new Slide();
 			slide.load(element);

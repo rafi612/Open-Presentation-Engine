@@ -20,11 +20,11 @@ public class Slide
 
 	public void load(org.w3c.dom.Element element)
 	{
-		org.w3c.dom.Element layout = XmlParser.getElementsFromElementByName(element,"layout")[0];
+		var layout = XmlParser.getElementsFromElementByName(element,"layout")[0];
 		
 		//layout
 		XmlParser layoutxml = new XmlParser(Util.projectPath(layout.getTextContent()));
-		org.w3c.dom.Element[] elements_ = XmlParser.getElements(layoutxml.getElementsByTagName("element"));
+		var elements_ = XmlParser.getElements(layoutxml.getElementsByTagName("element"));
 		
 		for (int i = 0;i < elements_.length;i++)
 		{

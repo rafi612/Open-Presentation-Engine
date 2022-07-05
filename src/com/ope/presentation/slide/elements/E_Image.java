@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -80,7 +79,7 @@ public class E_Image extends SquareBasedElement
 			name = element.getAttribute("name");
 			
 			//[0] getting first element from array
-			org.w3c.dom.Element data = XmlParser.getElementsFromElementByName(element,"data")[0];
+			var data = XmlParser.getElementsFromElementByName(element,"data")[0];
 			
 			//loading image
 			path = data.getAttribute("src");
@@ -199,16 +198,16 @@ class ImageFrame extends JDialog implements ChangeListener
 			});
 		});
 		
-		SpinnerModel modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
+		var modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sx = new JSpinner(modelx);
 		
-		SpinnerModel modely = new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
+		var modely = new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
 		sy = new JSpinner(modely);
 		
-		SpinnerModel modelw = new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1);       
+		var modelw = new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1);       
 		sw = new JSpinner(modelw);
 		
-		SpinnerModel modelh = new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1);       
+		var modelh = new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1);       
 		sh = new JSpinner(modelh);
 		
 		String[] labels = {"","X:","Y:","Width:","Height"};
