@@ -58,7 +58,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	private JButton edit,up,down,rename,delete;
 	private JLabel position;
 	
-	
 	public int elementsint = 0;
 	public int xPixel,yPixel;
 	
