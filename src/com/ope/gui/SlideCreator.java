@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.lwjgl.opengl.GL;
@@ -71,17 +73,30 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private AWTGLCanvas canvas;
 	
+	private File openedfile;
+	
 	class ToolBar extends JToolBar implements ActionListener
 	{
 		private static final long serialVersionUID = 1L;
 		
 		SlideCreator sc;
 		
+		public JLabel name;
 		public JButton image,text;
 		
 		public ToolBar(SlideCreator sc)
 		{
 			this.sc = sc;
+			
+			setFloatable(false);
+			
+			name = new JLabel("No file",SwingConstants.CENTER);
+			name.setBorder(BorderFactory.createEmptyBorder(2,4,2,2));
+			name.setPreferredSize(new Dimension(75,32));
+			add(name);
+			
+			add(new JSeparator(JSeparator.VERTICAL));
+			
 			image = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/image.png")));
 			image.setToolTipText("Add image");
 			image.addActionListener(this);
@@ -321,6 +336,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				if (canvas == null)
 					initCanvas();
 				
+				toolbar.name.setText("Untitled");
+				
 				setEnabled(true);
 				
 				slideloaded = true;
@@ -478,13 +495,25 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		slideloaded = true;
 		
+		openedfile = new File(path);
+		toolbar.name.setText(openedfile.getName());
+		
 		//enable
 		setEnabled(true);
 	}
 	
 	private void savedialog()
 	{
-		String path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE);
+		String path = "";
+		if (openedfile == null)
+		{
+			path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
+					+ ".layout";
+			openedfile = new File(path);
+			toolbar.name.setText(openedfile.getName());
+		}
+		else
+			path = openedfile.getPath();
 		
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<slide>\n";
@@ -498,7 +527,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		xml += "</slide>";
 		
 		//save file
-		Util.saveFile(Util.projectPath(path + ".layout"), xml);
+		Util.saveFile(Util.projectPath(path), xml);
 		
 		Project.refreshProject();
 	}
@@ -506,10 +535,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	private int discarddialog()
 	{
 		if (!slideloaded) return 0;
+		
 		int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 		// "yes" option
 		if (choose == 0)
 		{
+			openedfile = null;
+			toolbar.name.setText("No file");
+			
 			listModel.clear();
 			elements.clear();
 			initEnable();
