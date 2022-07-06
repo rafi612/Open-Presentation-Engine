@@ -16,9 +16,11 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
+import org.w3c.dom.Element;
 
 import com.ope.audio.Sound;
 import com.ope.io.Util;
+import com.ope.io.XmlParser;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
 import com.ope.presentation.slide.SlideManager;
@@ -84,12 +86,16 @@ public class Presentation
 		glfwSetMouseButtonCallback(window,Mouse::mouseButton);
 		glfwSetCursorPosCallback(window,Mouse::mouseMove);
 		
+		glfwGetWindowPos(window, lastx, lasty);
+		glfwGetWindowSize(window, lastw, lasth);
+		
 		glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		
 		glfwSwapInterval(1);
 		
-		sm.load();
+		load();
+		
 		MainLoop.init(sm);
 		
 		glfwShowWindow(window);
@@ -111,6 +117,17 @@ public class Presentation
 		stop();	
 	}
 	
+	public static void load()
+	{
+		XmlParser xml = new XmlParser(Util.projectPath(Project.PROJECT_XML_NAME));
+		
+		Element global = XmlParser.getElements(xml.getElementsByTagName("global"))[0];
+		
+		setFullscreen(Boolean.parseBoolean(global.getAttribute("fullscreen")));
+		
+		sm.load(xml);
+	}
+	
 	private static GLFWImage.Buffer icon(String path)
 	{
 		try (MemoryStack stack = MemoryStack.stackPush()) 
@@ -129,26 +146,26 @@ public class Presentation
 		}
 	}
 	
-	static IntBuffer lastx,lasty,lastw,lasth;
-	public static void Fullscreen(boolean b)
+	static IntBuffer lastx = BufferUtils.createIntBuffer(1),
+		lasty = BufferUtils.createIntBuffer(1),
+		lastw = BufferUtils.createIntBuffer(1),
+		lasth = BufferUtils.createIntBuffer(1);
+	
+	public static void setFullscreen(boolean full)
 	{
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode mode = glfwGetVideoMode(monitor);
 		
-		if (fullscreen)
+		if (full)
 		{
-			lastx = BufferUtils.createIntBuffer(1);
-			lasty = BufferUtils.createIntBuffer(1);
-			lastw = BufferUtils.createIntBuffer(1);
-			lasth = BufferUtils.createIntBuffer(1);
-			
+			fullscreen = true;
 			glfwGetWindowPos(window, lastx, lasty);
 			glfwGetWindowSize(window, lastw, lasth);
-			
 			glfwSetWindowMonitor(window,monitor,0,0,mode.width(),mode.height(),GLFW_DONT_CARE);
 		}
 		else
 		{
+			fullscreen = false;
 			// restore last window size and position
 			glfwSetWindowMonitor(window, NULL, lastx.get(),lasty.get(),lastw.get(),lasth.get(),GLFW_DONT_CARE);
 		}

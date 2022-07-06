@@ -24,7 +24,7 @@ public class MainLoop
 		if (Keyboard.getKeyOnce(GLFW_KEY_F11))
 		{
 			Presentation.fullscreen = !Presentation.fullscreen;
-			Presentation.Fullscreen(Presentation.fullscreen);
+			Presentation.setFullscreen(Presentation.fullscreen);
 		}
 		
 		sm.update();

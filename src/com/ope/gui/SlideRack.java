@@ -37,9 +37,12 @@ public class SlideRack extends JPanel implements ActionListener
 	public JPanel rackpanel;
 	
 	public ArrayList<RackElement> elements;
+	
+	public MenuBar parentmenu;
 
-	public SlideRack() 
+	public SlideRack(MenuBar parentmenu) 
 	{
+		this.parentmenu = parentmenu;
 		setLayout(new BorderLayout());
 		
         JPanel actions = new JPanel();
@@ -214,6 +217,7 @@ public class SlideRack extends JPanel implements ActionListener
 		{
 			lines += elements.get(i).getSlideXmlTag(i) + "\n";
 		}
+		lines += "<global fullscreen=\"" + parentmenu.fullscreen.isSelected() +"\"></global>\n";
 		lines += "</project>";
 		
 		Util.saveFile(path, lines);
@@ -239,6 +243,9 @@ public class SlideRack extends JPanel implements ActionListener
 			addElement(elem);
 		}
 		
+		Element global = XmlParser.getElements(xml.getElementsByTagName("global"))[0];
+		
+		parentmenu.fullscreen.setSelected(Boolean.parseBoolean(global.getAttribute("fullscreen")));
 	}
 	
 	

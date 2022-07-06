@@ -7,12 +7,10 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
-import com.ope.io.Util;
 import com.ope.io.XmlParser;
 import com.ope.presentation.animation.Animation;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.main.Presentation;
-import com.ope.project.Project;
 
 public class SlideManager
 {
@@ -105,10 +103,8 @@ public class SlideManager
 		
 	}
 	
-	public void load()
-	{
-		XmlParser xml = new XmlParser(Util.projectPath(Project.PROJECT_XML_NAME));
-		
+	public void load(XmlParser xml)
+	{		
 		var elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
 		
 		for (var element : elements)

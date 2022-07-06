@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -30,16 +31,16 @@ public class MenuBar extends JMenuBar implements ActionListener
 
 	public JFrame parentframe;
 	
-	public JMenu file,edit,tools,run,settings,help;
+	public JMenu file,tools,run,project,settings,help;
 	
 	//file
 	public JMenuItem newproject,loadproject,save,export,exitproject,exit;
 	
-	//edit
-	public JMenuItem cut,paste,copy,selectAll;
-	
 	//tools
 	public JMenuItem refresh;
+	
+	//project
+	public JCheckBoxMenuItem fullscreen;
 	
 	//run
 	public JMenuItem runandbuild,run_;
@@ -61,10 +62,10 @@ public class MenuBar extends JMenuBar implements ActionListener
 		
 		//menu
 		file = new JMenu("File");
-		edit = new JMenu("Edit");
 		tools = new JMenu("Tools");
-		settings = new JMenu("Settings");
+		project = new JMenu("Project");
 		run = new JMenu("Run");
+		settings = new JMenu("Settings");
 		help = new JMenu("Help");
 		
 		//file
@@ -107,20 +108,6 @@ public class MenuBar extends JMenuBar implements ActionListener
 		exit.setAccelerator(KeyStroke.getKeyStroke("alt F4"));
 		file.add(exit);
 		
-		//edit
-		copy= new JMenuItem("Copy");
-		copy.setEnabled(false);
-		edit.add(copy);
-		paste= new JMenuItem("Paste");   
-		paste.setEnabled(false);
-		edit.add(paste);
-		cut= new JMenuItem("Cut");
-		cut.setEnabled(false);
-		edit.add(cut);
-		selectAll= new JMenuItem("Select All"); 
-		selectAll.setEnabled(false);
-		edit.add(selectAll);
-		
 		
 		//tools
 		refresh = new JMenuItem("Refresh Project"); 
@@ -139,6 +126,10 @@ public class MenuBar extends JMenuBar implements ActionListener
 		run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));;
 		run.add(runandbuild);
 		run.add(run_);
+		
+		//project
+		fullscreen = new JCheckBoxMenuItem("Fullscreen");	
+		project.add(fullscreen);
 		
 		//settings
 		theme = new JMenu("Theme");
@@ -179,8 +170,8 @@ public class MenuBar extends JMenuBar implements ActionListener
 		help.add(license);
 		
 		add(file);
-		add(edit);
 		add(tools);
+		add(project);
 		add(run);
 		add(settings);
 		add(help);

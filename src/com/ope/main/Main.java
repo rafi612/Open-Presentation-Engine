@@ -40,12 +40,14 @@ public class Main
 	public static void initUI()
 	{
 		tabs = new JTabbedPane();
+		
+		menubar = new MenuBar(frame); 
 
 		//slide creator
 		slidecreator = new SlideCreator();
 		
 		//slide rack
-		sliderack = new SlideRack();
+		sliderack = new SlideRack(menubar);
 
 		//tabs
 		tabs.add("Slides",sliderack);
@@ -61,7 +63,6 @@ public class Main
 		actionpanel = new ActionPanel();
 		frame.add(actionpanel,BorderLayout.SOUTH);
 		
-		menubar = new MenuBar(frame); 
 		frame.setJMenuBar(menubar);
 		
 		frame.addWindowListener(new WindowAdapter() {

@@ -81,18 +81,15 @@ public class Project
 	
 	public static void interfaceEnable(boolean enabled)
 	{
-		Main.tree.setEnabled(enabled);
 		Main.menubar.save.setEnabled(enabled);
-		Main.menubar.copy.setEnabled(enabled);
-		Main.menubar.paste.setEnabled(enabled);
-		Main.menubar.cut.setEnabled(enabled);
-		Main.menubar.selectAll.setEnabled(enabled);
+		Main.menubar.project.setEnabled(enabled);
 		Main.menubar.run.setEnabled(enabled);
 		Main.menubar.refresh.setEnabled(enabled);
 		Main.menubar.export.setEnabled(enabled);
 		Main.menubar.exitproject.setEnabled(enabled);
-		Main.sliderack.setEnabled(enabled);
 		
+		Main.tree.setEnabled(enabled);
+		Main.sliderack.setEnabled(enabled);
 		Main.actionpanel.setEnabled(enabled);
 		
 		if(enabled)
@@ -123,7 +120,7 @@ public class Project
 		{
 			save();
 			
-			Project.refreshProject();
+			refreshProject();
 			
 			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 				
