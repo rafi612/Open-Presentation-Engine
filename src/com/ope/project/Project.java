@@ -75,6 +75,7 @@ public class Project
 	{
 		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<project>\n"
+				+ "<global fullscreen=true/>\n"
 				+ "</project>";
 		Util.saveFile(path, lines);
 	}

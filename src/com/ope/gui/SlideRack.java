@@ -217,7 +217,7 @@ public class SlideRack extends JPanel implements ActionListener
 		{
 			lines += elements.get(i).getSlideXmlTag(i) + "\n";
 		}
-		lines += "<global fullscreen=\"" + parentmenu.fullscreen.isSelected() +"\"></global>\n";
+		lines += "<global fullscreen=\"" + parentmenu.fullscreen.isSelected() +"\"/>\n";
 		lines += "</project>";
 		
 		Util.saveFile(path, lines);
