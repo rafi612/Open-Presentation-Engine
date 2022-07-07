@@ -14,7 +14,7 @@ public class A_Slide extends Attribute
 {
 	private static final long serialVersionUID = 1L;
 	
-	public String path = "";
+	public String path;
 	
 	public A_Slide()
 	{
@@ -33,7 +33,7 @@ public class A_Slide extends Attribute
 	public void load(Element element)
 	{
 		path = element.getTextContent();
-		setText(path.equals("") ? "None" : path);
+		setText(path.equals("") ? "None" : new File(path).getName());
 	}
 	
 	public void onActivate()
