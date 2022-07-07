@@ -88,6 +88,9 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		System.setProperty("awt.useSystemAAFontSettings", "on");
+		System.setProperty("jdk.gtk.version", "2");
+		
 		if (args.length < 1)
 		{
 			frame = new JFrame(TITLE);

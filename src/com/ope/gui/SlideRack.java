@@ -58,11 +58,13 @@ public class SlideRack extends JPanel implements ActionListener
 		actionbuttons.add(new JButton("Move Up"));
 		actionbuttons.add(new JButton("Move Down"));
 		
-	    for (int i = 0;i < actionbuttons.size(); i++)
+	    for (JButton button : actionbuttons)
 	    {
-	    	actionbuttons.get(i).addActionListener(this);
-	    	actionbuttons.get(i).setMaximumSize(new Dimension(200,40));
-	    	actions.add(actionbuttons.get(i));
+	    	button.addActionListener(this);
+	    	button.setMaximumSize(new Dimension(200,40));
+	    	button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+	    	
+	    	actions.add(button);
 	    }
 	        
 	    add(actions,BorderLayout.EAST);

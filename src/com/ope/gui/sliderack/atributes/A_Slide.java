@@ -14,7 +14,7 @@ public class A_Slide extends Attribute
 {
 	private static final long serialVersionUID = 1L;
 	
-	public String path;
+	public String path = "";
 	
 	public A_Slide()
 	{
