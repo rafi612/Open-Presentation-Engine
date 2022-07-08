@@ -191,7 +191,7 @@ public class Util
 			ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
 			imageBuffer.put(pixels_raw);
 			imageBuffer.flip();
-			ByteBuffer result =  STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+			ByteBuffer result = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
 			
 			MemoryUtil.memFree(imageBuffer);
 			in.close();

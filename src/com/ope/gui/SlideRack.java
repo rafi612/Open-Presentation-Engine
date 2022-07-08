@@ -109,7 +109,6 @@ public class SlideRack extends JPanel implements ActionListener
 		if (source == actionbuttons.get(0))
 		{
 			RackElement element = new RackElement("Slide " + elements.size(),this);
-			//r.setColor(new Color(new Random().nextInt()));
 			addElement(element);
 			
 			selected.setEnabled(true);

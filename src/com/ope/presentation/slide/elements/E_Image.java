@@ -144,10 +144,8 @@ public class E_Image extends SquareBasedElement
 class ImageFrame extends JDialog implements ChangeListener
 {
 	private static final long serialVersionUID = 1L;
-	public JSpinner sx;
-	public JSpinner sy;
-	JSpinner sw;
-	JSpinner sh;
+	
+	public JSpinner sx,sy,sw,sh;
 	JButton buttonpath;
 	
 	E_Image element;
@@ -198,17 +196,13 @@ class ImageFrame extends JDialog implements ChangeListener
 			});
 		});
 		
-		var modelx = new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
-		sx = new JSpinner(modelx);
+		sx = new JSpinner(new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
+		 
+		sy = new JSpinner(new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
 		
-		var modely = new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1);       
-		sy = new JSpinner(modely);
+		sw = new JSpinner(new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1));
 		
-		var modelw = new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1);       
-		sw = new JSpinner(modelw);
-		
-		var modelh = new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1);       
-		sh = new JSpinner(modelh);
+		sh = new JSpinner(new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1));
 		
 		String[] labels = {"","X:","Y:","Width:","Height"};
 		JComponent[] components = {buttonpath,sx,sy,sw,sh};
