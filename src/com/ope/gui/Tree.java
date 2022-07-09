@@ -34,7 +34,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
     public JMenuItem newfile, newfolder, deletefile,renamefile,cutfile,copyfile,pastefile;
 	DefaultMutableTreeNode selected = null,mainroot = null;
 	
-	File copy = null;
+	File copy;
 	
 	// 1 = copy, 0 = cut, -1 = none operation
 	int operation = -1;

@@ -1,6 +1,5 @@
 package com.ope.graphics;
 
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import org.joml.Matrix4f;
@@ -12,16 +11,18 @@ public class Renderer
 {
 	static Shader texture_shader,rect_shader,gradient_shader;
 	
-	static float angle;
-	
-	static Matrix4f projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
+	static Matrix4f projectionMatrix;
 	
 	static Mesh quad,line_strip;
 	
 	static boolean fallback = false;
 	
+	static float angle;
+	
 	public static void init() 
 	{
+		projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
+		
 		if (!isFallback())
 		{
 			texture_shader = new Shader("/shaders/texture_vs.glsl","/shaders/texture_fs.glsl");
@@ -125,8 +126,7 @@ public class Renderer
 		
 		tex.bind();
 		quad.draw();
-		
-		glBindTexture(GL_TEXTURE_2D, 0);
+		tex.unbind();
 		
 		reset();
 	}

@@ -54,8 +54,6 @@ public class FallbackRenderer
 		if (image.id == 0)
 			image.bind();
 		
-		glBindTexture(GL_TEXTURE_2D, image.id);
-		
 		glColor4f(1,1,1,1);
 		glBegin(GL_QUADS);
 		
@@ -71,7 +69,7 @@ public class FallbackRenderer
 		glTexCoord2f(0, 1);
 		glVertex2f(x, y + height);
 		
-		glBindTexture(GL_TEXTURE_2D, 0);
+		image.unbind();
 		
 		glEnd();
 		

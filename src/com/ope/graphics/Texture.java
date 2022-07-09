@@ -83,6 +83,11 @@ public class Texture
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
+	public void unbind()
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	
 	public void destroy()
 	{
 		if (id != 0)
