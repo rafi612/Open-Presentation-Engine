@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 
@@ -18,10 +19,12 @@ public class Renderer
 	static boolean fallback = false;
 	
 	static float angle;
+	static Vector2i size;
 	
 	public static void init() 
 	{
-		projectionMatrix = new Matrix4f().ortho(0, 1280, 720, 0, -1280,1280);
+		size = new Vector2i(1280,720);
+		projectionMatrix = new Matrix4f().ortho(0, size.x, size.y, 0, -size.x,size.x);
 		
 		if (!isFallback())
 		{
@@ -71,6 +74,16 @@ public class Renderer
 			
 			line_strip = new Mesh(line_vertecies,line_indices);
 		}
+	}
+	
+	public static Vector2i getSize()
+	{
+		return size;
+	}
+	
+	public static void setSize(int x,int y)
+	{
+		size.set(x, y);
 	}
 	
 	public static boolean isFallback()

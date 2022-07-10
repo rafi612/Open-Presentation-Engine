@@ -49,7 +49,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public ArrayList<JButton> actions = new ArrayList<JButton>();
 	
-	public static final int WIDTH = 1280,HEIGHT = 720;
+	public static int WIDTH = 1280,HEIGHT = 720;
 	
 	private DefaultListModel<String> listModel;
 	public JList<String> list;

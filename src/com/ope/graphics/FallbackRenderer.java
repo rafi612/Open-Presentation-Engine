@@ -3,14 +3,14 @@ package com.ope.graphics;
 import static org.lwjgl.opengl.GL11.*;
 import org.joml.Vector4f;
 
-public class FallbackRenderer 
+public class FallbackRenderer extends Renderer
 {
 	public static void resize()
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		
-		glOrtho(0,1280,720,0,-1, 1);
+		glOrtho(0,size.x,size.y,0,-1, 1);
 		glMatrixMode(GL_MODELVIEW);
 	}
 	
@@ -27,7 +27,7 @@ public class FallbackRenderer
 		glEnd();
 		glFlush();
 		
-		Renderer.reset();
+		reset();
 	}
 	
 	public static void frectnofill(float x,float y,float width,float height,Vector4f color)
@@ -44,7 +44,7 @@ public class FallbackRenderer
 		glEnd();
 		glFlush();
 		
-		Renderer.reset();
+		reset();
 	}
 	
 	public static void drawImage(Texture image,float x,float y,float width,float height)
@@ -76,7 +76,7 @@ public class FallbackRenderer
 		glDisable(GL_TEXTURE_2D);
 		glFlush();
 		
-		Renderer.reset();
+		reset();
 	}
 	
 	public static void drawVerticalGradient(float x,float y,float width,float height,Vector4f color,Vector4f color2)
@@ -93,6 +93,6 @@ public class FallbackRenderer
 		glEnd();
 		glFlush();
 		
-		Renderer.reset();
+		reset();
 	}
 }

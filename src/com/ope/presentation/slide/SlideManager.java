@@ -126,7 +126,7 @@ public class SlideManager
 	public void render()
 	{
 		if (slides.size() == 0) 
-			Renderer.drawImage(empty, 0, 0, 1280,720);
+			Renderer.drawImage(empty, 0, 0, Renderer.getSize().x,Renderer.getSize().y);
 		else
 		{
 			slides.get(choose).render();
