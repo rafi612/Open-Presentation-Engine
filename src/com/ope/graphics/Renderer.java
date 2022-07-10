@@ -116,6 +116,11 @@ public class Renderer
 		angle = 0;
 	}
 	
+	public static void clearColor(Vector4f color)
+	{
+		glClearColor(color.x,color.y,color.z,color.w);
+	}
+	
 	public static void drawImage(Texture tex,float x,float y,float w,float h)
 	{
 		if (isFallback())
