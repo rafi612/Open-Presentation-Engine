@@ -9,7 +9,7 @@ import com.ope.presentation.animation.Animation;
 
 public class Slide
 {
-	public Animation startanimation,exitanimation;
+	public Animation animation;
 	
 	public ArrayList<Element> elements;
 	
@@ -34,13 +34,9 @@ public class Slide
 			
 			elements.add(elem);
 		}
-		if (XmlParser.existsFromElementByName(element, "start_animation"))
-			startanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"start_animation")[0].getTextContent());
-		else startanimation = Animation.getAnimation("none");
-		
-		if (XmlParser.existsFromElementByName(element, "exit_animation"))
-			exitanimation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"exit_animation")[0].getTextContent());
-		else exitanimation = Animation.getAnimation("none");
+		if (XmlParser.existsFromElementByName(element, "animation"))
+			animation = Animation.getAnimation(XmlParser.getElementsFromElementByName(element,"animation")[0].getAttribute("type"));
+		else animation = Animation.getAnimation("none");
 	}
 	
 	public void destroy()

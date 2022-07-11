@@ -17,88 +17,103 @@ public class SlideManager
 	public ArrayList<Slide> slides;
 
 	public int choose;
-	Texture empty;
+	Texture empty,endimage;
 	
 	boolean switchslide = false;
+	boolean end = false;
 	int switchside;
 	
-	Animation startanimation;
-	Animation exitanimation;
+	int beforeslide,targetslide;
+	
+	Animation animation;
 	
 	public SlideManager()
 	{
 		choose = 0;
 		empty = new Texture(SlideManager.class.getResourceAsStream("/images/empty.png"));
+		endimage  = new Texture(SlideManager.class.getResourceAsStream("/images/slideend.png"));
 		
 		slides = new ArrayList<Slide>();
 	}
-	boolean ttsswitch = true;
 	
 	public void update()
-	{
-		//TODO: rewrite logic engine
-		
-		// if not 0
-		if (slides.size() != 0)
+	{		
+		if (slides.size() != 0 && !end)
 		{
+			glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
 			//if slide not switching
 			if (!switchslide)
 			{
 				//key switching
 				if (Keyboard.getKeyOnce(GLFW_KEY_UP))
 				{
-					exitanimation = slides.get(choose).exitanimation;
-					exitanimation.reset();
-					exitanimation.start();
+					if (choose == slides.size() - 1)
+					{
+						end = true;
+						return;
+					}
+					
+					animation = slides.get(choose + 1).animation;
+					animation.reset();
+					animation.start();
+					
+					beforeslide = choose;
+					targetslide = choose + 1;
+					
 					switchslide = true;
-					switchside = 0;
+					switchside = -1;
 					
 				}
 				if (Keyboard.getKeyOnce(GLFW_KEY_DOWN))
 				{
-					exitanimation = slides.get(choose).exitanimation;
-					exitanimation.reset();
-					exitanimation.start();
+					//return if in 0 slide
+					if (choose == 0)
+						return;
+					
+					animation = slides.get(choose - 1).animation;
+					animation.reset();
+					animation.start();
+					
+					beforeslide = choose;
+					targetslide = choose - 1;
+					
 					switchslide = true;
 					switchside = 1;
 				}
 			}
 			
 			//new slide opened
-			if (switchslide && (exitanimation.isEnding() || !exitanimation.isRunning()))
+			if (switchslide && !animation.isSwitched())
 			{
-				if (switchside == 0)
+				if (switchside == -1)
 				{	
-					if (choose < slides.size() - 1) choose++;
-					startanimation = slides.get(choose).startanimation;
-					startanimation.reset();
+					choose++;
 					
-					switchside = -1;
+					switchside = 0;
 					switchslide = false;
-					ttsswitch = true;
 				}
-				if (switchside == 1)
+				else if (switchside == 1)
 				{
-					if (choose > 0)choose--;
-					startanimation = slides.get(choose).startanimation;
-					startanimation.reset();
-					switchside = -1;
+					choose--;
+					
+					switchside = 0;
 					switchslide = false;
-					ttsswitch = true;
 				}
 			}
-
-			//animation update
-			if (!startanimation.isRunning())
-			{
-				startanimation.start();
-				
-				glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - Slide: " + (choose + 1));
-			}
-			if (startanimation.isRunning()) startanimation.update();
-			
-			
-			if (exitanimation.isRunning()) exitanimation.update();
+ 
+			if (animation.isRunning())
+				animation.update();
+		}
+		
+		if (end)
+		{
+			//get back on down arrow click
+			glfwSetWindowTitle(Presentation.window,Presentation.TITLE + " - End");
+			if (Keyboard.getKeyOnce(GLFW_KEY_DOWN))
+				end = false;
+			//close window on up arrow click
+			if (Keyboard.getKeyOnce(GLFW_KEY_UP))
+				glfwSetWindowShouldClose(Presentation.window, true);
 		}
 		
 	}
@@ -117,21 +132,41 @@ public class SlideManager
 		
 		if (slides.size() > 0)
 		{
-			startanimation = slides.get(0).startanimation;
-			exitanimation = slides.get(0).exitanimation;
+			animation = slides.get(0).animation;
+			animation.switchAnimation();
+			animation.start();
+			
+			beforeslide = 0;
+			targetslide = 0;
 		}
 
 	}
 	
 	public void render()
-	{
+	{		
 		if (slides.size() == 0) 
 			Renderer.drawImage(empty, 0, 0, Renderer.getSize().x,Renderer.getSize().y);
+		else if (end)
+		{			
+			Renderer.drawImage(endimage, 0,0,300,50);
+		}
 		else
 		{
-			slides.get(choose).render();
-			startanimation.render();
-			exitanimation.render();
+			if (animation.isRunning()) 
+				animation.render(slides.get(beforeslide),slides.get(targetslide));
+			else 
+				slides.get(choose).render();
 		}
+	}
+	
+	public void destroy()
+	{
+		for (Slide slide : slides)
+			slide.destroy();
+		
+		empty.destroy();
+		endimage.destroy();
+		
+		slides.clear();
 	}
 }

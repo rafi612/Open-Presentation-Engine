@@ -9,16 +9,16 @@ import org.w3c.dom.Element;
 
 import com.ope.main.Main;
 
-public class A_Start_Animation extends Attribute 
+public class A_Animation extends Attribute 
 {
 	private static final long serialVersionUID = 1L;
 	
 	String animation;
 
-	public A_Start_Animation()
+	public A_Animation()
 	{
-		super(Attribute.Type.START_ANIMATION.getFullName() + ": None");
-		type = Attribute.Type.START_ANIMATION;
+		super(Attribute.Type.ANIMATION.getFullName() + ": None");
+		type = Attribute.Type.ANIMATION;
 		
 		canBeMultiple = false;
 		isAlways = false;
@@ -26,12 +26,12 @@ public class A_Start_Animation extends Attribute
 
 	public String getXmlTag()
 	{
-		return "\t<start_animation>" + animation + "</start_animation>";
+		return "\t<animation type=\"" + animation + "\"></animation>";
 	}
 	
 	public void load(Element element)
 	{
-		animation = element.getTextContent();
+		animation = element.getAttribute("type");
 		setText(animation);
 	}
 	

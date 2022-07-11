@@ -158,6 +158,11 @@ public class Presentation
 		
 		if (full)
 		{
+			lastx = BufferUtils.createIntBuffer(1);
+			lasty = BufferUtils.createIntBuffer(1);
+			lastw = BufferUtils.createIntBuffer(1);
+			lasth = BufferUtils.createIntBuffer(1);
+			
 			fullscreen = true;
 			glfwGetWindowPos(window, lastx, lasty);
 			glfwGetWindowSize(window, lastw, lasth);
@@ -180,7 +185,6 @@ public class Presentation
 			MainLoop.dispose(sm);
 			
 			glfwDestroyWindow(window);
-			window = NULL;
 			glfwTerminate();
 		}
 	}

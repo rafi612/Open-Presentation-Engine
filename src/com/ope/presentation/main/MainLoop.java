@@ -4,7 +4,6 @@ package com.ope.presentation.main;
 import com.ope.graphics.Renderer;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
-import com.ope.presentation.slide.Slide;
 import com.ope.presentation.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,7 +15,7 @@ public class MainLoop
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		glClearColor(1, 1, 1, 1);
+		glClearColor(0,0,0,1);
 		
 		if (Keyboard.getKeyOnce(GLFW_KEY_ESCAPE))
 			glfwSetWindowShouldClose(Presentation.window, true);
@@ -29,6 +28,7 @@ public class MainLoop
 		
 		sm.update();
 		
+		//update keyboard and mouse events
 		Keyboard.update();
 		Mouse.update();
 		
@@ -36,16 +36,13 @@ public class MainLoop
 	}
 
 	public static void dispose(SlideManager sm) 
-	{
-		for (Slide slide : sm.slides)
-			slide.destroy();
-		
-		sm.slides.clear();
+	{	
+		sm.destroy();
 	}
 
 	public static void init(SlideManager sm) 
 	{
-		glClearColor(1, 1, 1, 1);
+		glClearColor(0,0,0,1);
 		
 		glEnable(GL_TEXTURE_2D);
 		

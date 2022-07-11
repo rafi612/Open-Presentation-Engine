@@ -1,14 +1,12 @@
 package com.ope.presentation.animation;
 
+import com.ope.presentation.slide.Slide;
+
 public class Animation 
 {
-	
-//	public static final int APPEARING = 0;
-//	public static final int DISAPPEARANCE = 1;
-//	public static final int GLITCH = 2;
-	
 	protected boolean isRunning = false;
-	public int x,y;
+	
+	protected boolean switched = false;
 	
 	public Animation() 
 	{
@@ -25,9 +23,9 @@ public class Animation
 		return isRunning;
 	}
 	
-	public boolean isEnding()
+	public boolean isSwitched()
 	{
-		return true;
+		return switched;
 	}
 	
 	public void start()
@@ -35,21 +33,27 @@ public class Animation
 		isRunning = true;
 	}
 	
-	public static Animation getAnimation(String a)
+	public void switchAnimation()
 	{
-		if (a.toLowerCase().equals("appearing")) return new Appearing();
-		else if (a.toLowerCase().equals("disappearance")) return new Disappearance();
-		return new None();
-		
+		switched = true;
 	}
+	
 	
 	public void reset()
 	{
-		
+		switched = false;
+		isRunning = false;
 	}
 
-	public void render()
+	public void render(Slide before,Slide target)
 	{
+		
+	}
+	
+	public static Animation getAnimation(String a)
+	{
+		if (a.toLowerCase().equals("appearing")) return new Appearing(2.0f);
+		return new None();
 		
 	}
 }

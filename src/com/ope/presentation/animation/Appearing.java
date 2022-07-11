@@ -3,39 +3,74 @@ package com.ope.presentation.animation;
 import org.joml.Vector4f;
 
 import com.ope.graphics.Renderer;
+import com.ope.presentation.slide.Slide;
 
-public class Appearing extends Animation 
-{
-	int inputalpha = 255;
-
-	public Appearing() {}
+public class Appearing extends Animation
+{	
+	public float time,step,alpha;
 	
+	public Appearing(float time)
+	{
+		this.time = time;
+		
+		step = 1 / (60 * (time / 2));
+	}
+
 	public void update()
 	{
-		if (inputalpha > 2)
+		if (!switched)
 		{
-			inputalpha-=2;
+			if (alpha <= 1)
+			{
+				alpha+=step;
+			}
+			else switchAnimation();
 		}
-		else isRunning = false;
+		else
+		{
+			if (alpha > step)
+			{
+				alpha-=step;
+			}
+			else isRunning = false;
+		}
 	}
 	
-	public boolean isEnding()
+	
+	public void start()
 	{
-		return inputalpha <= 2;
+		super.start();
 	}
+	
 	
 	public void reset()
 	{
-		isRunning = false;
-		inputalpha = 255;
+		super.reset();
+		
+		alpha = 0;
 	}
-
-	public void render()
+	
+	public void switchAnimation()
 	{
-		if (isRunning)
-		{
-			if (inputalpha > 2) Renderer.frect(0, 0, 1280, 720, new Vector4f(0,0,0,(float)inputalpha/255));
-		}
+		super.switchAnimation();
+		
+		alpha = 1;
 	}
 
+	public void render(Slide before,Slide target)
+	{
+		if (!switched)
+		{
+			before.render();
+			
+			Renderer.frect(0, 0,Renderer.getSize().x,Renderer.getSize().y,new Vector4f(0,0,0,alpha));
+		}
+		else
+		{
+			target.render();
+			
+			Renderer.frect(0, 0,Renderer.getSize().x,Renderer.getSize().y,new Vector4f(0,0,0,alpha));
+		}
+			
+	}
 }

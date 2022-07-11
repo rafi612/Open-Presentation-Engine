@@ -16,8 +16,7 @@ public class Attribute extends JButton
 	public enum Type
 	{
 		SLIDE("layout","Slide Layout"),
-		START_ANIMATION("start_animation","Start Animation"),
-		EXIT_ANIMATION("exit_animation","Exit Animation");
+		ANIMATION("animation","Animation");
 		
 		String name,full_name;
 		Type(String name,String full_name) 
@@ -62,8 +61,7 @@ public class Attribute extends JButton
 	public static Attribute getAtributeByName(String n)
 	{
 		if (n.equals("layout")) return new A_Slide();
-		else if (n.equals("start_animation")) return new A_Start_Animation();
-		else if (n.equals("exit_animation")) return new A_Exit_Animation();
+		else if (n.equals("animation")) return new A_Animation();
 		return new Attribute(n);
 	}
 }

@@ -1,31 +1,27 @@
 package com.ope.presentation.animation;
 
-public class None extends Animation
-{
+import com.ope.presentation.slide.Slide;
 
-	public None() 
-	{
-		
-	}
-	
-	public void update()
-	{
-		
-	}
-	
+public class None extends Animation
+{		
 	public void start()
 	{
-
+		
 	}
+	
+	public void switchAnimation()
+	{
+		
+	}
+	
 	
 	public void reset()
 	{
-		
+
 	}
 
-	public void render()
+	public void render(Slide before,Slide target)
 	{
 		
 	}
-
 }

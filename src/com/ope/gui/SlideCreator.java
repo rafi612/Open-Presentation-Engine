@@ -506,8 +506,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		String path = "";
 		if (openedfile == null)
 		{
-			path = JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
-					+ ".layout";
+			path = Util.projectPath(JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
+					+ ".layout");
 			openedfile = new File(path);
 			toolbar.name.setText(openedfile.getName());
 		}
@@ -526,7 +526,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		xml += "</slide>";
 		
 		//save file
-		Util.saveFile(Util.projectPath(path), xml);
+		Util.saveFile(path, xml);
 		
 		Project.refreshProject();
 	}
