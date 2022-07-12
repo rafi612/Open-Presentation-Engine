@@ -62,7 +62,6 @@ public class SlideRack extends JPanel implements ActionListener
 	    {
 	    	button.addActionListener(this);
 	    	button.setMaximumSize(new Dimension(200,40));
-	    	button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 	    	
 	    	actions.add(button);
 	    }

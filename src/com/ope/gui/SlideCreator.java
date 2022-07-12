@@ -24,7 +24,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -94,7 +93,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			name.setPreferredSize(new Dimension(75,32));
 			add(name);
 			
-			add(new JSeparator(JSeparator.VERTICAL));
+			addSeparator();
 			
 			image = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/image.png")));
 			image.setToolTipText("Add image");
@@ -106,7 +105,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			text.addActionListener(this);
 			add(text);
 			
-			add(new JSeparator(JSeparator.VERTICAL));
+			addSeparator();
 		}
 		
 		private String getNameWithNum(String name)
@@ -118,7 +117,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			
 			return repeat == 0 ? name : name + " #" + repeat;
 		}
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
