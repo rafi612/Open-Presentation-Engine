@@ -1,11 +1,12 @@
-#version 330 core
+#version 130
 
-layout (location = 0) in vec4 verticies;
+in vec4 verticies;
 
 uniform mat4 transformMatrix;
+uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
 void main()
 {
-    gl_Position = projectionMatrix * transformMatrix * verticies;
+    gl_Position = projectionMatrix * viewMatrix * transformMatrix * verticies;
 }
