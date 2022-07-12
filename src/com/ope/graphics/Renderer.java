@@ -10,21 +10,27 @@ import org.lwjgl.opengl.GL;
 
 public class Renderer 
 {
+	static boolean fallback = false;
+	
 	static Shader texture_shader,rect_shader,gradient_shader;
 	
-	static Matrix4f projectionMatrix;
+	static Matrix4f projectionMatrix,viewMatrix;
+	static final Matrix4f defaultViewMatrix = new Matrix4f();
 	
 	static Mesh quad,line_strip;
 	
-	static boolean fallback = false;
-	
-	static float angle;
+	static float angleX,angleY,angleZ;
 	static Vector2i size;
 	
 	public static void init() 
 	{
 		size = new Vector2i(1280,720);
 		projectionMatrix = new Matrix4f().ortho(0, size.x, size.y, 0, -size.x,size.x);
+		viewMatrix = defaultViewMatrix
+				.translate(1280 * 0.5f,720 * 0.5f,0)
+				.scale(0.5f)
+				.translate(1280 * -0.5f,720 * -0.5f,0);
+				
 		
 		if (!isFallback())
 		{
@@ -86,9 +92,41 @@ public class Renderer
 		size.set(x, y);
 	}
 	
+	public static Matrix4f getViewMatrix()
+	{
+		return viewMatrix;
+	}
+	
+	public static void setViewMatrix(Matrix4f matrix)
+	{
+		viewMatrix.set(matrix);
+	}
+	
+	public static void rotateX(float ang)
+	{
+		angleX = (float)Math.toRadians(ang);
+	}
+	
+	public static void rotateY(float ang)
+	{
+		angleY = (float)Math.toRadians(ang);
+	}
+	
+	public static void rotateZ(float ang)
+	{
+		angleZ = (float)Math.toRadians(ang);
+	}
+	
+	public static void reset()
+	{
+		angleX = 0;
+		angleY = 0;
+		angleZ = 0;
+	}
+
 	public static boolean isFallback()
 	{
-		return !GL.getCapabilities().OpenGL33 || fallback;
+		return !GL.getCapabilities().OpenGL30 || fallback;
 	}
 	
 	public static void fallbackResize()
@@ -96,9 +134,9 @@ public class Renderer
 		FallbackRenderer.resize();
 	}
 	
-	public static void rotate(float ang)
+	public static void clearColor(Vector4f color)
 	{
-		angle = (float)Math.toRadians(ang);
+		glClearColor(color.x,color.y,color.z,color.w);
 	}
 	
 	public static Vector4f color(int color)
@@ -109,16 +147,6 @@ public class Renderer
 		float alpha = (float)((color >> 24) & 0xFF);
 		
 		return new Vector4f(red/255,green/255,blue/255,alpha/255);
-	}
-	
-	public static void reset()
-	{
-		angle = 0;
-	}
-	
-	public static void clearColor(Vector4f color)
-	{
-		glClearColor(color.x,color.y,color.z,color.w);
 	}
 	
 	public static void drawImage(Texture tex,float x,float y,float w,float h)
@@ -132,12 +160,17 @@ public class Renderer
 		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
-				.rotate(angle, 0.0f,0.0f,1.0f)
+				
+				.rotate(angleX, 1.0f,0.0f,0.0f)
+				.rotate(angleY, 0.0f,1.0f,0.0f)
+				.rotate(angleZ, 0.0f,0.0f,1.0f)
+				
 				.translate(-0.5f * w, -0.5f * h, 0.0f)
 				.scale(w,h, 0);
 		
 		texture_shader.use();
 		texture_shader.setMatrix4("transformMatrix", transformMatrix);
+		texture_shader.setMatrix4("viewMatrix", viewMatrix);
 		texture_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		
 		glActiveTexture(GL_TEXTURE0);
@@ -159,12 +192,17 @@ public class Renderer
 		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
-				.rotate(angle, 0.0f,1.0f,0.0f)
+				
+				.rotate(angleX, 1.0f,0.0f,0.0f)
+				.rotate(angleY, 0.0f,1.0f,0.0f)
+				.rotate(angleZ, 0.0f,0.0f,1.0f)
+				
 				.translate(-0.5f * w, -0.5f * h, 0.0f)
 				.scale(w,h,0);
 		
 		rect_shader.use();
 		rect_shader.setMatrix4("transformMatrix", transformMatrix);
+		rect_shader.setMatrix4("viewMatrix", viewMatrix);
 		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		rect_shader.setVector4f("color", color);
 		
@@ -184,12 +222,17 @@ public class Renderer
 		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
-				.rotate(angle, 0.0f,0.0f,1.0f)
+				
+				.rotate(angleX, 1.0f,0.0f,0.0f)
+				.rotate(angleY, 0.0f,1.0f,0.0f)
+				.rotate(angleZ, 0.0f,0.0f,1.0f)
+				
 				.translate(-0.5f * w, -0.5f * h, 0.0f)
 				.scale(w,h, 0);
 		
 		rect_shader.use();
 		rect_shader.setMatrix4("transformMatrix", transformMatrix);
+		rect_shader.setMatrix4("viewMatrix", viewMatrix);
 		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		rect_shader.setVector4f("color", color);
 		
@@ -208,12 +251,13 @@ public class Renderer
 		Matrix4f transformMatrix = new Matrix4f()
 				.translate(x,y,1.0f)
 				.translate(0.5f * w, 0.5f * h, 0.0f)
-				.rotate(angle, 0.0f,1.0f,0.0f)
+				.rotate(angleZ, 0.0f,1.0f,0.0f)
 				.translate(-0.5f * w, -0.5f * h, 0.0f)
 				.scale(w,h,0);
 		
 		gradient_shader.use();
 		gradient_shader.setMatrix4("transformMatrix", transformMatrix);
+		gradient_shader.setMatrix4("viewMatrix", viewMatrix);
 		gradient_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		gradient_shader.setVector4f("color1", color);
 		gradient_shader.setVector4f("color2", color2);
