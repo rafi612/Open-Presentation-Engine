@@ -83,22 +83,15 @@ public class SlideManager
 			}
 			
 			//new slide opened
-			if (switchslide && !animation.isSwitched())
+			if (switchslide && animation.isSwitched())
 			{
 				if (switchside == -1)
-				{	
 					choose++;
-					
-					switchside = 0;
-					switchslide = false;
-				}
 				else if (switchside == 1)
-				{
 					choose--;
-					
-					switchside = 0;
-					switchslide = false;
-				}
+				
+				switchside = 0;
+				switchslide = false;
 			}
  
 			if (animation.isRunning())
