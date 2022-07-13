@@ -15,7 +15,7 @@ public class Renderer
 	static Shader texture_shader,rect_shader,gradient_shader;
 	
 	static Matrix4f projectionMatrix,viewMatrix;
-	static final Matrix4f defaultViewMatrix = new Matrix4f();
+	public static final Matrix4f EMPTY_VIEW_MATRIX = new Matrix4f();
 	
 	static Mesh quad,line_strip;
 	
@@ -26,11 +26,7 @@ public class Renderer
 	{
 		size = new Vector2i(1280,720);
 		projectionMatrix = new Matrix4f().ortho(0, size.x, size.y, 0, -size.x,size.x);
-		viewMatrix = defaultViewMatrix
-				.translate(1280 * 0.5f,720 * 0.5f,0)
-				.scale(0.5f)
-				.translate(1280 * -0.5f,720 * -0.5f,0);
-				
+		viewMatrix = new Matrix4f();
 		
 		if (!isFallback())
 		{
@@ -99,6 +95,11 @@ public class Renderer
 	
 	public static void setViewMatrix(Matrix4f matrix)
 	{
+		if (fallback)
+		{
+			FallbackRenderer.setViewMatrix(matrix);
+			return;
+		}
 		viewMatrix.set(matrix);
 	}
 	
