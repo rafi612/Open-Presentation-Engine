@@ -94,9 +94,9 @@ public class Presentation
 		
 		glfwSwapInterval(1);
 		
-		load();
-		
 		MainLoop.init(sm);
+		
+		load();
 		
 		glfwShowWindow(window);
 		
