@@ -33,6 +33,11 @@ public class Animation
 		isRunning = true;
 	}
 	
+	public void stop()
+	{
+		isRunning = false;
+	}
+	
 	public void switchAnimation()
 	{
 		switched = true;
@@ -52,8 +57,11 @@ public class Animation
 	
 	public static Animation getAnimation(String a)
 	{
-		if (a.toLowerCase().equals("appearing")) return new Appearing(2.0f);
-		return new None();
-		
+		switch (a.toLowerCase())
+		{
+			case "appearing": return new Appearing(2.0f);
+			case "departure": return new Departure();
+			default: return new None();	
+		}
 	}
 }
