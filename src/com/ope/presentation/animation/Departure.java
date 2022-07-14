@@ -23,8 +23,8 @@ public class Departure extends Animation
 		{
 			if (scale >= 0.5)
 			{
-				scalevelocity -= scaleacceleration;
-				scale += scalevelocity;
+				scalevelocity += scaleacceleration;
+				scale -= scalevelocity;
 			}
 			else if (x >= -Renderer.getSize().x)
 			{
@@ -65,7 +65,7 @@ public class Departure extends Animation
 		
 		//switch
 		scale = 0.5f;
-		scalevelocity = 0.042f;
+		scalevelocity = 0.033f;
 		
 		slidevelocity = -52.0f;
 		x = Renderer.getSize().x;
