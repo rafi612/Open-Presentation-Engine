@@ -3,6 +3,9 @@ package com.ope.presentation.slide;
 
 import java.util.ArrayList;
 
+import org.joml.Vector4f;
+
+import com.ope.graphics.Renderer;
 import com.ope.io.Util;
 import com.ope.io.XmlParser;
 import com.ope.presentation.animation.Animation;
@@ -43,10 +46,16 @@ public class Slide
 	{
 		for (Element element : elements)
 			element.destroy();
+		
+		animation.destroy();
 	}
+	
+	private static final Vector4f bgcolor = new Vector4f(1,1,1,1);
 	
 	public void render()
 	{
+		Renderer.frect(0, 0, Renderer.getSize().x,Renderer.getSize().y,bgcolor);
+		
 		for (Element element : elements)
 			element.render();
 	}
