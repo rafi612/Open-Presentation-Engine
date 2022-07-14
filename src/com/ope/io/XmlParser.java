@@ -35,7 +35,7 @@ public class XmlParser
 		} 
 		catch (ParserConfigurationException | SAXException | IOException e)
 		{
-			e.printStackTrace();
+			throw new IllegalStateException(e.getMessage());
 		}
 
 	}

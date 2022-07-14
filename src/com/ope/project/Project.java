@@ -2,6 +2,7 @@
 package com.ope.project;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,30 +33,42 @@ public class Project
 		new File(path).mkdir();
 		createProjectXml(Util.path(path,PROJECT_XML_NAME));
 		
-		LoadProject(path);
+		try 
+		{
+			LoadProject(path);
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	public static int LoadProject(String path)
+	public static void LoadProject(String path) throws Exception
 	{
 		projectlocation = path;
-		
+			
 		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
-			return 1;
-		
+			throw new FileNotFoundException("This is not project folder (project.xml missing)");
+			
 		if (projectIsLoaded) 
 			unloadProject();
-		
+			
 		projectIsLoaded = true;
-		
+			
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 
 		interfaceEnable(true);
-		
-		Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
-		
+			
+		try
+		{
+			Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
+		} 
+		catch (Exception e) 
+		{
+			throw new IllegalStateException("Can't load project (Project corrupted)");
+		}
+			
 		refreshProject();
-		
-		return 0;
 	}
 	public static void unloadProject()
 	{
@@ -174,8 +187,14 @@ public class Project
 		
 		if(path != null)
 		{
-			if (LoadProject(path) != 0)
-				JOptionPane.showMessageDialog(Main.frame, "This is not project folder (project.xml missing)", "Can't load project", JOptionPane.ERROR_MESSAGE);
+			try 
+			{
+				LoadProject(path);
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(Main.frame, e.getMessage(), "Can't load project", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		return path;
