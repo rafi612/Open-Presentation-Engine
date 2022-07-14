@@ -229,16 +229,16 @@ public class SlideRack extends JPanel implements ActionListener
 		
 		Element[] elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
 		
-		for (int i = 0;i < elements.length;i++)
+		for (Element element : elements)
 		{
-			RackElement elem = new RackElement(elements[i].getAttribute("name"), this);
-			int color = Integer.parseInt(elements[i].getAttribute("color"));
+			RackElement elem = new RackElement(element.getAttribute("name"), this);
+			int color = Integer.parseInt(element.getAttribute("color"));
 
 			if (color != -1)
 				elem.setColor(new Color(color));
 			
 			
-			elem.load(elements[i]);
+			elem.load(element);
 			
 			addElement(elem);
 		}
