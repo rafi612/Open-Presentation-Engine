@@ -103,6 +103,16 @@ public class Renderer
 		viewMatrix.set(matrix);
 	}
 	
+	public static Matrix4f getProjectionMatrix()
+	{
+		return projectionMatrix;
+	}
+	
+	public static void setProjectionMatrix(Matrix4f matrix)
+	{
+		projectionMatrix.set(matrix);
+	}
+	
 	public static void rotateX(float ang)
 	{
 		angleX = (float)Math.toRadians(ang);
