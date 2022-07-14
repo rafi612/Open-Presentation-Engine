@@ -1,5 +1,6 @@
 package com.ope.graphics;
 
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import org.joml.Matrix4f;
@@ -13,6 +14,8 @@ public class Renderer
 	static boolean fallback = false;
 	
 	static Shader texture_shader,rect_shader,gradient_shader;
+
+	public static Shader mix_shader;
 	
 	static Matrix4f projectionMatrix,viewMatrix;
 	public static final Matrix4f EMPTY_VIEW_MATRIX = new Matrix4f();
@@ -33,6 +36,7 @@ public class Renderer
 			texture_shader = new Shader("/shaders/texture_vs.glsl","/shaders/texture_fs.glsl");
 			rect_shader = new Shader("/shaders/rect_vs.glsl","/shaders/rect_fs.glsl");
 			gradient_shader = new Shader("/shaders/gradient_vs.glsl","/shaders/gradient_fs.glsl");
+			mix_shader = new Shader("/shaders/mixtextures_vs.glsl","/shaders/mixtextures_fs.glsl");
 			
 			// configure VAO/VBO
 			float[] vertices = { 
@@ -216,6 +220,32 @@ public class Renderer
 		rect_shader.setMatrix4("viewMatrix", viewMatrix);
 		rect_shader.setMatrix4("projectionMatrix", projectionMatrix);
 		rect_shader.setVector4f("color", color);
+		
+		quad.draw();
+		
+		reset();
+	}
+	
+	public static void mix2Textures(int tex1,int tex2,float mix,float x,float y,float w,float h)
+	{	    
+	    glActiveTexture(GL_TEXTURE0);
+	    glBindTexture(GL_TEXTURE_2D, tex1);
+	    
+	    glActiveTexture(GL_TEXTURE1);
+	    glBindTexture(GL_TEXTURE_2D, tex2);
+	    
+		Matrix4f transformMatrix = new Matrix4f()
+				.translate(0,0,1.0f)
+				.scale(1280,720,0);
+		
+		Renderer.mix_shader.use();
+		Renderer.mix_shader.setMatrix4("transformMatrix", transformMatrix);
+		Renderer.mix_shader.setMatrix4("viewMatrix", new Matrix4f());
+		Renderer.mix_shader.setMatrix4("projectionMatrix", Renderer.getProjectionMatrix());
+		
+		Renderer.mix_shader.setInt("image", 0);
+		Renderer.mix_shader.setInt("image2", 1);
+		Renderer.mix_shader.setFloat("mixAmount",mix);
 		
 		quad.draw();
 		
