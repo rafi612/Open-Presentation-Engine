@@ -58,8 +58,6 @@ public class Presentation
 			e.printStackTrace();
 		}
 		
-		sm = new SlideManager();
-		
 		if (window != NULL)
 			stop();
 		
@@ -93,6 +91,8 @@ public class Presentation
 		GL.createCapabilities();
 		
 		glfwSwapInterval(1);
+		
+		sm = new SlideManager();
 		
 		MainLoop.init(sm);
 		
