@@ -55,12 +55,18 @@ public class Animation
 		
 	}
 	
+	public void destroy()
+	{
+		
+	}
+	
 	public static Animation getAnimation(String a)
 	{
 		switch (a.toLowerCase())
 		{
 			case "appearing": return new Appearing(2.0f);
 			case "departure": return new Departure();
+			case "smooth": return new Smooth(1.0f);
 			default: return new None();	
 		}
 	}

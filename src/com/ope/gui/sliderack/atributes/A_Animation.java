@@ -37,7 +37,7 @@ public class A_Animation extends Attribute
 	
 	public void onActivate()
 	{
-		String[] s = {"Appearing","Departure","None"};
+		String[] s = {"Appearing","Departure","Smooth","None"};
 		JComboBox<String> combo = new JComboBox<String>(s);
 		JComponent[] c = {new JLabel("Choose Animation:"),combo};
 		
