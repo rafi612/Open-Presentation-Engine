@@ -103,8 +103,8 @@ public class SquareBasedElement extends Element
 		if (moving)
 			Renderer.frectnofill(x,y,w,h,new Vector4f(1,0,0,1));
 		
-		for (int i = 0; i < resizers.size(); i++)
-			resizers.get(i).render(colided);
+		for (Resizer resizer : resizers)
+			resizer.render(colided);
 	}
 
 }
