@@ -67,6 +67,7 @@ public class Animation
 			case "appearing": return new Appearing(2.0f);
 			case "departure": return new Departure();
 			case "smooth": return new Smooth(1.0f);
+			case "rotating": return new Rotating(2.0f,1);
 			default: return new None();	
 		}
 	}
