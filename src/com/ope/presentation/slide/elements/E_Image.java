@@ -2,22 +2,16 @@ package com.ope.presentation.slide.elements;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
@@ -25,7 +19,6 @@ import com.ope.gui.SlideCreator;
 import com.ope.gui.TreeFileEvent;
 import com.ope.io.Util;
 import com.ope.io.XmlParser;
-import com.ope.main.Main;
 
 import org.joml.Vector4f;
 
@@ -35,7 +28,7 @@ public class E_Image extends SquareBasedElement
 	public Texture image;
 	
 	public boolean editing;
-	ImageFrame frame;
+	Frame frame;
 	
 
 	public E_Image(String path,int x,int y,int w,int h)
@@ -60,7 +53,7 @@ public class E_Image extends SquareBasedElement
 				JOptionPane.showMessageDialog(null, "File" + path +" not found");
 			}
 		
-		frame = new ImageFrame(this);
+		frame = new Frame(this);
 	}
 	
 	public void update(SlideCreator sc)
@@ -139,115 +132,74 @@ public class E_Image extends SquareBasedElement
 	{
 		frame.dispose();
 	}
-}
+	
 
-class ImageFrame extends JDialog implements ChangeListener
-{
-	private static final long serialVersionUID = 1L;
-	
-	public JSpinner sx,sy,sw,sh;
-	JButton buttonpath;
-	
-	E_Image element;
-	public ImageFrame(E_Image element)
+	class Frame extends SquareBasedElement.Frame
 	{
-		super();
-		this.element = element;
-		setSize(360,250);
-		setTitle("Image");
-		setLocationRelativeTo(Main.frame);
-		setIconImage(Util.loadIcon("/images/icon.png"));
-		setAlwaysOnTop(true);
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				element.editing = false;
-			}
-		});
-		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+		private static final long serialVersionUID = 1L;
 		
-		buttonpath = new JButton("Select Image");
-		buttonpath.addActionListener((e) -> {
+		JButton buttonpath;
+		
+		E_Image element;
+		public Frame(E_Image element)
+		{
+			super(element,"Image",360,250);
+			this.element = element;
 			
-			TreeFileEvent event = new TreeFileEvent(buttonpath);
+			setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 			
-			event.open((path) -> {
-				element.path = Util.getPathFromProject(new File(path));
+			buttonpath = new JButton("Select Image");
+			buttonpath.addActionListener((e) -> {
 				
-				if (element.image != null)
-					element.image.destroy();
+				TreeFileEvent event = new TreeFileEvent(buttonpath);
 				
-				try
-				{
-					element.image = new Texture(Util.projectPath(element.path));
-				} 
-				catch (IOException ex)
-				{
-					JOptionPane.showMessageDialog(null, "File" + path + " not found");
-				}
-				element.w = element.image.width;
-				element.h = element.image.height;
-				sw.setValue(element.image.width);
-				sh.setValue(element.image.height);
-				
-				event.setButtonResultText(element.path);
+				event.open((path) -> {
+					element.path = Util.getPathFromProject(new File(path));
+					
+					if (element.image != null)
+						element.image.destroy();
+					
+					try
+					{
+						element.image = new Texture(Util.projectPath(element.path));
+					} 
+					catch (IOException ex)
+					{
+						JOptionPane.showMessageDialog(null, "File" + path + " not found");
+					}
+					element.w = element.image.width;
+					element.h = element.image.height;
+					sw.setValue(element.image.width);
+					sh.setValue(element.image.height);
+					
+					event.setButtonResultText(element.path);
+				});
 			});
-		});
-		
-		sx = new JSpinner(new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
-		 
-		sy = new JSpinner(new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
-		
-		sw = new JSpinner(new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1));
-		
-		sh = new JSpinner(new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1));
-		
-		String[] labels = {"","X:","Y:","Width:","Height"};
-		JComponent[] components = {buttonpath,sx,sy,sw,sh};
-		
-		for (JComponent comp : components)
-		{
-			comp.setMinimumSize(new Dimension(0, 25));
-			comp.setPreferredSize(new Dimension(300,25));
-			comp.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
-			if (comp instanceof JSpinner)
+			
+			String[] labels = {"","X:","Y:","Width:","Height"};
+			JComponent[] components = {buttonpath,sx,sy,sw,sh};
+			
+			for (JComponent comp : components)
 			{
-				((JSpinner) comp).addChangeListener(this);
+				comp.setMinimumSize(new Dimension(0, 25));
+				comp.setPreferredSize(new Dimension(300,25));
+				comp.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
+				if (comp instanceof JSpinner)
+				{
+					((JSpinner) comp).addChangeListener(this);
+				}
+			}
+			
+			for (int i = 0; i < labels.length;i++)
+			{
+				JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				
+				panel.add(new JLabel(labels[i]));
+				panel.add(components[i]);
+				
+				this.add(panel);
 			}
 		}
 		
-		for (int i = 0; i < labels.length;i++)
-		{
-			JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			
-			panel.add(new JLabel(labels[i]));
-			panel.add(components[i]);
-			
-			this.add(panel);
-		}
 	}
-	
-	// setting JSpinner value form elements
-	public void update()
-	{
-		sx.setValue(element.x);
-		sy.setValue(element.y);
-		sw.setValue(element.w);
-		sh.setValue(element.h);
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) 
-	{
-		if (!element.dragged)
-		{
-			element.x = (int) sx.getValue();
-			element.y = (int) sy.getValue();
-			element.w = (int) sw.getValue();
-			element.h = (int) sh.getValue();
-		}
-	}
-	
 }

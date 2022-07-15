@@ -2,6 +2,11 @@ package com.ope.presentation.slide.elements;
 
 import java.util.ArrayList;
 
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
@@ -35,13 +40,13 @@ public class SquareBasedElement extends Element
 		//check tracking on all elements
 		boolean canTracked = true;
 		//resizer update and track
-		for (int i = 0; i < resizers.size(); i++)
+		for (Resizer resizer : resizers)
 		{
-			resizers.get(i).track(this);
-			resizers.get(i).update(sc);
+			resizer.track(this);
+			resizer.update(sc);
 			
 			//if one is false, then all is false
-			canTracked = canTracked && resizers.get(i).canTrakedElementMove;
+			canTracked = canTracked && resizer.canTrakedElementMove;
 		}
 		
 		//checking AABB colision on click
@@ -105,6 +110,49 @@ public class SquareBasedElement extends Element
 		
 		for (Resizer resizer : resizers)
 			resizer.render(colided);
+	}
+	
+	public class Frame extends Element.Frame implements ChangeListener
+	{
+		private static final long serialVersionUID = 1L;
+		
+		public JSpinner sx,sy,sw,sh;
+		
+		SquareBasedElement element;
+		
+		public Frame(SquareBasedElement element,String title,int width,int height)
+		{
+			super(element,title,width,height);
+			
+			this.element = element;
+			
+			sx = new JSpinner(new SpinnerNumberModel(element.x,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
+			sy = new JSpinner(new SpinnerNumberModel(element.y,-Integer.MAX_VALUE,Integer.MAX_VALUE,1));
+			sw = new JSpinner(new SpinnerNumberModel(element.w,0,Integer.MAX_VALUE,1));
+			sh = new JSpinner(new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1));
+		}
+		
+		
+		// setting JSpinner value form elements
+		public void update()
+		{
+			sx.setValue(element.x);
+			sy.setValue(element.y);
+			sw.setValue(element.w);
+			sh.setValue(element.h);
+		}
+		
+		@Override
+		public void stateChanged(ChangeEvent e) 
+		{
+			if (!element.dragged)
+			{
+				element.x = (int) sx.getValue();
+				element.y = (int) sy.getValue();
+				element.w = (int) sw.getValue();
+				element.h = (int) sh.getValue();
+			}
+		}
 	}
 
 }

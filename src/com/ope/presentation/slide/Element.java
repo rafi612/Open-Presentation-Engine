@@ -1,6 +1,13 @@
 package com.ope.presentation.slide;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JDialog;
+
 import com.ope.gui.SlideCreator;
+import com.ope.io.Util;
+import com.ope.main.Main;
 import com.ope.presentation.slide.elements.E_Image;
 
 public class Element 
@@ -57,4 +64,33 @@ public class Element
 	{
 		
 	}
+	
+	public class Frame extends JDialog
+	{
+		private static final long serialVersionUID = 1L;
+		
+		Element element;
+		
+		public Frame(Element element,String title,int width,int height)
+		{
+			super();
+			
+			setSize(width,height);
+			setTitle(title);
+			setLocationRelativeTo(Main.frame);
+			setAlwaysOnTop(true);
+			setResizable(false);
+			setIconImage(Util.loadIcon("/images/icon.png"));
+			
+			addWindowListener(new WindowAdapter()
+			{
+				@Override
+				public void windowClosing(WindowEvent e)
+				{
+					element.editing = false;
+				}
+			});
+		}
+	}
+
 }
