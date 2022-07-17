@@ -128,11 +128,6 @@ public class E_Image extends SquareBasedElement
 		frame.setVisible(true);
 	}
 	
-	protected void finalize()
-	{
-		frame.dispose();
-	}
-	
 
 	class Frame extends SquareBasedElement.Frame
 	{

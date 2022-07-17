@@ -56,8 +56,7 @@ public class Main
 		frame.add(tabs);
 		 
 		//tree
-		DefaultMutableTreeNode treerootnode = new DefaultMutableTreeNode("Workspace"); 
-		tree = new Tree(treerootnode);
+		tree = new Tree(new DefaultMutableTreeNode("Workspace"));
 		frame.add(new JScrollPane(tree),BorderLayout.WEST);
 		
 		actionpanel = new ActionPanel();
