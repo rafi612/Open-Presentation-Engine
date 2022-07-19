@@ -3,6 +3,7 @@ package com.ope.project;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -130,27 +131,27 @@ public class Project
 	
 	public static void run()
 	{
-		try
+		try 
 		{
 			save();
-			
-			refreshProject();
-			
-			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 				
+			refreshProject();
+				
+			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
+					
 			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation);
 			pb.directory(new File(projectlocation));
-				
+					
 			//redirect output to terminal
 			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 			pb.redirectError(ProcessBuilder.Redirect.INHERIT);
 			pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
-				
+					
 			pb.start();
-		}
-		catch (Exception e)
+		} 
+		catch (IOException e) 
 		{
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(Main.frame, "Can't run project: " + e.getMessage(), "Can't run project", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
