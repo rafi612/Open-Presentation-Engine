@@ -29,7 +29,6 @@ public class E_Image extends SquareBasedElement
 	
 	public boolean editing;
 	Frame frame;
-	
 
 	public E_Image(String path,int x,int y,int w,int h)
 	{
