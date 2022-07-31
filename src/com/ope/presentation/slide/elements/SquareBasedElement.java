@@ -96,7 +96,6 @@ public class SquareBasedElement extends Element
 		{
 			moving = false;
 			sc.currentMovedID = -1;
-			//sc.canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 	
