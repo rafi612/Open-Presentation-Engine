@@ -15,7 +15,6 @@ import com.ope.main.Main;
 
 public class AboutDialog extends JDialog
 {
-
 	private static final long serialVersionUID = 1L;
 
 	public AboutDialog()
@@ -70,7 +69,6 @@ public class AboutDialog extends JDialog
 		main.add(text2);
 		main.add(text3);
 		main.add(new JLabel("            "));
-
 		main.add(new JLabel("            "));
 		
 		add(main);
