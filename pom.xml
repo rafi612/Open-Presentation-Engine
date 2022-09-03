@@ -7,15 +7,6 @@
   <description>Open Presentation Engine</description>
   <build>
 	<defaultGoal>package</defaultGoal>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>res</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
