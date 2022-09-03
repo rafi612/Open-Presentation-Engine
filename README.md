@@ -1,7 +1,13 @@
 # Open Presentation Engine
-![License](https://img.shields.io/github/license/rafi612/Open-Presentation-Engine)
-![Repo size](https://img.shields.io/github/repo-size/rafi612/Open-Presentation-Engine)
-![Total lines](https://img.shields.io/tokei/lines/github/rafi612/Open-Presentation-Engine)
+[Build]: https://img.shields.io/github/workflow/status/rafi612/Open-Presentation-Engine/Maven
+[License]: https://img.shields.io/github/license/rafi612/Open-Presentation-Engine
+[Repo size]: https://img.shields.io/github/repo-size/rafi612/Open-Presentation-Engine
+[Total lines]: https://img.shields.io/tokei/lines/github/rafi612/Open-Presentation-Engine
+
+[![Build]](https://github.com/rafi612/Open-Presentation-Engine/actions/workflows/maven.yml)
+[![License]](https://github.com/rafi612/Open-Presentation-Engine/blob/main/LICENSE)
+[![Repo size]](https://github.com/rafi612/Open-Presentation-Engine)
+[![Total lines]](https://github.com/rafi612/Open-Presentation-Engine)
 
 [WIP] Open source presentation engine write in Java
 
