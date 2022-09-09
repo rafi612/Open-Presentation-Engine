@@ -17,7 +17,7 @@ public class Texture
 	public int width;
 	public int height;
 	
-	ByteBuffer pixels;
+	private ByteBuffer pixels;
 	
 	public Texture(String filename) throws IOException
 	{
