@@ -50,7 +50,7 @@ public class Sound
 	public Sound(String path) throws FileNotFoundException
 	{
 		Type t = null;
-		switch (Util.FileExtension(new File(path)))
+		switch (Util.getFileExtension(new File(path)))
 		{
 		case "mp3":
 			t = Type.MPEG;

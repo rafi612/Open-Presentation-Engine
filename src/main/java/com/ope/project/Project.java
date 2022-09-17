@@ -25,7 +25,7 @@ public class Project
 	public static String projectlocation;
 	public final static String PROJECT_XML_NAME = "project.xml";
 	
-	public static void CreateNewProject(String location,String name)
+	public static void createNewProject(String location,String name)
 	{
 		if (projectIsLoaded) 
 			unloadProject();
@@ -36,7 +36,7 @@ public class Project
 		
 		try 
 		{
-			LoadProject(path);
+			loadProject(path);
 		} 
 		catch (Exception e)
 		{
@@ -44,7 +44,7 @@ public class Project
 		}
 	}
 	
-	public static void LoadProject(String path) throws Exception
+	public static void loadProject(String path) throws Exception
 	{
 		projectlocation = path;
 			
@@ -155,20 +155,20 @@ public class Project
 		}
 	}
 	
-	public static String newproject_dialog()
+	public static String newProjectDialog()
 	{
 		String path = TinyFileDialogs.tinyfd_saveFileDialog("Create Project", System.getProperty("user.home") + File.separator, null, "Folder");
 		
 		if (path != null) 
 		{
 			File project = new File(path);
-			Project.CreateNewProject(project.getParent(),project.getName());
+			Project.createNewProject(project.getParent(),project.getName());
 		}
 		
 		return path;
 	}
 	
-	public static String load_dialog()
+	public static String loadDialog()
 	{
 		String path = null;
 		//NFD have better file dialog on windows
@@ -190,7 +190,7 @@ public class Project
 		{
 			try 
 			{
-				LoadProject(path);
+				loadProject(path);
 			} 
 			catch (Exception e)
 			{
@@ -201,7 +201,7 @@ public class Project
 		return path;
 	}
 	
-	public static int lost_save_dialog()
+	public static int lostSaveDialog()
 	{
 		int yesno = JOptionPane.showConfirmDialog(Main.frame, "All unsaved changes are lost. Do you want to save?", "Save",JOptionPane.YES_NO_CANCEL_OPTION ,JOptionPane.QUESTION_MESSAGE);
 				
@@ -211,7 +211,7 @@ public class Project
 		return yesno;
 	}
 	
-	public static int save_dialog()
+	public static int saveDialog()
 	{
 		int yesno = JOptionPane.showConfirmDialog(Main.frame, "Do you want to save?", "Save",JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
 				

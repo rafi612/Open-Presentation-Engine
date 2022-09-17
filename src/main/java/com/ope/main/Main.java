@@ -69,7 +69,7 @@ public class Main
 			{
 				if (Project.projectIsLoaded)
 				{
-					int choose = Project.lost_save_dialog();
+					int choose = Project.lostSaveDialog();
 				
 					if (choose != 2)
 					{

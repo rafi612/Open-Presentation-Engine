@@ -47,7 +47,7 @@ public class ActionPanel extends JPanel implements ActionListener
 		//action save
 		if (source == actions.get(1))
 		{			
-			Project.save_dialog();
+			Project.saveDialog();
 			
 		}
 		

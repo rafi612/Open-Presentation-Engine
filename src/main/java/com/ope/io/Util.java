@@ -27,7 +27,7 @@ import com.ope.project.Project;
 
 public class Util 
 { 
-	public static String FileExtension(File file)
+	public static String getFileExtension(File file)
 	{
 		// convert the file name into string
 		String fileName = file.toString();
