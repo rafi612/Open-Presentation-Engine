@@ -130,7 +130,7 @@ public class RackElement extends JPanel implements ActionListener
 		}
 	}
 	
-	public String getSlideXmlTag(int id)
+	public String getSlideXmlTag()
 	{
 		String lines = "<slide name=\"" + name.getText() + "\" color=\"" + hexcolor + "\">\n";
 		for (Attribute a : attributes)

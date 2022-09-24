@@ -98,9 +98,9 @@ public class SlideRack extends JPanel implements ActionListener
 		
 		if (source == selected)
 		{
-			for (RackElement r : elements)
+			for (RackElement rack : elements)
 			{
-				r.setSelected(selected.isSelected());
+				rack.setSelected(selected.isSelected());
 			}
 		}
 		
@@ -118,9 +118,7 @@ public class SlideRack extends JPanel implements ActionListener
 		{
 			if (!check()) return;
 			
-			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete this slides?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-			
-			if (choose == 0) 
+			if (JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete this slides?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == 0) 
 			{
 				for (int i : getSelectedIndexes())
 				{
@@ -201,9 +199,7 @@ public class SlideRack extends JPanel implements ActionListener
 		for (int i = elements.size() - 1; i >= 0 ;i--)
 		{
 			if (elements.get(i).getSelected() == true)
-			{
 				list.add(i);
-			}
 		}
 		
 		return list;
@@ -215,7 +211,7 @@ public class SlideRack extends JPanel implements ActionListener
 						"<project>\n";
 		for (int i = 0;i < elements.size();i++)
 		{
-			lines += elements.get(i).getSlideXmlTag(i) + "\n";
+			lines += elements.get(i).getSlideXmlTag() + "\n";
 		}
 		lines += "<global fullscreen=\"" + parentmenu.fullscreen.isSelected() +"\"/>\n";
 		lines += "</project>";
