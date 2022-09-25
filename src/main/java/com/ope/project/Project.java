@@ -25,7 +25,7 @@ public class Project
 	public static String projectlocation;
 	public final static String PROJECT_XML_NAME = "project.xml";
 	
-	public static void createNewProject(String location,String name)
+	public static void createNewProject(String location,String name) throws Exception
 	{
 		if (projectIsLoaded) 
 			unloadProject();
@@ -40,7 +40,8 @@ public class Project
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			unloadProject();
+			throw new IllegalStateException("Can't create new project: " + e.getMessage());
 		}
 	}
 	
@@ -66,6 +67,7 @@ public class Project
 		} 
 		catch (Exception e) 
 		{
+			unloadProject();
 			throw new IllegalStateException("Can't load project (Project corrupted)");
 		}
 			
@@ -162,7 +164,14 @@ public class Project
 		if (path != null) 
 		{
 			File project = new File(path);
-			Project.createNewProject(project.getParent(),project.getName());
+			try 
+			{
+				Project.createNewProject(project.getParent(),project.getName());
+			}
+			catch (Exception e) 
+			{
+				JOptionPane.showMessageDialog(Main.frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		return path;
@@ -170,7 +179,8 @@ public class Project
 	
 	public static String loadDialog()
 	{
-		String path = null;
+		String path;
+		
 		//NFD have better file dialog on windows
 		if (Platform.get() == Platform.WINDOWS)
 		{
@@ -194,7 +204,7 @@ public class Project
 			} 
 			catch (Exception e)
 			{
-				JOptionPane.showMessageDialog(Main.frame, e.getMessage(), "Can't load project", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Main.frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
