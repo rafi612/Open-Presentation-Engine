@@ -16,7 +16,7 @@ import javax.swing.JCheckBox;
 
 import com.ope.gui.sliderack.atributes.Attribute;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
 
 public class AttributesChooser extends JDialog implements ActionListener
 {

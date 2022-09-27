@@ -18,7 +18,8 @@ import com.ope.graphics.Texture;
 import com.ope.gui.SlideCreator;
 import com.ope.gui.TreeFileEvent;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.XmlWriter;
 
 import org.joml.Vector4f;
 
@@ -99,12 +100,14 @@ public class E_Image extends SquareBasedElement
 		frame.dispose();
 	}
 	
-	public String save()
+	@Override
+	public void save(XmlWriter xml)
 	{
-		//creating xml tag with element data
-		return "	<element name=\"" +  name + "\" type=\"" + type + "\">\n"
-				+ "		<data src=\"" + path.replaceAll(File.separator, "/") +"\" x=\"" + x + "\" y=\"" + y + "\" width=\"" + w + "\" height=\"" + h + "\"></data>\n"
-				+ "	</element>\n";
+		xml.openTag("element", "name=" + name,"type=" + type);
+		
+		xml.addTag("data", "src=" + path.replaceAll(File.separator, "/"),"x=" + x,"y=" + y,"width=" + w,"height=" + h);
+		
+		xml.closeTag();
 	}
 	
 	public void render()

@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 
 import com.ope.gui.TreeFileChooser;
 import com.ope.io.Util;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class A_Slide extends Attribute 
@@ -25,9 +26,9 @@ public class A_Slide extends Attribute
 		isAlways = true;
 	}
 	
-	public String getXmlTag()
+	public void getXmlTag(XmlWriter xml)
 	{
-		return "\t<layout>" + path + "</layout>";
+		xml.addTagText("layout", path);
 	}
 	
 	public void load(Element element)

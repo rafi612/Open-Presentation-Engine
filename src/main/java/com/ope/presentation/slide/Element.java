@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 
 import com.ope.gui.SlideCreator;
 import com.ope.io.Util;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 import com.ope.presentation.slide.elements.E_Image;
 
@@ -45,9 +46,9 @@ public class Element
 		
 	}
 	
-	public String save()
+	public void save(XmlWriter xml)
 	{
-		return "	<element name=" +  name + " type=" + type + "></element>";
+		xml.addTag("element", "name=" + name,"type=" + type);
 	}
 	
 	public void frame()

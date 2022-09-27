@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
 import com.ope.gui.SlideRack;
 import com.ope.gui.sliderack.atributes.Attribute;
 import com.ope.io.Util;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class RackElement extends JPanel implements ActionListener
@@ -130,15 +131,14 @@ public class RackElement extends JPanel implements ActionListener
 		}
 	}
 	
-	public String getSlideXmlTag()
-	{
-		String lines = "<slide name=\"" + name.getText() + "\" color=\"" + hexcolor + "\">\n";
+	public void getSlideXmlTag(XmlWriter xml)
+	{		
+		xml.openTag("slide", "name=" + name.getText(),"color=" + hexcolor);
+		
 		for (Attribute a : attributes)
-		{
-			lines += a.getXmlTag() + "\n";
-		}
-		lines += "</slide>";
-		return lines;
+			a.getXmlTag(xml);
+		
+		xml.closeTag();
 	}
 	
 	public void load(Element element)

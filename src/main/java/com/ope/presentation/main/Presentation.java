@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 
 import com.ope.audio.Sound;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
 import com.ope.presentation.slide.SlideManager;

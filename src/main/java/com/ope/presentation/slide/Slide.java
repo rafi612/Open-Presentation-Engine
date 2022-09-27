@@ -7,7 +7,7 @@ import org.joml.Vector4f;
 
 import com.ope.graphics.Renderer;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
 import com.ope.presentation.animation.Animation;
 
 public class Slide

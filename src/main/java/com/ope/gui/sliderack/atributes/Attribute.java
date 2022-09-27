@@ -4,6 +4,8 @@ import javax.swing.JButton;
 
 import org.w3c.dom.Element;
 
+import com.ope.io.xml.XmlWriter;
+
 public class Attribute extends JButton
 {
 	private static final long serialVersionUID = 1L;
@@ -43,9 +45,9 @@ public class Attribute extends JButton
 		addActionListener((actionEvent) -> this.onActivate());
 	}
 	
-	public String getXmlTag()
+	public void getXmlTag(XmlWriter xml)
 	{
-		return "";
+
 	}
 	
 	public void load(Element element)

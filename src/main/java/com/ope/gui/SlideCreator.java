@@ -37,7 +37,8 @@ import static org.lwjgl.opengl.GL11.*;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 import com.ope.presentation.slide.Element;
 import com.ope.project.Project;
@@ -513,19 +514,19 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		else
 			path = openedfile.getPath();
 		
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<slide>\n";
+		XmlWriter xml = new XmlWriter();
 		
-		//saving elements to xml string
+		xml.openTag("slide");
 		for (Element element : elements)
 		{
-			xml += element.save();
+			element.save(xml);
 		}
-		xml += "<all>" + elements.size() + "</all>\n";
-		xml += "</slide>";
+		
+		xml.addTagText("all", String.valueOf(elements.size()));
+		xml.closeTag();
 		
 		//save file
-		Util.saveFile(path, xml);
+		Util.saveFile(path, xml.get());
 		
 		Project.refreshProject();
 	}

@@ -7,7 +7,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
 import com.ope.presentation.animation.Animation;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.main.Presentation;

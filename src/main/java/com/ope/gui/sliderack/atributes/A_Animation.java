@@ -7,13 +7,14 @@ import javax.swing.JOptionPane;
 
 import org.w3c.dom.Element;
 
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class A_Animation extends Attribute 
 {
 	private static final long serialVersionUID = 1L;
 	
-	String animation;
+	String animation = "None";
 
 	public A_Animation()
 	{
@@ -24,9 +25,9 @@ public class A_Animation extends Attribute
 		isAlways = false;
 	}
 
-	public String getXmlTag()
+	public void getXmlTag(XmlWriter xml)
 	{
-		return "\t<animation type=\"" + animation + "\"></animation>";
+		xml.addTag("animation", "type=" + animation);
 	}
 	
 	public void load(Element element)

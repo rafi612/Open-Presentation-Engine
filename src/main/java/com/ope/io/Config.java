@@ -8,6 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.lwjgl.system.Platform;
 
+import com.ope.io.xml.XmlParser;
 import com.ope.main.Main;
 
 public class Config 

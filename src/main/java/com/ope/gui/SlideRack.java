@@ -23,7 +23,8 @@ import org.w3c.dom.Element;
 
 import com.ope.gui.sliderack.RackElement;
 import com.ope.io.Util;
-import com.ope.io.XmlParser;
+import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class SlideRack extends JPanel implements ActionListener
@@ -206,17 +207,18 @@ public class SlideRack extends JPanel implements ActionListener
 	}
 	
 	public void build(String path)
-	{
-		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-						"<project>\n";
-		for (int i = 0;i < elements.size();i++)
-		{
-			lines += elements.get(i).getSlideXmlTag() + "\n";
-		}
-		lines += "<global fullscreen=\"" + parentmenu.fullscreen.isSelected() +"\"/>\n";
-		lines += "</project>";
+	{		
+		XmlWriter xml = new XmlWriter();
+		xml.openTag("project");
 		
-		Util.saveFile(path, lines);
+		for (RackElement element : elements)
+			element.getSlideXmlTag(xml);
+		
+		xml.addTag("global", "fullscreen=" + parentmenu.fullscreen.isSelected());
+		
+		xml.closeTag();
+		
+		Util.saveFile(path, xml.get());
 	}
 	
 	public void load(String path)
