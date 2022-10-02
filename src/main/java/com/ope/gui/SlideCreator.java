@@ -137,6 +137,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		elements = new ArrayList<Element>();
 		
+		//toolbar
+		toolbar = new ToolBar(this);
+		add(toolbar,BorderLayout.NORTH);
+		
 		//actions
 		JPanel buttons = new JPanel();
 		
@@ -153,9 +157,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			button.addActionListener(this);
 			buttons.add(button);
 		}
-		
-		toolbar = new ToolBar(this);
-		add(toolbar,BorderLayout.NORTH);
 			
 		add(buttons,BorderLayout.SOUTH);
 		
@@ -204,14 +205,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		position = new JLabel("X: " + xPixel + " Y:" + yPixel);
 		
-		initCanvas();
-	}
-	
-	public void initCanvas()
-	{
+		//canvas
 		JPanel cpanel = new JPanel();
 		cpanel.setLayout(new BorderLayout());
 		
+		//panel in canvas
 		JPanel ppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		ppanel.add(position);
 		cpanel.add(ppanel,BorderLayout.SOUTH);
@@ -243,7 +241,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		canvas.addMouseMotionListener(this);
 		
 		add(cpanel);
-		
 	}
 	
 	public void canvasLoop()
@@ -325,15 +322,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//new slide
 		if (source == actions.get(0))
 		{
-			int choose = 0;
-			if (slideloaded)
-				 choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 			if (choose == 0)
 			{
 				listModel.clear();
 				elements.clear();
-				if (canvas == null)
-					initCanvas();
 				
 				toolbar.name.setText("Untitled");
 				
