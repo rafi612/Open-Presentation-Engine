@@ -322,7 +322,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//new slide
 		if (source == actions.get(0))
 		{
-			int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			int choose = 0;
+			if (slideloaded)
+				choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 			if (choose == 0)
 			{
 				listModel.clear();
@@ -451,17 +453,17 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		//refresh id
 		for (int i = 0;i < elements.size();i++)
-		{
 			elements.get(i).id = i;
-		}
 	}
 	
 	private void swaplist(int old,int new_)
 	{
 		//check out of bounds
 		if (new_ < 0 || new_ > elements.size()-1) return;
+		
 		//swap in elements arraylist
 		Collections.swap(elements, old, new_);
+		
 		//swap in JList
 		String aObject = listModel.getElementAt(old);
 		String bObject = listModel.getElementAt(new_);
