@@ -498,7 +498,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private void savedialog()
 	{
-		String path = "";
+		String path;
 		if (openedfile == null)
 		{
 			path = Util.projectPath(JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
