@@ -78,7 +78,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		private static final long serialVersionUID = 1L;
 		
-		SlideCreator sc;
+		private SlideCreator sc;
 		
 		public JLabel name;
 		public JButton image,text;
@@ -304,8 +304,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
-	
-
 	public void reshape(int width, int height) 
 	{
 		if (Renderer.isFallback())

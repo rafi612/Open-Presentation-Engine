@@ -56,6 +56,7 @@ public class E_Image extends SquareBasedElement
 		frame = new Frame(this);
 	}
 	
+	@Override
 	public void update(SlideCreator sc)
 	{
 		super.update(sc);
@@ -63,6 +64,7 @@ public class E_Image extends SquareBasedElement
 		if (editing) frame.update();
 	}
 	
+	@Override
 	public void load(org.w3c.dom.Element element)
 	{
 		
@@ -92,6 +94,7 @@ public class E_Image extends SquareBasedElement
 		}
 	}
 	
+	@Override
 	public void destroy()
 	{
 		if (image != null)
@@ -110,6 +113,7 @@ public class E_Image extends SquareBasedElement
 		xml.closeTag();
 	}
 	
+	@Override
 	public void render()
 	{
 		if (path.equals(""))
@@ -123,7 +127,7 @@ public class E_Image extends SquareBasedElement
 		super.render();
 	}
 	
-	
+	@Override
 	public void frame()
 	{
 		editing = true;

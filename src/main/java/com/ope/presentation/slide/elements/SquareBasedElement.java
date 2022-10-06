@@ -32,6 +32,7 @@ public class SquareBasedElement extends Element
 		resizers.add(new Resizer(Resizer.Type.UP_RIGHT));
 	}
 	
+	@Override
 	public void update(SlideCreator sc)
 	{
 		//global dragged value
@@ -99,6 +100,7 @@ public class SquareBasedElement extends Element
 		}
 	}
 	
+	@Override
 	public void render()
 	{
 		if (colided)
