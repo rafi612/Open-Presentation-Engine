@@ -47,7 +47,7 @@ public class FrameBuffer
 	
 	public void bind()
 	{
-		try(MemoryStack stack = MemoryStack.stackPush())
+		try (MemoryStack stack = MemoryStack.stackPush())
 		{
 			IntBuffer viewport = stack.mallocInt(4);
 			glGetIntegerv(GL_VIEWPORT, viewport);	
