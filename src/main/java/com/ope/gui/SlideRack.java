@@ -44,6 +44,8 @@ public class SlideRack extends JPanel implements ActionListener
 	public SlideRack(MenuBar parentmenu) 
 	{
 		this.parentmenu = parentmenu;
+		elements = new ArrayList<>();
+		
 		setLayout(new BorderLayout());
 		
         JPanel actions = new JPanel();
@@ -68,8 +70,6 @@ public class SlideRack extends JPanel implements ActionListener
 	    }
 	        
 	    add(actions,BorderLayout.EAST);
-		
-		elements = new ArrayList<RackElement>();
 		
 		JPanel toppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		toppanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -255,9 +255,11 @@ public class SlideRack extends JPanel implements ActionListener
     public void enableComponents(Container container, boolean enable)
     {
         Component[] components = container.getComponents();
-        for (Component component : components) {
+        for (Component component : components) 
+        {
             component.setEnabled(enable);
-            if (component instanceof Container) {
+            if (component instanceof Container) 
+            {
                 enableComponents((Container)component, enable);
             }
         }
