@@ -24,6 +24,7 @@ public class Element
 	public int id;
 	
 	public String name,type;
+	
 
 	public Element() 
 	{
@@ -37,7 +38,7 @@ public class Element
 	
 	public static Element getElementsByName(String s)
 	{
-		if (s.equals("Image")) return new E_Image("",0,0,200,200);
+		if (s.equals("Image")) return new E_Image(0,0,200,200);
 		return null;
 	}
 	
@@ -53,7 +54,7 @@ public class Element
 	
 	public void frame()
 	{
-		
+		editing = true;
 	}
 	
 	public void destroy()
@@ -91,6 +92,11 @@ public class Element
 					element.editing = false;
 				}
 			});
+		}
+		
+		public void whenOpen()
+		{
+			setVisible(true);
 		}
 	}
 

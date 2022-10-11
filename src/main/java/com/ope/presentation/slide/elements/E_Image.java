@@ -20,6 +20,7 @@ import com.ope.gui.TreeFileEvent;
 import com.ope.io.Util;
 import com.ope.io.xml.XmlParser;
 import com.ope.io.xml.XmlWriter;
+import com.ope.main.Main;
 
 import org.joml.Vector4f;
 
@@ -28,32 +29,28 @@ public class E_Image extends SquareBasedElement
 	public String path;
 	public Texture image;
 	
-	public boolean editing;
-	Frame frame;
-
-	public E_Image(String path,int x,int y,int w,int h)
+	protected Frame frame;
+	
+	public E_Image(int x,int y,int w,int h)
 	{
 		super();
 		
-		this.path = path;
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		
 		type = "Image";
+		frame = new Frame(this);
+	}
+
+	public E_Image(String path,int x,int y,int w,int h) throws IOException
+	{
+		this(x,y,w,h);
+		this.path = path;
 		
 		if (!path.equals(""))
-			try 
-			{
-				this.image = new Texture(path);
-			} 
-			catch (IOException e)
-			{
-				JOptionPane.showMessageDialog(null, "File" + path +" not found");
-			}
-		
-		frame = new Frame(this);
+			this.image = new Texture(path);
 	}
 	
 	@Override
@@ -61,7 +58,8 @@ public class E_Image extends SquareBasedElement
 	{
 		super.update(sc);
 		
-		if (editing) frame.update();
+		if (editing) 
+			frame.update();
 	}
 	
 	@Override
@@ -80,11 +78,15 @@ public class E_Image extends SquareBasedElement
 			path = data.getAttribute("src");
 			try
 			{
-				image = new Texture(Util.projectPath(path));
+				if (!path.isEmpty())
+				{
+					frame.buttonpath.setText(path);
+					image = new Texture(Util.projectPath(path));
+				}
 			} 
 			catch (IOException e)
 			{
-				JOptionPane.showMessageDialog(null, "File" + path +" not found");
+				JOptionPane.showMessageDialog(Main.frame, "Error loading image: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
 			x = Integer.parseInt(data.getAttribute("x"));
@@ -116,7 +118,7 @@ public class E_Image extends SquareBasedElement
 	@Override
 	public void render()
 	{
-		if (path.equals(""))
+		if (path.isEmpty() && image == null)
 			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,0,1));
 		else
 		{
@@ -130,8 +132,8 @@ public class E_Image extends SquareBasedElement
 	@Override
 	public void frame()
 	{
-		editing = true;
-		frame.setVisible(true);
+		frame.whenOpen();
+		super.frame();
 	}
 	
 
@@ -166,7 +168,7 @@ public class E_Image extends SquareBasedElement
 					} 
 					catch (IOException ex)
 					{
-						JOptionPane.showMessageDialog(null, "File" + path + " not found");
+						JOptionPane.showMessageDialog(Main.frame, "Error loading image: " + ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					}
 					element.w = element.image.width;
 					element.h = element.image.height;

@@ -37,7 +37,7 @@ public class XmlWriter
 		for (String attrib : attributes)
 		{
 			String[] attr = attrib.split("=");
-			xml += " " + attr[0] + "=\"" + attr[1] + "\"";
+			xml += " " + attr[0] + "=\"" + (attr.length > 1 ? attr[1] : "") + "\"";
 		}
 		xml += "/>\n";
 	}

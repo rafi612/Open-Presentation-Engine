@@ -14,12 +14,7 @@ public class Slide
 {
 	public Animation animation;
 	
-	public ArrayList<Element> elements;
-	
-	public Slide() 
-	{
-		elements = new ArrayList<Element>();
-	} 
+	public ArrayList<Element> elements = new ArrayList<Element>();
 
 	public void load(org.w3c.dom.Element element)
 	{

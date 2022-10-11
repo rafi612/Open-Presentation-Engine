@@ -101,6 +101,12 @@ public class SquareBasedElement extends Element
 	}
 	
 	@Override
+	public void frame()
+	{
+		super.frame();
+	}
+	
+	@Override
 	public void render()
 	{
 		if (colided)
@@ -133,6 +139,12 @@ public class SquareBasedElement extends Element
 			sh = new JSpinner(new SpinnerNumberModel(element.h,0,Integer.MAX_VALUE,1));
 		}
 		
+		@Override
+		public void whenOpen()
+		{
+			super.whenOpen();
+			update();
+		}
 		
 		// setting JSpinner value form elements
 		public void update()
@@ -146,7 +158,7 @@ public class SquareBasedElement extends Element
 		@Override
 		public void stateChanged(ChangeEvent e) 
 		{
-			if (!element.dragged)
+			if (!element.dragged && editing)
 			{
 				element.x = (int) sx.getValue();
 				element.y = (int) sy.getValue();
