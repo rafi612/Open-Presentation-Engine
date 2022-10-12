@@ -26,7 +26,7 @@ import org.joml.Vector4f;
 
 public class E_Image extends SquareBasedElement
 {
-	public String path;
+	public String path = "";
 	public Texture image;
 	
 	protected Frame frame;

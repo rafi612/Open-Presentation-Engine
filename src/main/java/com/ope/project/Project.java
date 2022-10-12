@@ -83,6 +83,7 @@ public class Project
 		interfaceEnable(false);
 		
 		Main.sliderack.clear();
+		Main.slidecreator.closeSlide();
 		
 		refreshProject();
 	}

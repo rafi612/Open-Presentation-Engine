@@ -494,6 +494,17 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		setEnabled(true);
 	}
 	
+	public void closeSlide()
+	{
+		openedfile = null;
+		toolbar.name.setText("No file");
+		
+		listModel.clear();
+		elements.clear();
+		initEnable();
+		slideloaded = false;
+	}
+	
 	private void savedialog()
 	{
 		String path;
@@ -531,15 +542,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 		// "yes" option
 		if (choose == 0)
-		{
-			openedfile = null;
-			toolbar.name.setText("No file");
-			
-			listModel.clear();
-			elements.clear();
-			initEnable();
-			slideloaded = false;
-		}
+			closeSlide();
 		
 		return choose;
 	}
