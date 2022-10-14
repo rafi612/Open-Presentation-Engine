@@ -28,6 +28,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
@@ -261,9 +262,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public void display()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(1,1,1,1);
+		glClearColor(0,0,0,1);
 		
 		reshape(canvas.getWidth(),canvas.getHeight());
+		Renderer.frect(0, 0, WIDTH, HEIGHT, new Vector4f(1,1,1,1));
 		
 		if (slideloaded)
 		{		
@@ -296,7 +298,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		canvasimage = new Texture(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
 		
-		glClearColor(1,1,1,1);
+		glClearColor(0,0,0,1);
 		
 		glEnable(GL_TEXTURE_2D);
 		
@@ -309,7 +311,21 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		if (Renderer.isFallback())
 			Renderer.fallbackResize();
 		
-		glViewport(0,0,(int)(width * sx),(int)(height * sy));
+		float aspectRatio = (float)width / (float)height;
+		float targetAspect = (float)WIDTH / (float)HEIGHT;
+		
+		if (aspectRatio >= targetAspect)
+		{
+			float calculatedW = (targetAspect / aspectRatio ) * width * sx;
+	        glViewport((int)((width / 2) - (calculatedW / 2)),0,(int)calculatedW,(int)(height * sy));
+		}
+		else
+		{
+	        float calculatedH = (aspectRatio / targetAspect) * height * sy;
+	        glViewport(0,(int)((height / 2) - (calculatedH / 2)),(int)(width * sx),(int)calculatedH);
+		}
+		
+		//glViewport(0,0,(int)(width * sx),(int)(height * sy));
 	}
 	
 	@Override
@@ -581,23 +597,15 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public void mouseDragged(MouseEvent e) 
 	{
 		dragged = true;
-		int X = e.getX();
-		int Y = e.getY();
-		xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
-		yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
+//		int X = e.getX();
+//		int Y = e.getY();
+//		xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
+//		yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
+//		
+//		position.setText("X: " + xPixel + " Y:" + yPixel);
 		
-		position.setText("X: " + xPixel + " Y:" + yPixel);
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e)
-	{
-		int X = e.getX();
-		int Y = e.getY();
-		xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
-		yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
-		
-		position.setText("X: " + xPixel + " Y:" + yPixel);
+		//redirecting to move event
+		mouseMoved(e);
 	}
 	
 	@Override
@@ -607,10 +615,46 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mousePressed(MouseEvent e)
+	{
+		dragged = true;
+		//redirecting to move event
+		mouseMoved(e);
+	}
 
 	@Override
-	public void mousePressed(MouseEvent e){}
+	public void mouseMoved(MouseEvent e)
+	{
+		int X = e.getX();
+		int Y = e.getY();
+		
+		float aspectRatio = (float)canvas.getWidth() / (float)canvas.getHeight();
+		float targetAspect = (float)WIDTH / (float)HEIGHT;
+		
+		
+		if (aspectRatio >= targetAspect)
+		{
+			float calculatedW = (targetAspect / aspectRatio ) * canvas.getWidth();
+			float x = (int)((canvas.getWidth() / 2) - (calculatedW / 2));
+			
+			xPixel = (int)(((float)(X-x)*((WIDTH) / calculatedW)));
+			yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
+
+		}
+		else
+		{
+	        float calculatedH = (aspectRatio / targetAspect) * canvas.getHeight();
+	        float y = (int)((canvas.getHeight() / 2) - (calculatedH / 2));
+	        
+			xPixel = (int)((float)X*((WIDTH) / ((float)canvas.getWidth())));
+			yPixel = (int)((float)(Y-y)*((HEIGHT) / calculatedH));
+		}
+		
+		position.setText("X: " + xPixel + " Y:" + yPixel);
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}

@@ -16,6 +16,7 @@ import org.lwjgl.util.nfd.NativeFileDialog;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import com.ope.io.Util;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class Project 
@@ -79,22 +80,24 @@ public class Project
 		projectlocation = "";
 		
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
-
-		interfaceEnable(false);
 		
 		Main.sliderack.clear();
 		Main.slidecreator.closeSlide();
+		
+		interfaceEnable(false);
 		
 		refreshProject();
 	}
 	
 	private static void createProjectXml(String path)
 	{
-		String lines = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<project>\n"
-				+ "<global fullscreen=\"true\"/>\n"
-				+ "</project>";
-		Util.saveFile(path, lines);
+		XmlWriter xml = new XmlWriter();
+		
+		xml.openTag("project");
+		xml.addTag("global", "fullscreen=true");
+		xml.closeTag();
+		
+		Util.saveFile(path, xml.get());
 	}
 	
 	public static void interfaceEnable(boolean enabled)

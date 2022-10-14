@@ -12,6 +12,8 @@ public class Mouse
 	public static int X,Y,Xpixel,Ypixel;
 	public static boolean button_left,button_right,button_clicked_left,button_clicked_right;
 	private static boolean b1 = false,b2 = false;
+	
+	public static int screenWidth = 1280,screenHeight = 720;
 
 	public static void update() 
 	{
@@ -58,12 +60,31 @@ public class Mouse
 			X = (int)xpos;
 			Y = (int)ypos;
 			
-			IntBuffer w = stack.mallocInt(1);
-			IntBuffer h = stack.mallocInt(1);
-			glfwGetWindowSize(window, w, h);
+			IntBuffer wbuf = stack.mallocInt(1);
+			IntBuffer hbuf = stack.mallocInt(1);
+			glfwGetWindowSize(window, wbuf, hbuf);
+			int w = wbuf.get();
+			int h = hbuf.get();
 			
-			Xpixel = (int)((float)X*(1280 / ((float)w.get())));
-			Ypixel = (int)((float)Y*(720 / ((float)h.get())));
+			float aspectRatio = (float)w / (float)h;
+			float targetAspect = (float)screenWidth / (float)screenHeight;
+			
+			if (aspectRatio >= targetAspect)
+			{
+				float calculatedW = (targetAspect / aspectRatio ) * w;
+				float x = (int)((w / 2) - (calculatedW / 2));
+				
+				Xpixel = (int)(((xpos-x)*((screenWidth) / calculatedW)));
+				Ypixel = (int)((ypos*((screenHeight) / ((float)h))));
+			}
+			else
+			{
+		        float calculatedH = (aspectRatio / targetAspect) * h;
+		        float y = (int)((h/ 2) - (calculatedH / 2));
+		        
+				Xpixel = (int)(xpos*((screenWidth) / ((float)w)));
+				Ypixel = (int)((ypos-y)*((screenHeight) / calculatedH));
+			}
     	}
     }
 

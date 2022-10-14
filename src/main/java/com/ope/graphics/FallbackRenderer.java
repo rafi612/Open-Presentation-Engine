@@ -26,6 +26,8 @@ public class FallbackRenderer extends Renderer
 			 FloatBuffer matrixbuffer = stack.mallocFloat(16);
 			 matrix.get(matrixbuffer);
 			 
+			 glMatrixMode(GL_MODELVIEW);
+			 
 			 glLoadMatrixf(matrixbuffer);
 		 }
 	}

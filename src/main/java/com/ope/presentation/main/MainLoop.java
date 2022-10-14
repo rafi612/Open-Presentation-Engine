@@ -11,6 +11,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class MainLoop
 {
+	public static int screenWidth = 1280,screenHeight = 720;
+	
 	public static void display(SlideManager sm)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -67,7 +69,19 @@ public class MainLoop
 		if (Renderer.isFallback())
 			Renderer.fallbackResize();
 		
-		glViewport(0, 0, width, height);
+		float aspectRatio = (float)width / (float)height;
+		float targetAspect = (float)screenWidth / (float)screenHeight;
+		
+		if (aspectRatio >= targetAspect)
+		{
+			float calculatedW = (targetAspect / aspectRatio ) * width;
+	        glViewport((int)((width / 2) - (calculatedW / 2)),0,(int)calculatedW,(int)height);
+		}
+		else
+		{
+	        float calculatedH = (aspectRatio / targetAspect) * height;
+	        glViewport(0,(int)((height / 2) - (calculatedH / 2)),(int)width,(int)calculatedH);
+		}
 	}
 
 }
