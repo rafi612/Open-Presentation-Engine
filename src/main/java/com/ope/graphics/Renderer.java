@@ -99,7 +99,7 @@ public class Renderer
 	
 	public static void setViewMatrix(Matrix4f matrix)
 	{
-		if (fallback)
+		if (isFallback())
 		{
 			FallbackRenderer.setViewMatrix(matrix);
 			return;
