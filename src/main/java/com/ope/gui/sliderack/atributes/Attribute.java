@@ -2,8 +2,7 @@ package com.ope.gui.sliderack.atributes;
 
 import javax.swing.JButton;
 
-import org.w3c.dom.Element;
-
+import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 
 public class Attribute extends JButton
@@ -50,7 +49,7 @@ public class Attribute extends JButton
 
 	}
 	
-	public void load(Element element)
+	public void load(Tag attribtag)
 	{
 		
 	}

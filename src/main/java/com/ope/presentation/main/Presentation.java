@@ -4,6 +4,7 @@ package com.ope.presentation.main;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.util.tinyfd.TinyFileDialogs.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +17,12 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
-import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import com.ope.audio.Sound;
 import com.ope.io.Util;
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.Tag;
+import com.ope.io.xml.XmlReader;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.input.Mouse;
 import com.ope.presentation.slide.SlideManager;
@@ -119,13 +121,28 @@ public class Presentation
 	
 	public static void load()
 	{
-		XmlParser xml = new XmlParser(Util.projectPath(Project.PROJECT_XML_NAME));
-		
-		Element global = XmlParser.getElements(xml.getElementsByTagName("global"))[0];
-		
-		setFullscreen(Boolean.parseBoolean(global.getAttribute("fullscreen")));
-		
-		sm.load(xml);
+		try 
+		{
+			XmlReader xml = new XmlReader(Util.projectPath(Project.PROJECT_XML_NAME));
+			
+			Tag global = xml.getTags("global")[0];
+			
+			setFullscreen(Boolean.parseBoolean(global.getAttribute("fullscreen")));
+			
+			sm.load(xml);
+		}
+		catch (IOException | SAXException e) 
+		{
+			tinyfd_messageBox("Error","Error loading presentation: " 
+					//replace quotes to prevent tinyfd errors
+					+ e.getMessage().replaceAll("\"", ""),
+					"ok",
+					"error",
+					true);
+			stop();
+			System.exit(-1);
+		}
+
 	}
 	
 	private static GLFWImage.Buffer icon(String path)

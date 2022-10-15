@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -32,13 +33,15 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
+import org.xml.sax.SAXException;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.Util;
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.Tag;
+import com.ope.io.xml.XmlReader;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 import com.ope.presentation.slide.Element;
@@ -483,27 +486,49 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private void openslide(String path)
 	{
-		XmlParser xml = new XmlParser(path);
-		
-		var elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
-		
-		for (int i = 0;i < elements_.length;i++)
+		try 
 		{
-			Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
-			elem.id = i;
-			elem.load(elements_[i]);
+			XmlReader xml = new XmlReader(path);
 			
-			elements.add(elem);
-			listModel.addElement(elements_[i].getAttribute("name"));
+			Tag[] tags = xml.getTags("element");
+			
+			for (int i = 0;i < tags.length;i++)
+			{
+				Element elem = Element.getElementsByName(tags[i].getAttribute("type"));
+				elem.id = i;
+				elem.load(tags[i]);
+				
+				elements.add(elem);
+				listModel.addElement(tags[i].getAttribute("name"));
+			}
+			
+			slideloaded = true;
+			
+			openedfile = new File(path);
+			toolbar.name.setText(openedfile.getName());
+			
+			//enable
+			setEnabled(true);
+		} 
+		catch (IOException | SAXException e) 
+		{
+			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage());
+			e.printStackTrace();
 		}
+//		XmlParser xml = new XmlParser(path);
+//		
+//		var elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
+//		
+//		for (int i = 0;i < elements_.length;i++)
+//		{
+//			Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
+//			elem.id = i;
+//			elem.load(elements_[i]);
+//			
+//			elements.add(elem);
+//			listModel.addElement(elements_[i].getAttribute("name"));
+//		}
 		
-		slideloaded = true;
-		
-		openedfile = new File(path);
-		toolbar.name.setText(openedfile.getName());
-		
-		//enable
-		setEnabled(true);
 	}
 	
 	public void closeSlide()

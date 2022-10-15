@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -19,11 +20,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import com.ope.gui.sliderack.RackElement;
 import com.ope.io.Util;
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.Tag;
+import com.ope.io.xml.XmlReader;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
@@ -221,27 +223,35 @@ public class SlideRack extends JPanel implements ActionListener
 	
 	public void load(String path)
 	{
-		XmlParser xml = new XmlParser(path);
-		
-		Element[] elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
-		
-		for (Element element : elements)
+		try 
 		{
-			RackElement elem = new RackElement(element.getAttribute("name"), this);
-			int color = Integer.parseInt(element.getAttribute("color"));
+			XmlReader xml = new XmlReader(path);
+			
+			Tag[] slides = xml.getTags("slide");
+			
+			for (Tag slidetag : slides)
+			{
+				RackElement elem = new RackElement(slidetag.getAttribute("name"), this);
+				int color = Integer.parseInt(slidetag.getAttribute("color"));
 
-			if (color != -1)
-				elem.setColor(new Color(color));
+				if (color != -1)
+					elem.setColor(new Color(color));
+				
+				
+				elem.load(slidetag);
+				
+				addElement(elem);
+			}
 			
+			Tag global = xml.getTags("global")[0];
 			
-			elem.load(element);
-			
-			addElement(elem);
+			parentmenu.fullscreen.setSelected(Boolean.parseBoolean(global.getAttribute("fullscreen")));
+		} 
+		catch (IOException | SAXException e) 
+		{
+			JOptionPane.showMessageDialog(Main.frame, "Error loading slides: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 		}
-		
-		Element global = XmlParser.getElements(xml.getElementsByTagName("global"))[0];
-		
-		parentmenu.fullscreen.setSelected(Boolean.parseBoolean(global.getAttribute("fullscreen")));
+
 	}
 	
 	

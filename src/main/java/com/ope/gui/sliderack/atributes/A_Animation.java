@@ -5,8 +5,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.w3c.dom.Element;
-
+import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
@@ -30,9 +29,10 @@ public class A_Animation extends Attribute
 		xml.addTag("animation", "type=" + animation);
 	}
 	
-	public void load(Element element)
+	@Override
+	public void load(Tag tag)
 	{
-		animation = element.getAttribute("type");
+		animation = tag.getAttribute("type");
 		setText(animation);
 	}
 	

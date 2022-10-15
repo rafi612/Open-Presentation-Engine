@@ -18,7 +18,7 @@ import com.ope.graphics.Texture;
 import com.ope.gui.SlideCreator;
 import com.ope.gui.TreeFileEvent;
 import com.ope.io.Util;
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
@@ -63,16 +63,15 @@ public class E_Image extends SquareBasedElement
 	}
 	
 	@Override
-	public void load(org.w3c.dom.Element element)
+	public void load(Tag tag)
 	{
-		
-		if (element.getAttribute("type").equals("Image"))
+		if (tag.getAttribute("type").equals("Image"))
 		{
-			type = element.getAttribute("type");
-			name = element.getAttribute("name");
+			type = tag.getAttribute("type");
+			name = tag.getAttribute("name");
 			
 			//[0] getting first element from array
-			var data = XmlParser.getElementsFromElementByName(element,"data")[0];
+			var data = tag.getTags("data")[0];
 			
 			//loading image
 			path = data.getAttribute("src");

@@ -4,10 +4,9 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.w3c.dom.Element;
-
 import com.ope.gui.TreeFileChooser;
 import com.ope.io.Util;
+import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
@@ -31,9 +30,10 @@ public class A_Slide extends Attribute
 		xml.addTagText("layout", path);
 	}
 	
-	public void load(Element element)
+	@Override
+	public void load(Tag tag)
 	{
-		path = element.getTextContent();
+		path = tag.getText();
 		setText(path.equals("") ? "None" : new File(path).getName());
 	}
 	

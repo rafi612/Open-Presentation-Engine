@@ -1,13 +1,17 @@
 /* Copyright 2019-2020 by rafi612 */
 package com.ope.presentation.slide;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.xml.sax.SAXException;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.Tag;
+import com.ope.io.xml.XmlReader;
 import com.ope.presentation.animation.Animation;
 import com.ope.presentation.input.Keyboard;
 import com.ope.presentation.main.Presentation;
@@ -111,14 +115,14 @@ public class SlideManager
 		
 	}
 	
-	public void load(XmlParser xml)
+	public void load(XmlReader xml) throws IOException, SAXException
 	{		
-		var elements = XmlParser.getElements(xml.getElementsByTagName("slide"));
+		Tag[] tags = xml.getTags("slide");
 		
-		for (var element : elements)
+		for (Tag tag : tags)
 		{
 			Slide slide = new Slide();
-			slide.load(element);
+			slide.load(tag);
 			
 			slides.add(slide);
 		}

@@ -1,14 +1,18 @@
 package com.ope.io;
 
 import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.lwjgl.system.Platform;
+import org.xml.sax.SAXException;
 
-import com.ope.io.xml.XmlParser;
+import com.ope.io.xml.XmlReader;
+import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class Config 
@@ -18,36 +22,40 @@ public class Config
 	
 	public static void loadSettings() 
 	{
-		
 		switch (Platform.get())
 		{
-		case WINDOWS:
-			configpath = Util.path(System.getenv("APPDATA"),"ope.xml");
-			break;
-		case LINUX:
-			configpath = Util.path(System.getProperty("user.home"),".config","ope.xml");
-			break;
-		case MACOSX:
-			configpath = Util.path(System.getProperty("user.home"),"Library","Application Support","ope.xml");
-			break;
+			case WINDOWS:
+				configpath = Util.path(System.getenv("APPDATA"),"ope.xml");
+				break;
+			case LINUX:
+				configpath = Util.path(System.getProperty("user.home"),".config","ope.xml");
+				break;
+			case MACOSX:
+				configpath = Util.path(System.getProperty("user.home"),"Library","Application Support","ope.xml");
+				break;
 		}
 		
 		if (!new File(configpath).exists())
 			createOPExml();
 		
-		XmlParser xml = new XmlParser(configpath);
-		
-		lookandfeel = XmlParser.getElements(xml.getElementsByTagName("theme"))[0].getTextContent();
-	
-
-		if (lookandfeel.equals(getSystemTheme()))
-			Main.menubar.m_system.setSelected(true);
-		else if (lookandfeel.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
-			Main.menubar.m_metal.setSelected(true);
-		else if (lookandfeel.equals("javax.swing.plaf.nimbus.NimbusLookAndFeel"))
-			Main.menubar.m_nimbus.setSelected(true);
-		
-		reloadTheme();
+		try 
+		{
+			XmlReader xml = new XmlReader(configpath);
+			lookandfeel = xml.getTags("theme")[0].getText();
+			
+			if (lookandfeel.equals(getSystemTheme()))
+				Main.menubar.m_system.setSelected(true);
+			else if (lookandfeel.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
+				Main.menubar.m_metal.setSelected(true);
+			else if (lookandfeel.equals("javax.swing.plaf.nimbus.NimbusLookAndFeel"))
+				Main.menubar.m_nimbus.setSelected(true);
+			
+			reloadTheme();
+		} 
+		catch (IOException | SAXException e) 
+		{
+			JOptionPane.showMessageDialog(Main.frame, "Error loading settings file: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		} 
 	}
 	
 	public static void createOPExml()
@@ -69,11 +77,13 @@ public class Config
 	
 	public static void saveXML()
 	{
-		Util.saveFile(configpath,
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + 
-			"<config>\n" +
-			"<theme>" + lookandfeel + "</theme>\n" + 
-			"</config>");
+		XmlWriter xml = new XmlWriter();
+		
+		xml.openTag("config");
+		xml.addTagText("theme", lookandfeel);
+		xml.closeTag();
+		
+		Util.saveFile(configpath,xml.get());
 	}
 	
 	
@@ -83,7 +93,6 @@ public class Config
 			UIManager.setLookAndFeel(Config.lookandfeel);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

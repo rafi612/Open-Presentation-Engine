@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 
 import com.ope.gui.SlideCreator;
 import com.ope.io.Util;
+import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 import com.ope.presentation.slide.elements.E_Image;
@@ -42,7 +43,7 @@ public class Element
 		return null;
 	}
 	
-	public void load(org.w3c.dom.Element element)
+	public void load(Tag element)
 	{
 		
 	}
