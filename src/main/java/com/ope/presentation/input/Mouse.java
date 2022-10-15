@@ -13,7 +13,13 @@ public class Mouse
 	public static boolean button_left,button_right,button_clicked_left,button_clicked_right;
 	private static boolean b1 = false,b2 = false;
 	
-	public static int screenWidth = 1280,screenHeight = 720;
+	private static int screenWidth,screenHeight;
+	
+	public static void init(int width,int height)
+	{
+		screenWidth = width;
+		screenHeight = height;
+	}
 
 	public static void update() 
 	{

@@ -48,30 +48,28 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 {
 	private static final long serialVersionUID = 1L;
 	
-	public ArrayList<JButton> actions = new ArrayList<JButton>();
-	
 	public static int WIDTH = 1280,HEIGHT = 720;
+	
+	public int elementsint = 0;
+	public int xPixel,yPixel;
+	
+	public int currentColidedID = -1,currentMovedID = -1;
+	
+	public boolean slideloaded = false;
+	public boolean dragged = false;
 	
 	private DefaultListModel<String> listModel;
 	public JList<String> list;
 	public JPanel listpanel;
 	
 	private JButton edit,up,down,rename,delete;
+	public ArrayList<JButton> actions = new ArrayList<JButton>();
 	private JLabel position;
+	private AWTGLCanvas canvas;
 	
-	public int elementsint = 0;
-	public int xPixel,yPixel;
+	public ArrayList<Element> elements = new ArrayList<Element>();
 	
 	private Texture canvasimage;
-	
-	public boolean slideloaded = false;
-	public boolean dragged = false;
-	
-	public int currentColidedID = -1,currentMovedID = -1;
-	
-	public ArrayList<Element> elements;
-	
-	private AWTGLCanvas canvas;
 	
 	private File openedfile;
 	
@@ -135,8 +133,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public SlideCreator() 
 	{
 		setLayout(new BorderLayout());
-		
-		elements = new ArrayList<Element>();
 		
 		//toolbar
 		toolbar = new ToolBar(this);
@@ -290,7 +286,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		System.out.println("Canvas init");
 		
-		Renderer.init();
+		Renderer.init(WIDTH,HEIGHT);
 		
 		AffineTransform transform = canvas.getGraphicsConfiguration().getDefaultTransform();
 		sx = (float) transform.getScaleX();

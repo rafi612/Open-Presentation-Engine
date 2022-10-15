@@ -13,9 +13,7 @@ public class Renderer
 {
 	static boolean fallback = false;
 	
-	static Shader texture_shader,rect_shader,gradient_shader;
-
-	public static Shader mix_shader;
+	static Shader texture_shader,rect_shader,gradient_shader,mix_shader;
 	
 	static Matrix4f projectionMatrix,viewMatrix;
 	public static final Matrix4f EMPTY_VIEW_MATRIX = new Matrix4f();
@@ -25,10 +23,11 @@ public class Renderer
 	static float angleX,angleY,angleZ;
 	static Vector2i size;
 	
-	public static void init() 
+	public static void init(int width,int height) 
 	{
-		size = new Vector2i(1280,720);
-		projectionMatrix = new Matrix4f().ortho(0, size.x, size.y, 0, -size.x,size.x);
+		size = new Vector2i(width,height);
+		
+		projectionMatrix = new Matrix4f().ortho(0, width, height, 0, -width,height);
 		viewMatrix = new Matrix4f();
 		
 		if (!isFallback())
@@ -236,16 +235,16 @@ public class Renderer
 	    
 		Matrix4f transformMatrix = new Matrix4f()
 				.translate(0,0,1.0f)
-				.scale(1280,720,0);
+				.scale(w,h,0);
 		
-		Renderer.mix_shader.use();
-		Renderer.mix_shader.setMatrix4("transformMatrix", transformMatrix);
-		Renderer.mix_shader.setMatrix4("viewMatrix", new Matrix4f());
-		Renderer.mix_shader.setMatrix4("projectionMatrix", Renderer.getProjectionMatrix());
+		mix_shader.use();
+		mix_shader.setMatrix4("transformMatrix", transformMatrix);
+		mix_shader.setMatrix4("viewMatrix", new Matrix4f());
+		mix_shader.setMatrix4("projectionMatrix", Renderer.getProjectionMatrix());
 		
-		Renderer.mix_shader.setInt("image", 0);
-		Renderer.mix_shader.setInt("image2", 1);
-		Renderer.mix_shader.setFloat("mixAmount",mix);
+		mix_shader.setInt("image", 0);
+		mix_shader.setInt("image2", 1);
+		mix_shader.setFloat("mixAmount",mix);
 		
 		quad.draw();
 		

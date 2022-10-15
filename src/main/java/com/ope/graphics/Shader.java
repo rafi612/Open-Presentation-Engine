@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.util.stream.Collectors;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -20,8 +21,8 @@ public class Shader
 
 	public Shader(String vertexpath,String fragmentpath)
 	{
-		String vShaderCode = load(Shader.class.getResourceAsStream(vertexpath));
-		String fShaderCode = load(Shader.class.getResourceAsStream(fragmentpath));
+		String vShaderCode = read(Shader.class.getResourceAsStream(vertexpath));
+		String fShaderCode = read(Shader.class.getResourceAsStream(fragmentpath));
 		
 		int vertex, fragment;
 		
@@ -105,26 +106,16 @@ public class Shader
 		}
 	}
 	
-	private static String load(InputStream i)
+	private static String read(InputStream i)
 	{	
-		String s = "";
-		String line;
-		try 
+		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(i)))
 		{
-			BufferedReader br = new BufferedReader(new InputStreamReader(i));
-			while ((line = br.readLine()) != null)
-			{
-				s += line + "\n";
-			}
-			
-			br.close();
-			i.close();
-		} 
-		catch (IOException e) 
+			return buffer.lines().collect(Collectors.joining("\n"));
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
+			return "";
 		}
-		
-		return s; 
 	}
 }

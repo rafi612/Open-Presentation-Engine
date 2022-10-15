@@ -51,7 +51,9 @@ public class MainLoop
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		Renderer.init();
+		Renderer.init(screenWidth,screenHeight);
+		//init mouse with screen size to properly get mouse clicks
+		Mouse.init(screenWidth, screenHeight);
 		
 		System.out.println("========================================");
 		System.out.println("Open Presentation Engine by rafi612");

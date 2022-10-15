@@ -33,7 +33,7 @@ public class SlideRack extends JPanel implements ActionListener
 	
 	public ArrayList<JButton> actionbuttons;
 	
-	public JCheckBox selected;
+	public JCheckBox selectedAll;
 	public JLabel slidecount;
 	public JPanel rackpanel;
 	
@@ -74,10 +74,10 @@ public class SlideRack extends JPanel implements ActionListener
 		JPanel toppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		toppanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		selected = new JCheckBox("Select all");
-		selected.setEnabled(false);
-		selected.addActionListener(this);
-		toppanel.add(selected);
+		selectedAll = new JCheckBox("Select all");
+		selectedAll.setEnabled(false);
+		selectedAll.addActionListener(this);
+		toppanel.add(selectedAll);
 		
 		slidecount = new JLabel("Slides: " + elements.size());
 		toppanel.add(slidecount);
@@ -97,12 +97,10 @@ public class SlideRack extends JPanel implements ActionListener
 	{
 		var source = e.getSource();
 		
-		if (source == selected)
+		if (source == selectedAll)
 		{
 			for (RackElement rack : elements)
-			{
-				rack.setSelected(selected.isSelected());
-			}
+				rack.setSelected(selectedAll.isSelected());
 		}
 		
 		//add slide
@@ -111,7 +109,7 @@ public class SlideRack extends JPanel implements ActionListener
 			RackElement element = new RackElement("Slide " + elements.size(),this);
 			addElement(element);
 			
-			selected.setEnabled(true);
+			selectedAll.setEnabled(true);
 		}
 		
 		//delete slide
@@ -144,7 +142,7 @@ public class SlideRack extends JPanel implements ActionListener
 		elements.add(element);
 		rackpanel.add(element);
 		
-		selected.setEnabled(true);
+		selectedAll.setEnabled(true);
 	}
 	
 	public void clear()
@@ -159,7 +157,7 @@ public class SlideRack extends JPanel implements ActionListener
 		
 		elements.clear();
 		
-		selected.setEnabled(false);
+		selectedAll.setEnabled(false);
 		
 		validate();
 		repaint();
@@ -170,16 +168,16 @@ public class SlideRack extends JPanel implements ActionListener
 	{
 		if (elements.size() == 0)
 		{
-			selected.setSelected(false);
-			selected.setEnabled(false);
+			selectedAll.setSelected(false);
+			selectedAll.setEnabled(false);
 			return;
 		}
 		
 		if (getSelectedIndexes().size() == elements.size())
 		{
-			selected.setSelected(true);
+			selectedAll.setSelected(true);
 		}
-		else selected.setSelected(false);
+		else selectedAll.setSelected(false);
 	}
 	
 	private boolean check()
