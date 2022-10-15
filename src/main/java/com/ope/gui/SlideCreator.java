@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -33,6 +34,9 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.stb.STBImageWrite;
+import org.lwjgl.system.MemoryUtil;
 import org.xml.sax.SAXException;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -58,6 +62,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public int currentColidedID = -1,currentMovedID = -1;
 	
+	private int viewportX,viewportY,viewportW,viewportH;
+	
 	public boolean slideloaded = false;
 	public boolean dragged = false;
 	
@@ -66,11 +72,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public JPanel listpanel;
 	
 	private JButton edit,up,down,rename,delete;
-	public ArrayList<JButton> actions = new ArrayList<JButton>();
+	public ArrayList<JButton> actions = new ArrayList<>();
 	private JLabel position;
 	private AWTGLCanvas canvas;
 	
-	public ArrayList<Element> elements = new ArrayList<Element>();
+	public ArrayList<Element> elements = new ArrayList<>();
 	
 	private Texture canvasimage;
 	
@@ -257,6 +263,8 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		};
 		SwingUtilities.invokeLater(renderLoop);
 	}
+	
+	//private boolean tumbnailSaved = false;
 
 	public void display()
 	{
@@ -281,6 +289,15 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		//render
 		for (Element element : elements)
 			element.render();
+		
+//		if (dragged)
+//			tumbnailSaved = true;
+//		
+//		if (!dragged && tumbnailSaved)
+//		{
+//			createTumbnail("");
+//			tumbnailSaved = false;
+//		}
 	}
 	
 	private float sx,sy;
@@ -315,16 +332,38 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		if (aspectRatio >= targetAspect)
 		{
-			float calculatedW = (targetAspect / aspectRatio ) * width * sx;
-	        glViewport((int)((width / 2) - (calculatedW / 2)),0,(int)calculatedW,(int)(height * sy));
+			viewportW = (int)((targetAspect / aspectRatio ) * width * sx);
+	        glViewport(viewportX = (int)((width / 2) - (viewportW / 2)),
+	        		viewportY = 0,
+	        		viewportW,
+	        		viewportH = (int)(height * sy));
 		}
 		else
 		{
-	        float calculatedH = (aspectRatio / targetAspect) * height * sy;
-	        glViewport(0,(int)((height / 2) - (calculatedH / 2)),(int)(width * sx),(int)calculatedH);
+	        viewportH = (int)((aspectRatio / targetAspect) * height * sy);
+	        glViewport(viewportX = 0,
+	        		viewportY = (int)((height / 2) - (viewportH / 2)),
+	        		viewportW = (int)(width * sx),
+	        		viewportH);
 		}
 		
 		//glViewport(0,0,(int)(width * sx),(int)(height * sy));
+	}
+	
+	public void createTumbnail(String path)
+	{
+		glReadBuffer(GL_FRONT);
+		ByteBuffer buffer = MemoryUtil.memAlloc(viewportW * viewportH * 4);
+		glReadPixels(viewportX, viewportY, viewportW, viewportH, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+			
+		//flip to revert projection matrix invertion
+		STBImageWrite.stbi_flip_vertically_on_write(true);
+		//save image
+		STBImageWrite.stbi_write_png(path, viewportW, viewportH, STBImage.STBI_rgb_alpha, buffer, 0);
+		
+		STBImageWrite.stbi_flip_vertically_on_write(false);
+		
+		MemoryUtil.memFree(buffer);
 	}
 	
 	@Override
@@ -515,20 +554,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage());
 			e.printStackTrace();
 		}
-//		XmlParser xml = new XmlParser(path);
-//		
-//		var elements_ = XmlParser.getElements(xml.getElementsByTagName("element"));
-//		
-//		for (int i = 0;i < elements_.length;i++)
-//		{
-//			Element elem = Element.getElementsByName(elements_[i].getAttribute("type"));
-//			elem.id = i;
-//			elem.load(elements_[i]);
-//			
-//			elements.add(elem);
-//			listModel.addElement(elements_[i].getAttribute("name"));
-//		}
-		
+	
 	}
 	
 	public void closeSlide()
