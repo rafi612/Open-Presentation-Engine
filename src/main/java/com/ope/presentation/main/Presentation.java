@@ -163,7 +163,7 @@ public class Presentation
 		}
 	}
 	
-	static IntBuffer lastx = BufferUtils.createIntBuffer(1),
+	private static IntBuffer lastx = BufferUtils.createIntBuffer(1),
 		lasty = BufferUtils.createIntBuffer(1),
 		lastw = BufferUtils.createIntBuffer(1),
 		lasth = BufferUtils.createIntBuffer(1);
