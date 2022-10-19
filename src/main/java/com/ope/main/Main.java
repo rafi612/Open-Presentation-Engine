@@ -106,7 +106,6 @@ public class Main
 			frame.setVisible(true);
 			
 			slidecreator.canvasLoop();
-
 		}
 		else 
 			Presentation.start(args[0]);
