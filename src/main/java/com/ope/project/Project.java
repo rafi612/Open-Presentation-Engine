@@ -200,7 +200,7 @@ public class Project
 		else 
 			path = TinyFileDialogs.tinyfd_selectFolderDialog("Select project folder",System.getProperty("user.home") + File.separator);
 		
-		if(path != null)
+		if (path != null)
 		{
 			try 
 			{

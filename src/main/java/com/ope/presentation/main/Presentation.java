@@ -54,69 +54,69 @@ public class Presentation
 				System.err.println("ERROR: Folder " + Project.projectlocation + " is not OPE project folder");
 				System.exit(1);
 			}
+			
+			if (window != NULL)
+				stop();
+			
+			Sound.init();
+			
+			GLFWErrorCallback.createPrint(System.err).set();
+			
+			if (!glfwInit())
+				System.err.println("Error Init GLFW");
+
+			glfwDefaultWindowHints();
+			
+			glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+			glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+			
+			window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
+			if (window == NULL)
+			  throw new RuntimeException("Failed to create the GLFW window");
+			
+			GLFWImage.Buffer icon = icon("/images/icon.png");
+			glfwSetWindowIcon(window,icon);
+			
+			glfwSetKeyCallback(window, Keyboard::invoke);
+			glfwSetMouseButtonCallback(window,Mouse::mouseButton);
+			glfwSetCursorPosCallback(window,Mouse::mouseMove);
+			
+			glfwGetWindowPos(window, lastx, lasty);
+			glfwGetWindowSize(window, lastw, lasth);
+			
+			glfwMakeContextCurrent(window);
+			GL.createCapabilities();
+			
+			glfwSwapInterval(1);
+			
+			sm = new SlideManager();
+			
+			MainLoop.init(sm);
+			
+			load();
+			
+			glfwShowWindow(window);
+			
+			MainLoop.reshape(window,WIDTH,HEIGHT);
+			
+			glfwSetWindowSizeCallback(window,MainLoop::reshape);
+			
+			running = true;
+			
+			while (!glfwWindowShouldClose(window) && running) 
+			{
+				MainLoop.display(sm);
+				
+				glfwSwapBuffers(window);
+				glfwPollEvents();
+			}
+			
+			stop();	
 		}
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		if (window != NULL)
-			stop();
-		
-		Sound.init();
-		
-		GLFWErrorCallback.createPrint(System.err).set();
-		
-		if (!glfwInit())
-			System.err.println("Error Init GLFW");
-
-		glfwDefaultWindowHints();
-		
-		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-		
-		window = glfwCreateWindow(1280, 720, TITLE, NULL, NULL);
-		if (window == NULL)
-		  throw new RuntimeException("Failed to create the GLFW window");
-		
-		GLFWImage.Buffer icon = icon("/images/icon.png");
-		glfwSetWindowIcon(window,icon);
-		
-		glfwSetKeyCallback(window, Keyboard::invoke);
-		glfwSetMouseButtonCallback(window,Mouse::mouseButton);
-		glfwSetCursorPosCallback(window,Mouse::mouseMove);
-		
-		glfwGetWindowPos(window, lastx, lasty);
-		glfwGetWindowSize(window, lastw, lasth);
-		
-		glfwMakeContextCurrent(window);
-		GL.createCapabilities();
-		
-		glfwSwapInterval(1);
-		
-		sm = new SlideManager();
-		
-		MainLoop.init(sm);
-		
-		load();
-		
-		glfwShowWindow(window);
-		
-		MainLoop.reshape(window,WIDTH,HEIGHT);
-		
-		glfwSetWindowSizeCallback(window,MainLoop::reshape);
-		
-		running = true;
-		
-		while (!glfwWindowShouldClose(window) && running) 
-		{
-			MainLoop.display(sm);
-			
-			glfwSwapBuffers(window);
-			glfwPollEvents();
-		}
-		
-		stop();	
 	}
 	
 	public static void load()
