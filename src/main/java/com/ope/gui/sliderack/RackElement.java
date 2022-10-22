@@ -52,7 +52,7 @@ public class RackElement extends JPanel implements ActionListener
 	{
 		this.sliderack = sliderack;
 		
-		attributes = new ArrayList<Attribute>();
+		attributes = new ArrayList<>();
 		
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setLayout(new BorderLayout());

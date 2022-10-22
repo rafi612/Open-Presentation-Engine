@@ -39,6 +39,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
+import com.ope.io.ResourceLoader;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlReader;
@@ -298,7 +299,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		sx = (float) transform.getScaleX();
 		sy = (float) transform.getScaleY();
 		
-		canvasimage = new Texture(SlideCreator.class.getResourceAsStream("/images/canvas.png"));
+		canvasimage = new Texture(ResourceLoader.load("/images/canvas.png"));
 		
 		glClearColor(0,0,0,1);
 		
@@ -518,7 +519,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		catch (IOException | SAXException e) 
 		{
 			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 		}
 	
 	}

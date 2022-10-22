@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
+import com.ope.io.ResourceLoader;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlReader;
 import com.ope.presentation.animation.Animation;
@@ -34,8 +35,8 @@ public class SlideManager
 	public SlideManager()
 	{
 		choose = 0;
-		empty = new Texture(SlideManager.class.getResourceAsStream("/images/empty.png"));
-		endimage  = new Texture(SlideManager.class.getResourceAsStream("/images/slideend.png"));
+		empty = new Texture(ResourceLoader.load("/images/empty.png"));
+		endimage  = new Texture(ResourceLoader.load("/images/slideend.png"));
 		
 		slides = new ArrayList<Slide>();
 	}
@@ -143,10 +144,8 @@ public class SlideManager
 	{		
 		if (slides.size() == 0) 
 			Renderer.drawImage(empty, 0, 0, Renderer.getSize().x,Renderer.getSize().y);
-		else if (end)
-		{			
+		else if (end)		
 			Renderer.drawImage(endimage, 0,0,300,50);
-		}
 		else
 		{
 			if (animation.isRunning()) 
