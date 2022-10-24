@@ -525,13 +525,15 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public void closeSlide()
 	{
-		openedfile = null;
-		toolbar.name.setText("No file");
-		
 		listModel.clear();
 		elements.clear();
-		initEnable();
+		
+		openedfile = null;
 		slideloaded = false;
+		
+		toolbar.name.setText("No file");
+		
+		initEnable();
 	}
 	
 	private void savedialog()
