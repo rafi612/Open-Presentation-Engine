@@ -17,12 +17,7 @@ public class Element
 	public static final String[] types = {"Image","Text","Shape","Graph"};
 	public boolean editing,moving,colided;
 	
-	public int x;
-	public int y;
-	public int w;
-	public int h;
-	
-	public int id;
+	public int id,x,y,w,h;
 	
 	public String name,type;
 	
