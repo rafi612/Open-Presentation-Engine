@@ -33,7 +33,7 @@ public class Util
 		String fileName = file.toString();
 	
 		int index = fileName.lastIndexOf('.');
-		if(index > 0) 
+		if (index > 0) 
 		{
 			String extension = fileName.substring(index + 1);
 			return extension;
