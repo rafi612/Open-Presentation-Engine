@@ -2,7 +2,6 @@
 package com.ope.project;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -32,18 +31,14 @@ public class Project
 			unloadProject();
 		
 		String path = Util.path(location,name);
-		new File(path).mkdir();
-		createProjectXml(Util.path(path,PROJECT_XML_NAME));
 		
-		try 
+		if (new File(path).mkdir())
 		{
+			createProjectXml(Util.path(path,PROJECT_XML_NAME));
+			
 			loadProject(path);
-		} 
-		catch (Exception e)
-		{
-			unloadProject();
-			throw new IllegalStateException("Can't create new project: " + e.getMessage());
 		}
+		else throw new Exception("Project directory cannot be created");
 	}
 	
 	public static void loadProject(String path) throws Exception
@@ -51,7 +46,7 @@ public class Project
 		projectlocation = path;
 			
 		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
-			throw new FileNotFoundException("This is not project folder (project.xml missing)");
+			throw new Exception("This is not project folder (project.xml missing)");
 			
 		if (projectIsLoaded) 
 			unloadProject();
@@ -61,7 +56,8 @@ public class Project
 		Main.frame.setTitle(Main.TITLE + " - " + path);
 
 		interfaceEnable(true);
-			
+		
+		//catch error when project is invalid
 		try
 		{
 			Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
@@ -69,7 +65,7 @@ public class Project
 		catch (Exception e) 
 		{
 			unloadProject();
-			throw new IllegalStateException("Can't load project (Project corrupted)");
+			throw new Exception("Can't load project (Project corrupted)");
 		}
 			
 		refreshProject();
@@ -238,7 +234,10 @@ public class Project
 	private static void createChildren(File fileRoot, DefaultMutableTreeNode node) 
 	{
 		File[] files = fileRoot.listFiles();
-		if (files == null) return;
+		
+		if (files == null) 
+			return;
+		
 		for (File file : files) 
 		{
 			var childNode = new DefaultMutableTreeNode(file);
