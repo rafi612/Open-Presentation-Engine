@@ -100,8 +100,7 @@ public class Util
 	
 	public static void saveFile(String path,String text)
 	{
-        try (FileWriter writer = new FileWriter(path);
-             BufferedWriter bw = new BufferedWriter(writer)) 
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) 
         {
             bw.write(text);
         } 
