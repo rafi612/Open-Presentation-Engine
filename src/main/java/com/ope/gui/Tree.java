@@ -9,6 +9,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -141,7 +142,14 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		if (source == newfile)
 		{
 			String name = JOptionPane.showInputDialog(Main.frame, "Enter file name:", "Create new file", JOptionPane.QUESTION_MESSAGE);
-			Util.saveFile(Util.projectPath(name), "");
+			try 
+			{
+				Util.saveFile(Util.projectPath(name), "");
+			} 
+			catch (IOException ex) 
+			{
+				Util.errorDialog(ex);
+			}
 				
 			Project.refreshProject();
 		}
@@ -217,7 +225,14 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			else if (operation == 1)
 			{
 				//copy
-				Util.copyFile(copy.getPath(),destdir.getPath());
+				try 
+				{
+					Util.copyFile(copy.getPath(),destdir.getPath());
+				} 
+				catch (IOException ex) 
+				{
+					Util.errorDialog(ex);
+				}
 			}
 			
 			Project.refreshProject();

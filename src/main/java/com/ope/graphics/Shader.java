@@ -2,12 +2,8 @@ package com.ope.graphics;
 
 import static org.lwjgl.opengl.GL20.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
-import java.util.stream.Collectors;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -15,51 +11,61 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
+import com.ope.io.ResourceLoader;
+import com.ope.io.Util;
+
 public class Shader 
 {
 	int ID;
 
 	public Shader(String vertexpath,String fragmentpath)
 	{
-		String vShaderCode = read(Shader.class.getResourceAsStream(vertexpath));
-		String fShaderCode = read(Shader.class.getResourceAsStream(fragmentpath));
-		
-		int vertex, fragment;
-		
-		// vertex Shader
-		vertex = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertex, vShaderCode);
-		glCompileShader(vertex);
-		
-		if (glGetShaderi(vertex, GL_COMPILE_STATUS) == GL_FALSE)
+		try 
 		{
-			System.out.println("===========" + vertexpath + "===========");
-			String infoLog = glGetShaderInfoLog(vertex, glGetShaderi(vertex, GL_INFO_LOG_LENGTH));
-			System.out.println("Vertex Error:" + infoLog);
-		}
-		
-		
-		//fragment shader
-		fragment = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragment, fShaderCode);
-		glCompileShader(fragment);
-		
-		if (glGetShaderi(fragment, GL_COMPILE_STATUS) == GL_FALSE)
+			String vShaderCode = Util.readFile(ResourceLoader.load(vertexpath));
+			String fShaderCode = Util.readFile(ResourceLoader.load(fragmentpath));
+			
+			int vertex, fragment;
+			
+			// vertex Shader
+			vertex = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vertex, vShaderCode);
+			glCompileShader(vertex);
+			
+			if (glGetShaderi(vertex, GL_COMPILE_STATUS) == GL_FALSE)
+			{
+				System.out.println("===========" + vertexpath + "===========");
+				String infoLog = glGetShaderInfoLog(vertex, glGetShaderi(vertex, GL_INFO_LOG_LENGTH));
+				System.out.println("Vertex Error:" + infoLog);
+			}
+			
+			
+			//fragment shader
+			fragment = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fragment, fShaderCode);
+			glCompileShader(fragment);
+			
+			if (glGetShaderi(fragment, GL_COMPILE_STATUS) == GL_FALSE)
+			{
+				System.out.println("===========" + fragmentpath + "===========");
+				String infoLog = glGetShaderInfoLog(fragment, glGetShaderi(fragment, GL_INFO_LOG_LENGTH));
+				System.out.println("Fragment Error:" + infoLog);
+			}
+			
+			// shader Program
+			ID = glCreateProgram();
+			glAttachShader(ID, vertex);
+			glAttachShader(ID, fragment);
+			glLinkProgram(ID);
+			
+			// delete the shaders as they're linked into our program now and no longer necessary
+			glDeleteShader(vertex);
+			glDeleteShader(fragment);
+		} 
+		catch (IOException e) 
 		{
-			System.out.println("===========" + fragmentpath + "===========");
-			String infoLog = glGetShaderInfoLog(fragment, glGetShaderi(fragment, GL_INFO_LOG_LENGTH));
-			System.out.println("Fragment Error:" + infoLog);
+			e.printStackTrace();
 		}
-		
-		// shader Program
-		ID = glCreateProgram();
-		glAttachShader(ID, vertex);
-		glAttachShader(ID, fragment);
-		glLinkProgram(ID);
-		
-		// delete the shaders as they're linked into our program now and no longer necessary
-		glDeleteShader(vertex);
-		glDeleteShader(fragment);
 	}
 
 	public void use()
@@ -103,19 +109,6 @@ public class Shader
 			mat.get(matrixBuffer);
 			
 			glUniformMatrix4fv(glGetUniformLocation(ID,name),false,matrixBuffer);
-		}
-	}
-	
-	private static String read(InputStream i)
-	{	
-		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(i)))
-		{
-			return buffer.lines().collect(Collectors.joining("\n"));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return "";
 		}
 	}
 }

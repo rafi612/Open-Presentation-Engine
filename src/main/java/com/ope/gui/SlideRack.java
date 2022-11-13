@@ -206,7 +206,7 @@ public class SlideRack extends JPanel implements ActionListener
 		return list;
 	}
 	
-	public void build(String path)
+	public void build(String path) throws IOException
 	{		
 		XmlWriter xml = new XmlWriter();
 		xml.openTag("project");

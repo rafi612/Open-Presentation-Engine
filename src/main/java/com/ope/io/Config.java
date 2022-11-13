@@ -83,7 +83,14 @@ public class Config
 		xml.addTagText("theme", lookandfeel);
 		xml.closeTag();
 		
-		Util.saveFile(configpath,xml.get());
+		try
+		{
+			Util.saveFile(configpath,xml.get());
+		} 
+		catch (IOException e) 
+		{
+			Util.errorDialog(e);
+		}
 	}
 	
 	

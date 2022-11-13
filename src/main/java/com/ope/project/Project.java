@@ -85,7 +85,7 @@ public class Project
 		refreshProject();
 	}
 	
-	private static void createProjectXml(String path)
+	private static void createProjectXml(String path) throws IOException
 	{
 		XmlWriter xml = new XmlWriter();
 		
@@ -128,7 +128,13 @@ public class Project
 	
 	public static void save()
 	{
-		Main.sliderack.build(Util.projectPath(PROJECT_XML_NAME));
+		try 
+		{
+			Main.sliderack.build(Util.projectPath(PROJECT_XML_NAME));
+		} 
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public static void run()

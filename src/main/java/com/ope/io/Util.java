@@ -6,9 +6,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +14,10 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
@@ -41,36 +41,24 @@ public class Util
 		return "";
 	}
 	
-	public static void copyFile(String input,String output)
+	public static void copyFile(String input,String output) throws IOException
 	{
-        File source = new File(input);
-        File dest = new File(output);
-
-        try (FileInputStream fis = new FileInputStream(source);
-        	FileOutputStream fos = new FileOutputStream(dest)) {
+        try (FileInputStream fis = new FileInputStream(new File(input));
+        	FileOutputStream fos = new FileOutputStream(new File(output))) 
+        {
 
             byte[] buffer = new byte[1024];
             int length;
 
             while ((length = fis.read(buffer)) > 0)
             {
-
                 fos.write(buffer, 0, length);
             }
         } 
-        catch (FileNotFoundException e) 
-        {
-			e.printStackTrace();
-		} 
-        catch (IOException e)
-        {
-			e.printStackTrace();
-		}
 	}
 	
-	public static void copyFileFromJar(String input,String output)
+	public static void copyFileFromJar(InputStream input,String output) throws IOException
 	{
-        InputStream is = Util.class.getResourceAsStream(input);
         File dest = new File(output);
 
         try (FileOutputStream fos = new FileOutputStream(dest))
@@ -78,19 +66,11 @@ public class Util
             byte[] buffer = new byte[1024];
             int length;
 
-            while ((length = is.read(buffer)) > 0)
+            while ((length = input.read(buffer)) > 0)
             {
                 fos.write(buffer, 0, length);
             }
         } 
-        catch (FileNotFoundException e) 
-        {
-			e.printStackTrace();
-		} 
-        catch (IOException e)
-        {
-			e.printStackTrace();
-		}
 	}
 	
 	public static String getPathFromProject(File s)
@@ -98,62 +78,39 @@ public class Util
 		return new File(Project.projectlocation).toURI().relativize(s.toURI()).getPath();
 	}
 	
-	public static void saveFile(String path,String text)
+	public static void saveFile(String path,String text) throws IOException
 	{
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) 
         {
             bw.write(text);
         } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
 	}
 	
-	public static String readFile(String path)
+	public static String readFile(InputStream in) throws IOException
 	{
-		String text = "";
-		try 
+		try (BufferedReader bufferReader = new BufferedReader(new InputStreamReader(in)))
 		{
-			BufferedReader in = new BufferedReader(new FileReader(new File(path)));
-			String str;
-			while ((str = in.readLine()) != null) 
-			{
-				text += str + "\n";
-			}
-			in.close();
+			return bufferReader.lines().collect(Collectors.joining("\n"));
 		} 
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
-		return text;
 	}
 	
-	public static String readFileFromJar(String path)
+	public static void errorDialog(Exception ex)
 	{
-		String text = "";
-		try 
-		{
-			BufferedReader in = new BufferedReader(new InputStreamReader(Util.class.getResourceAsStream(path)));
-			String str;
-			while ((str = in.readLine()) != null) 
-			{
-				text += str + "\n";
-			}
-			in.close();
-		} 
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
-		return text;
+		JOptionPane.showMessageDialog(Main.frame, "Error:" + ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 	}
 	
 	
 	public static String getLicense()
 	{
-		return readFileFromJar("/LICENSE.txt");
+		try 
+		{
+			return readFile(ResourceLoader.load("/LICENSE.txt"));
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static String path(String... files)

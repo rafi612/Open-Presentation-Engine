@@ -538,32 +538,39 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private void savedialog()
 	{
-		String path;
-		if (openedfile == null)
+		try 
 		{
-			path = Util.projectPath(JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
-					+ ".layout");
-			openedfile = new File(path);
-			toolbar.name.setText(openedfile.getName());
-		}
-		else
-			path = openedfile.getPath();
-		
-		XmlWriter xml = new XmlWriter();
-		
-		xml.openTag("slide");
-		for (Element element : elements)
+			String path;
+			if (openedfile == null)
+			{
+				path = Util.projectPath(JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
+						+ ".layout");
+				openedfile = new File(path);
+				toolbar.name.setText(openedfile.getName());
+			}
+			else
+				path = openedfile.getPath();
+			
+			XmlWriter xml = new XmlWriter();
+			
+			xml.openTag("slide");
+			for (Element element : elements)
+			{
+				element.save(xml);
+			}
+			
+			xml.addTagText("all", String.valueOf(elements.size()));
+			xml.closeTag();
+			
+			//save file
+			Util.saveFile(path, xml.get());
+			
+			Project.refreshProject();
+		} 
+		catch (IOException e) 
 		{
-			element.save(xml);
-		}
-		
-		xml.addTagText("all", String.valueOf(elements.size()));
-		xml.closeTag();
-		
-		//save file
-		Util.saveFile(path, xml.get());
-		
-		Project.refreshProject();
+			Util.errorDialog(e);
+		} 
 	}
 	
 	private int discarddialog()
