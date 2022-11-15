@@ -33,12 +33,12 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 	private static final long serialVersionUID = 1L;
 	
     public JMenuItem newfile, newfolder, deletefile,renamefile,cutfile,copyfile,pastefile;
-	DefaultMutableTreeNode selected = null,mainroot = null;
+    private DefaultMutableTreeNode selected = null,mainroot = null;
 	
-	File copy;
+	private File copy;
 	
 	// 1 = copy, 0 = cut, -1 = none operation
-	int operation = -1;
+	private int operation = -1;
 	
 	public Tree(DefaultMutableTreeNode mainroot) 
 	{       
