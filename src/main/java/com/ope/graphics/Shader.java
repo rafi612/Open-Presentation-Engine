@@ -39,7 +39,6 @@ public class Shader
 				System.out.println("Vertex Error:" + infoLog);
 			}
 			
-			
 			//fragment shader
 			fragment = glCreateShader(GL_FRAGMENT_SHADER);
 			glShaderSource(fragment, fShaderCode);

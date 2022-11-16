@@ -22,15 +22,9 @@ public class Element
 	public String name,type;
 	
 
-	public Element() 
-	{
-		
-	}
+	public Element() {}
 	
-	public void update(SlideCreator sc)
-	{
-		
-	}
+	public void update(SlideCreator sc) {}
 	
 	public static Element getElementsByName(String s)
 	{
@@ -38,10 +32,7 @@ public class Element
 		return null;
 	}
 	
-	public void load(Tag element)
-	{
-		
-	}
+	public void load(Tag element) {}
 	
 	public void save(XmlWriter xml)
 	{
@@ -53,15 +44,9 @@ public class Element
 		editing = true;
 	}
 	
-	public void destroy()
-	{
-		
-	}
+	public void destroy() {}
 
-	public void render()
-	{
-		
-	}
+	public void render() {}
 	
 	public class Frame extends JDialog
 	{

@@ -8,15 +8,9 @@ public class Animation
 	
 	protected boolean switched = false;
 	
-	public Animation() 
-	{
-		
-	}
+	public Animation() {}
 	
-	public void update()
-	{
-		
-	}
+	public void update() {}
 	
 	public boolean isRunning()
 	{
@@ -50,15 +44,9 @@ public class Animation
 		isRunning = false;
 	}
 
-	public void render(Slide before,Slide target)
-	{
-		
-	}
+	public void render(Slide before,Slide target) {}
 	
-	public void destroy()
-	{
-		
-	}
+	public void destroy() {}
 	
 	public static Animation getAnimation(String a)
 	{
