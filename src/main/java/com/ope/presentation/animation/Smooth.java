@@ -4,7 +4,7 @@ import com.ope.graphics.FrameBuffer;
 import com.ope.graphics.Renderer;
 import com.ope.presentation.slide.Slide;
 
-public class Smooth  extends Animation
+public class Smooth extends Animation
 {
 	float time,step,mix;
 	

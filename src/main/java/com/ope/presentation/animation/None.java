@@ -14,7 +14,6 @@ public class None extends Animation
 		super.switchAnimation();
 	}
 	
-	
 	public void reset()
 	{
 		stop();
@@ -26,8 +25,5 @@ public class None extends Animation
 		super.stop();
 	}
 
-	public void render(Slide before,Slide target)
-	{
-		
-	}
+	public void render(Slide before,Slide target) {}
 }
