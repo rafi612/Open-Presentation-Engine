@@ -96,10 +96,13 @@ public class Config
 	
 	public static void reloadTheme()
 	{
-		try {
+		try 
+		{
 			UIManager.setLookAndFeel(Config.lookandfeel);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+		} 
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) 
+		{
 			e.printStackTrace();
 		}
 		
