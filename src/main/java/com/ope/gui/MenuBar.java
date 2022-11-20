@@ -108,7 +108,6 @@ public class MenuBar extends JMenuBar implements ActionListener
 		exit.setAccelerator(KeyStroke.getKeyStroke("alt F4"));
 		file.add(exit);
 		
-		
 		//tools
 		refresh = new JMenuItem("Refresh Project"); 
 		refresh.addActionListener(this);
