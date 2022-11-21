@@ -42,7 +42,6 @@ public class Appearing extends Animation
 		super.start();
 	}
 	
-	
 	public void reset()
 	{
 		super.reset();
