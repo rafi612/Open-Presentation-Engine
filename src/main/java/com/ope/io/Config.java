@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -11,14 +12,92 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.lwjgl.system.Platform;
 import org.xml.sax.SAXException;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.ope.io.xml.XmlReader;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
 
 public class Config 
 {
-	public static String lookandfeel;
+	public static LookAndFeel lookandfeel;
 	public static String configpath = "";
+	
+	public enum LookAndFeel
+	{
+		SYSTEM(() -> setLAF(getSystemTheme()),Main.menubar.m_system),
+		METAL(() -> setLAF("javax.swing.plaf.metal.MetalLookAndFeel"),Main.menubar.m_metal),
+		NIMBUS(() -> setLAF("javax.swing.plaf.nimbus.NimbusLookAndFeel"),Main.menubar.m_nimbus),
+		FLATLAF_LIGHT(() -> { FlatLightLaf.setup(); update(); } ,Main.menubar.m_flatlaf_light),
+		FLATLAF_DARK(() -> { FlatDarkLaf.setup(); update(); },Main.menubar.m_flatlaf_dark);
+		
+		@FunctionalInterface
+		public interface Set 
+		{
+			public void set();
+		}
+		
+		Set set;
+		JRadioButtonMenuItem themeradio;
+		
+		private static void setLAF(String classname)
+		{
+			try 
+			{
+				UIManager.setLookAndFeel(classname);
+				update();
+			} 
+			catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		private static void update()
+		{
+			SwingUtilities.updateComponentTreeUI(Main.frame);
+			SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
+		}
+		
+		private static String getSystemTheme()
+		{
+			switch (Platform.get())
+			{
+			case LINUX:
+				return "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+			default:
+				return UIManager.getSystemLookAndFeelClassName();
+			}
+		}
+		
+		public void set()
+		{
+			set.set();
+			themeradio.setSelected(true);
+			
+			lookandfeel = this;
+		}
+		
+		LookAndFeel(Set set,JRadioButtonMenuItem themeradio)
+		{
+			this.set = set;
+			this.themeradio = themeradio;
+			
+			themeradio.addActionListener((event) -> {
+				set();
+				saveXML();
+			});
+		}
+		
+		public static LookAndFeel getByName(String name)
+		{
+			for (LookAndFeel laf : values())
+				if (laf.name().equals(name))
+					return laf;
+			return null;
+		}
+	}
 	
 	public static void loadSettings() 
 	{
@@ -41,16 +120,9 @@ public class Config
 		try 
 		{
 			XmlReader xml = new XmlReader(configpath);
-			lookandfeel = xml.getTags("theme")[0].getText();
 			
-			if (lookandfeel.equals(getSystemTheme()))
-				Main.menubar.m_system.setSelected(true);
-			else if (lookandfeel.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
-				Main.menubar.m_metal.setSelected(true);
-			else if (lookandfeel.equals("javax.swing.plaf.nimbus.NimbusLookAndFeel"))
-				Main.menubar.m_nimbus.setSelected(true);
-			
-			reloadTheme();
+			lookandfeel = LookAndFeel.getByName(xml.getTags("theme")[0].getText());
+			lookandfeel.set();
 		} 
 		catch (IOException | SAXException e) 
 		{
@@ -60,19 +132,8 @@ public class Config
 	
 	public static void createOPExml()
 	{
-		lookandfeel = getSystemTheme();
+		lookandfeel = LookAndFeel.SYSTEM;
 		saveXML();
-	}
-	
-	public static String getSystemTheme()
-	{
-		switch (Platform.get())
-		{
-		case LINUX:
-			return "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-		default:
-			return UIManager.getSystemLookAndFeelClassName();
-		}
 	}
 	
 	public static void saveXML()
@@ -80,7 +141,7 @@ public class Config
 		XmlWriter xml = new XmlWriter();
 		
 		xml.openTag("config");
-		xml.addTagText("theme", lookandfeel);
+		xml.addTagText("theme", lookandfeel.name());
 		xml.closeTag();
 		
 		try
@@ -91,23 +152,6 @@ public class Config
 		{
 			Util.errorDialog(e);
 		}
-	}
-	
-	
-	public static void reloadTheme()
-	{
-		try 
-		{
-			UIManager.setLookAndFeel(Config.lookandfeel);
-		} 
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		SwingUtilities.updateComponentTreeUI(Main.frame);
-		SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
 	}
 
 }

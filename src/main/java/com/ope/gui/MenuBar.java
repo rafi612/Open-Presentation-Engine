@@ -21,7 +21,6 @@ import javax.swing.KeyStroke;
 
 import org.lwjgl.system.Platform;
 
-import com.ope.io.Config;
 import com.ope.io.Util;
 import com.ope.project.Project;
 
@@ -47,7 +46,7 @@ public class MenuBar extends JMenuBar implements ActionListener
 	
 	//settings
 	public JMenu theme;
-	public JRadioButtonMenuItem m_system,m_metal,m_nimbus;
+	public JRadioButtonMenuItem m_system,m_metal,m_nimbus,m_flatlaf_light,m_flatlaf_dark;
 	
 	//help
 	public JMenuItem about,license;
@@ -140,21 +139,28 @@ public class MenuBar extends JMenuBar implements ActionListener
 			(Platform.get() == Platform.LINUX ? "GTK+" : "Aqua");
 		
 		m_system = new JRadioButtonMenuItem("System (" + type + ")");
-		m_system.addActionListener(this);
 		group.add(m_system);
 		theme.add(m_system);
 		
 		theme.add(new JSeparator());
 		
 		m_metal = new JRadioButtonMenuItem("Metal");
-		m_metal.addActionListener(this);
 		group.add(m_metal);
 		theme.add(m_metal);
 		
 		m_nimbus = new JRadioButtonMenuItem("Nimbus");
-		m_nimbus.addActionListener(this);
 		group.add(m_nimbus);
 		theme.add(m_nimbus);
+		
+		theme.add(new JSeparator());
+		
+		m_flatlaf_light = new JRadioButtonMenuItem("FlatLaf Light");
+		group.add(m_flatlaf_light);
+		theme.add(m_flatlaf_light);
+		
+		m_flatlaf_dark = new JRadioButtonMenuItem("FlatLaf Dark");
+		group.add(m_flatlaf_dark);
+		theme.add(m_flatlaf_dark);
 	
 		settings.add(theme);
 		
@@ -223,29 +229,6 @@ public class MenuBar extends JMenuBar implements ActionListener
 		//refresh
 		if (source == refresh)
 			Project.refreshProject();
-		
-		//settings
-		if (source == m_system)
-		{
-			Config.lookandfeel = Config.getSystemTheme();
-			
-			Config.saveXML();
-			Config.reloadTheme();
-		}
-		
-		if (source == m_metal)
-		{
-			Config.lookandfeel = "javax.swing.plaf.metal.MetalLookAndFeel";
-			Config.saveXML();
-			Config.reloadTheme();
-		}
-		
-		if (source == m_nimbus)
-		{
-			Config.lookandfeel = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
-			Config.saveXML();
-			Config.reloadTheme();
-		}
 		
 		//license
 		if (source == license)
