@@ -20,7 +20,6 @@ public class Element
 	public int id,x,y,w,h;
 	
 	public String name,type;
-	
 
 	public Element() {}
 	

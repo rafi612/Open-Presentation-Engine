@@ -18,7 +18,7 @@ public class Resizer
 	
 	Type type;
 	
-	enum Type
+	public enum Type
 	{
 		UP_LEFT,UP_RIGHT,DOWN_LEFT,DOWN_RIGHT,CUSTOM
 	}
