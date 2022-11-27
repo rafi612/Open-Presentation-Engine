@@ -28,16 +28,10 @@ public class Config
 		SYSTEM(() -> setLAF(getSystemTheme()),Main.menubar.m_system),
 		METAL(() -> setLAF("javax.swing.plaf.metal.MetalLookAndFeel"),Main.menubar.m_metal),
 		NIMBUS(() -> setLAF("javax.swing.plaf.nimbus.NimbusLookAndFeel"),Main.menubar.m_nimbus),
-		FLATLAF_LIGHT(() -> { FlatLightLaf.setup(); update(); } ,Main.menubar.m_flatlaf_light),
+		FLATLAF_LIGHT(() -> { FlatLightLaf.setup(); update(); }, Main.menubar.m_flatlaf_light),
 		FLATLAF_DARK(() -> { FlatDarkLaf.setup(); update(); },Main.menubar.m_flatlaf_dark);
 		
-		@FunctionalInterface
-		public interface Set 
-		{
-			public void set();
-		}
-		
-		Set set;
+		Runnable set;
 		JRadioButtonMenuItem themeradio;
 		
 		private static void setLAF(String classname)
@@ -73,13 +67,13 @@ public class Config
 		
 		public void set()
 		{
-			set.set();
+			set.run();
 			themeradio.setSelected(true);
 			
 			lookandfeel = this;
 		}
 		
-		LookAndFeel(Set set,JRadioButtonMenuItem themeradio)
+		LookAndFeel(Runnable set,JRadioButtonMenuItem themeradio)
 		{
 			this.set = set;
 			this.themeradio = themeradio;
