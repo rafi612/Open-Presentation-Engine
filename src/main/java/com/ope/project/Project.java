@@ -78,7 +78,7 @@ public class Project
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
 		
 		Main.sliderack.clear();
-		Main.slidecreator.closeSlide();
+		Main.slideList.getSlideCreator().closeSlide();
 		
 		interfaceEnable(false);
 		
@@ -109,10 +109,7 @@ public class Project
 		Main.sliderack.setEnabled(enabled);
 		Main.actionpanel.setEnabled(enabled);
 		
-		if(enabled)
-			Main.slidecreator.initEnable();
-		else
-			Main.slidecreator.setEnabled(enabled);
+		Main.slideList.getSlideCreator().setEnabled(false);
 		
 	}
 

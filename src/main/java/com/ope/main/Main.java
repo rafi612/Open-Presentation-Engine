@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.ope.gui.ActionPanel;
 import com.ope.gui.MenuBar;
 import com.ope.gui.SlideCreator;
+import com.ope.gui.SlideList;
 import com.ope.gui.SlideRack;
 import com.ope.gui.Tree;
 import com.ope.io.Config;
@@ -28,36 +29,38 @@ public class Main
 
 	public static Tree tree;
 
-	public static JTabbedPane tabs;
+	public static JTabbedPane tabs,tabs2;
 
 	public static MenuBar menubar;
 
-	public static SlideCreator slidecreator;
 	public static SlideRack sliderack;
 
 	public static ActionPanel actionpanel;
+	
+	public static SlideList slideList;
 
 	public static void initUI()
 	{
 		tabs = new JTabbedPane();
+		tabs2 = new JTabbedPane();
 		
 		menubar = new MenuBar(frame); 
 
 		//slide creator
-		slidecreator = new SlideCreator();
+		SlideCreator slidecreator = new SlideCreator();
 		
 		//slide rack
 		sliderack = new SlideRack(menubar);
-
-		//tabs
-		tabs.add("Slides",sliderack);
-		tabs.add("Slide Creator",slidecreator);
-		
-		frame.add(tabs);
 		 
 		//tree
 		tree = new Tree(new DefaultMutableTreeNode("Workspace"));
-		frame.add(new JScrollPane(tree),BorderLayout.WEST);
+		slideList = new SlideList(slidecreator);
+		
+		tabs2.add(slideList,"Slides");
+		tabs2.add(tree,"Project Explorer");
+		frame.add(tabs2,BorderLayout.WEST);
+		
+		frame.add(slidecreator);
 		
 		actionpanel = new ActionPanel();
 		frame.add(actionpanel,BorderLayout.SOUTH);
@@ -105,7 +108,7 @@ public class Main
 			
 			frame.setVisible(true);
 			
-			slidecreator.canvasLoop();
+			slideList.getSlideCreator().canvasLoop();
 		}
 		else 
 			Presentation.start(args[0]);

@@ -11,13 +11,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,8 +21,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.joml.Vector4f;
@@ -64,20 +60,18 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public boolean slideloaded = false;
 	public boolean dragged = false;
 	
-	private DefaultListModel<String> listModel;
+	public SlideList slideList;
+	
+	private JTabbedPane leftTabs;
+	
 	public JList<String> list;
 	public JPanel listpanel;
 	
 	private JButton edit,up,down,rename,delete;
-	public ArrayList<JButton> actions = new ArrayList<>();
 	private JLabel position;
 	private AWTGLCanvas canvas;
 	
-	public ArrayList<Element> elements = new ArrayList<>();
-	
 	private Texture canvasimage;
-	
-	private File openedfile;
 	
 	class ToolBar extends JToolBar implements ActionListener
 	{
@@ -85,7 +79,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		private SlideCreator sc;
 		
-		public JLabel name;
 		public JButton image,text;
 		
 		public ToolBar(SlideCreator sc)
@@ -93,13 +86,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			this.sc = sc;
 			
 			setFloatable(false);
-			
-			name = new JLabel("No file",SwingConstants.CENTER);
-			name.setBorder(BorderFactory.createEmptyBorder(2,4,2,2));
-			name.setPreferredSize(new Dimension(75,32));
-			add(name);
-			
-			addSeparator();
 			
 			image = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/image.png")));
 			image.setToolTipText("Add image");
@@ -117,7 +103,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		private String getNameWithNum(String name)
 		{
 			int repeat = 0;
-			for (Element element : sc.elements)
+			for (Element element : sc.getCurrentSlide().elements)
 				if (element.name.startsWith(name))
 					repeat++;
 			
@@ -142,33 +128,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		//toolbar
 		toolbar = new ToolBar(this);
-		add(toolbar,BorderLayout.NORTH);
 		
-		//actions
-		JPanel buttons = new JPanel();
-		
-		buttons.setBorder(BorderFactory.createTitledBorder(""));
-		buttons.setToolTipText("Necessary actions");
-		
-		actions.add(new JButton("Create new slide"));
-		actions.add(new JButton("Open slide"));
-		actions.add(new JButton("Save slide"));
-		actions.add(new JButton("Discard slide"));
-		
-		for (JButton button : actions)
-		{
-			button.addActionListener(this);
-			buttons.add(button);
-		}
-			
-		add(buttons,BorderLayout.SOUTH);
+		leftTabs = new JTabbedPane();
 		
 		//list
 		listpanel = new JPanel();
 		listpanel.setLayout(new BorderLayout());
-
-		listModel = new DefaultListModel<String>();
-		list = new JList<String>(listModel);
+		
+		list = new JList<String>();
 		
 		edit = new JButton("Edit");
 		edit.addActionListener(this);
@@ -204,7 +171,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		listpanel.setPreferredSize(new Dimension(200,0));
 		enableComponents(listpanel, false);
 		
-		add(listpanel,BorderLayout.WEST);
+		leftTabs.add(listpanel,"Elements");
+		leftTabs.add(new JPanel(),"Properties");
+		add(leftTabs,BorderLayout.WEST);
 		
 		position = new JLabel("X: " + xPixel + " Y:" + yPixel);
 		
@@ -214,8 +183,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		//panel in canvas
 		JPanel ppanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		ppanel.add(position);
 		cpanel.add(ppanel,BorderLayout.SOUTH);
+		cpanel.add(toolbar,BorderLayout.NORTH);
 
 		GLData data = new GLData();
 		data.swapInterval = 1;
@@ -271,19 +242,19 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		
 		if (slideloaded)
 		{		
-			if (elements.size() == 0)
+			if (getCurrentSlide().elements.size() == 0)
 				Renderer.drawImage(canvasimage,0, 0,WIDTH, HEIGHT);
+			
+			for (Element element : getCurrentSlide().elements)
+				element.update(this);
+			
+			//setting moved element as selected on list
+			list.setSelectedIndex(currentMovedID);
+			
+			//render
+			for (Element element : getCurrentSlide().elements)
+				element.render();
 		}
-		
-		for (Element element : elements)
-			element.update(this);
-		
-		//setting moved element as selected on list
-		list.setSelectedIndex(currentMovedID);
-		
-		//render
-		for (Element element : elements)
-			element.render();
 		
 	}
 	
@@ -337,37 +308,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public void actionPerformed(ActionEvent e)
 	{
 		var source = e.getSource();
-
-		//new slide
-		if (source == actions.get(0))
-		{
-			int choose = 0;
-			if (slideloaded)
-				choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-			if (choose == 0)
-			{
-				listModel.clear();
-				elements.clear();
-				
-				toolbar.name.setText("Untitled");
-				
-				setEnabled(true);
-				
-				slideloaded = true;
-			}
-		}
-		//discard slide
-		if (source == actions.get(3))
-		{
-			discarddialog();
-		}
+		
 		//edit
 		if (source == edit)
 		{
 			if (list.getSelectedIndex() == -1)
 				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
 			else
-				elements.get(list.getSelectedIndex()).frame();
+				getCurrentSlide().elements.get(list.getSelectedIndex()).frame();
 		}
 		//up
 		if (source == up)
@@ -410,14 +358,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
 			else
 			{
-				int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete " + listModel.get(list.getSelectedIndex()) + "?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+				int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to delete " + getCurrentSlide().listModel.get(list.getSelectedIndex()) + "?", "Delete", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if (choose == 0)
 				{
 					int index = list.getSelectedIndex();
-					elements.get(index).destroy();
+					getCurrentSlide().elements.get(index).destroy();
 					
-					elements.remove(index);
-					listModel.remove(index);
+					getCurrentSlide().elements.remove(index);
+					getCurrentSlide().listModel.remove(index);
 				}
 				
 				refreshElementsID();
@@ -433,25 +381,10 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				String choose = JOptionPane.showInputDialog(Main.frame,"Enter new element name:","Rename",JOptionPane.QUESTION_MESSAGE);
 				if (choose != null)
 				{
-					listModel.set(list.getSelectedIndex(), choose);
-					elements.get(list.getSelectedIndex()).name = choose;
+					getCurrentSlide().listModel.set(list.getSelectedIndex(), choose);
+					getCurrentSlide().elements.get(list.getSelectedIndex()).name = choose;
 				}
 			}
-		}
-		//save slide
-		if (source == actions.get(2))
-		{
-			savedialog();
-		}
-		//open slide
-		if (source == actions.get(1))
-		{
-			//check discard
-			if (discarddialog() != 0) return;
-			
-			TreeFileEvent event = new TreeFileEvent(actions.get(1));
-			
-			event.open(this::openslide);
 		}
 	}
 	
@@ -459,35 +392,35 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		elementsint++;
 		
-		element.id = elements.size();
+		element.id = getCurrentSlide().elements.size();
 		element.name = name;
 		element.frame();
 		
 		//get and add element
-		elements.add(element);
-		listModel.addElement(name);
+		getCurrentSlide().elements.add(element);
+		getCurrentSlide().listModel.addElement(name);
 	}
 	
 	private void refreshElementsID()
 	{
 		//refresh id
-		for (int i = 0;i < elements.size();i++)
-			elements.get(i).id = i;
+		for (int i = 0;i < getCurrentSlide().elements.size();i++)
+			getCurrentSlide().elements.get(i).id = i;
 	}
 	
 	private void swaplist(int old,int new_)
 	{
 		//check out of bounds
-		if (new_ < 0 || new_ > elements.size()-1) return;
+		if (new_ < 0 || new_ > getCurrentSlide().elements.size()-1) return;
 		
 		//swap in elements arraylist
-		Collections.swap(elements, old, new_);
+		Collections.swap(getCurrentSlide().elements, old, new_);
 		
 		//swap in JList
-		String aObject = listModel.getElementAt(old);
-		String bObject = listModel.getElementAt(new_);
-		listModel.set(old, bObject);
-		listModel.set(new_, aObject);
+		String aObject = getCurrentSlide().listModel.getElementAt(old);
+		String bObject = getCurrentSlide().listModel.getElementAt(new_);
+		getCurrentSlide().listModel.set(old, bObject);
+		getCurrentSlide().listModel.set(new_, aObject);
 	}
 	
 	private void openslide(String path)
@@ -504,14 +437,11 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				elem.id = i;
 				elem.load(tags[i]);
 				
-				elements.add(elem);
-				listModel.addElement(tags[i].getAttribute("name"));
+				getCurrentSlide().elements.add(elem);
+				getCurrentSlide().listModel.addElement(tags[i].getAttribute("name"));
 			}
 			
 			slideloaded = true;
-			
-			openedfile = new File(path);
-			toolbar.name.setText(openedfile.getName());
 			
 			//enable
 			setEnabled(true);
@@ -525,64 +455,39 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public void closeSlide()
 	{
-		listModel.clear();
-		elements.clear();
-		
-		openedfile = null;
-		slideloaded = false;
-		
-		toolbar.name.setText("No file");
-		
-		initEnable();
+		if (slideloaded)
+		{
+			getCurrentSlide().listModel.clear();
+			getCurrentSlide().elements.clear();
+			
+			slideloaded = false;
+			
+			initEnable();
+		}
 	}
 	
 	private void savedialog()
 	{
-		try 
+		XmlWriter xml = new XmlWriter();
+		
+		xml.openTag("slide");
+		for (Element element : getCurrentSlide().elements)
 		{
-			String path;
-			if (openedfile == null)
-			{
-				path = Util.projectPath(JOptionPane.showInputDialog(Main.frame, "Enter slide save name:", "Save",JOptionPane.QUESTION_MESSAGE)  
-						+ ".layout");
-				openedfile = new File(path);
-				toolbar.name.setText(openedfile.getName());
-			}
-			else
-				path = openedfile.getPath();
-			
-			XmlWriter xml = new XmlWriter();
-			
-			xml.openTag("slide");
-			for (Element element : elements)
-			{
-				element.save(xml);
-			}
-			
-			xml.addTagText("all", String.valueOf(elements.size()));
-			xml.closeTag();
-			
-			//save file
-			Util.saveFile(path, xml.get());
-			
-			Project.refreshProject();
-		} 
-		catch (IOException e) 
-		{
-			Util.errorDialog(e);
-		} 
+			element.save(xml);
+		}
+		
+		xml.addTagText("all", String.valueOf(getCurrentSlide().elements.size()));
+		xml.closeTag();
+		
+//			//save file
+//			Util.saveFile(path, xml.get());
+		
+		Project.refreshProject(); 
 	}
 	
-	private int discarddialog()
+	public SlideList.Slide getCurrentSlide()
 	{
-		if (!slideloaded) return 0;
-		
-		int choose = JOptionPane.showConfirmDialog(Main.frame,"Are you sure to discard this slide?", "Discard", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-		// "yes" option
-		if (choose == 0)
-			closeSlide();
-		
-		return choose;
+		return slideList.getCurrentSlide();
 	}
 	
 	public void initEnable()
@@ -590,11 +495,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		enableComponents(this, true);
 		enableComponents(listpanel, false);
 		enableComponents(toolbar, false);
-		
-		//save
-		actions.get(2).setEnabled(false);
-		//discard
-		actions.get(3).setEnabled(false);
 	}
    
 	public void setEnabled(boolean enable)
