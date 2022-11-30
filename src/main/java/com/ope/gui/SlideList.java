@@ -26,7 +26,7 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	
 	private JList<String> list;
 	private DefaultListModel<String> listModel;
-	private JButton add;
+	private JButton add,up,down;
 	
 	private int currentSlide;
 	
@@ -51,8 +51,16 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		add = new JButton("+");
 		add.addActionListener(this);
 		
+		up = new JButton("\u25B2");
+		up.addActionListener(this);
+		
+		down = new JButton("\u25BC");
+		down.addActionListener(this);
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(add);
+		buttonPanel.add(up);
+		buttonPanel.add(down);
 		
 		add(buttonPanel,BorderLayout.SOUTH);
 	}
