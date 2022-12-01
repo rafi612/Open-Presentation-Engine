@@ -1,6 +1,8 @@
 package com.ope.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -125,6 +127,23 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	public SlideCreator getSlideCreator()
 	{
 		return sc;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled)
+	{
+		enableComponents(this, enabled);
+	}
+	
+	private void enableComponents(Container container, boolean enable)
+	{
+		Component[] components = container.getComponents();
+		for (Component component : components) 
+		{
+			component.setEnabled(enable);
+			if (component instanceof Container) 
+				enableComponents((Container)component, enable);
+		}
 	}
 
 }

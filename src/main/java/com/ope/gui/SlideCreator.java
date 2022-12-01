@@ -461,8 +461,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			getCurrentSlide().elements.clear();
 			
 			slideloaded = false;
-			
-			initEnable();
 		}
 	}
 	
@@ -489,29 +487,20 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	{
 		return slideList.getCurrentSlide();
 	}
-	
-	public void initEnable()
-	{
-		enableComponents(this, true);
-		enableComponents(listpanel, false);
-		enableComponents(toolbar, false);
-	}
    
 	public void setEnabled(boolean enable)
 	{
 		enableComponents(this, enable);
 	}
 	
-	public void enableComponents(Container container, boolean enable)
+	private void enableComponents(Container container, boolean enable)
 	{
 		Component[] components = container.getComponents();
 		for (Component component : components) 
 		{
 			component.setEnabled(enable);
 			if (component instanceof Container) 
-			{
 				enableComponents((Container)component, enable);
-			}
 		}
 	}
 

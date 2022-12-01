@@ -109,7 +109,8 @@ public class Project
 		Main.sliderack.setEnabled(enabled);
 		Main.actionpanel.setEnabled(enabled);
 		
-		Main.slideList.getSlideCreator().setEnabled(false);
+		Main.slideList.getSlideCreator().setEnabled(enabled);
+		Main.slideList.setEnabled(enabled);
 		
 	}
 
