@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.ope.presentation.main;
+package com.ope.viewer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -23,10 +23,10 @@ import com.ope.audio.Sound;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlReader;
-import com.ope.presentation.input.Keyboard;
-import com.ope.presentation.input.Mouse;
-import com.ope.presentation.slide.SlideManager;
 import com.ope.project.Project;
+import com.ope.viewer.input.Keyboard;
+import com.ope.viewer.input.Mouse;
+import com.ope.viewer.slide.SlideManager;
 
 public class Presentation 
 {

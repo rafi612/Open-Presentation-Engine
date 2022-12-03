@@ -1,9 +1,9 @@
-package com.ope.presentation.animation;
+package com.ope.core.animation;
 
 import org.joml.Matrix4f;
 
+import com.ope.core.slide.Slide;
 import com.ope.graphics.Renderer;
-import com.ope.presentation.slide.Slide;
 
 public class Departure extends Animation 
 {	

@@ -1,6 +1,6 @@
-package com.ope.presentation.animation;
+package com.ope.core.animation;
 
-import com.ope.presentation.slide.Slide;
+import com.ope.core.slide.Slide;
 
 public class None extends Animation
 {		

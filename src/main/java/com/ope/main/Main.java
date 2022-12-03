@@ -13,12 +13,11 @@ import com.ope.gui.ActionPanel;
 import com.ope.gui.MenuBar;
 import com.ope.gui.SlideCreator;
 import com.ope.gui.SlideList;
-import com.ope.gui.SlideRack;
 import com.ope.gui.Tree;
 import com.ope.io.Config;
 import com.ope.io.Util;
-import com.ope.presentation.main.Presentation;
 import com.ope.project.Project;
+import com.ope.viewer.Presentation;
 
 public class Main
 {
@@ -31,8 +30,6 @@ public class Main
 	public static JTabbedPane tabs,tabs2;
 
 	public static MenuBar menubar;
-
-	public static SlideRack sliderack;
 
 	public static ActionPanel actionpanel;
 	
@@ -47,13 +44,10 @@ public class Main
 
 		//slide creator
 		SlideCreator slidecreator = new SlideCreator();
-		
-		//slide rack
-		sliderack = new SlideRack(menubar);
 		 
 		//tree
 		tree = new Tree(new DefaultMutableTreeNode("Workspace"));
-		slideList = new SlideList(slidecreator);
+		slideList = new SlideList(slidecreator,menubar);
 		
 		tabs2.add(slideList,"Slides");
 		tabs2.add(tree,"Project Explorer");

@@ -1,4 +1,4 @@
-package com.ope.presentation.slide.elements;
+package com.ope.core.slide.elements;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

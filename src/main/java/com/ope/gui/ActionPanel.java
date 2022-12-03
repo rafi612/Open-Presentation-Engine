@@ -8,8 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.ope.presentation.main.Presentation;
 import com.ope.project.Project;
+import com.ope.viewer.Presentation;
 
 public class ActionPanel extends JPanel implements ActionListener
 {

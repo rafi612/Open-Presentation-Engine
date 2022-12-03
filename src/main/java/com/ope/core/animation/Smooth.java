@@ -1,8 +1,8 @@
-package com.ope.presentation.animation;
+package com.ope.core.animation;
 
+import com.ope.core.slide.Slide;
 import com.ope.graphics.FrameBuffer;
 import com.ope.graphics.Renderer;
-import com.ope.presentation.slide.Slide;
 
 public class Smooth extends Animation
 {

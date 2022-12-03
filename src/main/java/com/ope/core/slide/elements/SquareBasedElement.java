@@ -1,4 +1,4 @@
-package com.ope.presentation.slide.elements;
+package com.ope.core.slide.elements;
 
 import java.util.ArrayList;
 
@@ -10,9 +10,9 @@ import javax.swing.event.ChangeListener;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
+import com.ope.core.slide.Element;
 import com.ope.graphics.Renderer;
 import com.ope.gui.SlideCreator;
-import com.ope.presentation.slide.Element;
 
 public class SquareBasedElement extends Element
 {

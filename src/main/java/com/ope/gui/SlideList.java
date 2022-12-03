@@ -12,35 +12,40 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.ope.presentation.slide.Element;
+import org.xml.sax.SAXException;
+
+import com.ope.core.slide.Slide;
+import com.ope.io.Util;
+import com.ope.io.xml.Tag;
+import com.ope.io.xml.XmlReader;
+import com.ope.io.xml.XmlWriter;
+import com.ope.main.Main;
 
 public class SlideList extends JPanel implements ActionListener,ListSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 	
 	public SlideCreator sc;
+	private MenuBar parentmenu;
+	
 	public ArrayList<Slide> slides = new ArrayList<>();
 	
 	private JList<String> list;
 	private DefaultListModel<String> listModel;
-	private JButton add,up,down;
+	private JButton add,delete,up,down;
 	
 	private int currentSlide;
 	
-	public static class Slide 
-	{
-		public ArrayList<Element> elements = new ArrayList<>();
-		public DefaultListModel<String> listModel = new DefaultListModel<>();
-	}
-
-	public SlideList(SlideCreator sc)
+	public SlideList(SlideCreator sc,MenuBar parentmenu)
 	{
 		this.sc = sc;
+		this.parentmenu = parentmenu;
 		sc.slideList = this;
 		setPreferredSize(new Dimension(215,0));
 		
@@ -53,6 +58,9 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		add = new JButton("+");
 		add.addActionListener(this);
 		
+		delete = new JButton("-");
+		delete.addActionListener(this);
+		
 		up = new JButton("\u25B2");
 		up.addActionListener(this);
 		
@@ -61,6 +69,7 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(add);
+		buttonPanel.add(delete);
 		buttonPanel.add(up);
 		buttonPanel.add(down);
 		
@@ -75,23 +84,68 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	public void addSlide(Slide slide)
 	{
 		slides.add(slide);
-		listModel.addElement("Slide " + (listModel.size() + 1));
+		listModel.addElement(slide.name);
+	}
+	
+	public void createNewSlide()
+	{
+		addSlide(new Slide("Slide " + (listModel.size() + 1)));
+	}
+	
+	public void deleteSlide(int id)
+	{
+		Slide slide = slides.get(id);
+		slide.destroy();
+		
+		listModel.remove(id);
+		slides.remove(id);
+	}
+	
+	public void load(String path)
+	{
+		try 
+		{
+			XmlReader xml = new XmlReader(path);
+			
+			Tag[] slides = xml.getTags("slide");
+			
+			for (Tag slidetag : slides)
+			{				
+				Slide slide = new Slide();
+				slide.load(slidetag);
+				
+				addSlide(slide);
+			}
+			
+			Tag global = xml.getTags("global")[0];
+			
+			parentmenu.fullscreen.setSelected(Boolean.parseBoolean(global.getAttribute("fullscreen")));
+		} 
+		catch (IOException | SAXException e) 
+		{
+			JOptionPane.showMessageDialog(Main.frame, "Error loading slides: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 	
 	public void build(String path) throws IOException
 	{
+		XmlWriter xml = new XmlWriter();
+		xml.openTag("project");
 		
+		for (Slide slide : slides)
+			slide.saveXml(xml);
+		
+		xml.addTag("global", "fullscreen=" + parentmenu.fullscreen.isSelected());
+		xml.closeTag();
+		
+		Util.saveFile(path, xml.get());
 	}
 	
 	public void clear()
-	{
-		for (Slide slide : slides)
-			for (Element element : slide.elements)
-				element.destroy();
-		
-		listModel.clear();
-		
-		slides.clear();
+	{			
+		for (int i = slides.size()-1; i >= 0;i--)
+			deleteSlide(i);
 	}
 
 	@Override
@@ -100,9 +154,10 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		var source = e.getSource();
 		
 		if (source == add)
-		{
-			addSlide(new Slide());
-		}
+			createNewSlide();
+		
+		if (source == delete)
+			deleteSlide(list.getSelectedIndex());
 	}
 
 

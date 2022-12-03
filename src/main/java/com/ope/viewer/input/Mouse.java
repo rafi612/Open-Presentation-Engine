@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.ope.presentation.input;
+package com.ope.viewer.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 

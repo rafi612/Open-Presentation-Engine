@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.util.Collections;
 
 import javax.swing.ImageIcon;
@@ -29,20 +28,16 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
-import org.xml.sax.SAXException;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import com.ope.core.slide.Element;
+import com.ope.core.slide.Slide;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.ResourceLoader;
 import com.ope.io.Util;
-import com.ope.io.xml.Tag;
-import com.ope.io.xml.XmlReader;
-import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
-import com.ope.presentation.slide.Element;
-import com.ope.project.Project;
 
 public class SlideCreator extends JPanel implements ActionListener,MouseMotionListener,MouseListener
 {
@@ -50,7 +45,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public static int WIDTH = 1280,HEIGHT = 720;
 	
-	public int elementsint = 0;
 	public int xPixel,yPixel;
 	
 	public int currentColidedID = -1,currentMovedID = -1;
@@ -389,9 +383,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	}
 	
 	public void addElement(Element element,String name)
-	{
-		elementsint++;
-		
+	{		
 		element.id = getCurrentSlide().elements.size();
 		element.name = name;
 		element.frame();
@@ -423,67 +415,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		getCurrentSlide().listModel.set(new_, aObject);
 	}
 	
-	private void openslide(String path)
-	{
-		try 
-		{
-			XmlReader xml = new XmlReader(path);
-			
-			Tag[] tags = xml.getTags("element");
-			
-			for (int i = 0;i < tags.length;i++)
-			{
-				Element elem = Element.getElementsByName(tags[i].getAttribute("type"));
-				elem.id = i;
-				elem.load(tags[i]);
-				
-				getCurrentSlide().elements.add(elem);
-				getCurrentSlide().listModel.addElement(tags[i].getAttribute("name"));
-			}
-			
-			slideloaded = true;
-			
-			//enable
-			setEnabled(true);
-		} 
-		catch (IOException | SAXException e) 
-		{
-			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-		}
-	
-	}
-	
-	public void closeSlide()
-	{
-		if (slideloaded)
-		{
-			getCurrentSlide().listModel.clear();
-			getCurrentSlide().elements.clear();
-			
-			slideloaded = false;
-		}
-	}
-	
-	private void savedialog()
-	{
-		XmlWriter xml = new XmlWriter();
-		
-		xml.openTag("slide");
-		for (Element element : getCurrentSlide().elements)
-		{
-			element.save(xml);
-		}
-		
-		xml.addTagText("all", String.valueOf(getCurrentSlide().elements.size()));
-		xml.closeTag();
-		
-//			//save file
-//			Util.saveFile(path, xml.get());
-		
-		Project.refreshProject(); 
-	}
-	
-	public SlideList.Slide getCurrentSlide()
+	public Slide getCurrentSlide()
 	{
 		return slideList.getCurrentSlide();
 	}

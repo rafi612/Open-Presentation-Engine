@@ -1,20 +1,19 @@
-package com.ope.presentation.slide;
+package com.ope.core.slide;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 
+import com.ope.core.slide.elements.E_Image;
 import com.ope.gui.SlideCreator;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
-import com.ope.presentation.slide.elements.E_Image;
 
 public class Element 
 {
-	public static final String[] types = {"Image","Text","Shape","Graph"};
 	public boolean editing,moving,colided;
 	
 	public int id,x,y,w,h;

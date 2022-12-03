@@ -60,7 +60,7 @@ public class Project
 		//catch error when project is invalid
 		try
 		{
-			Main.sliderack.load(Util.projectPath(PROJECT_XML_NAME));
+			Main.slideList.load(Util.projectPath(PROJECT_XML_NAME));
 		} 
 		catch (Exception e) 
 		{
@@ -77,8 +77,7 @@ public class Project
 		
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
 		
-		Main.sliderack.clear();
-		Main.slideList.getSlideCreator().closeSlide();
+		Main.slideList.clear();
 		
 		interfaceEnable(false);
 		
@@ -106,10 +105,9 @@ public class Project
 		Main.menubar.exitproject.setEnabled(enabled);
 		
 		Main.tree.setEnabled(enabled);
-		Main.sliderack.setEnabled(enabled);
 		Main.actionpanel.setEnabled(enabled);
 		
-		Main.slideList.getSlideCreator().setEnabled(enabled);
+		Main.slideList.getSlideCreator().setEnabled(false);
 		Main.slideList.setEnabled(enabled);
 		
 	}
@@ -128,7 +126,7 @@ public class Project
 	{
 		try 
 		{
-			Main.sliderack.build(Util.projectPath(PROJECT_XML_NAME));
+			Main.slideList.build(Util.projectPath(PROJECT_XML_NAME));
 		} 
 		catch (IOException e) {
 			JOptionPane.showMessageDialog(Main.frame, "Error:" + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

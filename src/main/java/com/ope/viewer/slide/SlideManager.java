@@ -1,5 +1,5 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.ope.presentation.slide;
+package com.ope.viewer.slide;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,14 +8,15 @@ import org.xml.sax.SAXException;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import com.ope.core.animation.Animation;
+import com.ope.core.slide.Slide;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.ResourceLoader;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlReader;
-import com.ope.presentation.animation.Animation;
-import com.ope.presentation.input.Keyboard;
-import com.ope.presentation.main.Presentation;
+import com.ope.viewer.Presentation;
+import com.ope.viewer.input.Keyboard;
 
 public class SlideManager
 {

@@ -1,10 +1,10 @@
 /* Copyright 2019-2020 by rafi612 */
-package com.ope.presentation.main;
+package com.ope.viewer;
 
 import com.ope.graphics.Renderer;
-import com.ope.presentation.input.Keyboard;
-import com.ope.presentation.input.Mouse;
-import com.ope.presentation.slide.SlideManager;
+import com.ope.viewer.input.Keyboard;
+import com.ope.viewer.input.Mouse;
+import com.ope.viewer.slide.SlideManager;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.glfw.GLFW.*;
