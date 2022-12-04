@@ -3,7 +3,11 @@ package com.ope.core.animation;
 import com.ope.core.slide.Slide;
 
 public class None extends Animation
-{		
+{
+	public None()
+	{
+		super("None");
+	}
 	public void start()
 	{
 		switchAnimation();

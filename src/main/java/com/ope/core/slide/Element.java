@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 
 import com.ope.core.slide.elements.E_Image;
-import com.ope.gui.SlideCreator;
+import com.ope.gui.slide.SlideCreator;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;

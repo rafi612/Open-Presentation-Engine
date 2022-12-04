@@ -15,8 +15,8 @@ import javax.swing.JSpinner;
 
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
-import com.ope.gui.SlideCreator;
 import com.ope.gui.TreeFileEvent;
+import com.ope.gui.slide.SlideCreator;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlWriter;

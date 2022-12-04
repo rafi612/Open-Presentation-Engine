@@ -8,7 +8,12 @@ public class Animation
 	
 	protected boolean switched = false;
 	
-	public Animation() {}
+	protected String name;
+	
+	public Animation(String name) 
+	{
+		this.name = name;
+	}
 	
 	public void update() {}
 	
@@ -35,6 +40,11 @@ public class Animation
 	public void switchAnimation()
 	{
 		switched = true;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	

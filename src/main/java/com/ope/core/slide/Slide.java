@@ -22,16 +22,18 @@ public class Slide
 	public Animation animation;
 	public ArrayList<Element> elements = new ArrayList<Element>();
 	
-	public Slide() {}
+	private Slide() {}
 	
 	public Slide(String name)
 	{
 		this.name = name;
+		this.animation = Animation.getAnimation("None");
 	}
 
-	public void load(Tag tag) throws IOException, SAXException
+	public static Slide load(Tag tag) throws IOException, SAXException
 	{
-		name = tag.getAttribute("name");
+		Slide slide = new Slide();
+		slide.name = tag.getAttribute("name");
 		
 		Tag layout = tag.getTags("layout")[0];
 		
@@ -43,13 +45,14 @@ public class Slide
 			elem.id = i;
 			elem.load(elements_[i]);
 			
-			elements.add(elem);
-			listModel.addElement(elem.name);
+			slide.elements.add(elem);
+			slide.listModel.addElement(elem.name);
 		}
 		if (tag.exists("animation"))
-			animation = Animation.getAnimation(tag.getTags("animation")[0].getAttribute("type"));
+			slide.animation = Animation.getAnimation(tag.getTags("animation")[0].getAttribute("type"));
 		else 
-			animation = Animation.getAnimation("none");
+			slide.animation = Animation.getAnimation("none");
+		return slide;
 	}
 	
 	public void saveXml(XmlWriter xml)
@@ -59,6 +62,9 @@ public class Slide
 		xml.openTag("layout");
 		for (Element element : elements)
 			element.save(xml);
+		xml.closeTag();
+		
+		xml.openTag("animation", "type=" + animation.getName());
 		xml.closeTag();
 		
 		xml.closeTag();

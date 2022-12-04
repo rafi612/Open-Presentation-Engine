@@ -13,7 +13,8 @@ public class Departure extends Animation
 	public float scale,x;
 	
 	public Departure()
-	{		
+	{
+		super("Departure");
 		reset();
 	}
 	

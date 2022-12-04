@@ -5,7 +5,7 @@ import org.joml.Vector4f;
 
 import com.ope.core.slide.Element;
 import com.ope.graphics.Renderer;
-import com.ope.gui.SlideCreator;
+import com.ope.gui.slide.SlideCreator;
 
 public class Resizer 
 {

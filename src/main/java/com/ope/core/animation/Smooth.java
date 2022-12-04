@@ -12,6 +12,7 @@ public class Smooth extends Animation
 	
 	public Smooth(float time)
 	{
+		super("Smooth");
 		this.time = time;
 		
 		step = 1 / (60 * time);

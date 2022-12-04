@@ -13,6 +13,7 @@ public class Rotating extends Animation
 	
 	public Rotating(float time,float rotatecycles)
 	{
+		super("Rotating");
 		this.time = time;
 		
 		step = 1 / (60 * (time / 2));

@@ -11,6 +11,7 @@ public class Appearing extends Animation
 	
 	public Appearing(float time)
 	{
+		super("Appearing");
 		this.time = time;
 		
 		step = 1 / (60 * (time / 2));

@@ -1,4 +1,4 @@
-package com.ope.gui;
+package com.ope.gui.slide;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -13,7 +13,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.Collections;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.joml.Vector4f;
@@ -36,7 +34,6 @@ import com.ope.core.slide.Slide;
 import com.ope.graphics.Renderer;
 import com.ope.graphics.Texture;
 import com.ope.io.ResourceLoader;
-import com.ope.io.Util;
 import com.ope.main.Main;
 
 public class SlideCreator extends JPanel implements ActionListener,MouseMotionListener,MouseListener
@@ -55,6 +52,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public boolean dragged = false;
 	
 	public SlideList slideList;
+	public SCProperties scProperties;
 	
 	private JTabbedPane leftTabs;
 	
@@ -67,61 +65,17 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private Texture canvasimage;
 	
-	class ToolBar extends JToolBar implements ActionListener
-	{
-		private static final long serialVersionUID = 1L;
-		
-		private SlideCreator sc;
-		
-		public JButton image,text;
-		
-		public ToolBar(SlideCreator sc)
-		{
-			this.sc = sc;
-			
-			setFloatable(false);
-			
-			image = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/image.png")));
-			image.setToolTipText("Add image");
-			image.addActionListener(this);
-			add(image);
-			
-			text = new JButton(new ImageIcon(Util.loadIcon("/icons/toolbar/text.png")));
-			text.setToolTipText("Add Text");
-			text.addActionListener(this);
-			add(text);
-			
-			addSeparator();
-		}
-		
-		private String getNameWithNum(String name)
-		{
-			int repeat = 0;
-			for (Element element : sc.getCurrentSlide().elements)
-				if (element.name.startsWith(name))
-					repeat++;
-			
-			return repeat == 0 ? name : name + " #" + repeat;
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{
-			var source = e.getSource();
-			
-			if (source == image)
-				sc.addElement(Element.getElementsByName("Image"),getNameWithNum("Image"));
-		}
-	}
+	private SCToolBar toolbar;
 	
-	private ToolBar toolbar;
-	
-	public SlideCreator() 
+	public SlideCreator(SlideList slideList) 
 	{
 		setLayout(new BorderLayout());
 		
+		this.slideList = slideList;
+		scProperties = new SCProperties(slideList);
+		
 		//toolbar
-		toolbar = new ToolBar(this);
+		toolbar = new SCToolBar(this);
 		
 		leftTabs = new JTabbedPane();
 		
@@ -166,7 +120,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		enableComponents(listpanel, false);
 		
 		leftTabs.add(listpanel,"Elements");
-		leftTabs.add(new JPanel(),"Properties");
+		leftTabs.add(new JScrollPane(scProperties),"Properties");
 		add(leftTabs,BorderLayout.WEST);
 		
 		position = new JLabel("X: " + xPixel + " Y:" + yPixel);

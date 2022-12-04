@@ -1,4 +1,4 @@
-package com.ope.gui;
+package com.ope.gui.slide;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import org.xml.sax.SAXException;
 
 import com.ope.core.slide.Slide;
+import com.ope.gui.MenuBar;
 import com.ope.io.Util;
 import com.ope.io.xml.Tag;
 import com.ope.io.xml.XmlReader;
@@ -42,11 +43,12 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	
 	private int currentSlide;
 	
-	public SlideList(SlideCreator sc,MenuBar parentmenu)
+	public SlideList(MenuBar parentmenu)
 	{
-		this.sc = sc;
 		this.parentmenu = parentmenu;
-		sc.slideList = this;
+		
+		sc = new SlideCreator(this);
+		
 		setPreferredSize(new Dimension(215,0));
 		
 		setLayout(new BorderLayout());
@@ -111,8 +113,7 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 			
 			for (Tag slidetag : slides)
 			{				
-				Slide slide = new Slide();
-				slide.load(slidetag);
+				Slide slide = Slide.load(slidetag);
 				
 				addSlide(slide);
 			}
@@ -173,9 +174,12 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		}
 		else
 		{
+			Slide slide = slides.get(index);
 			sc.slideloaded = true;
 			sc.setEnabled(true);
-			sc.list.setModel(slides.get(index).listModel);
+			sc.list.setModel(slide.listModel);
+			
+			sc.scProperties.onSlideChange(slide);
 		}
 	}
 	

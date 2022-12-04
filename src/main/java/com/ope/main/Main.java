@@ -11,9 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.ope.gui.ActionPanel;
 import com.ope.gui.MenuBar;
-import com.ope.gui.SlideCreator;
-import com.ope.gui.SlideList;
 import com.ope.gui.Tree;
+import com.ope.gui.slide.SlideList;
 import com.ope.io.Config;
 import com.ope.io.Util;
 import com.ope.project.Project;
@@ -27,7 +26,7 @@ public class Main
 
 	public static Tree tree;
 
-	public static JTabbedPane tabs,tabs2;
+	public static JTabbedPane tabs2;
 
 	public static MenuBar menubar;
 
@@ -37,23 +36,19 @@ public class Main
 
 	public static void initUI()
 	{
-		tabs = new JTabbedPane();
 		tabs2 = new JTabbedPane();
 		
 		menubar = new MenuBar(frame); 
-
-		//slide creator
-		SlideCreator slidecreator = new SlideCreator();
 		 
 		//tree
 		tree = new Tree(new DefaultMutableTreeNode("Workspace"));
-		slideList = new SlideList(slidecreator,menubar);
+		slideList = new SlideList(menubar);
 		
 		tabs2.add(slideList,"Slides");
 		tabs2.add(tree,"Project Explorer");
 		frame.add(tabs2,BorderLayout.WEST);
 		
-		frame.add(slidecreator);
+		frame.add(slideList.getSlideCreator());
 		
 		actionpanel = new ActionPanel();
 		frame.add(actionpanel,BorderLayout.SOUTH);

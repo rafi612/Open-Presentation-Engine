@@ -123,8 +123,7 @@ public class SlideManager
 		
 		for (Tag tag : tags)
 		{
-			Slide slide = new Slide();
-			slide.load(tag);
+			Slide slide = Slide.load(tag);
 			
 			slides.add(slide);
 		}
