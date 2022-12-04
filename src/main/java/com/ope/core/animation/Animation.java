@@ -10,6 +10,8 @@ public class Animation
 	
 	protected String name;
 	
+	private static String[] animations = {"None","Appearing","Departure","Smooth","Rotating"};
+	
 	public Animation(String name) 
 	{
 		this.name = name;
@@ -57,6 +59,11 @@ public class Animation
 	public void render(Slide before,Slide target) {}
 	
 	public void destroy() {}
+	
+	public static String[] getAnimationsList()
+	{
+		return animations;
+	}
 	
 	public static Animation getAnimation(String a)
 	{
