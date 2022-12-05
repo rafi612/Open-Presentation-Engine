@@ -20,9 +20,9 @@ import com.ope.viewer.input.Keyboard;
 
 public class SlideManager
 {
-	public ArrayList<Slide> slides;
+	public ArrayList<Slide> slides = new ArrayList<Slide>();
 
-	public int choose;
+	public int choose = 0;
 	Texture empty,endimage;
 	
 	boolean switchslide = false;
@@ -35,11 +35,8 @@ public class SlideManager
 	
 	public SlideManager()
 	{
-		choose = 0;
 		empty = new Texture(ResourceLoader.load("/images/empty.png"));
 		endimage  = new Texture(ResourceLoader.load("/images/slideend.png"));
-		
-		slides = new ArrayList<Slide>();
 	}
 	
 	public void update()
