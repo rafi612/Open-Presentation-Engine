@@ -52,7 +52,9 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	public boolean dragged = false;
 	
 	public SlideList slideList;
+	
 	public SCProperties scProperties;
+	private SCToolBar toolbar;
 	
 	private JTabbedPane leftTabs;
 	
@@ -64,8 +66,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	private AWTGLCanvas canvas;
 	
 	private Texture canvasimage;
-	
-	private SCToolBar toolbar;
 	
 	public SlideCreator(SlideList slideList) 
 	{
@@ -265,14 +265,14 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			else
 				getCurrentSlide().elements.get(list.getSelectedIndex()).frame();
 		}
-		//up
+		//up & down
 		if (source == up)
 		{
 			if (list.getSelectedIndex() == -1)
 				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
 			else
 			{
-				int new_ = list.getSelectedIndex() - 1;
+				int new_ = list.getSelectedIndex() + (source == down ? 1 : -1);
 				int old = list.getSelectedIndex();
 				//swap func
 				swaplist(old,new_);
@@ -282,23 +282,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				refreshElementsID();
 			}
 		}
-		//down
-		if (source == down)
-		{
-			if (list.getSelectedIndex() == -1)
-				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
-			else
-			{
-				int new_ = list.getSelectedIndex() + 1;
-				int old = list.getSelectedIndex();
-				//swapfunc
-				swaplist(old,new_);
-				//set selection
-				list.setSelectedIndex(new_);
-				
-				refreshElementsID();
-			}
-		}
+		
 		//delete
 		if (source == delete)
 		{

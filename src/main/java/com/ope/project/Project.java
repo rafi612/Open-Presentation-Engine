@@ -60,7 +60,7 @@ public class Project
 		//catch error when project is invalid
 		try
 		{
-			Main.slideList.load(Util.projectPath(PROJECT_XML_NAME));
+			Main.frame.slideList.load(Util.projectPath(PROJECT_XML_NAME));
 		} 
 		catch (Exception e) 
 		{
@@ -77,7 +77,7 @@ public class Project
 		
 		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
 		
-		Main.slideList.clear();
+		Main.frame.slideList.clear();
 		
 		interfaceEnable(false);
 		
@@ -97,28 +97,28 @@ public class Project
 	
 	public static void interfaceEnable(boolean enabled)
 	{
-		Main.menubar.save.setEnabled(enabled);
-		Main.menubar.project.setEnabled(enabled);
-		Main.menubar.run.setEnabled(enabled);
-		Main.menubar.refresh.setEnabled(enabled);
-		Main.menubar.export.setEnabled(enabled);
-		Main.menubar.exitproject.setEnabled(enabled);
+		Main.frame.menubar.save.setEnabled(enabled);
+		Main.frame.menubar.project.setEnabled(enabled);
+		Main.frame.menubar.run.setEnabled(enabled);
+		Main.frame.menubar.refresh.setEnabled(enabled);
+		Main.frame.menubar.export.setEnabled(enabled);
+		Main.frame.menubar.exitproject.setEnabled(enabled);
 		
-		Main.tree.setEnabled(enabled);
-		Main.actionpanel.setEnabled(enabled);
+		Main.frame.tree.setEnabled(enabled);
+		Main.frame.actionpanel.setEnabled(enabled);
 		
-		Main.slideList.getSlideCreator().setEnabled(false);
-		Main.slideList.setEnabled(enabled);
+		Main.frame.slideList.getSlideCreator().setEnabled(false);
+		Main.frame.slideList.setEnabled(enabled);
 		
 	}
 
 	public static void refreshProject()
 	{		
-		Main.tree.getRootNode().removeAllChildren();
+		Main.frame.tree.getRootNode().removeAllChildren();
 		
-		createChildren(new File(projectlocation), Main.tree.getRootNode());
+		createChildren(new File(projectlocation), Main.frame.tree.getRootNode());
 		
-		((DefaultTreeModel) Main.tree.getModel()).reload(Main.tree.getRootNode());
+		((DefaultTreeModel) Main.frame.tree.getModel()).reload(Main.frame.tree.getRootNode());
 	}
 	
 	
@@ -126,7 +126,7 @@ public class Project
 	{
 		try 
 		{
-			Main.slideList.build(Util.projectPath(PROJECT_XML_NAME));
+			Main.frame.slideList.build(Util.projectPath(PROJECT_XML_NAME));
 		} 
 		catch (IOException e) 
 		{
@@ -145,7 +145,6 @@ public class Project
 			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 					
 			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation);
-			pb.directory(new File(projectlocation));
 					
 			//redirect output to terminal
 			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);

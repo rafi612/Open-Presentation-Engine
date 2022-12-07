@@ -36,20 +36,20 @@ public class TreeFileEvent
 		button.setEnabled(false);
 		
 		listener = (event) -> {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode)Main.tree.getLastSelectedPathComponent();
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode)Main.frame.tree.getLastSelectedPathComponent();
 			File file = new File(node.toString());
 			
 			target.fileSelected(file.getPath());
 			
-			Main.tree.removeTreeSelectionListener(listener);
+			Main.frame.tree.removeTreeSelectionListener(listener);
 			
 			button.setText(resulttext.equals("") ? text : resulttext);
 			button.setEnabled(true);
 		};
 		
-		Main.tree.clearSelection();
+		Main.frame.tree.clearSelection();
 		
-		Main.tree.addTreeSelectionListener(listener);
+		Main.frame.tree.addTreeSelectionListener(listener);
 	}
 
 	

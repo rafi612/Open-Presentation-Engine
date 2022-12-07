@@ -25,11 +25,11 @@ public class Config
 	
 	public enum LookAndFeel
 	{
-		SYSTEM(() -> setLAF(getSystemTheme()),Main.menubar.m_system),
-		METAL(() -> setLAF("javax.swing.plaf.metal.MetalLookAndFeel"),Main.menubar.m_metal),
-		NIMBUS(() -> setLAF("javax.swing.plaf.nimbus.NimbusLookAndFeel"),Main.menubar.m_nimbus),
-		FLATLAF_LIGHT(() -> { FlatLightLaf.setup(); update(); }, Main.menubar.m_flatlaf_light),
-		FLATLAF_DARK(() -> { FlatDarkLaf.setup(); update(); },Main.menubar.m_flatlaf_dark);
+		SYSTEM(() -> setLAF(getSystemTheme()),Main.frame.menubar.m_system),
+		METAL(() -> setLAF("javax.swing.plaf.metal.MetalLookAndFeel"),Main.frame.menubar.m_metal),
+		NIMBUS(() -> setLAF("javax.swing.plaf.nimbus.NimbusLookAndFeel"),Main.frame.menubar.m_nimbus),
+		FLATLAF_LIGHT(() -> { FlatLightLaf.setup(); update(); }, Main.frame.menubar.m_flatlaf_light),
+		FLATLAF_DARK(() -> { FlatDarkLaf.setup(); update(); },Main.frame.menubar.m_flatlaf_dark);
 		
 		Runnable set;
 		JRadioButtonMenuItem themeradio;
@@ -51,7 +51,7 @@ public class Config
 		private static void update()
 		{
 			SwingUtilities.updateComponentTreeUI(Main.frame);
-			SwingUtilities.updateComponentTreeUI(Main.menubar.aboutdialog);
+			SwingUtilities.updateComponentTreeUI(Main.frame.menubar.aboutdialog);
 		}
 		
 		private static String getSystemTheme()

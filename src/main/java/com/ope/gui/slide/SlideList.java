@@ -4,16 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -40,6 +46,8 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	private JList<String> list;
 	private DefaultListModel<String> listModel;
 	private JButton add,delete,up,down;
+	
+	private JMenuItem add_menu,delete_menu,rename_menu;
 	
 	private int currentSlide;
 	
@@ -74,6 +82,19 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 		buttonPanel.add(delete);
 		buttonPanel.add(up);
 		buttonPanel.add(down);
+		
+		add_menu = new JMenuItem("Add slide");
+		add_menu.addActionListener(this);
+		delete_menu = new JMenuItem("Delete slide");
+		delete_menu.addActionListener(this);
+		rename_menu = new JMenuItem("Rename");
+		rename_menu.addActionListener(this);
+		
+		JPopupMenu popup = new JPopupMenu();
+		popup.add(add_menu);
+		popup.add(delete_menu);
+		popup.add(rename_menu);
+		list.setComponentPopupMenu(popup);
 		
 		add(buttonPanel,BorderLayout.SOUTH);
 	}
@@ -154,11 +175,70 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	{
 		var source = e.getSource();
 		
-		if (source == add)
+		if (source == add || source == add_menu)
+		{
 			createNewSlide();
+			list.setSelectedIndex(listModel.size() - 1);
+		}
 		
-		if (source == delete)
+		if (source == delete || source == delete_menu)
+		{
+			if (check()) return;
+			
 			deleteSlide(list.getSelectedIndex());
+		}
+		
+		if (source == up || source == down)
+		{
+			if (check()) return;
+			
+			int new_ = list.getSelectedIndex() + (source == down ? 1 : -1);
+			int old = list.getSelectedIndex();
+			//swap func
+			swaplist(old,new_);
+			//set selection
+			list.setSelectedIndex(new_);
+		}
+		
+		if (source == rename_menu)
+		{
+			if (check()) return;
+			
+			String choose = JOptionPane.showInputDialog(Main.frame,"Enter new element name:","Rename",JOptionPane.QUESTION_MESSAGE);
+			if (choose != null)
+			{
+				int index = list.getSelectedIndex();
+				Slide slide = slides.get(index);
+				
+				slide.name = choose;
+				listModel.set(index, choose);
+			}
+		}
+	}
+	
+	private boolean check()
+	{
+		if (list.getSelectedIndex() == -1)
+		{
+			JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+	
+	private void swaplist(int old,int new_)
+	{
+		//check out of bounds
+		if (new_ < 0 || new_ > slides.size()-1) return;
+		
+		//swap in elements arraylist
+		Collections.swap(slides, old, new_);
+		
+		//swap in JList
+		String aObject = listModel.getElementAt(old);
+		String bObject = listModel.getElementAt(new_);
+		listModel.set(old, bObject);
+		listModel.set(new_, aObject);
 	}
 
 
@@ -192,6 +272,7 @@ public class SlideList extends JPanel implements ActionListener,ListSelectionLis
 	public void setEnabled(boolean enabled)
 	{
 		enableComponents(this, enabled);
+		enableComponents(list.getComponentPopupMenu(), enabled);
 	}
 	
 	private void enableComponents(Container container, boolean enable)
