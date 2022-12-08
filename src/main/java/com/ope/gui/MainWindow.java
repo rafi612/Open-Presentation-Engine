@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -39,7 +40,7 @@ public class MainWindow extends JFrame
 		tree = new Tree(new DefaultMutableTreeNode("Workspace"));
 		slideList = new SlideList(menubar);
 		
-		tabs.add(slideList,"Slides");
+		tabs.add(new JScrollPane(slideList),"Slides");
 		tabs.add(tree,"Project Explorer");
 		add(tabs,BorderLayout.WEST);
 		
