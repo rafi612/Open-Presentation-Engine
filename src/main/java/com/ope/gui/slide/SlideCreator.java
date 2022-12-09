@@ -266,7 +266,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				getCurrentSlide().elements.get(list.getSelectedIndex()).frame();
 		}
 		//up & down
-		if (source == up)
+		if (source == up || source == down)
 		{
 			if (list.getSelectedIndex() == -1)
 				JOptionPane.showMessageDialog(Main.frame, "No selected element", "Error", JOptionPane.ERROR_MESSAGE);

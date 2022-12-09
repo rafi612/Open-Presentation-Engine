@@ -14,6 +14,7 @@ import org.lwjgl.system.Platform;
 import org.lwjgl.util.nfd.NativeFileDialog;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import com.ope.gui.MainWindow;
 import com.ope.io.Util;
 import com.ope.io.xml.XmlWriter;
 import com.ope.main.Main;
@@ -53,7 +54,7 @@ public class Project
 			
 		projectIsLoaded = true;
 			
-		Main.frame.setTitle(Main.TITLE + " - " + path);
+		Main.frame.setTitle(MainWindow.TITLE + " - " + path);
 
 		interfaceEnable(true);
 		
@@ -75,7 +76,7 @@ public class Project
 		projectIsLoaded = false;
 		projectlocation = "";
 		
-		Main.frame.setTitle(Main.TITLE + " - Project not loaded");
+		Main.frame.setTitle(MainWindow.TITLE + " - Project not loaded");
 		
 		Main.frame.slideList.clear();
 		

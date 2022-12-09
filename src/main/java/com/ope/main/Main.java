@@ -8,7 +8,6 @@ import com.ope.viewer.Presentation;
 
 public class Main
 {
-	public static final String TITLE = "Open Presentation Engine";
 	public static MainWindow frame;
 	
 	public static void main(String[] args)
@@ -18,7 +17,7 @@ public class Main
 		
 		if (args.length < 1)
 		{
-			frame = new MainWindow(TITLE);
+			frame = new MainWindow();
 			
 			Config.loadSettings();
 			Project.unloadProject();

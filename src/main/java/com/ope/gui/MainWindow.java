@@ -16,6 +16,7 @@ import com.ope.project.Project;
 public class MainWindow extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+	public static final String TITLE = "Open Presentation Engine";
 	
 	public Tree tree;
 	public JTabbedPane tabs;
@@ -23,9 +24,9 @@ public class MainWindow extends JFrame
 	public ActionPanel actionpanel;
 	public SlideList slideList;
 
-	public MainWindow(String title)
+	public MainWindow()
 	{
-		super(title);
+		super(TITLE);
 		setSize(1280,720);
 		setIconImage(Util.loadIcon("/images/icon.png"));
 		setLocationRelativeTo(null);
