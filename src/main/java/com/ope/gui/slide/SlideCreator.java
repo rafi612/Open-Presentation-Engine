@@ -203,7 +203,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			for (Element element : getCurrentSlide().elements)
 				element.render();
 		}
-		
 	}
 	
 	private float sx,sy;
