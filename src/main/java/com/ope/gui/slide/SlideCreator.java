@@ -404,7 +404,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 		float aspectRatio = (float)canvas.getWidth() / (float)canvas.getHeight();
 		float targetAspect = (float)WIDTH / (float)HEIGHT;
 		
-		
 		if (aspectRatio >= targetAspect)
 		{
 			float calculatedW = (targetAspect / aspectRatio ) * canvas.getWidth();
