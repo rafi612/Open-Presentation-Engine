@@ -433,5 +433,4 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 }
