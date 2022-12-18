@@ -42,7 +42,7 @@ public class MenuBar extends JMenuBar implements ActionListener
 	public JCheckBoxMenuItem fullscreen;
 	
 	//run
-	public JMenuItem runandbuild,run_;
+	public JMenuItem runproject;
 	
 	//settings
 	public JMenu theme;
@@ -109,24 +109,20 @@ public class MenuBar extends JMenuBar implements ActionListener
 		
 		//tools
 		refresh = new JMenuItem("Refresh Project"); 
+		refresh.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/refresh.png")));
 		refresh.addActionListener(this);
 		refresh.setEnabled(false);
 		refresh.setAccelerator(KeyStroke.getKeyStroke("F5"));
 		tools.add(refresh);
 		
-		runandbuild = new JMenuItem("Build And Run"); 
-		runandbuild.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/runandbuild.png")));
-		runandbuild.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
-		runandbuild.addActionListener(this);
-		
-		run_ = new JMenuItem("Run"); 
-		run_.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/run.png")));
-		run_.setAccelerator(KeyStroke.getKeyStroke("shift R"));;
-		run.add(runandbuild);
-		run.add(run_);
+		runproject = new JMenuItem("Run"); 
+		runproject.setIcon(new ImageIcon(Util.loadIcon("/icons/menu/run.png")));
+		runproject.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
+		runproject.addActionListener(this);
+		run.add(runproject);
 		
 		//project
-		fullscreen = new JCheckBoxMenuItem("Fullscreen");	
+		fullscreen = new JCheckBoxMenuItem("Fullscreen");
 		project.add(fullscreen);
 		
 		//settings
@@ -208,9 +204,7 @@ public class MenuBar extends JMenuBar implements ActionListener
 		
 		//save
 		if (source == save)
-		{
 			Project.saveDialog();
-		}
 		
 		//exit project
 		if (source == exitproject)
@@ -251,14 +245,10 @@ public class MenuBar extends JMenuBar implements ActionListener
 			dialog.setVisible(true);
 		}
 		
-		if (source == runandbuild)
-		{
+		if (source == runproject)
 			Project.run();
-		}
 		
 		if (source == about)
-		{
 			aboutdialog.setVisible(true);
-		}
 	}
 }

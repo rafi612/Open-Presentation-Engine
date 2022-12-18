@@ -5,11 +5,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.ope.io.Util;
 import com.ope.project.Project;
-import com.ope.viewer.Presentation;
 
 public class ActionPanel extends JPanel implements ActionListener
 {
@@ -22,13 +23,12 @@ public class ActionPanel extends JPanel implements ActionListener
 		setBorder(BorderFactory.createTitledBorder("Actions"));
 		setToolTipText("Necessary actions");
 		
-		actions.add(new JButton("Build & Run"));
-		actions.add(new JButton("Save"));
-		actions.add(new JButton("Stop"));
+		actions.add(new JButton("Run",new ImageIcon(Util.loadIcon("/icons/menu/run.png"))));
+		actions.add(new JButton("Save",new ImageIcon(Util.loadIcon("/icons/menu/save.png"))));
 		
 		for (JButton button : actions)
 		{
-			button.addActionListener(this::actionPerformed);
+			button.addActionListener(this);
 			add(button);
 		}
 	}
@@ -40,22 +40,11 @@ public class ActionPanel extends JPanel implements ActionListener
 		
 		//run
 		if (source == actions.get(0))
-		{
 			Project.run();
-		}
 		
 		//action save
-		if (source == actions.get(1))
-		{			
+		if (source == actions.get(1))		
 			Project.saveDialog();
-			
-		}
-		
-		//stop
-		if (source == actions.get(2))
-		{
-			Presentation.stop();
-		}
 	}
 	
 	public void setEnabled(boolean enable)
@@ -63,5 +52,4 @@ public class ActionPanel extends JPanel implements ActionListener
 		for (JButton button : actions)
 			button.setEnabled(enable);
 	}
-
 }
