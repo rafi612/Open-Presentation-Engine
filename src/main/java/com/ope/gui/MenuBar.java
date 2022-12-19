@@ -183,7 +183,6 @@ public class MenuBar extends JMenuBar implements ActionListener
 	{
 		var source = event.getSource();
 		
-		//menu===================================
 		//new project
 		if (source == newproject)
 		{
