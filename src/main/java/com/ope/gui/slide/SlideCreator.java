@@ -281,7 +281,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 				refreshElementsID();
 			}
 		}
-		
 		//delete
 		if (source == delete)
 		{
