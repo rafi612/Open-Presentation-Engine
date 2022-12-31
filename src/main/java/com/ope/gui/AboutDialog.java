@@ -49,7 +49,7 @@ public class AboutDialog extends JDialog
 		JLabel v = new JLabel("   v.1.0");
 		v.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 20));
 		
-		JLabel author = new JLabel("     Copyright (C) 2019-2022 by rafi612");
+		JLabel author = new JLabel("     Copyright (C) 2019-2023 by rafi612");
 		author.setFont(new Font(title.getFont().getName(), Font.TRUETYPE_FONT, 16));
 		
 		JLabel text1 = new JLabel("Open Presentation Engine is free and open source software");
