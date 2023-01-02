@@ -410,7 +410,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			
 			xPixel = (int)(((float)(X-x)*((WIDTH) / calculatedW)));
 			yPixel = (int)((float)Y*((HEIGHT) / ((float)canvas.getHeight())));
-
 		}
 		else
 		{
