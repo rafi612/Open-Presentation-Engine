@@ -138,26 +138,18 @@ public class Util
 	}
 	
 	
-	public static ByteBuffer loadImageToBuffer(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp)
+	public static ByteBuffer loadImageToBuffer(InputStream in,IntBuffer w,IntBuffer h,IntBuffer comp) throws IOException
 	{
-		try
-		{
-			byte[] pixels_raw = in.readAllBytes();
+		byte[] pixels_raw = in.readAllBytes();
 			
-			ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
-			imageBuffer.put(pixels_raw);
-			imageBuffer.flip();
-			ByteBuffer result = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
+		ByteBuffer imageBuffer = MemoryUtil.memAlloc(pixels_raw.length);
+		imageBuffer.put(pixels_raw);
+		imageBuffer.flip();
+		ByteBuffer result = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, STBImage.STBI_rgb_alpha);
 			
-			MemoryUtil.memFree(imageBuffer);
-			in.close();
+		MemoryUtil.memFree(imageBuffer);
+		in.close();
 			
-			return result;
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		return result;
 	}
 }

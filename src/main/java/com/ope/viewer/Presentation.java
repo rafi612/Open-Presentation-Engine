@@ -145,7 +145,7 @@ public class Presentation
 
 	}
 	
-	private static GLFWImage.Buffer icon(String path)
+	private static GLFWImage.Buffer icon(String path) throws IOException
 	{
 		try (MemoryStack stack = MemoryStack.stackPush()) 
 		{
