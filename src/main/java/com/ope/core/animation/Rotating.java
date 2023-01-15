@@ -83,6 +83,7 @@ public class Rotating extends Animation
 		
 		if (!switched)
 			before.render();
-		else target.render();
+		else 
+			target.render();
 	}
 }
