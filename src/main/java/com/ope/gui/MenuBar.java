@@ -190,7 +190,8 @@ public class MenuBar extends JMenuBar implements ActionListener
 			if (Project.projectIsLoaded) 
 				yesno = Project.lostSaveDialog();
 			
-			if (yesno != 2) Project.newProjectDialog();
+			if (yesno != 2) 
+				Project.newProjectDialog();
 		}
 		if (source == loadproject)
 		{
@@ -198,7 +199,8 @@ public class MenuBar extends JMenuBar implements ActionListener
 			if (Project.projectIsLoaded) 
 				yesno = Project.lostSaveDialog();
 			
-			if (yesno != 2) Project.loadDialog();
+			if (yesno != 2) 
+				Project.loadDialog();
 		}
 		
 		//save
@@ -212,7 +214,8 @@ public class MenuBar extends JMenuBar implements ActionListener
 			if (Project.projectIsLoaded) 
 				yesno = Project.lostSaveDialog();
 			
-			if (yesno != 2) Project.unloadProject();
+			if (yesno != 2)
+				Project.unloadProject();
 		}
 		
 		//exit 
