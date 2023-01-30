@@ -15,7 +15,7 @@ public class PropAnimation extends SlideProperty
 	public PropAnimation(SlideList slideList) 
 	{
 		super("Animation",slideList);
-		comboBox = new JComboBox<String>(Animation.getAnimationsList());
+		comboBox = new JComboBox<>(Animation.getAnimationsList());
 		
 		comboBox.addItemListener(event -> {
 			slideList.getCurrentSlide().animation = 
