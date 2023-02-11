@@ -120,9 +120,7 @@ public class E_Image extends SquareBasedElement
 		if (path.isEmpty() && image == null)
 			Renderer.frectnofill(x,y,w,h,new Vector4f(0,0,0,1));
 		else
-		{
 			Renderer.drawImage(image,x,y,w,h);
-		}
 		
 		//rendering SquareBasedElement overlay
 		super.render();
