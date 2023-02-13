@@ -59,7 +59,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	private JTabbedPane leftTabs;
 	
 	public JList<String> list;
-	public JPanel listpanel;
+	private JPanel listpanel;
 	
 	private JButton edit,up,down,rename,delete;
 	private JLabel position;
