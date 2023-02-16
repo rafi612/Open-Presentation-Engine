@@ -48,17 +48,16 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	private int viewportW,viewportH;
 	
-	public boolean slideloaded = false;
-	public boolean dragged = false;
+	public boolean slideloaded = false,dragged = false;
 	
 	public SlideList slideList;
 	
-	public SCProperties scProperties;
+	protected SCProperties scProperties;
 	private SCToolBar toolbar;
 	
 	private JTabbedPane leftTabs;
 	
-	public JList<String> list;
+	protected JList<String> list;
 	private JPanel listpanel;
 	
 	private JButton edit,up,down,rename,delete;
@@ -247,8 +246,6 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 			viewportW = (int)(width * sx);
 			glViewport(0,(int)((height / 2) - (viewportH / 2)),viewportW,viewportH);
 		}
-		
-		//glViewport(0,0,(int)(width * sx),(int)(height * sy));
 	}
 	
 	@Override
