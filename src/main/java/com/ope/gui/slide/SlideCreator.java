@@ -50,7 +50,7 @@ public class SlideCreator extends JPanel implements ActionListener,MouseMotionLi
 	
 	public boolean slideloaded = false,dragged = false;
 	
-	public SlideList slideList;
+	protected SlideList slideList;
 	
 	protected SCProperties scProperties;
 	private SCToolBar toolbar;
