@@ -34,7 +34,6 @@ public class MainWindow extends JFrame
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		tabs = new JTabbedPane();
-		
 		menubar = new MenuBar(this); 
 		 
 		//tree
