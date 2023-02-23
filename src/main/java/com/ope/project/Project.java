@@ -23,7 +23,7 @@ public class Project
 {
 	public static boolean projectIsLoaded = false;
 	
-	public static String projectlocation;
+	public static String projectLocation;
 	public final static String PROJECT_XML_NAME = "project.xml";
 	
 	public static void createNewProject(String location,String name) throws Exception
@@ -44,7 +44,7 @@ public class Project
 	
 	public static void loadProject(String path) throws Exception
 	{
-		projectlocation = path;
+		projectLocation = path;
 			
 		if (!new File(Util.projectPath(PROJECT_XML_NAME)).exists())
 			throw new Exception("This is not project folder (project.xml missing)");
@@ -74,7 +74,7 @@ public class Project
 	public static void unloadProject()
 	{
 		projectIsLoaded = false;
-		projectlocation = "";
+		projectLocation = "";
 		
 		Main.frame.setTitle(MainWindow.TITLE + " - Project not loaded");
 		
@@ -117,7 +117,7 @@ public class Project
 	{		
 		Main.frame.tree.getRootNode().removeAllChildren();
 		
-		createChildren(new File(projectlocation), Main.frame.tree.getRootNode());
+		createChildren(new File(projectLocation), Main.frame.tree.getRootNode());
 		
 		((DefaultTreeModel) Main.frame.tree.getModel()).reload(Main.frame.tree.getRootNode());
 	}
@@ -145,7 +145,7 @@ public class Project
 				
 			String javaexe = Util.path(System.getProperty("java.home"),"bin","java");
 					
-			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectlocation);
+			ProcessBuilder pb = new ProcessBuilder(javaexe,"-cp",System.getProperty("java.class.path"),Main.class.getName(),projectLocation);
 					
 			//redirect output to terminal
 			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);

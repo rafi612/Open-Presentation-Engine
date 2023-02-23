@@ -47,11 +47,11 @@ public class Presentation
 		try
 		{
 			//setting project location
-			Project.projectlocation = new File(projectpath).getCanonicalPath();
+			Project.projectLocation = new File(projectpath).getCanonicalPath();
 			
 			if (!new File(Util.projectPath(Project.PROJECT_XML_NAME)).exists())
 			{
-				System.err.println("ERROR: Folder " + Project.projectlocation + " is not OPE project folder");
+				System.err.println("ERROR: Folder " + Project.projectLocation + " is not OPE project folder");
 				System.exit(1);
 			}
 			

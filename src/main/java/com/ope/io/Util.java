@@ -73,7 +73,7 @@ public class Util
 	
 	public static String getPathFromProject(File s)
 	{
-		return new File(Project.projectlocation).toURI().relativize(s.toURI()).getPath();
+		return new File(Project.projectLocation).toURI().relativize(s.toURI()).getPath();
 	}
 	
 	public static void saveFile(String path,String text) throws IOException
@@ -118,7 +118,7 @@ public class Util
 	
 	public static String projectPath(String... files)
 	{
-		return Paths.get(Project.projectlocation,files).toString();
+		return Paths.get(Project.projectLocation,files).toString();
 	}
 	
 	

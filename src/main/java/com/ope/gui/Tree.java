@@ -108,10 +108,10 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 					if (selected != null)
 					{
 						if (selected.toString().equals("Workspace"))
-							copypath = Project.projectlocation;
+							copypath = Project.projectLocation;
 						else copypath = selected.toString();
 					}
-					else copypath = Project.projectlocation;
+					else copypath = Project.projectLocation;
 					
 					
 					//copying files
@@ -208,7 +208,7 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 			File destdir = select;
 			
 			//check if select is workspace
-			if (select.getPath().equals("Workspace")) destdir = new File(Project.projectlocation);
+			if (select.getPath().equals("Workspace")) destdir = new File(Project.projectLocation);
 			
 			//check
 			if (!destdir.isDirectory())
