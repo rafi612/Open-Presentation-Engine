@@ -23,15 +23,15 @@ public class SlideManager
 	public ArrayList<Slide> slides = new ArrayList<Slide>();
 
 	public int choose = 0;
-	Texture empty,endimage;
+	private Texture empty,endimage;
 	
-	boolean switchslide = false;
-	boolean end = false;
-	int switchside;
+	private boolean switchslide = false;
+	private boolean end = false;
+	private int switchside;
 	
-	int beforeslide,targetslide;
+	private int beforeslide,targetslide;
 	
-	Animation animation;
+	private Animation animation;
 	
 	public SlideManager()
 	{
