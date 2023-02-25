@@ -188,6 +188,7 @@ public class Presentation
 		else
 		{
 			fullscreen = false;
+			
 			// restore last window size and position
 			glfwSetWindowMonitor(window, NULL, lastx.get(),lasty.get(),lastw.get(),lasth.get(),GLFW_DONT_CARE);
 		}
