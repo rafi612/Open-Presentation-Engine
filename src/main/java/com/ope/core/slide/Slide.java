@@ -52,6 +52,7 @@ public class Slide
 			slide.animation = Animation.getAnimation(tag.getTags("animation")[0].getAttribute("type"));
 		else 
 			slide.animation = Animation.getAnimation("none");
+		
 		return slide;
 	}
 	
