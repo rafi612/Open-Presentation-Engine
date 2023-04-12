@@ -137,7 +137,8 @@ public class Tree extends JTree implements ActionListener,TreeSelectionListener
 		var source = e.getSource();
 		
 		File select = null;
-		if (selected != null) select = new File(selected.toString());
+		if (selected != null) 
+			select = new File(selected.toString());
 		
 		if (source == newfile)
 		{
