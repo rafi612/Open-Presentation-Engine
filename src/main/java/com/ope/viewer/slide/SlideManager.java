@@ -134,7 +134,6 @@ public class SlideManager
 			beforeslide = 0;
 			targetslide = 0;
 		}
-
 	}
 	
 	public void render()
